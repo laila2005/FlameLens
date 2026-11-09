@@ -10,8 +10,6 @@ FlameLens helps spacecraft and habitat engineers use NASA's Physical Sciences In
 
 A deterministic ranker scores the experiments. AI only explains, and a citation verifier removes any claim that does not point at a real run.
 
-> **Status (9 Nov):** preparation phase. The dataset is not available until kickoff on 13 Nov. This repo contains the plan, documentation, task lists, data format and placeholder data. **It contains no product code on purpose** (see [rules check](docs/08-working-agreements.md#rule-check-before-writing-code)).
-
 ## New here? Start with this
 
 1. Read [docs/00-START-HERE.md](docs/00-START-HERE.md) (10 minutes).
