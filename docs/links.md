@@ -15,6 +15,5 @@ Removed from this list because they describe the old 48-hour plan and are out of
 |---|---|
 | Official challenge page | https://www.spaceappschallenge.org/2026/challenges/flame-in-freefall/ |
 | PSI repository | https://psi.nasa.gov |
-| Team chat | |
-| Shared drive for large files | |
+| Shared drive for large files | https://drive.google.com/drive/folders/1NmOPB8hY533lgdi9hUpG5A6HVme1rOQn?usp=sharing |
 | Figma or design folder | |
