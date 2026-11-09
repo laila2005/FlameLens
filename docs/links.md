@@ -7,7 +7,7 @@ The documents in this repo are the source of truth. The older planning pages bel
 | [FlameLens Explained](https://claude.ai/artifact/Q522NGdaw1VpjqoVGdK9Ua) | What engineers do, how we help, pressure vs oxygen | Still useful for understanding the science |
 | [Dashboard mockup](https://claude.ai/artifact/QaSxsDvZYuo2VtRu6nngeh) | Design sketch of Evidence case, Run this next, Safer options. Placeholder data | A sketch only. Do not reuse its code or present it as built, see [08](08-working-agreements.md#rule-check-before-writing-code) |
 
-Removed from this list because they describe the old 48-hour plan and are out of date: the master plan page, Team Split, AI Model Guide and the Team Prep Checklist. Use [03 Prep schedule](03-prep-schedule.md), [02 Team roles](02-team-roles.md) and [07 AI guide](07-ai-guide.md) instead.
+ Use [03 Prep schedule](03-prep-schedule.md), [02 Team roles](02-team-roles.md) and [07 AI guide](07-ai-guide.md) instead.
 
 ## Links to fill in
 
