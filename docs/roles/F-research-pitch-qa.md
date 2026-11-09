@@ -28,6 +28,10 @@ Rules and deadlines, fact-check, README, slides, video, demo script, QA testing,
 Read [11 Event facts](../11-event-facts.md) and compare it with the official NASA Space Apps and Cairo pages. Fill the gaps in the [facts table](../09-pitch-and-submission.md#facts-filled-in-from-the-official-pdfs-9-nov): the licence rule, data access instructions, and the steps for the official NASA submission site.
 Done when: every row in the table has an answer or says "confirm on Discord".
 
+### F10. Read the official challenge (Mon 9 Nov, 30 min)
+The page `https://www.spaceappschallenge.org/2026/challenges/flame-in-freefall/` could not be read by our research tool. Open it in a normal browser and paste the exact challenge statement and listed resources into [12 Resources](../12-resources.md#1-the-official-challenge). Check whether an AI component ("SI-Powered") is expected.
+Done when: the statement is in the file and you have told Laila whether AI is expected.
+
 ### F2. Read Detection and Suppression investigations (Mon–Tue 9–10 Nov, 3 hours)
 **SAME, SAME-R, DAFT, DAFT-2, FLEX, FLEX-2, CFI, ACME E-FIELD**. Copy [../research/TEMPLATE.md](../research/TEMPLATE.md) to `docs/research/<NAME>.md` for each and fill it in.
 Done when: at least six notes exist with source links.

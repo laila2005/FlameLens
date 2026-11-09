@@ -42,6 +42,7 @@ Supporting pieces: a deterministic ranker (weights 0.35 O₂, 0.20 pressure, 0.2
 | Day-by-day prep (9–13 Nov) | `docs/03-prep-schedule.md` |
 | Hour-by-hour plan for the 24 h | `docs/04-hackathon-timeline.md` |
 | **Official event facts, rules, submission format, judging criteria** | `docs/11-event-facts.md` (from the organizers' two PDFs) |
+| Web research: challenge name, PSI access routes, NTRS API, papers, investigations | `docs/12-resources.md` |
 | Stack, API contract, ranker, decision-route rules | `docs/05-architecture-and-api.md` |
 | Data row format and extraction rules | `docs/06-data-guide.md` |
 | AI model, prompts, verifier rules, bake-off | `docs/07-ai-guide.md` |
@@ -145,6 +146,8 @@ gh auth status                    # GitHub CLI login for pushing
 ## Status log
 
 Newest first. One line per change: date, what, who or what session.
+
+- 2026-11-09: Web research added as `docs/12-resources.md`. Our challenge is "Flame in Freefall: SI-Powered Fire Safety Insights from Microgravity Combustion Data". PSI has no documented API (manual downloads), NTRS API works for papers, AWS bucket `nasa-psi` may not hold combustion data. The official challenge page was NOT read (certificate error in the research tool): F must read it and paste the statement into docs/12. If it expects an AI component, move the cited AI explanation to Must ship.
 
 - 2026-11-09: Read the two official PDFs (Hackathon Guide, Participant Guidebook). Key facts: the event is 24 hours not 48, no pre-event code, demo is 7 slides or 30-second video, only the leader submits. Rescaled timeline, scope, role schedules (EN and AR) and submission docs; added `docs/11-event-facts.md`. Names added: Laila A, Yousseif B, Yasmine C, Judy D.
 

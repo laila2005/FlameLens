@@ -2,6 +2,8 @@
 
 Source of truth for dates, rules and submission. Taken from the two official PDFs the team received: **Hackathon Guide** (English, "NASA_Space_Apps_Cairo_2026_Hackathon_GUIDE26.pdf") and **Participant Guidebook 2026** (Arabic, 31 pages). Where they differ, the Hackathon Guide is newer. If an announcement on Discord or the official site differs from this page, the announcement wins. Update this page when it changes.
 
+**Our challenge:** "Flame in Freefall: SI-Powered Fire Safety Insights from Microgravity Combustion Data" (official page: https://www.spaceappschallenge.org/2026/challenges/flame-in-freefall/). Details and data access: [12 Resources](12-resources.md).
+
 ## The big change: it is 24 hours, not 48
 
 The hackathon runs from **Fri 13 Nov, 1:00 PM** to the submission deadline **Sat 14 Nov, 1:00 PM** (Cairo local time). That is **24 hours** including sleep and the demo. Earlier planning docs assumed 48 hours. Everything in this repo has been rescaled to 24 hours (see [04 Hackathon timeline](04-hackathon-timeline.md)). The guide says to confirm the final deadline, so F confirms it on Discord on Friday.

@@ -71,7 +71,7 @@ Files: [English](docs/roles/C-charts-lenses.md) · [العربية](docs/roles/a
 | [ ] | Tue 10 | D3 | Shared spreadsheet with validation | جدول مشترك مع تحقق من المدخلات |
 | [ ] | Wed 11 | D4 | Extraction examples and cross-check with F | أمثلة الاستخراج ومراجعة متبادلة مع F |
 | [ ] | Wed 11 | D5 | Units and ranges cheat sheet | ورقة الوحدات والنطاقات |
-| [ ] | Wed 11 | D6 | PSI access plan | خطة الوصول إلى PSI |
+| [ ] | Wed 11 | D6 | PSI access plan (use [12 Resources](docs/12-resources.md)): browse by hand, test the S3 bucket once, do not build the dataset | خطة الوصول إلى PSI (استخدم [12 المصادر](docs/12-resources.md)): تصفح يدويًا، جرّب S3 مرة واحدة، لا تبنِ مجموعة البيانات |
 | [ ] | Thu 12 | D7 | Field inventory template | قالب جدول الحقول |
 
 Files: [English](docs/roles/D-data.md) · [العربية](docs/roles/ar/D-data.md)
@@ -88,6 +88,7 @@ Files: [English](docs/roles/D-data.md) · [العربية](docs/roles/ar/D-data.
 | [ ] | Wed 11 | E6 | Retrieval plan | خطة الاسترجاع |
 | [ ] | Wed 11 | E7 | Cache plan | خطة الذاكرة المؤقتة |
 | [ ] | Thu 12 | E8 | Habitat parser tests | اختبارات محلل الـ habitat |
+| [ ] | Wed 11 | E9 | NTRS query list (text only, run on Friday) | قائمة استعلامات NTRS (نص فقط، تُشغَّل يوم الجمعة) |
 
 Files: [English](docs/roles/E-ai-retrieval.md) · [العربية](docs/roles/ar/E-ai-retrieval.md)
 
@@ -99,6 +100,7 @@ Files: [English](docs/roles/E-ai-retrieval.md) · [العربية](docs/roles/ar
 | [ ] | Tue 10 | F2 | Research notes: SAME, DAFT, FLEX, CFI and others | ملاحظات البحث للكشف والإخماد |
 | [ ] | Tue 10 | F3 | Settle open questions: team leader, 5 onsite, ages | حسم الأسئلة المفتوحة: قائد الفريق والحضور والأعمار |
 | [ ] | Tue 10 | F4 | 20 bake-off questions (with E) | 20 سؤال مقارنة (مع E) |
+| [ ] | Mon 9 | F10 | Read the official challenge page, paste the exact statement into [12 Resources](docs/12-resources.md) | اقرأ صفحة التحدي الرسمية والصق النص الدقيق في [12 المصادر](docs/12-resources.md) |
 | [ ] | Wed 11 | F5 | Claims table with sources | جدول الادعاءات مع المصادر |
 | [ ] | Wed 11 | F6 | 30-second video script and 7-slide outline | نص فيديو الـ 30 ثانية ومخطط الشرائح السبع |
 | [ ] | Wed 11 | F7 | QA plan with 20+ test cases | خطة اختبار بـ 20 حالة أو أكثر |

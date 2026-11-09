@@ -53,6 +53,10 @@ Done when: D agrees the metadata can be produced from their notes.
 Write the cache design in the same file: key = hash of (prompt version, retrieved run IDs, target), value = verified claims JSON, one file per key. Plan to pre-generate answers for the demo habitats by hour 15.
 Done when: A confirms the design fits the backend.
 
+### E9. NTRS query list (Wed 11 Nov, 30 min)
+In `docs/design/retrieval.md` list the search queries for the NASA Technical Reports Server API ([12 Resources](../12-resources.md#3-papers-and-reports-through-the-ntrs-api-verified-working)): one per investigation name plus "microgravity flame", "spacecraft fire safety", "cool flame", "smoke detection spacecraft". Text only. Run it after 1:00 PM Friday.
+Done when: at least 15 queries are listed.
+
 ### E8. Habitat parser tests (Thu 12 Nov, 45 min)
 Write 10 sample sentences and the JSON each should produce, for example "Artemis base at 8 psi with 32% oxygen" in `docs/design/prompts.md`. Include 3 vague or impossible ones that should return an error asking the user to confirm.
 Done when: the cases show what happens when the sentence is unclear.
