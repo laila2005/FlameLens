@@ -56,19 +56,16 @@ Supporting pieces: a deterministic ranker (weights 0.35 O₂, 0.20 pressure, 0.2
 | Design and spec files (written by role tasks) | `docs/design/` (see its README for expected file names) |
 | Placeholder data (all values invented) | `data/mock/runs_placeholder.csv` |
 | Environment check | `python scripts/check_env.py` |
-| Interactive pages from planning | `docs/links.md` |
+| Remaining planning pages | `docs/links.md` |
 
 ### Interactive pages (private Claude artifacts)
 
 Made during planning. They are private; the owner shares them. They may need re-reading with the Artifact tool's `read` action.
 
-- Master plan: https://claude.ai/artifact/Jvx2KpKq5H8CoVFr2j7jV1 (does **not** yet have the brainstorm section; repo docs are the current version)
-- Dashboard mockup: https://claude.ai/artifact/QaSxsDvZYuo2VtRu6nngeh (Evidence case, Run this next, Safer options, coverage gaps, evidence panel; placeholder data). Its inline script is the reference implementation of the matching logic.
+- Dashboard mockup: https://claude.ai/artifact/QaSxsDvZYuo2VtRu6nngeh (design sketch only, see Rule 1; its inline script was the reference for the matching logic)
 - FlameLens Explained: https://claude.ai/artifact/Q522NGdaw1VpjqoVGdK9Ua
-- Team Split: https://claude.ai/artifact/DX3aK944JyNgk6LizGmDxN
-- AI Model Guide: https://claude.ai/artifact/RHxUVvYQA7EnLiZkoQ1FZE
-- Team Prep Checklist: https://claude.ai/artifact/VcB9Ls8vTwrfsozLkXknSM (its weekday labels are wrong; use `docs/03-prep-schedule.md`)
 - Earlier deliverable, team slide deck (5 slides): https://claude.ai/artifact/2woKjf9i4HGW5CNtuazYJQ
+- **Outdated, ignore** (old 48-hour plan, superseded by the repo): Master plan, Team Split, AI Model Guide, Team Prep Checklist artifacts. They were removed from `docs/links.md`.
 
 ## 4. Decisions made
 

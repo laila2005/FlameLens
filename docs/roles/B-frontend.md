@@ -64,6 +64,10 @@ Done when: F can use it as part of the QA plan.
 With C, agree the props between panels and charts, and the mock JSON for `/case`, `/next`, `/alternatives`, `/strength`. Save it as `docs/design/mock-json.md`.
 Done when: you and C both sign off in the chat.
 
+### B9. Study NASA's Microgravity Tool (Tue 10 Nov, 30 min, with C)
+Open the [Microgravity Tool page](../12-resources.md#2-getting-the-data-psi) and any screenshots or demo you can find. In `docs/design/ui-inventory.md` note what it already shows and one thing FlameLens will do differently (evidence case, next experiment).
+Done when: the note names at least three things it already does.
+
 ## At the hackathon (24 hours, hour 0 = Fri 13 Nov, 1:00 PM Cairo time)
 
 | Hour | You do |

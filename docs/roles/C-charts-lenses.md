@@ -54,6 +54,10 @@ Done when: both sign off in the chat.
 For each lens write the cheap fallback if data is missing: a cited text summary instead of a chart. Save in `docs/design/lenses.md`.
 Done when: all three lenses have a fallback line.
 
+### C7. Study NASA's Microgravity Tool (Tue 10 Nov, 30 min, with B)
+Look at the [Microgravity Tool](../12-resources.md#2-getting-the-data-psi). In `docs/design/c-notes.md` write which charts it already offers, so our lenses add something different.
+Done when: you can name two charts it has and the one thing our lenses show that it does not.
+
 ## At the hackathon (24 hours, hour 0 = Fri 13 Nov, 1:00 PM Cairo time)
 
 | Hour | You do |

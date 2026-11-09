@@ -68,6 +68,10 @@ Done when: you can paste all of it into the chat at the kickoff meeting.
 Ask each member for: roles filled in, check_env passing, availability posted. List blockers.
 Done when: you have a "ready" or "blocked, because X" for each of the six.
 
+### A10. Decide on the AI explanation (Wed 11 Nov, 15 min)
+Wait for F10 ([official challenge text](../12-resources.md#1-the-official-challenge)). If the challenge expects an AI component ("SI-Powered"), move the cited AI explanation from Should ship to Must ship in [04](../04-hackathon-timeline.md#scope-for-24-hours) and [01](../01-project-brief.md), and tell E.
+Done when: the decision is written in the chat and both docs match.
+
 ## At the hackathon (24 hours, hour 0 = Fri 13 Nov, 1:00 PM Cairo time)
 
 | Hour | You do |

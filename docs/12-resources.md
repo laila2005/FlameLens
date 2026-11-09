@@ -94,14 +94,15 @@ Some third-party pages say the global event is 14–15 Nov with kickoff on 13 No
 
 ## 7. Recommended actions (tonight and tomorrow)
 
-| Who | Action |
-|---|---|
-| F | Open the official challenge page in a normal browser. Copy the exact challenge statement and listed resources into this file. Check if an AI/"SI" component is expected |
-| D and Judy | Open the PSI site, read the Database Tutorial, browse 5 combustion investigations by hand. Record in `docs/research/psi-access.md`: what files each offers and in which formats. **Do not build the dataset yet** |
-| D | Test `aws s3 ls --no-sign-request s3://nasa-psi/` once and note whether combustion folders exist |
-| E (Dai) | Write the NTRS query list (text). Read the Saffire VI, SAME and fire detection documents above to draft the pillar prompts |
-| C and B | Read the Microgravity Tool page and note what it already visualises, so our views add something different |
-| Laila | Keep the decision to move the AI explanation to Must open until F reports the official wording |
+Each action is also a numbered task in the owner's role file and in [TASKS.md](../TASKS.md).
+
+| Who | Task | Action |
+|---|---|---|
+| F | F10 | Open the official challenge page in a normal browser. Copy the exact challenge statement and listed resources into this file. Check if an AI/"SI" component is expected |
+| D (Judy) | D8, D6 | Read the PSI Database Tutorial, browse 5 combustion investigations by hand, test the S3 bucket once. Record in `docs/research/psi-access.md`. **Do not build the dataset yet** |
+| E (Dai) | E9, E10 | Write the NTRS query list (text). Read the Saffire VI, SAME and fire detection papers to improve the pillar prompts |
+| B and C | B9, C7 | Read the Microgravity Tool page and note what it already visualises, so our views add something different |
+| A (Laila) | A10 | Keep the decision to move the AI explanation to Must ship open until F reports the official wording |
 
 ## 8. What this changes in our plan
 

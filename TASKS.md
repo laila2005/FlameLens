@@ -31,6 +31,7 @@ Dates are for 2026. The hackathon is **24 hours: Fri 13 Nov 1:00 PM to Sat 14 No
 | [ ] | Wed 11 | A7 | Decision-route test cases on paper | حالات اختبار مسارات القرار على الورق |
 | [ ] | Thu 12 | A8 | Kickoff pack and sleep shifts | حزمة الانطلاق ونوبات النوم |
 | [ ] | Thu 12 | A9 | Team readiness check | التأكد من جاهزية الفريق |
+| [ ] | Wed 11 | A10 | Decide if the AI explanation becomes Must ship (after F10) | قرار جعل شرح الذكاء الاصطناعي Must ship (بعد F10) |
 
 Files: [English](docs/roles/A-tech-lead-backend.md) · [العربية](docs/roles/ar/A-tech-lead-backend.md)
 
@@ -46,6 +47,7 @@ Files: [English](docs/roles/A-tech-lead-backend.md) · [العربية](docs/rol
 | [ ] | Wed 11 | B6 | Library decisions and setup commands | قرارات المكتبات وأوامر الإعداد |
 | [ ] | Wed 11 | B7 | Accessibility and phone checklist | قائمة إمكانية الوصول والهاتف |
 | [ ] | Thu 12 | B8 | Agree interfaces and mock JSON with C | الاتفاق مع C على الواجهات وبيانات JSON الوهمية |
+| [ ] | Tue 10 | B9 | Study NASA's Microgravity Tool (with C) | ادرس أداة الجاذبية الصغرى من ناسا (مع C) |
 
 Files: [English](docs/roles/B-frontend.md) · [العربية](docs/roles/ar/B-frontend.md)
 
@@ -59,6 +61,7 @@ Files: [English](docs/roles/B-frontend.md) · [العربية](docs/roles/ar/B-f
 | [ ] | Wed 11 | C4 | Coverage, strength and campaign chart specs | مواصفات خريطة التغطية والقوة والحملة |
 | [ ] | Thu 12 | C5 | Agree interfaces with B | الاتفاق على الواجهات مع B |
 | [ ] | Thu 12 | C6 | Fallback plan per lens | خطة بديلة لكل عدسة |
+| [ ] | Tue 10 | C7 | Study NASA's Microgravity Tool (with B) | ادرس أداة الجاذبية الصغرى من ناسا (مع B) |
 
 Files: [English](docs/roles/C-charts-lenses.md) · [العربية](docs/roles/ar/C-charts-lenses.md)
 
@@ -73,6 +76,7 @@ Files: [English](docs/roles/C-charts-lenses.md) · [العربية](docs/roles/a
 | [ ] | Wed 11 | D5 | Units and ranges cheat sheet | ورقة الوحدات والنطاقات |
 | [ ] | Wed 11 | D6 | PSI access plan (use [12 Resources](docs/12-resources.md)): browse by hand, test the S3 bucket once, do not build the dataset | خطة الوصول إلى PSI (استخدم [12 المصادر](docs/12-resources.md)): تصفح يدويًا، جرّب S3 مرة واحدة، لا تبنِ مجموعة البيانات |
 | [ ] | Thu 12 | D7 | Field inventory template | قالب جدول الحقول |
+| [ ] | Tue 10 | D8 | Read PSI tutorial, browse 5 combustion investigations, test S3 once (reading only) | اقرأ دليل PSI وتصفح 5 تجارب احتراق وجرّب S3 مرة (قراءة فقط) |
 
 Files: [English](docs/roles/D-data.md) · [العربية](docs/roles/ar/D-data.md)
 
@@ -89,6 +93,7 @@ Files: [English](docs/roles/D-data.md) · [العربية](docs/roles/ar/D-data.
 | [ ] | Wed 11 | E7 | Cache plan | خطة الذاكرة المؤقتة |
 | [ ] | Thu 12 | E8 | Habitat parser tests | اختبارات محلل الـ habitat |
 | [ ] | Wed 11 | E9 | NTRS query list (text only, run on Friday) | قائمة استعلامات NTRS (نص فقط، تُشغَّل يوم الجمعة) |
+| [ ] | Wed 11 | E10 | Read Saffire VI, SAME and fire detection papers, improve prompts | اقرأ أوراق Saffire VI وSAME وكشف الحريق وحسّن الـ prompts |
 
 Files: [English](docs/roles/E-ai-retrieval.md) · [العربية](docs/roles/ar/E-ai-retrieval.md)
 

@@ -52,6 +52,14 @@ Done when: you know your first three steps at hour 0.
 Create `docs/research/field-inventory.md` as a table: investigation, files found, fields present, units, gaps. This is what you fill in during hours 0–2.
 Done when: the table exists, empty, ready.
 
+### D8. Read the PSI tutorial and browse by hand (Tue 10 Nov, 90 min, with F)
+1. Read the PSI Database Tutorial PDF (linked from [12 Resources](../12-resources.md#2-getting-the-data-psi)).
+2. Open `psi.nasa.gov` in a browser and look at 5 combustion investigations. For each, note which files are offered and in which formats in `docs/research/psi-access.md`.
+3. Run `aws s3 ls --no-sign-request s3://nasa-psi/` once (install the AWS CLI first if needed) and note whether combustion folders exist.
+4. If downloads ask for an Earthdata login, create the account now.
+**Do not download everything or build the dataset before Friday 1:00 PM.** This is reading only.
+Done when: `psi-access.md` lists the formats seen and what the S3 listing showed.
+
 ## At the hackathon (24 hours, hour 0 = Fri 13 Nov, 1:00 PM Cairo time)
 
 | Hour | You do |

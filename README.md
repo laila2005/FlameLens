@@ -37,17 +37,19 @@ A deterministic ranker scores the experiments. AI only explains, and a citation 
 | [Choose your role / اختر دورك](docs/roles/00-choose-your-role.md) | Experience needed for each role, so you can pick the one that fits you (English and Arabic) |
 | [Role task files](docs/roles) · [بالعربية](docs/roles/ar) | Each member's tasks before and during the hackathon, in English and Arabic |
 | [TASKS.md](TASKS.md) | One checklist for the whole team, in English and Arabic |
-| [Links](docs/links.md) | Interactive plan, mockup, explainer (private pages) |
+| [Links](docs/links.md) | Explainer, design sketch and places to put team links |
 
 ## Repository layout
 
 ```
-docs/            All documentation (read in numbered order)
-docs/roles/      One task file per role, A to F
-docs/research/   One-page summaries of each PSI investigation (role D and F fill these in)
-data/mock/       Placeholder data in our row format (never shown as real)
-data/raw/        Real PSI downloads go here at kickoff (git-ignored)
-scripts/         Small helper scripts (environment check)
+README.md        This page
+TASKS.md         The team checklist (English and Arabic)
+CLAUDE.md        Project context file for Claude sessions
+docs/            Documentation, read in numbered order
+  roles/         One task file per role, A to F (docs/roles/ar for Arabic)
+  research/      Notes per PSI investigation (D and F fill these in)
+data/            mock/ placeholder rows, raw/ real downloads (git-ignored), curated/ our cleaned CSVs
+scripts/         check_env.py, the environment check
 .github/         Issue and pull request templates
 ```
 

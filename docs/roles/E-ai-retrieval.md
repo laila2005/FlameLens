@@ -61,6 +61,10 @@ Done when: at least 15 queries are listed.
 Write 10 sample sentences and the JSON each should produce, for example "Artemis base at 8 psi with 32% oxygen" in `docs/design/prompts.md`. Include 3 vague or impossible ones that should return an error asking the user to confirm.
 Done when: the cases show what happens when the sentence is unclear.
 
+### E10. Read the key papers (Tue 10 – Wed 11 Nov, 90 min)
+Read the abstracts and conclusions of the Saffire VI, SAME and fire detection documents listed in [12 Resources](../12-resources.md#3-papers-and-reports-through-the-ntrs-api-verified-working). Use them to improve the pillar prompts in `docs/design/prompts.md` (real terms, real units, what the experiments measured).
+Done when: each pillar prompt mentions at least two real quantities from the papers.
+
 ## At the hackathon (24 hours, hour 0 = Fri 13 Nov, 1:00 PM Cairo time)
 
 | Hour | You do |

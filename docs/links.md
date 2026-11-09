@@ -1,24 +1,20 @@
 # Links
 
-These interactive pages were made during planning. They are **private**: only people the owner has shared them with can open them. If a link does not open, ask the team member who shared the project to share it with you.
+The documents in this repo are the source of truth. The older planning pages below are private (only people the owner shared them with can open them) and the repo wins if they disagree.
 
-| Page | What it is |
-|---|---|
-| [Master plan](https://claude.ai/artifact/Jvx2KpKq5H8CoVFr2j7jV1) | Verdict, risks, scope, stack, API, timeline, demo |
-| [Dashboard mockup](https://claude.ai/artifact/QaSxsDvZYuo2VtRu6nngeh) | Interactive UI with Evidence case, Run this next, Safer options. Placeholder data only |
-| [FlameLens Explained](https://claude.ai/artifact/Q522NGdaw1VpjqoVGdK9Ua) | What engineers do, how we help, pressure vs oxygen |
-| [Team Split](https://claude.ai/artifact/DX3aK944JyNgk6LizGmDxN) | Roles, handoffs, contingencies |
-| [AI Model Guide](https://claude.ai/artifact/RHxUVvYQA7EnLiZkoQ1FZE) | Model options, config, bake-off |
-| [Team Prep Checklist](https://claude.ai/artifact/VcB9Ls8vTwrfsozLkXknSM) | Earlier checklist. Its weekday labels may be off by a few days. Use [03 Prep schedule](03-prep-schedule.md) instead |
+| Page | What it is | Status |
+|---|---|---|
+| [FlameLens Explained](https://claude.ai/artifact/Q522NGdaw1VpjqoVGdK9Ua) | What engineers do, how we help, pressure vs oxygen | Still useful for understanding the science |
+| [Dashboard mockup](https://claude.ai/artifact/QaSxsDvZYuo2VtRu6nngeh) | Design sketch of Evidence case, Run this next, Safer options. Placeholder data | A sketch only. Do not reuse its code or present it as built, see [08](08-working-agreements.md#rule-check-before-writing-code) |
 
-The documents in this repo are the source of truth. If a page and this repo disagree, the repo wins.
+Removed from this list because they describe the old 48-hour plan and are out of date: the master plan page, Team Split, AI Model Guide and the Team Prep Checklist. Use [03 Prep schedule](03-prep-schedule.md), [02 Team roles](02-team-roles.md) and [07 AI guide](07-ai-guide.md) instead.
 
-## Outside links to fill in
+## Links to fill in
 
 | Item | Link |
 |---|---|
-| Official challenge page | |
-| PSI repository | |
+| Official challenge page | https://www.spaceappschallenge.org/2026/challenges/flame-in-freefall/ |
+| PSI repository | https://psi.nasa.gov |
 | Team chat | |
 | Shared drive for large files | |
 | Figma or design folder | |
