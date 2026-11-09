@@ -1,0 +1,21 @@
+run_id,psi_id,material,geometry,o2_pct,pressure_psi,airflow_cm_s,diluent,gravity_g,outcome,spread_rate_mm_s,value_source,source_ref,confidence,notes
+PH-01-R01,PH-01,placeholder fabric,flat sheet,30,14.7,20,none,0,burned,0.9,table,placeholder,placeholder,INVENTED VALUES FOR LAYOUT ONLY
+PH-01-R02,PH-01,placeholder fabric,flat sheet,30,14.7,10,none,0,burned,1.2,table,placeholder,placeholder,INVENTED VALUES FOR LAYOUT ONLY
+PH-01-R03,PH-01,placeholder fabric,flat sheet,25,14.7,20,none,0,burned,0.6,table,placeholder,placeholder,INVENTED VALUES FOR LAYOUT ONLY
+PH-02-R01,PH-02,placeholder foam,flat sheet,21,14.7,10,none,0,burned,0.4,table,placeholder,placeholder,INVENTED VALUES FOR LAYOUT ONLY
+PH-02-R02,PH-02,placeholder foam,flat sheet,21,14.7,5,none,0,extinguished,,text,placeholder,placeholder,INVENTED VALUES FOR LAYOUT ONLY
+PH-02-R03,PH-02,placeholder foam,flat sheet,25,14.7,10,none,0,burned,0.7,plot-read,placeholder,placeholder,INVENTED VALUES FOR LAYOUT ONLY
+PH-03-R01,PH-03,placeholder panel,large enclosure,25,14.7,15,none,0,burned,0.8,table,placeholder,placeholder,INVENTED VALUES FOR LAYOUT ONLY
+PH-03-R02,PH-03,placeholder panel,large enclosure,21,14.7,15,none,0,burned,0.5,table,placeholder,placeholder,INVENTED VALUES FOR LAYOUT ONLY
+PH-04-R01,PH-04,placeholder cylinder,cylinder,26,10.2,5,none,0,burned,0.5,text,placeholder,placeholder,INVENTED VALUES FOR LAYOUT ONLY
+PH-04-R02,PH-04,placeholder cylinder,cylinder,21,10.2,5,none,0,extinguished,,text,placeholder,placeholder,INVENTED VALUES FOR LAYOUT ONLY
+PH-05-R01,PH-05,placeholder gas,burner,34,10.2,12,none,0,burned,,table,placeholder,placeholder,INVENTED VALUES FOR LAYOUT ONLY
+PH-05-R02,PH-05,placeholder gas,burner,30,10.2,12,none,0,burned,,table,placeholder,placeholder,INVENTED VALUES FOR LAYOUT ONLY
+PH-06-R01,PH-06,placeholder smoke,duct,21,14.7,8,none,0,detected,,table,placeholder,placeholder,INVENTED VALUES FOR LAYOUT ONLY
+PH-06-R02,PH-06,placeholder smoke,duct,21,14.7,12,none,0,detected,,plot-read,placeholder,placeholder,INVENTED VALUES FOR LAYOUT ONLY
+PH-07-R01,PH-07,placeholder dust,duct,21,14.7,12,none,0,not detected,,text,placeholder,placeholder,INVENTED VALUES FOR LAYOUT ONLY
+PH-08-R01,PH-08,placeholder droplet,droplet,40,14.7,0,nitrogen 10%,0,cool flame,,table,placeholder,placeholder,INVENTED VALUES FOR LAYOUT ONLY
+PH-08-R02,PH-08,placeholder droplet,droplet,40,14.7,0,nitrogen 30%,0,extinguished,,table,placeholder,placeholder,INVENTED VALUES FOR LAYOUT ONLY
+PH-08-R03,PH-08,placeholder droplet,droplet,30,14.7,0,nitrogen 10%,0,visible flame,,plot-read,placeholder,placeholder,INVENTED VALUES FOR LAYOUT ONLY
+PH-09-R01,PH-09,placeholder gas,burner with electric field,30,14.7,0,none,0,flame moved,,text,placeholder,placeholder,INVENTED VALUES FOR LAYOUT ONLY
+PH-09-R02,PH-09,placeholder gas,burner with electric field,30,14.7,0,none,0,burned,,text,placeholder,placeholder,INVENTED VALUES FOR LAYOUT ONLY
