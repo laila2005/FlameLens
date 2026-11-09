@@ -1,6 +1,6 @@
 # Role C: Charts and lenses
 
-**Name:** ______  **Backup:** ______  **Pairs with:** B and D
+**Name:** Yasmine  **Backup:** ______  **Pairs with:** B and D
 
 ## Your job in one sentence
 
@@ -54,26 +54,24 @@ Done when: both sign off in the chat.
 For each lens write the cheap fallback if data is missing: a cited text summary instead of a chart. Save in `docs/design/lenses.md`.
 Done when: all three lenses have a fallback line.
 
-## At the hackathon
+## At the hackathon (24 hours, hour 0 = Fri 13 Nov, 1:00 PM Cairo time)
 
 | Hour | You do |
 |---|---|
-| 0–2 | Check with D and F which lens data really exists. Cut a lens now if it does not |
-| 2–10 | Lens 1 on mock data, start the coverage map |
-| 10 | Gate 1: one lens works on real data |
-| 10–18 | Coverage map real, strength gauges, Evidence case chart parts |
-| 14–20 | Campaign planner chart (if chosen) |
-| 18–24 | Lens 2 and Lens 3 on real data |
-| 24–40 | Chart polish, captions, empty states, confidence badges |
-| 40 | Freeze |
+| 0–1 | Check lens data with D and F. Cut a lens now if the data is missing |
+| 1–6 | Lens 1 on mock data, start the coverage map |
+| 6 | **Gate 1:** one lens works on real data |
+| 6–13 | Coverage map on real data, strength gauges, Evidence case chart parts, Lens 2 |
+| 13–17 | Lens 3 only if data and time allow. Captions, empty states, confidence badges, chart screenshots |
+| 17 | **Freeze** |
 
 ## Hand-offs
 
 | You give | To | When |
 |---|---|---|
-| Chart components with props | B | Hour 6 and 12 |
-| List of fields you still need | D | Hour 4 |
-| Chart screenshots | F | Hour 36 |
+| Chart components with props | B | Hour 3 and 8 |
+| List of fields you still need | D | Hour 2 |
+| Chart screenshots | F | Hour 16 |
 
 ## Rules for you
 

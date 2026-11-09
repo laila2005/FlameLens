@@ -1,10 +1,10 @@
 # Role A: Tech lead and backend
 
-**Name:** ______  **Backup:** ______  **Pairs with:** E
+**Name:** Laila  **Backup:** ______  **Pairs with:** E
 
 ## Your job in one sentence
 
-Keep the repo healthy and the backend correct, so six people can work in parallel without collisions, and make sure the app is deployed and working at hour 10, 24 and 40.
+Keep the repo healthy and the backend correct, so six people can work in parallel without collisions, and make sure the app is deployed and working at hour 6, 13 and 17.
 
 **العربية:** [النسخة العربية](ar/A-tech-lead-backend.md) · [Choose your role](00-choose-your-role.md)
 
@@ -49,6 +49,7 @@ Done when: you can log in and the decision is written here.
 
 ### A5. Throwaway deploy test (Wed 11 Nov, 90 min)
 Deploy a FastAPI hello-world with one static page from a **separate private repo** (for example `flamelens-deploy-test`, NOT this repo, because of the [rule check](../08-working-agreements.md#rule-check-before-writing-code)). Write the exact commands and settings into the **Deploy notes** section below so the backup can repeat it.
+Delete the test repo afterwards and never reuse its code in the hackathon (no product code before Friday 1:00 PM).
 Done when: the public URL loads on your phone, and the steps are written down.
 
 ### A6. Ranker test cases on paper (Wed 11 Nov, 90 min)
@@ -67,27 +68,28 @@ Done when: you can paste all of it into the chat at the kickoff meeting.
 Ask each member for: roles filled in, check_env passing, availability posted. List blockers.
 Done when: you have a "ready" or "blocked, because X" for each of the six.
 
-## At the hackathon
+## At the hackathon (24 hours, hour 0 = Fri 13 Nov, 1:00 PM Cairo time)
 
 | Hour | You do |
 |---|---|
-| 0–2 | Confirm rules, agree the API contract, create branches, read the real field list from D and F, update the schema |
-| 2–10 | Loader, SQLite, ranker with the 5 tests, `/rank`, mock JSON for every route |
-| 10 | **Gate 1:** run the vertical slice, then choose up to two brainstorm ideas with the team |
-| 10–24 | `/case`, `/next`, `/alternatives`, `/strength`, then `/campaign`, `/journey`, tune tolerances on real data |
-| 24 | **Gate 2:** all "Must ship" works on the deployed URL |
-| 24–40 | Merge bug fixes, deploy daily, run sleep shifts |
-| 40 | Freeze and tag the release |
-| 40–48 | Check repo, deploy, secrets, and help F submit |
+| 0–1 | Confirm rules and the deadline on Discord and with the organizers. Agree the API contract. Read the real field list from D and F and update the schema |
+| 1–6 | Loader, SQLite, ranker with 5 tests, `/rank` and `/case` live, mock JSON for every route |
+| 6 | **Gate 1:** run the vertical slice, then choose at most ONE brainstorm idea |
+| 6–13 | `/next`, `/alternatives`, `/strength`, tune tolerances on real data, first deploy |
+| 13 | **Gate 2:** all "Must ship" works on the deployed URL. Sleep shifts start |
+| 13–17 | Merge fixes, `/campaign` if chosen, deploy every few hours |
+| 17 | **Freeze** and tag the release |
+| 17–21 | Check repo, deploy, public links and secrets. Help F submit |
+| 21 | Submit (team leader only). Hours 21–24 are buffer |
 
 ## Hand-offs
 
 | You give | To | When |
 |---|---|---|
-| API contract and mock JSON | B, C | Hour 1–2 |
-| Running `/rank` and `/case` | B, C | Hour 10 |
-| Loader that reads D's CSV | D | Hour 6 |
-| Deployed URL | F | Hour 24 |
+| API contract and mock JSON | B, C | Hour 1 |
+| Loader that reads D's CSV | D | Hour 3 |
+| `/rank` and `/case` running | B, C | Hour 6 |
+| Deployed URL | F | Hour 13 |
 
 ## If you are stuck or unavailable
 

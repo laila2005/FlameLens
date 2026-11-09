@@ -1,6 +1,6 @@
 # Idea brainstorm: making the dashboard smarter
 
-Goal: stand out from other teams, who will mostly build search + ranked list + AI chat. Nobody can guarantee a win. What we can do is pick ideas that (a) judges can see in 30 seconds, (b) stay honest, (c) fit in 48 hours with a team of six.
+Goal: stand out from other teams, who will mostly build search + ranked list + AI chat. Nobody can guarantee a win. What we can do is pick ideas that (a) judges can see in 30 seconds, (b) stay honest, (c) fit in 24 hours with a team of six.
 
 Read [01 Project brief](01-project-brief.md) first. Everything here builds on the Evidence case, Run this next and Safer options.
 
@@ -13,6 +13,8 @@ Rules for any idea we adopt:
 2. It must not claim anything the data does not show. "No evidence" is a valid output.
 3. It must be demoable in under 30 seconds.
 4. The decision logic is deterministic. AI may only parse or explain.
+
+> **24-hour reality:** the event is Fri 1:00 PM to Sat 1:00 PM. Only the evidence strength meter is certain, and at most one other idea fits. The timings below were first written for 48 hours; the table at the end has been rescaled.
 
 ## Ideas, ranked
 
@@ -35,7 +37,7 @@ Ideas we considered and **rejected**:
 
 | Idea | Why not |
 |---|---|
-| Physics simulation of fire spread | Cannot be validated in 48 hours. A judge who knows combustion will test it. We explore what experiments showed, not what we predict |
+| Physics simulation of fire spread | Cannot be validated in a 24-hour hackathon. A judge who knows combustion will test it. We explore what experiments showed, not what we predict |
 | Chat-only assistant | Every team builds it. Add the chat last, if at all |
 | Predicting a "safe" yes/no | We are not a safety authority. We show evidence strength and gaps |
 | Many AI agents | Slower, costlier, less reliable. One call per pillar is enough |
@@ -102,7 +104,7 @@ Already planned as the safety brief. Make it a printable page with: the habitat,
 
 ### 8 and 9. Surprise detector, trend with uncertainty band (Stretch)
 
-Only if the real data supports them after hour 24. Both depend on having enough runs per material.
+Only if the real data supports them after hour 13. Probably cut in a 24-hour event. Both depend on having enough runs per material.
 
 ## Recommended plan
 
@@ -113,18 +115,18 @@ Only if the real data supports them after hour 24. Both depend on having enough 
 | Only if sourced | Breathable and tested zone |
 | Stretch | Surprise detector, uncertainty band, BOM auditor |
 
-Team limit: **at most two Should-ship brainstorm ideas are built before Gate 2 (hour 24).** More than that and the core loop suffers. Decision made at Gate 1 (hour 10) by A with the team, based on how clean the real data is.
+Team limit: **at most ONE Should-ship brainstorm idea is built before Gate 2 (hour 13)**, because the event is only 24 hours. More than that and the core loop suffers. Decision made at Gate 1 (hour 6) by A with the team, based on how clean the real data is.
 
 ## Who builds what
 
 | Idea | Owner | Helper | When |
 |---|---|---|---|
-| Evidence strength | A (route), C (gauges) | D (check reliability tags) | Hours 10–14 |
-| Campaign planner | A (algorithm), C (chart) | B (panel) | Hours 14–20 |
-| Atmosphere journey | B (UI), A (route) | C | Hours 18–24 |
-| Plain-language entry | E | B | Hours 14–18 |
-| Reverse search | A | B | Hours 18–22 |
-| Risk passport | E (text), B (print layout) | F | Hours 24–30 |
+| Evidence strength | A (route), C (gauges) | D (check reliability tags) | Hours 6–10 |
+| Campaign planner | A (algorithm), C (chart) | B (panel) | Hours 10–15 |
+| Atmosphere journey | B (UI), A (route) | C | Only if Gate 1 has room (cut by default) |
+| Plain-language entry | E | B | Cut by default |
+| Reverse search | A | B | Cut by default |
+| Risk passport | E (text), B (print layout) | F | Cut by default (safety brief is cut) |
 | Breathable zone | C | F (sourcing) | Only if F has a sourced limit |
 
 ## How we decide what stays

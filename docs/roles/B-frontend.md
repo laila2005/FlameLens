@@ -1,6 +1,6 @@
 # Role B: Frontend lead
 
-**Name:** ______  **Backup:** ______  **Pairs with:** C
+**Name:** Yousseif  **Backup:** ______  **Pairs with:** C
 
 ## Your job in one sentence
 
@@ -64,25 +64,25 @@ Done when: F can use it as part of the QA plan.
 With C, agree the props between panels and charts, and the mock JSON for `/case`, `/next`, `/alternatives`, `/strength`. Save it as `docs/design/mock-json.md`.
 Done when: you and C both sign off in the chat.
 
-## At the hackathon
+## At the hackathon (24 hours, hour 0 = Fri 13 Nov, 1:00 PM Cairo time)
 
 | Hour | You do |
 |---|---|
-| 0–2 | Read the real data field list, agree mock JSON with A |
-| 2–10 | App shell, picker, ranked cards on mock data |
-| 10 | Gate 1: first real cards on screen |
-| 10–24 | Evidence case layout, Run this next, Safer options, diff view, weight sliders |
-| 18–24 | Atmosphere journey UI (if chosen at Gate 1) |
-| 24–40 | Empty, loading, error states, phone layout, risk-passport print layout |
-| 40 | Freeze |
+| 0–1 | Read the real field list, agree mock JSON with A |
+| 1–6 | App shell, habitat picker, ranked cards on mock data |
+| 6 | **Gate 1:** first real cards on screen |
+| 6–13 | Evidence case layout, Run this next, Safer options, strength meter, sample-data banner, evidence panel |
+| 13–17 | Empty, loading and error states, phone layout, polish for the video capture |
+| 17 | **Freeze** |
+| 17–21 | Screenshots for the slides, bug fixes only |
 
 ## Hand-offs
 
 | You give | To | When |
 |---|---|---|
-| Component skeleton | C | Hour 4 |
-| Phone-width bug list | F | Hour 30 |
-| Final screenshots | F | Hour 38 |
+| Component skeleton | C | Hour 3 |
+| Phone-width bug list | F | Hour 14 |
+| Final screenshots | F | Hour 17 |
 
 ## Rules for you
 

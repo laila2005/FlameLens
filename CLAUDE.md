@@ -6,7 +6,7 @@ Read this first in every new session. It is the handoff file: it says what the p
 
 ## 1. What this is
 
-**FlameLens** is the project of **Team AstroSpark** (6 people) for the **NASA Space Apps Challenge 2026**. The hackathon is **Fri 13 Nov to Sat 14 Nov 2026** (48 hours, kickoff is hour 0). The challenge is about NASA's **PSI (Physical Sciences Informatics)** fire-safety experiments run on the ISS: the data is public but scattered across experiment pages, papers and plots.
+**FlameLens** is the project of **Team AstroSpark** (6 people) for the **NASA Space Apps Challenge 2026**. The hackathon is **Fri 13 Nov to Sat 14 Nov 2026** (**24 hours**: Fri 13 Nov 1:00 PM to Sat 14 Nov 1:00 PM Cairo time, kickoff is hour 0). The challenge is about NASA's **PSI (Physical Sciences Informatics)** fire-safety experiments run on the ISS: the data is public but scattered across experiment pages, papers and plots.
 
 **Critical constraint: the real dataset is not available until kickoff on 13 Nov.** Everything before then is preparation: plan, docs, designs, accounts, research notes, placeholder data. The schema in `docs/06-data-guide.md` is a *hypothesis* to verify in the first 2 hours of the event.
 
@@ -40,7 +40,8 @@ Supporting pieces: a deterministic ranker (weights 0.35 O₂, 0.20 pressure, 0.2
 | Brief, scope tiers, risks | `docs/01-project-brief.md` |
 | Roles, backups | `docs/02-team-roles.md` |
 | Day-by-day prep (9–13 Nov) | `docs/03-prep-schedule.md` |
-| Hour-by-hour plan for the 48 h | `docs/04-hackathon-timeline.md` |
+| Hour-by-hour plan for the 24 h | `docs/04-hackathon-timeline.md` |
+| **Official event facts, rules, submission format, judging criteria** | `docs/11-event-facts.md` (from the organizers' two PDFs) |
 | Stack, API contract, ranker, decision-route rules | `docs/05-architecture-and-api.md` |
 | Data row format and extraction rules | `docs/06-data-guide.md` |
 | AI model, prompts, verifier rules, bake-off | `docs/07-ai-guide.md` |
@@ -75,24 +76,24 @@ Made during planning. They are private; the owner shares them. They may need re-
 | Stack | Vite + React + TypeScript + Tailwind, Plotly.js, FastAPI, SQLite or DuckDB, one container host (Render or Fly, not yet chosen) |
 | Text retrieval | Filter by `psi_id` first, then small local embedding model (MiniLM or bge-small) or keyword match. No pgvector |
 | LLM | Open model first: Qwen Instruct 7–14B, backup Llama 3.x 8B, Hermes if JSON breaks, hosted proprietary only as last resort. Via Ollama or an OpenAI-compatible endpoint. One call per pillar, not three agents |
-| Data | Hand-curate 40–80 runs with `source_ref`, `value_source`, `confidence`. Plot-read values allowed but tagged low confidence |
+| Data | Hand-curate 30–40 runs (24-hour event) with `source_ref`, `value_source`, `confidence`. Plot-read values allowed but tagged low confidence |
 | Data owners | D takes Prevention (BASS, BASS-II, Saffire, SPICE, BRE). F is second extractor for Detection and Suppression (SAME, SAME-R, DAFT, DAFT-2, FLEX, FLEX-2, CFI, ACME E-FIELD) in hours 0–14 |
 | Terminology | Use LOC (limiting oxygen concentration) in the UI, mention LOI in a tooltip |
 | Oxygen partial pressure | pressure × O₂ fraction; Earth air is about 3.1 psi; shown on every result |
-| Decision-route tolerances | O₂ within 6 points, pressure within 2 psi, airflow within 8 cm/s, same fuel, same gravity. **Starting guesses, tune on real data hours 10–14** |
+| Decision-route tolerances | O₂ within 6 points, pressure within 2 psi, airflow within 8 cm/s, same fuel, same gravity. **Starting guesses, tune on real data hours 6–10** |
 | Evidence strength formula | 0.35 proximity + 0.30 reliability + 0.20 run count + 0.15 source quality. **Guess weights, tune** |
-| Scope control | Gate 1 at hour 10, Gate 2 at hour 24, freeze at hour 40, submit at least 3 h before the deadline. At most two brainstorm "Should ship" ideas before Gate 2, chosen at Gate 1 |
+| Scope control | 24-hour event: Gate 1 at hour 6 (Fri 7 PM), Gate 2 at hour 13 (Sat 2 AM), freeze at hour 17 (Sat 6 AM), submit at hour 21 (Sat 10 AM), deadline hour 24 (Sat 1 PM). At most ONE brainstorm idea before Gate 2, chosen at Gate 1 |
 | Rejected | Physics simulation, chat-only assistant, yes/no safety verdicts, many AI agents, pgvector, treating Lens 4 / Electric-Gravity Bridge as validated |
 
 Brainstorm ideas, ranked (details and formulas in `docs/10-idea-brainstorm.md`): evidence strength (Must), campaign planner, atmosphere journey, breathable-and-tested zone (only if role F finds an official sourced limit), plain-language entry, reverse search, risk passport; stretch: surprise detector, uncertainty band, BOM auditor.
 
 ## 5. Team
 
-Six roles, names not yet written into `docs/02-team-roles.md`: A tech lead and backend, B frontend, C charts and lenses, D data extractor (lead), E AI and retrieval, F research, docs, pitch and QA. Task IDs: A1–A9, B1–B8, C1–C6, D1–D7, E1–E8, F1–F9 (see `TASKS.md`). The team is Arabic-speaking and uses English for technical work, so **role docs exist in English and Arabic** and task lists in `TASKS.md` are bilingual. Keep the Arabic files in sync when you change an English role file.
+Six roles (names in `docs/02-team-roles.md`): A tech lead and backend, B frontend, C charts and lenses, D data extractor (lead), E AI and retrieval, F research, docs, pitch and QA. Task IDs: A1–A9, B1–B8, C1–C6, D1–D7, E1–E8, F1–F9 (see `TASKS.md`). The team is Arabic-speaking and uses English for technical work, so **role docs exist in English and Arabic** and task lists in `TASKS.md` are bilingual. Keep the Arabic files in sync when you change an English role file.
 
 ## 6. Rules for working in this repo
 
-1. **No product code until the organizers confirm pre-event code is allowed** (task F3, message drafted in `docs/08-working-agreements.md`). Docs, designs, tests-on-paper, research notes and tooling are fine. Once confirmed, update this section and `docs/08`.
+1. **No product code before the hackathon starts (Fri 13 Nov, 1:00 PM Cairo).** The official guide: planning and task split are allowed, presenting ready or half-finished projects is prohibited, actual work starts at the start. Docs, designs, research notes and tooling are fine. Practice code stays outside the repo and is never reused. The interactive dashboard mockup is a design sketch only: rebuild everything from scratch after 1:00 PM and do not present it as built.
 2. Do not invent scientific values, thresholds, oxygen limits or experiment results. Anything scientific needs a source in `docs/research/claims.md` (task F5) or must be labelled as an example/guess.
 3. Do not put secrets in the repo. `.env` is git-ignored; `.env.example` documents the variables.
 4. Commit and push only when the user asks. Never force-push `main`. Commit messages end with the attribution line the session instructs.
@@ -109,8 +110,9 @@ Six roles, names not yet written into `docs/02-team-roles.md`: A tech lead and b
 ## 8. Known gaps and open items
 
 - Real PSI data format unknown until 13 Nov. Field names, units and file types are guesses.
-- Official deadline, video length limit, required fields, judging criteria and pre-event code rule are **not yet confirmed** (task F1, F3; table in `docs/09-pitch-and-submission.md`).
-- Roles, backups, hosting, LLM choice, repo license: undecided (see "Open decisions" in `TASKS.md`).
+- Team decision (9 Nov): the guidebook line about not changing the registered idea is read as "do not change the challenge"; we keep the same core FlameLens idea and only add features. Follow a mentor if told otherwise.
+- Event facts now confirmed from the official PDFs (`docs/11-event-facts.md`): 24 hours, 7 slides or a 30-second video, only the team leader submits, links must be public, AI use must be disclosed, no under-18 faces or voices. Still to confirm on Discord: the final deadline and the steps for the official NASA site; the arrival time differs between guides (8:00 vs 9:00 AM).
+- Roles named so far: A Laila (repo owner), B Yousseif, C Yasmine, D Judy (backup F). E tentatively Dai (confirming), F open: Mostafa is choosing and has not confirmed. Backups, hosting, LLM choice, repo licence, team leader who submits, which 5 are onsite: undecided (see "Open decisions" in `TASKS.md`).
 - GitHub collaborators not yet added (task A1).
 - Arabic task files were written by Claude and have not been reviewed by a native speaker on the team. Ask a teammate to proofread.
 - The master-plan artifact lacks the brainstorm section; the dashboard mockup lacks campaign planner, journey and strength meter views.
@@ -130,7 +132,7 @@ Typical openers and what to do:
 | "Continue" or "what's next" | Read `TASKS.md` and the Status log, report what is done, what is overdue for today's date, and propose the next step |
 | "Review the docs" | Check consistency between `docs/`, `TASKS.md`, role files and Arabic copies |
 | Reports a teammate's results (e.g. rules answer, hosting choice, bake-off table) | Record it in the right doc and in Section 8 and the Status log |
-| Kickoff day (13 Nov) | Follow `docs/04-hackathon-timeline.md` hour 0–2; first update `docs/06-data-guide.md` with the real fields and tell the team the schema changed |
+| Kickoff day (13 Nov) | Follow `docs/04-hackathon-timeline.md` hour 0–1; first update `docs/06-data-guide.md` with the real fields and tell the team the schema changed |
 | "Build X" | Check Rule 1 first. If code is allowed, follow `docs/05-architecture-and-api.md` and the owning role's file |
 
 Useful local commands:
@@ -143,6 +145,8 @@ gh auth status                    # GitHub CLI login for pushing
 ## Status log
 
 Newest first. One line per change: date, what, who or what session.
+
+- 2026-11-09: Read the two official PDFs (Hackathon Guide, Participant Guidebook). Key facts: the event is 24 hours not 48, no pre-event code, demo is 7 slides or 30-second video, only the leader submits. Rescaled timeline, scope, role schedules (EN and AR) and submission docs; added `docs/11-event-facts.md`. Names added: Laila A, Yousseif B, Yasmine C, Judy D.
 
 - 2026-11-09: Repo initialised with the full documentation set, bilingual role tasks, TASKS.md, scaffold and placeholder data (commit `2145bb7`, pushed to `main`). Added this CLAUDE.md.
 - 2026-11-09: Brainstorm doc `docs/10-idea-brainstorm.md` added; evidence strength made Must ship; campaign planner and atmosphere journey are the default Should-ship picks.

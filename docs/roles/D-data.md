@@ -1,6 +1,6 @@
 # Role D: Data extractor (lead)
 
-**Name:** ______  **Backup:** F  **Pairs with:** E (and F as second extractor)
+**Name:** Judy  **Backup:** F  **Pairs with:** E (and F as second extractor)
 
 ## Your job in one sentence
 
@@ -52,24 +52,24 @@ Done when: you know your first three steps at hour 0.
 Create `docs/research/field-inventory.md` as a table: investigation, files found, fields present, units, gaps. This is what you fill in during hours 0–2.
 Done when: the table exists, empty, ready.
 
-## At the hackathon
+## At the hackathon (24 hours, hour 0 = Fri 13 Nov, 1:00 PM Cairo time)
 
 | Hour | You do |
 |---|---|
-| 0–2 | Open every PSI file. With F fill the field inventory. Tell A at once if the schema must change |
-| 2–10 | First 20 real runs across at least 8 investigations. Push a batch every 2 hours |
-| 10–24 | Grow to 40–80 runs, fill `source_ref` and confidence for every row |
-| 24–36 | Data checks: duplicates, impossible values, missing sources. Support C and E on questions |
-| 36+ | Final data freeze, credits list for the README |
+| 0–1 | Open every PSI file with F. Fill the field inventory. Tell A at once if the schema must change |
+| 1–6 | First 15–20 real runs across at least 6 investigations. Push a batch every 2 hours |
+| 6–13 | Grow to 30–40 runs, with `source_ref` and confidence on every row |
+| 13–15 | Data checks: duplicates, impossible values, missing sources. **Data freeze at hour 15** |
+| 15–21 | Credits and dataset list for the submission. Help C and E with questions |
 
 ## Hand-offs
 
 | You give | To | When |
 |---|---|---|
-| Field inventory | A, C, E | Hour 2 |
-| First CSV batch | A | Hour 6 |
-| Weekly data batches | A | Every 2 hours |
-| Credits list | F | Hour 36 |
+| Field inventory | A, C, E | Hour 1 |
+| First CSV batch | A | Hour 3 |
+| Further CSV batches | A | Every 2 hours |
+| Credits and dataset list | F | Hour 15 |
 
 ## Rules for you
 

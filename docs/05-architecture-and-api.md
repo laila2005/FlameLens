@@ -1,6 +1,6 @@
 # Architecture and API
 
-## Stack (simplified for 48 hours)
+## Stack (simplified for a 24-hour event)
 
 | Layer | Choice | Why |
 |---|---|---|
@@ -79,7 +79,7 @@ Rules:
 
 `/case`, `/next` and `/alternatives` are tolerance matching and distance sorting over the run table. The dashboard mockup script is the reference for the logic (see [links](links.md)).
 
-Starting tolerances (tune on real data in hours 10–14; these are guesses, not validated science):
+Starting tolerances (tune on real data in hours 6–10; these are guesses, not validated science):
 
 | Condition | Matches when |
 |---|---|

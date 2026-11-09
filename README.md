@@ -1,6 +1,6 @@
 # FlameLens
 
-**Space-fire data, made clear.** Team AstroSpark, NASA Space Apps Challenge 2026 (13–14 Nov).
+**Space-fire data, made clear.** Team AstroSpark, NASA Space Apps Challenge 2026, Cairo. **24 hours: Fri 13 Nov 1:00 PM to Sat 14 Nov 1:00 PM (Cairo time).**
 
 FlameLens helps spacecraft and habitat engineers use NASA's Physical Sciences Informatics (PSI) fire-safety experiments. An engineer enters a habitat design (oxygen, pressure, airflow, fuel, gravity) and gets a decision they can defend, not just a list of search results:
 
@@ -25,12 +25,13 @@ A deterministic ranker scores the experiments. AI only explains, and a citation 
 | [01 Project brief](docs/01-project-brief.md) | Problem, solution, what makes us different, scope |
 | [02 Team roles](docs/02-team-roles.md) | Who owns what, who pairs with whom |
 | [03 Prep schedule](docs/03-prep-schedule.md) | Day-by-day plan from 9 Nov to kickoff |
-| [04 Hackathon timeline](docs/04-hackathon-timeline.md) | Hour-by-hour plan for the 48 hours |
+| [04 Hackathon timeline](docs/04-hackathon-timeline.md) | Hour-by-hour plan for the 24-hour event |
 | [05 Architecture and API](docs/05-architecture-and-api.md) | Stack, API contract, ranker, decision routes |
 | [06 Data guide](docs/06-data-guide.md) | Row format, extraction rules, placeholder rules |
 | [07 AI guide](docs/07-ai-guide.md) | Model choice, guardrails, verifier, bake-off |
 | [08 Working agreements](docs/08-working-agreements.md) | Git flow, reviews, communication, rule check |
 | [09 Pitch and submission](docs/09-pitch-and-submission.md) | Demo script, QA checklist, submission checklist |
+| [11 Event facts](docs/11-event-facts.md) | Official dates, rules, submission format and judging criteria from the organizers' guides |
 | [10 Idea brainstorm](docs/10-idea-brainstorm.md) | How we make the dashboard smarter than other teams, ranked by impact and effort |
 | [Choose your role / اختر دورك](docs/roles/00-choose-your-role.md) | Experience needed for each role, so you can pick the one that fits you (English and Arabic) |
 | [Role task files](docs/roles) · [بالعربية](docs/roles/ar) | Each member's tasks before and during the hackathon, in English and Arabic |
@@ -54,7 +55,7 @@ scripts/         Small helper scripts (environment check)
 - No scientific number or claim goes in the UI without a source. See [data guide](docs/06-data-guide.md).
 - Placeholder data is always labelled "sample data" in the UI.
 - Work in small branches, merge through pull requests. See [working agreements](docs/08-working-agreements.md).
-- Do not commit product code before kickoff until the organizers confirm it is allowed.
+- **No product code before the hackathon starts (Fri 13 Nov, 1:00 PM Cairo).** The official guide forbids presenting ready or half-finished projects. Docs and plans are fine.
 
 ## License
 

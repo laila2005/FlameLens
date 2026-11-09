@@ -27,32 +27,26 @@ The ideas that make the dashboard smarter (evidence strength meter, test campaig
 
 Habitat and life-support engineers, fire-safety reviewers, students and educators. Tone: serious and clear, with an "Earth spin-off" note per investigation.
 
-## Scope in three tiers
+## Scope in three tiers (24-hour event)
 
 **Must ship**
-- Habitat selector: ISS, Lunar rover, Lunar base, Mars habitat, plus custom values
-- Ranker with score breakdown and adjustable weights
-- Investigation cards with pillar, hardware, key runs, source link
+- Habitat picker with ISS, Lunar rover, Lunar base, Mars habitat presets plus custom values
+- Ranker with score breakdown bars
 - Evidence case, Run this next, Safer options
 - Evidence strength meter (0–100 per condition, with its four parts shown)
-- Coverage gap map
-- Evidence trail: click any claim to see run, source, page, confidence
-- Lens 1 airflow, Lens 2 smoke vs dust, Lens 3 cool flames
-- Cited AI explanation with verifier badge
-- Diff view for two investigations
+- Coverage gap map and evidence trail (click any claim to see run, source, confidence)
+- Lens 1 (airflow) and Lens 2 (smoke vs dust)
+- "Sample data" banner while placeholder rows exist
 
 **Should ship**
-- Confidence badge on every number
-- Test campaign planner ("these 3 experiments cover the most designs")
-- Atmosphere journey (evidence for each stage of a mission)
-- Plain-language habitat entry, reverse search
-- Habitat safety brief (one-click report)
-- Compare two atmospheres
-- "Explain simply" toggle, Artemis-style presets
-- Earth spin-off text, CSV export, offline demo mode with cached AI answers
+- Cited AI explanation with verifier badge
+- Lens 3 (cool flames), diff view, CSV export
+- One idea from [10 Idea brainstorm](10-idea-brainstorm.md) (default: campaign planner)
 
-**Stretch (only if ahead at hour 24)**
-- BOM cabin auditor, Lens 4 exploratory, free-text question box, shareable link
+**Cut** (not in 24 hours)
+- BOM auditor, Lens 4, free-text chat, shareable link, safety brief, atmosphere journey, plain-language entry, reverse search unless Gate 1 says there is room
+
+If the real data is thin at hour 6, drop Lens 2 and Lens 3 and keep the decision panels.
 
 ## Non-goals
 
@@ -67,8 +61,8 @@ Habitat and life-support engineers, fire-safety reviewers, students and educator
 | Dataset arrives at kickoff and is messier than expected | Two data extractors, placeholder data, 2 hours at kickoff to confirm the schema |
 | Not enough usable runs for a lens | Cut that lens or show a cited summary. Two strong lenses beat three weak ones |
 | AI invents a number | Verifier rejects it. App works with AI off |
-| Scope creep | Gates at hours 10 and 24, feature freeze at hour 40 |
-| Code written before kickoff breaks rules | Ask organizers. Until answered, no product code in this repo |
+| Scope creep | Gates at hours 6 and 13, feature freeze at hour 17 (24-hour event) |
+| Code written before kickoff breaks the rules | **Confirmed forbidden** by the official guide. No product code before Fri 1:00 PM. Docs and plans only |
 
 ## Open decisions (owner: tech lead unless stated)
 
@@ -76,4 +70,5 @@ Habitat and life-support engineers, fire-safety reviewers, students and educator
 - [ ] Hosting: Render or Fly (A, by 11 Nov)
 - [ ] LLM provider: local Ollama or hosted open model (E, by 11 Nov, see [AI guide](07-ai-guide.md))
 - [ ] Repo license (whole team, before going public)
-- [ ] Whether pre-event code is allowed (F, ask by 10 Nov)
+- [x] Pre-event code: not allowed (see [11 Event facts](11-event-facts.md))
+- [ ] Team leader who submits, and which 5 are onsite (team, by 12 Nov)

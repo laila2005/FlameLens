@@ -62,7 +62,7 @@ Plot-read numbers are allowed but show a lower-confidence badge in the UI. This 
 2. Compare with this schema and change it in the first 2 hours if needed. Tell A immediately.
 3. Split by pillar: D takes Prevention (BASS, BASS-II, Saffire, SPICE, BRE). F takes Detection and Suppression (SAME, SAME-R, DAFT, DAFT-2, FLEX, FLEX-2, CFI, ACME E-FIELD).
 4. Enter runs into one shared CSV per pillar. Push a batch every 2 hours so A can load it.
-5. First target: 20 runs across at least 8 investigations by hour 10, then 40–80 by hour 24.
+5. First target: 15–20 runs across at least 6 investigations by hour 6, then 30–40 by hour 13. Data freeze at hour 15.
 
 ## Minimum data per feature
 
@@ -74,7 +74,7 @@ Plot-read numbers are allowed but show a lower-confidence badge in the UI. This 
 | Lens 3 Cool flames | Droplet runs with regime label vs O₂ and diluent (FLEX, FLEX-2, CFI) |
 | Diff | Any two investigations with hardware, constants and outcomes filled in |
 
-If a lens has no usable data by hour 14, cut it or show its published trend as a cited summary.
+If a lens has no usable data by hour 6, cut it or show its published trend as a cited summary.
 
 ## Terminology
 

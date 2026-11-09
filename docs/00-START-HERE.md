@@ -22,7 +22,15 @@ See the picture: the [dashboard mockup](links.md) shows all of this.
 
 ## The constraint that shapes everything
 
-**The dataset is not available until 13 Nov.** So before the hackathon we prepare: plan, designs, documents, accounts, research notes, placeholder data, and a way of working. We build the product in the 48 hours.
+**The dataset is not available until 13 Nov.** So before the hackathon we prepare: plan, designs, documents, accounts, research notes, placeholder data, and a way of working. We build the product during the 24-hour hackathon.
+
+## Facts from the organizers (read these)
+
+- **It is a 24-hour event:** Fri 13 Nov 1:00 PM to Sat 14 Nov 1:00 PM, Cairo time. Our plan is built for 24 hours.
+- **No product code before Friday 1:00 PM.** Planning, task split and designs are allowed.
+- **We submit a 7-slide deck or a 30-second video**, plus links, a summary and a resources list. No live pitch.
+- **Only 5 of 6 may be onsite.** The sixth joins on Discord.
+- Full list: [11 Event facts](11-event-facts.md).
 
 ## What you do now
 

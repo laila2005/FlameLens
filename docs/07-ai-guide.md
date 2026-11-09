@@ -81,7 +81,7 @@ Add the pass count at the bottom. Choose by pass count, then speed.
 
 ## Fallback ladder
 
-1. Cached answers for the demo cases (always prepared by hour 30)
+1. Cached answers for the demo cases (always prepared by hour 15)
 2. Local small model
 3. Hosted open model
 4. Hosted proprietary model

@@ -4,7 +4,7 @@ Tick a box by changing `[ ]` to `[x]`. Details for each task are in your role fi
 
 علّم المهمة بتغيير `[ ]` إلى `[x]`. تفاصيل كل مهمة في ملف دورك. إن لم تعرف دورك فاقرأ [اختر دورك](docs/roles/00-choose-your-role.md).
 
-Dates are for 2026. Kickoff is **Fri 13 Nov** / الانطلاق **الجمعة 13 نوفمبر**.
+Dates are for 2026. The hackathon is **24 hours: Fri 13 Nov 1:00 PM to Sat 14 Nov 1:00 PM, Cairo time** / الهاكاثون **24 ساعة: من الجمعة 13 نوفمبر 1:00 ظهرًا إلى السبت 14 نوفمبر 1:00 ظهرًا بتوقيت القاهرة**. **No product code before Friday 1:00 PM** / **ممنوع كتابة كود المنتج قبل الجمعة 1:00 ظهرًا**. Official facts: [11 Event facts](docs/11-event-facts.md).
 
 ## Everyone / الجميع
 
@@ -15,9 +15,10 @@ Dates are for 2026. Kickoff is **Fri 13 Nov** / الانطلاق **الجمعة 
 | [ ] | Mon 9 | Accept repo invite, clone, run `python scripts/check_env.py` | اقبل دعوة المستودع، انسخه، وشغّل `python scripts/check_env.py` |
 | [ ] | Tue 10 | Try the [dashboard mockup](docs/links.md) | جرّب [النموذج التجريبي للوحة](docs/links.md) |
 | [ ] | Tue 10 | Post your availability for 13–14 Nov | انشر أوقات توفرك يومي 13 و14 نوفمبر |
-| [ ] | Thu 12 | Rest, charge laptop, pack food | ارتح، اشحن جهازك، جهّز الطعام |
+| [ ] | Thu 12 | Join Discord when access arrives (sent by Thu 12) | انضم إلى Discord عند وصول الدعوة (تُرسل بحلول الخميس 12) |
+| [ ] | Thu 12 | Rest, charge laptop, pack ID, food, backup internet, sleeping bag | ارتح، اشحن جهازك، جهّز الهوية والطعام وإنترنت احتياطي وكيس نوم |
 
-## A. Tech lead and backend / القائد التقني
+## A. Tech lead and backend / القائد التقني: Laila
 
 | Done | Due | ID | Task | المهمة |
 |---|---|---|---|---|
@@ -33,7 +34,7 @@ Dates are for 2026. Kickoff is **Fri 13 Nov** / الانطلاق **الجمعة 
 
 Files: [English](docs/roles/A-tech-lead-backend.md) · [العربية](docs/roles/ar/A-tech-lead-backend.md)
 
-## B. Frontend lead / قائد الواجهة
+## B. Frontend lead / قائد الواجهة: Yousseif
 
 | Done | Due | ID | Task | المهمة |
 |---|---|---|---|---|
@@ -48,7 +49,7 @@ Files: [English](docs/roles/A-tech-lead-backend.md) · [العربية](docs/rol
 
 Files: [English](docs/roles/B-frontend.md) · [العربية](docs/roles/ar/B-frontend.md)
 
-## C. Charts and lenses / الرسوم والعدسات
+## C. Charts and lenses / الرسوم والعدسات: Yasmine
 
 | Done | Due | ID | Task | المهمة |
 |---|---|---|---|---|
@@ -61,7 +62,7 @@ Files: [English](docs/roles/B-frontend.md) · [العربية](docs/roles/ar/B-f
 
 Files: [English](docs/roles/C-charts-lenses.md) · [العربية](docs/roles/ar/C-charts-lenses.md)
 
-## D. Data extractor / استخراج البيانات
+## D. Data extractor / استخراج البيانات: Judy
 
 | Done | Due | ID | Task | المهمة |
 |---|---|---|---|---|
@@ -75,7 +76,7 @@ Files: [English](docs/roles/C-charts-lenses.md) · [العربية](docs/roles/a
 
 Files: [English](docs/roles/D-data.md) · [العربية](docs/roles/ar/D-data.md)
 
-## E. AI and retrieval / الذكاء الاصطناعي والاسترجاع
+## E. AI and retrieval / الذكاء الاصطناعي والاسترجاع: Dai (tentative / مبدئيًا)
 
 | Done | Due | ID | Task | المهمة |
 |---|---|---|---|---|
@@ -90,16 +91,16 @@ Files: [English](docs/roles/D-data.md) · [العربية](docs/roles/ar/D-data.
 
 Files: [English](docs/roles/E-ai-retrieval.md) · [العربية](docs/roles/ar/E-ai-retrieval.md)
 
-## F. Research, docs, pitch and QA / البحث والتوثيق والعرض والاختبار
+## F. Research, docs, pitch and QA / البحث والتوثيق والعرض والاختبار: Mostafa? (choosing / يختار)
 
 | Done | Due | ID | Task | المهمة |
 |---|---|---|---|---|
 | [ ] | Mon 9 | F1 | Confirm rules, deadline, formats | تأكيد القواعد والموعد والصيغ |
 | [ ] | Tue 10 | F2 | Research notes: SAME, DAFT, FLEX, CFI and others | ملاحظات البحث للكشف والإخماد |
-| [ ] | Tue 10 | F3 | Ask organizers about pre-event code | سؤال المنظمين عن الكود قبل الحدث |
+| [ ] | Tue 10 | F3 | Settle open questions: team leader, 5 onsite, ages | حسم الأسئلة المفتوحة: قائد الفريق والحضور والأعمار |
 | [ ] | Tue 10 | F4 | 20 bake-off questions (with E) | 20 سؤال مقارنة (مع E) |
 | [ ] | Wed 11 | F5 | Claims table with sources | جدول الادعاءات مع المصادر |
-| [ ] | Wed 11 | F6 | Pitch and demo script | العرض وسيناريو الديمو |
+| [ ] | Wed 11 | F6 | 30-second video script and 7-slide outline | نص فيديو الـ 30 ثانية ومخطط الشرائح السبع |
 | [ ] | Wed 11 | F7 | QA plan with 20+ test cases | خطة اختبار بـ 20 حالة أو أكثر |
 | [ ] | Wed 11 | F8 | README and submission skeleton | هيكل README والتسليم |
 | [ ] | Thu 12 | F9 | Logistics and kickoff agenda | اللوجستيات وجدول الانطلاق |
@@ -113,6 +114,9 @@ Files: [English](docs/roles/F-research-pitch-qa.md) · [العربية](docs/rol
 | [ ] | Roles and backups | الأدوار والبدلاء | Team |
 | [ ] | Hosting | الاستضافة | A |
 | [ ] | LLM model | نموذج الذكاء الاصطناعي | E |
-| [ ] | Pre-event code allowed? | هل الكود قبل الحدث مسموح؟ | F |
+| [x] | Pre-event code allowed? **No.** (official guide) | هل الكود قبل الحدث مسموح؟ **لا** (الدليل الرسمي) | done |
+| [ ] | Team leader who submits | قائد الفريق الذي يسلّم | Team |
+| [ ] | Which 5 are onsite, who is the virtual sixth | من الخمسة الحاضرون ومن السادس الافتراضي | Team |
+| [ ] | All members 18+ for the demo? | هل الجميع 18+ لأجل العرض؟ | F |
 | [ ] | Repo license | رخصة المستودع | Team |
-| [ ] | Which brainstorm ideas to build ([10](docs/10-idea-brainstorm.md)) | أي أفكار العصف الذهني نبني | A at Gate 1 |
+| [ ] | Which ONE brainstorm idea to build ([10](docs/10-idea-brainstorm.md)) | أي فكرة واحدة من العصف الذهني نبني | A at Gate 1 (hour 6) |

@@ -4,12 +4,14 @@ Six people, six roles. Write your name in the table, then name a backup for ever
 
 | Role | Name | Backup | Best fit | Owns | Pairs with | Task file |
 |---|---|---|---|---|---|---|
-| **A. Tech lead and backend** | ______ | ______ | Strongest programmer | Repo, FastAPI, ranker, `/case` `/next` `/alternatives` logic, loader, deploy, merges | E | [A](roles/A-tech-lead-backend.md) |
-| **B. Frontend lead** | ______ | ______ | Programmer with UI taste | App shell, habitat picker, ranked cards, diff view, theme | C | [B](roles/B-frontend.md) |
-| **C. Charts and lenses** | ______ | ______ | Programmer comfortable with data | Plotly lenses 1–3, coverage map, Evidence case and Run-this-next panels | B, D | [C](roles/C-charts-lenses.md) |
-| **D. Data extractor (lead)** | ______ | ______ | Detail-oriented, reads PDFs well | PSI download, CSV, schema, sources, data checks. Takes the Prevention pillar | E | [D](roles/D-data.md) |
-| **E. AI and retrieval** | ______ | ______ | Programmer who knows LLMs | Chunking, retriever, pillar prompts, verifier, answer cache, brief text | A, D | [E](roles/E-ai-retrieval.md) |
-| **F. Research, docs, pitch, QA** | ______ | ______ | Writer and presenter | Rules and deadlines, fact-check, README, slides, video, demo, testing. Second extractor for Detection and Suppression in hours 0–14 | All | [F](roles/F-research-pitch-qa.md) |
+| **A. Tech lead and backend** | Laila | ______ | Strongest programmer | Repo, FastAPI, ranker, `/case` `/next` `/alternatives` logic, loader, deploy, merges | E | [A](roles/A-tech-lead-backend.md) |
+| **B. Frontend lead** | Yousseif | ______ | Programmer with UI taste | App shell, habitat picker, ranked cards, diff view, theme | C | [B](roles/B-frontend.md) |
+| **C. Charts and lenses** | Yasmine | ______ | Programmer comfortable with data | Plotly lenses 1–2 (3 if time), coverage map, Evidence case and Run-this-next panels | B, D | [C](roles/C-charts-lenses.md) |
+| **D. Data extractor (lead)** | Judy | F | Detail-oriented, reads PDFs well | PSI download, CSV, schema, sources, data checks. Takes the Prevention pillar | E | [D](roles/D-data.md) |
+| **E. AI and retrieval** | Dai (tentative, confirming) | ______ | Programmer who knows LLMs | Chunking, retriever, pillar prompts, verifier, answer cache, brief text | A, D | [E](roles/E-ai-retrieval.md) |
+| **F. Research, docs, pitch, QA** | Mostafa? (choosing) | ______ | Writer and presenter | Rules and deadlines, fact-check, README, slides, video, demo, testing. Second extractor for Detection and Suppression in hours 1–8 | All | [F](roles/F-research-pitch-qa.md) |
+
+Mostafa and Dai are choosing. Dai is expected to take E (AI). Mostafa has not chosen yet and F is the open role that fits, but this is not confirmed. Update this table when they decide.
 
 ## How to choose roles
 

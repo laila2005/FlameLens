@@ -4,16 +4,14 @@ How we work together so six people do not trip over each other.
 
 ## Rule check before writing code
 
-Many hackathons require the project to be built during the event. Until the organizers confirm otherwise:
+**Answered by the official guide (see [11 Event facts](11-event-facts.md)):** preparing the general plan and splitting tasks before the hackathon is allowed, but **presenting ready or half-finished projects is completely prohibited, and actual work starts at the hackathon start (Fri 13 Nov, 1:00 PM Cairo).**
 
-- **Allowed now:** research, notes, designs, documents, accounts, tool installs, local model tests, placeholder data, rehearsal, a throwaway hello-world deploy in a *separate* private repo.
-- **Not allowed until confirmed:** product code in this repo (loader, ranker, API, UI, charts).
+- **Allowed now:** reading, research notes, plans, task lists, designs on paper, accounts, tool installs, rehearsal, and placeholder data for layout.
+- **Not allowed until Fri 1:00 PM:** product code in this repo (loader, ranker, API, UI, charts) or anything that looks like a built project.
+- **Practice code** (a Plotly test, a hello-world deploy, an Ollama test) is learning, not the project. Keep it **outside this repo**, delete it afterwards, and never reuse it in the hackathon.
+- **The interactive dashboard mockup** made during planning is a design sketch. Do not reuse its code, do not present it as a built product, and rebuild everything from scratch after 1:00 PM. If unsure, ask a mentor on Friday.
 
-Owner: F. Send this to the organizers by Tue 10 Nov and record the answer here:
-
-> Hello, we are Team AstroSpark taking part in the NASA Space Apps Challenge on 13–14 November. Before the event we are preparing documentation, designs and a plan. May we also write code before the event starts, or must all code be written during the hackathon? Thank you.
-
-Answer received: ______________________  Date: ________
+If the organizers announce something different on Discord, follow the announcement and update this page.
 
 ## Branches and pull requests (once coding is allowed)
 
@@ -45,7 +43,7 @@ Answer received: ______________________  Date: ________
 - One team chat for everything. Use threads.
 - Post blockers immediately. "Blocked on X" is useful. Silence is not.
 - Pairs sync at least every 2 hours during the event.
-- Stand-ups at hours 0, 10, 24, 36 (15 minutes): done, doing, blocked.
+- Stand-ups at hours 0, 6, 13, 17 (10 minutes): done, doing, blocked.
 - Decisions go in the chat and, if lasting, in these docs.
 
 ## Health and sleep
@@ -56,9 +54,9 @@ Answer received: ______________________  Date: ________
 
 ## Scope control
 
-- Gate 1 (hour 10): vertical slice runs. Gate 2 (hour 24): all "Must ship" works.
+- Gate 1 (hour 6): vertical slice runs. Gate 2 (hour 13): all "Must ship" works.
 - New ideas go in the chat as `idea:` and are only considered at a gate.
-- **Feature freeze at hour 40.** After that, bug fixes only.
+- **Feature freeze at hour 17 (6:00 AM Saturday).** After that, bug fixes only. Submit at hour 21 (10:00 AM).
 
 ## Secrets
 

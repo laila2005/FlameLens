@@ -10,14 +10,14 @@ Four days. Every task has an owner, a due day and a "done when". The full lists 
 | All | Accept repo invite, clone, run `python scripts/check_env.py` | No MISSING for your role |
 | All | Pick a role and backup in [02](02-team-roles.md), post availability for 13–14 Nov | Table filled in |
 | A | Give all 6 members write access, enable Issues, create labels, turn on branch protection for `main` | Everyone can open a pull request |
-| F | Find the official challenge page. Write down deadline, video length, required fields, team size rule, rules on pre-event code | [Rule notes](09-pitch-and-submission.md#facts-to-confirm-f-fills-these-in) filled in |
+| F | Find the official challenge page. Check the facts in [11 Event facts](11-event-facts.md) against the official site, fill gaps (final deadline, NASA submission steps, licence) | [Facts table](09-pitch-and-submission.md#facts-filled-in-from-the-official-pdfs-9-nov) matches the official site |
 | D, F | Start reading investigations: D takes BASS, BASS-II, Saffire, SPICE, BRE. F takes SAME, SAME-R, DAFT, DAFT-2, FLEX, CFI | One research note started each |
 
 ## Tuesday 10 Nov: design and research
 
 | Who | Task | Done when |
 |---|---|---|
-| F | Ask organizers if pre-event code is allowed (use the message in [working agreements](08-working-agreements.md#rule-check-before-writing-code)) | Message sent, answer recorded |
+| F | Settle the open questions in [11 Event facts](11-event-facts.md#open-questions-to-settle): who is the team leader who submits, which 5 are onsite, are all members 18 or over for the demo. (The code question is already answered: no code before the hackathon.) | Answers in the chat |
 | B, C | Design screens on paper or Figma from the [mockup](links.md): picker, ranked list, evidence case, lens page, diff | Sketches in `docs/design/` |
 | D | Finish research notes for Prevention investigations, test the extraction template on one paper | 5 notes in `docs/research/` |
 | F | Finish research notes for Detection and Suppression | 6 notes in `docs/research/` |
@@ -45,18 +45,24 @@ Four days. Every task has an owner, a due day and a "done when". The full lists 
 | All | Sleep, charge laptops, pack food and chargers. Do not work late | Rested |
 | F | Confirm event logistics: venue or online link, time zone, check-in | Written in chat |
 
-## Friday 13 Nov: kickoff (hour 0)
+## Friday 13 Nov: kickoff (hour 0 is 1:00 PM Cairo time)
 
-Follow the hour 0–2 plan in [04 Hackathon timeline](04-hackathon-timeline.md). Summary:
+| Clock | What happens |
+|---|---|
+| By 8:00 AM (onsite) | Arrive at SUT with national ID, laptop, charger, backup internet, sleeping bag. Registration from 9:00 AM (the guides differ, so arrive by 8:00 AM) |
+| 10:00 AM | Virtual members join |
+| 1:00 PM | **Hackathon begins.** Follow the hour 0–1 plan in [04 Hackathon timeline](04-hackathon-timeline.md) |
+| 2:00 PM | Mentorship begins on Discord |
 
-- [ ] A creates the working branch structure, confirms the API contract
+- [ ] A agrees the API contract and mock JSON
 - [ ] D and F open every PSI file and report which fields really exist
-- [ ] A and D compare the real fields with the [schema](06-data-guide.md), change the schema now if needed
+- [ ] A and D compare the real fields with the [schema](06-data-guide.md), change it now if needed
 - [ ] Everyone else starts on the placeholder data in `data/mock/`
-- [ ] F writes the real deadline and submission time at the top of the chat
+- [ ] F writes the real deadline and the "submit by 10:00 AM" time at the top of the chat
 
 ## Prep that is allowed before kickoff
 
-Research, notes, designs, documents, accounts, tool installs, local model tests, placeholder data and rehearsal are safe. Writing product code is not safe until the organizers confirm. See [working agreements](08-working-agreements.md#rule-check-before-writing-code).
+Allowed: reading, research notes, plans, task splits, designs on paper, accounts, tool installs, rehearsal, placeholder data for layout.
+**Not allowed:** product code, or a "ready or half-finished project". The official guide says actual work starts at the hackathon start. Throwaway practice (Plotly, deploy test, Ollama) stays outside this repo and is never reused. See [08](08-working-agreements.md#rule-check-before-writing-code).
 
-Note: the weekday labels above are calculated for 2026 (13 Nov is a Friday). If the official schedule says otherwise, trust the official one and update this page.
+Weekday labels are checked: 13 Nov 2026 is a Friday.
