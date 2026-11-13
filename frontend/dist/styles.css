@@ -45,6 +45,7 @@
 
 /* ------------------------------------------------------------------ base */
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html, body { margin: 0; }
 body {
   background:
@@ -468,3 +469,15 @@ body.brief-open { overflow: hidden; }
 .cmpline { color: var(--fg); }
 .cmpnote { font-size: 12.5px; color: var(--muted); }
 .cmpnote.warn { color: var(--amber); }
+
+/* ------------------------------------------------------------------ closest NASA evidence (shown when nothing matches) */
+.closest { border-top: 4px solid var(--cool); }
+.clgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+.clcard { background: var(--panel2); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 12px; display: flex; flex-direction: column; gap: 6px; font-size: 13.5px; }
+.clhead { display: flex; flex-direction: column; gap: 1px; }
+.clhead b { font: 700 18px var(--head); }
+.clsame { color: var(--ok); font-weight: 600; }
+.clpp .clsame { color: var(--amber); }
+.cldiff { margin: 0; padding: 0; list-style: none; color: var(--bad); display: grid; gap: 2px; }
+.clgrav { color: var(--amber); }
+.clcta { align-self: flex-start; }

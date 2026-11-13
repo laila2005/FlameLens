@@ -437,6 +437,93 @@ def coverage(o2_pct: float, pressure_psi: float, rows=None) -> dict:
                          "pressure_psi": r["pressure_psi"], "distance": round(d2(r), 3)} for r in ranked]}
 
 
+# ---------------------------------------------------------------- closest evidence (when nothing matches)
+
+WORD = {"o2": "oxygen", "psi": "pressure", "flow": "airflow", "fuel": "material"}
+
+
+def _span(vals, unit):
+    vals = sorted(v for v in vals if v is not None)
+    if not vals:
+        return None
+    lo, hi = vals[0], vals[-1]
+    f = lambda v: f"{v:g}"
+    return f"{f(lo)} {unit}" if abs(hi - lo) < 1e-9 else f"{f(lo)}–{f(hi)} {unit}"
+
+
+def closest_evidence(target: Target, rows=None, k: int = 3) -> dict:
+    """When no run matches the whole design, show what NASA did test closest and exactly what differs.
+
+    Relax the fewest conditions possible (1 or 2 of oxygen, pressure, airflow, material; gravity is compared
+    in microgravity because PSI holds no other gravity level) and report the runs that match everything else.
+    Only real runs and their recorded values are shown; nothing is interpolated or predicted.
+    """
+    rows = _rows(rows)
+    rng = data.ranges(rows)
+    ms = [(r, _match(r, target)) for r in rows]
+    whole_n = sum(all(m.values()) for _, m in ms)
+    g0 = target.gravity_g
+    in_0g = lambda r: r["gravity_g"] is not None and abs(r["gravity_g"]) <= EPS
+    gravity_relaxed = g0 > EPS
+    keys = [x for x in ("o2", "psi", "flow", "fuel") if not (x == "flow" and target.airflow_cm_s is None)
+            and not (x == "fuel" and target.fuel_state == "any")]
+    from itertools import combinations
+    found = []
+    for size in (1, 2):
+        for relax in combinations(keys, size):
+            if any(set(prev["relaxed"]) <= set(relax) for prev in found):
+                continue  # a smaller relaxation already finds runs
+            keep = [x for x in keys if x not in relax]
+            hits = [r for r, m in ms if all(m[x] for x in keep) and (in_0g(r) if gravity_relaxed else m["grav"])]
+            if not hits:
+                continue
+            hits.sort(key=lambda r: _dist(r, target, rng))
+            differs = []
+            for x in relax:
+                if x == "o2":
+                    differs.append(f"oxygen {_span([r['o2_pct'] for r in hits], '%')} (yours {target.o2_pct:g} %)")
+                elif x == "psi":
+                    s = _span([r["pressure_psi"] for r in hits], "psi")
+                    assumed = sum(r.get("pressure_basis") == "assumed" for r in hits)
+                    differs.append(f"pressure {s}" + (" (mostly assumed cabin air)" if assumed > len(hits) / 2 else "")
+                                   + f" (yours {target.pressure_psi:g} psi)")
+                elif x == "flow":
+                    s = _span([r["airflow_cm_s"] for r in hits], "cm/s")
+                    differs.append(f"airflow {s or 'not recorded'} (yours {target.airflow_cm_s:g} cm/s)")
+                elif x == "fuel":
+                    fuels = sorted({r.get("fuel_state") or "unknown" for r in hits})
+                    differs.append(f"{' and '.join(fuels)} fuel, not {target.fuel_state}")
+            invs = {}
+            for r in hits:
+                invs[_inv(r)] = invs.get(_inv(r), 0) + 1
+            found.append({"relaxed": list(relax), "kept": keep + (["grav"] if not gravity_relaxed else []),
+                          "n": len(hits), "investigations": [{"name": a, "runs": b} for a, b in sorted(invs.items(), key=lambda kv: -kv[1])],
+                          "run_ids": [r["run_id"] for r in hits[:5]], "differs": differs,
+                          "same": [WORD[x] for x in keep]})
+    found.sort(key=lambda g: (len(g["relaxed"]), -g["n"]))
+    groups = found[:k]
+
+    # Same oxygen partial pressure (O2 % x psi) with your material, as related, not equivalent, evidence.
+    pp = _pp(target.o2_pct, target.pressure_psi)
+    same_pp = [r for r in rows if r["o2_pct"] is not None and r["pressure_psi"] is not None
+               and abs(_pp(r["o2_pct"], r["pressure_psi"]) - pp) <= 0.05 * pp
+               and (target.fuel_state == "any" or r.get("fuel_state") == target.fuel_state)
+               and (in_0g(r) if gravity_relaxed else abs(r["gravity_g"] - g0) <= EPS)
+               and not (abs(r["o2_pct"] - target.o2_pct) <= TOLERANCE["o2"] + EPS
+                        and abs(r["pressure_psi"] - target.pressure_psi) <= TOLERANCE["psi"] + EPS)]
+    same_pp.sort(key=lambda r: _dist(r, target, rng))
+    pp_info = None
+    if same_pp:
+        pp_info = {"n": len(same_pp), "o2_partial_pressure": _r(pp, 2), "run_ids": [r["run_id"] for r in same_pp[:5]],
+                   "o2": _span([r["o2_pct"] for r in same_pp], "%"), "psi": _span([r["pressure_psi"] for r in same_pp], "psi"),
+                   "note": "Same oxygen partial pressure (within 5 %) but a different oxygen concentration and total pressure. "
+                           "Related, not equivalent: flammability is highly dependent on oxygen concentration (challenge text)."}
+    return {"needed": whole_n == 0, "whole_n": whole_n, "gravity_note": (
+                "PSI has no partial-gravity combustion data (LUCI and FM2 are planned); these runs are microgravity, one bound."
+                if gravity_relaxed and 0 < g0 < 1 else "PSI holds microgravity runs only; these are from 0 g." if gravity_relaxed else ""),
+            "groups": groups, "same_partial_pressure": pp_info}
+
+
 # ---------------------------------------------------------------- campaign planner
 
 def _would_match(exp: dict, hab: Target) -> bool:

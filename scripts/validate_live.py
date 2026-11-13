@@ -210,6 +210,25 @@ check("Campaign planner", "partial-gravity tests are flagged as needing a LUCI/F
       all(("LUCI" in e["platform_note"]) == (0 < e["conditions"]["gravity_g"] < 1) for e in camp["experiments"]))
 check("Campaign planner", "n=1 returns one experiment", len(jget("/api/campaign", {"n": 1})["experiments"]) == 1)
 
+# ------------------------------------------------------------------ closest evidence (rover gap)
+cl = jget("/api/closest", {"target": {"o2_pct": 30, "pressure_psi": 10.2, "airflow_cm_s": 8.1, "gravity_g": 0.16, "fuel_state": "solid"}})
+check("Closest evidence", "rover: closest-evidence groups are shown because nothing matches", cl["needed"] and len(cl["groups"]) >= 2)
+ok = True
+for g in cl["groups"]:
+    for rid in g["run_ids"]:
+        row = by_id.get(rid)
+        if not row:
+            ok = False; continue
+        if "oxygen" in g["same"]: ok &= abs(float(row["o2_pct"]) - 30) <= 6 + 1e-9
+        if "pressure" in g["same"]: ok &= abs(float(row["pressure_psi"]) - 10.2) <= 2 + 1e-9
+        if "material" in g["same"]: ok &= row["fuel_state"] == "solid"
+        if "airflow" in g["same"]: ok &= row["airflow_cm_s"] != "" and abs(float(row["airflow_cm_s"]) - 8.1) <= 8 + 1e-9
+check("Closest evidence", "every listed run really has the conditions its card calls 'same'", ok)
+check("Closest evidence", "same-partial-pressure runs are labelled related, not equivalent",
+      cl["same_partial_pressure"] is None or "not equivalent" in cl["same_partial_pressure"]["note"])
+check("Closest evidence", "ISS cabin (already matched) gets no closest-evidence block",
+      jget("/api/closest", {"target": {"o2_pct": 21, "pressure_psi": 14.7, "airflow_cm_s": 12.9, "gravity_g": 0, "fuel_state": "any"}})["needed"] is False)
+
 html = http("/")[2].decode("utf-8")
 check("Requirements", "Back on Earth panel cites NASA Spinoff pages", html.count("spinoff.nasa.gov") >= 3)
 check("Rules", "AI use disclosed on the page", "AI use" in html and "citation verifier" in html)

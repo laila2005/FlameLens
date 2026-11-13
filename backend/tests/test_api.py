@@ -181,3 +181,31 @@ def test_campaign_custom_targets_and_nothing_needed():
     lunar = {"id": "lunar", "name": "Lunar", "target": LUNAR}
     r = client.post("/api/campaign", json={"n": 3, "targets": [iss, lunar]}).json()
     assert [e["covers"] for e in r["experiments"]] == [["lunar"]]
+
+
+# ------------------------------------------------------------ closest evidence
+
+ROVER = {"o2_pct": 30, "pressure_psi": 10.2, "airflow_cm_s": 8.1, "gravity_g": 0.16, "fuel_state": "solid"}
+
+
+def test_closest_explains_the_rover_gap_with_real_runs():
+    from backend.app import data
+    by_id = {row["run_id"]: row for row in data.runs()}
+    r = client.post("/api/closest", json={"target": ROVER}).json()
+    assert r["needed"] is True and r["groups"]
+    flex = [g for g in r["groups"] if set(g["relaxed"]) == {"flow", "fuel"}]
+    assert flex and flex[0]["investigations"][0]["name"] == "FLEX"  # same atmosphere, liquid droplets
+    for g in r["groups"]:
+        for rid in g["run_ids"]:
+            row = by_id[rid]
+            assert row["gravity_g"] == 0  # PSI is microgravity only
+            if "o2" in g["kept"] or "oxygen" in g["same"]:
+                assert abs(row["o2_pct"] - 30) <= 6
+            if "pressure" in g["same"]:
+                assert abs(row["pressure_psi"] - 10.2) <= 2
+    assert "LUCI" in r["gravity_note"]
+
+
+def test_closest_not_needed_when_design_is_matched():
+    r = client.post("/api/closest", json={"target": ISS}).json()
+    assert r["needed"] is False

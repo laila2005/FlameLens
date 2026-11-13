@@ -86,6 +86,11 @@ def alternatives(req: AlternativesRequest):
     return engine.alternatives(req.target, req.k)
 
 
+@app.post("/api/closest", tags=["engine"], summary="When nothing matches: the closest runs NASA did fly, and exactly what differs")
+def closest(req: TargetRequest):
+    return engine.closest_evidence(req.target)
+
+
 @app.post("/api/campaign", tags=["engine"], summary="Test campaign planner: n experiments giving the most designs a whole-design test")
 def campaign(req: CampaignRequest):
     if req.targets:
