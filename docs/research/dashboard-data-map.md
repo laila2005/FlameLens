@@ -128,3 +128,13 @@ Key numbers (BASS-II, measured in the glovebox before and after each test):
 - **Cool flames:** 56 runs (CFI, ACME CFI-G) with cool flames, which make CO and formaldehyde with little light or heat, so a heat-only or infrared-only detector can miss them.
 
 What this supports: a gas (CO) channel sees most of these fires, and particle size separates smoke from dust. The simulated sensor positions, heat spread and detection times in the tab are illustrative.
+
+## Investigation profiles (13 Nov)
+
+The challenge asks the dashboard to summarize and compare investigations (objectives, fuels, conditions, what varied, measurements). `scripts/build_investigation_profiles.py` builds `data/curated/investigation_profiles.json` (19 profiles, about 117 KB) from the PSI records (objectives, approach, hypothesis, research impacts and Earth benefits, hardware, platform, dates, DOI, license, publication count) plus `runs.csv` (run count, top fuels, condition ranges measured-only and including assumed values, outcome counts, which conditions varied and which stayed constant). Hardware groups follow the challenge text: MSG flow duct (BASS, BASS-II, SPICE, SLICE), CIR / MDCA droplets (FLEX, FLEX-2, CFI), CIR / ACME gas flames (BRE, CFI-G, Flame Design, CLD, E-FIELD, s-Flame), Cygnus spacecraft (Saffire), MSG / SAME hardware (SAME, SAME-R, DAFT).
+
+- `measurements_mentioned` lists only keywords that literally appear in the PSI objective, approach or hypothesis text (BASS, CFI and CFI-G mention none of the listed words, so their list is empty: check the reports for sensors).
+- Six investigations have no rows in `runs.csv` (DAFT, FLEX-2, E-FIELD, CLD, s-Flame, SLICE): their profile has PSI text but `n_runs` 0 and no ranges.
+- Raw PSI records are cached in `data/raw/psi_json/` (git-ignored). The CFI record (about 4 MB) needed several attempts on the venue network.
+
+Routes: `GET /api/investigations`, `GET /api/investigations/{psi_id}`, `GET /api/compare?a=&b=` (same, different, measurements shared or only in one), `GET /api/export/runs.csv` (curated run table for modeling), `GET /api/export/investigations.json`.
