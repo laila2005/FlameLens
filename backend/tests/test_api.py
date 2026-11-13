@@ -21,9 +21,12 @@ def test_habitats():
     r = client.get("/api/habitats")
     assert r.status_code == 200
     items = r.json()
-    assert len(items) == 4
-    assert all(h["sourced"] is False and h["note"] for h in items)
-    assert {h["name"] for h in items} == {"ISS cabin", "Lunar rover", "Lunar base", "Mars habitat"}
+    assert len(items) == 5
+    assert all(h["note"] for h in items)
+    names = {h["name"]: h for h in items}
+    assert set(names) == {"Moon base", "Pressurized rover", "Spacesuit", "ISS cabin", "Mars habitat"}
+    assert names["Moon base"]["sourced"] is True and names["Moon base"]["o2_pct"] == 30 and names["Moon base"]["pressure_psi"] == 10.2
+    assert names["Mars habitat"]["sourced"] is False
 
 
 def test_evidence_found_and_missing():

@@ -96,7 +96,7 @@ def test_case_lunar_rover_has_no_gravity_evidence():
                          "fuel": (13, "Supported"), "grav": (0, "No evidence")}
     assert c["whole"]["n"] == 0 and c["whole"]["status"] == "No evidence"
     assert c["supported_count"] == 4
-    assert c["verdict"] == ("4 of 5 conditions supported, no run matches the whole habitat (no gravity evidence); "
+    assert c["verdict"] == ("4 of 5 conditions supported, no run matches the whole habitat (no partial-gravity data in PSI); "
                             "even ignoring gravity, no run tested this atmosphere")
     # atmosphere = oxygen, pressure, airflow and fuel together, ignoring gravity
     assert c["atmosphere"]["n"] == 0 and c["atmosphere"]["status"] == "No evidence"

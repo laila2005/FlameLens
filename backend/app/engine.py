@@ -278,6 +278,13 @@ def case(target: Target, rows=None) -> dict:
     atmo = sorted((r for r, m in ms if all(m[k] for k in ("o2", "psi", "flow", "fuel"))), key=lambda r: _dist(r, target, rng))
     atmo_info = {"status": _status(len(atmo)), "n": len(atmo), "run_ids": [r["run_id"] for r in atmo[:10]],
                  "note": "runs matching oxygen, pressure, airflow and fuel together, ignoring gravity"}
+    # The challenge text: PSI has no partial-gravity combustion data yet (LUCI and FM2 are planned);
+    # microgravity and normal-gravity results bound intermediate gravity levels.
+    for c in conditions:
+        if c["key"] == "grav" and 0 < target.gravity_g < 1:
+            c["note"] = ("No partial-gravity combustion data exists in PSI yet (LUCI and FM2 are planned). "
+                         "Microgravity runs give one bound and normal-gravity results the other.")
+            c["bounded"] = True
     supported = [c for c in conditions if c["status"] == "Supported"]
     missing = [c for c in conditions if c["status"] != "Supported"]
     verdict = f"{len(supported)} of {len(conditions)} conditions supported"
@@ -286,8 +293,12 @@ def case(target: Target, rows=None) -> dict:
     else:
         verdict += ", no run matches the whole habitat"
         if missing:
-            verdict += " (" + ", ".join(f"no {c['label'].split()[0].lower()} evidence" if c["status"] == "No evidence"
-                                       else f"weak {c['label'].split()[0].lower()} evidence" for c in missing) + ")"
+            def why(c):
+                if c["key"] == "grav" and c["status"] == "No evidence" and 0 < target.gravity_g < 1:
+                    return "no partial-gravity data in PSI"
+                word = c["label"].split()[0].lower()
+                return f"no {word} evidence" if c["status"] == "No evidence" else f"weak {word} evidence"
+            verdict += " (" + ", ".join(why(c) for c in missing) + ")"
     if not whole and atmo:
         verdict += f"; ignoring gravity, {len(atmo)} run{'s' if len(atmo) != 1 else ''} match the atmosphere"
     elif not whole and not atmo:
