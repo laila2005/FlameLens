@@ -212,8 +212,16 @@ def rank(target: Target, weights: Optional[dict] = None, k: int = 10, rows=None)
 
 # ---------------------------------------------------------------- strength
 
+NOT_SPECIFIED = "Not specified"
+
+
 def _status(n):
     return "Supported" if n >= 2 else ("Weak" if n == 1 else "No evidence")
+
+
+def _is_gap(cond) -> bool:
+    """A condition still needing evidence (a condition the user left unspecified is not a gap)."""
+    return cond["status"] not in ("Supported", NOT_SPECIFIED)
 
 
 def _strength_part(matching, target, rng, bases):
@@ -317,9 +325,14 @@ def case(target: Target, rows=None) -> dict:
             c["note"] = ("No partial-gravity combustion data exists in PSI yet (LUCI and FM2 are planned). "
                          "Microgravity runs give one bound and normal-gravity results the other.")
             c["bounded"] = True
-    supported = [c for c in conditions if c["status"] == "Supported"]
-    missing = [c for c in conditions if c["status"] != "Supported"]
-    verdict = f"{len(supported)} of {len(conditions)} conditions supported"
+        if c["key"] == "flow" and target.airflow_cm_s is None:
+            # Every run counts when airflow is left open, so it is not evidence: show it, but do not score it.
+            c["status"] = NOT_SPECIFIED
+            c["note"] = "Airflow not specified: every run counts for this condition, so it is left out of the count."
+    counted = [c for c in conditions if c["status"] != NOT_SPECIFIED]
+    supported = [c for c in counted if c["status"] == "Supported"]
+    missing = [c for c in counted if c["status"] != "Supported"]
+    verdict = f"{len(supported)} of {len(counted)} conditions supported"
     if whole:
         verdict += f", {len(whole)} run{'s' if len(whole) != 1 else ''} match the whole habitat"
     else:
@@ -336,7 +349,7 @@ def case(target: Target, rows=None) -> dict:
     elif not whole and not atmo:
         verdict += "; even ignoring gravity, no run tested this atmosphere"
     return {"conditions": conditions, "whole": whole_info, "atmosphere": atmo_info,
-            "supported_count": len(supported), "verdict": verdict}
+            "supported_count": len(supported), "counted": len(counted), "verdict": verdict}
 
 
 # ---------------------------------------------------------------- next experiment
@@ -351,7 +364,7 @@ def next_experiment(target: Target, rows=None) -> dict:
     rows = _rows(rows)
     rng = data.ranges(rows)
     c = case(target, rows)
-    gaps = [x["key"] for x in c["conditions"] if x["status"] != "Supported"]
+    gaps = [x["key"] for x in c["conditions"] if _is_gap(x)]
     whole_n = c["whole"]["n"]
     recommended = {"o2_pct": target.o2_pct, "pressure_psi": target.pressure_psi,
                    "airflow_cm_s": target.airflow_cm_s, "gravity_g": target.gravity_g,
@@ -454,8 +467,9 @@ def _span(vals, unit):
 def closest_evidence(target: Target, rows=None, k: int = 3) -> dict:
     """When no run matches the whole design, show what NASA did test closest and exactly what differs.
 
-    Relax the fewest conditions possible (1 or 2 of oxygen, pressure, airflow, material; gravity is compared
+    Relax the fewest conditions possible (none, 1 or 2 of oxygen, pressure, airflow, material; gravity is compared
     in microgravity because PSI holds no other gravity level) and report the runs that match everything else.
+    The "differs" lines describe only the runs that really differ on that condition.
     Only real runs and their recorded values are shown; nothing is interpolated or predicted.
     """
     rows = _rows(rows)
@@ -469,30 +483,37 @@ def closest_evidence(target: Target, rows=None, k: int = 3) -> dict:
             and not (x == "fuel" and target.fuel_state == "any")]
     from itertools import combinations
     found = []
-    for size in (1, 2):
+    sizes = (0, 1, 2) if gravity_relaxed else (1, 2)  # size 0: everything but gravity already matches in 0 g
+    for size in sizes:
         for relax in combinations(keys, size):
             if any(set(prev["relaxed"]) <= set(relax) for prev in found):
                 continue  # a smaller relaxation already finds runs
             keep = [x for x in keys if x not in relax]
-            hits = [r for r, m in ms if all(m[x] for x in keep) and (in_0g(r) if gravity_relaxed else m["grav"])]
-            if not hits:
+            pairs = [(r, m) for r, m in ms if all(m[x] for x in keep) and (in_0g(r) if gravity_relaxed else m["grav"])]
+            if not pairs:
                 continue
-            hits.sort(key=lambda r: _dist(r, target, rng))
+            pairs.sort(key=lambda rm: _dist(rm[0], target, rng))
+            hits = [r for r, _ in pairs]
             differs = []
             for x in relax:
+                off = [r for r, m in pairs if not m[x]]  # describe only the runs that really differ on x
+                if not off:
+                    continue
                 if x == "o2":
-                    differs.append(f"oxygen {_span([r['o2_pct'] for r in hits], '%')} (yours {target.o2_pct:g} %)")
+                    differs.append(f"oxygen {_span([r['o2_pct'] for r in off], '%')} (yours {target.o2_pct:g} %)")
                 elif x == "psi":
-                    s = _span([r["pressure_psi"] for r in hits], "psi")
-                    assumed = sum(r.get("pressure_basis") == "assumed" for r in hits)
-                    differs.append(f"pressure {s}" + (" (mostly assumed cabin air)" if assumed > len(hits) / 2 else "")
+                    sp = _span([r["pressure_psi"] for r in off], "psi")
+                    assumed = sum(r.get("pressure_basis") == "assumed" for r in off)
+                    differs.append(f"pressure {sp or 'not recorded'}" + (" (mostly assumed cabin air)" if assumed > len(off) / 2 else "")
                                    + f" (yours {target.pressure_psi:g} psi)")
                 elif x == "flow":
-                    s = _span([r["airflow_cm_s"] for r in hits], "cm/s")
-                    differs.append(f"airflow {s or 'not recorded'} (yours {target.airflow_cm_s:g} cm/s)")
+                    sp = _span([r["airflow_cm_s"] for r in off], "cm/s")
+                    differs.append(f"airflow {sp or 'not recorded'} (yours {target.airflow_cm_s:g} cm/s)")
                 elif x == "fuel":
-                    fuels = sorted({r.get("fuel_state") or "unknown" for r in hits})
+                    fuels = sorted({r.get("fuel_state") or "unknown" for r in off})
                     differs.append(f"{' and '.join(fuels)} fuel, not {target.fuel_state}")
+            if gravity_relaxed and not relax:
+                differs.append(f"gravity: these runs are 0 g (yours {g0:g} g)")
             invs = {}
             for r in hits:
                 invs[_inv(r)] = invs.get(_inv(r), 0) + 1
@@ -549,9 +570,9 @@ def journey(stages: list, rows=None) -> dict:
                        "gravity_g": t.gravity_g, "fuel_state": t.fuel_state},
             "o2_partial_pressure": _r(_pp(t.o2_pct, t.pressure_psi), 2),
             "verdict": c["verdict"], "status": c["whole"]["status"], "whole_n": c["whole"]["n"],
-            "atmosphere_n": c["atmosphere"]["n"], "supported_count": c["supported_count"],
+            "atmosphere_n": c["atmosphere"]["n"], "supported_count": c["supported_count"], "counted": c["counted"],
             "strength": round(whole.get("score") or 0.0, 1), "atmosphere_strength": round(atmo.get("score") or 0.0, 1),
-            "gaps": [x["key"] for x in c["conditions"] if x["status"] != "Supported"],
+            "gaps": [x["key"] for x in c["conditions"] if _is_gap(x)],
             "next": {"needed": nx["needed"], "gaps": nx["gaps"], "nearest_run": nx["nearest_run"], "changes": nx["changes"]},
         })
     weakest = min(out, key=lambda x: (x["strength"], x["atmosphere_strength"], x["supported_count"], x["whole_n"], x["order"])) if out else None
@@ -618,7 +639,7 @@ def campaign(targets: list, n: int = 3, rows=None) -> dict:
     habs = []
     for t in targets:
         c = case(t["target"], rows)
-        gaps = [x["key"] for x in c["conditions"] if x["status"] != "Supported"]
+        gaps = [x["key"] for x in c["conditions"] if _is_gap(x)]
         n_whole = c["whole"]["n"]
         habs.append({"id": t["id"], "name": t["name"], "target": t["target"], "whole_n": n_whole,
                      "status": "covered" if n_whole >= 2 else ("weak" if n_whole == 1 else "gap"),

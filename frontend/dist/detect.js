@@ -266,7 +266,7 @@
     if (!evidence) return "Loading the real NASA numbers…";
     if (st.scenario === "flaming") {
       const x = realTest();
-      return x ? `Replaying real test <b>${esc(x.run_id)}</b> (${esc(x.material)}, ${x.o2_pct ?? "?"} % O₂, ${x.airflow_cm_s ?? "?"} cm/s): CO ${x.co_initial_ppm} → ${x.co_final_ppm} ppm, CO₂ ${x.co2_initial_pct} → ${x.co2_final_pct} %. The measured CO rise (${Math.round(x.co_rise_ppm)} ppm) is the CO level at the source.` : "";
+      return x ? `Replaying real test <b>${esc(x.run_id)}</b> (${esc(x.material)}, ${x.o2_pct ?? "?"} % O₂, ${x.airflow_cm_s ?? "?"} cm/s): CO ${x.co_initial_ppm ?? "not recorded"} → ${x.co_final_ppm ?? "not recorded"} ppm, CO₂ ${x.co2_initial_pct ?? "not recorded"} → ${x.co2_final_pct ?? "not recorded"} %. The measured CO rise (${Math.round(x.co_rise_ppm)} ppm) is the CO level at the source.` : "";
     }
     if (st.scenario === "smoulder") return `CO at the source = median BASS-II rise (${g.co_rise_ppm?.median} ppm). Smoke particles: ${esc(st.material)} ${smokeSize()} µm (SAME-R), below the ${boundary} µm smoke/dust boundary, so fusion counts them as smoke.`;
     if (st.scenario === "cool") return `No CO was recorded for cool flames in PSI tables; CO at the source uses the BASS-II 90th percentile (${g.co_rise_ppm?.p90} ppm) as a stand-in. ${evidence.cool_flames?.n_cool_flame_runs ?? ""} cool-flame runs exist (CFI, ACME CFI-G).`;

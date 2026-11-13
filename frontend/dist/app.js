@@ -74,7 +74,7 @@
 
   // ---------------------------------------------------------------- render: decision
 
-  const statusCls = (s) => (s === "No evidence" ? "s-No" : `s-${s}`);
+  const statusCls = (s) => (s === "No evidence" ? "s-No" : s === "Not specified" ? "s-Na" : `s-${s}`);
   const runBtn = (id) => `<button class="runlink" data-run="${esc(id)}">${esc(id)}</button>`;
 
   function renderVerdict(c) {
@@ -189,7 +189,7 @@
       const x = await post("/api/explain", { target: t });
       if (lastTarget === t) renderExplain(x);
     } catch (e) {
-      $("claims").innerHTML = `<li class="hint">Explanation unavailable (${esc(e.message)}). The panels below do not need it.</li>`;
+      if (lastTarget === t) $("claims").innerHTML = `<li class="hint">Explanation unavailable (${esc(e.message)}). The panels below do not need it.</li>`;
     }
   }
 
@@ -214,7 +214,7 @@
         <dt>Material</dt><dd>${esc(r.fuel_state)}</dd>
       </dl>
       ${nr ? `<p class="hint">Cheapest first step: start from ${runBtn(nr.run_id)} (${esc(nr.investigation)}) and change:</p>
-      <ul class="changes">${n.changes.map((c) => `<li>${esc(FIELD_LABEL[c.field] || c.field)}: ${esc(fmt(c.from))} → ${esc(fmt(c.to))}</li>`).join("")}</ul>` : ""}`;
+      <ul class="changes">${n.changes.length ? n.changes.map((c) => `<li>${esc(FIELD_LABEL[c.field] || c.field)}: ${esc(fmt(c.from))} → ${esc(fmt(c.to))}</li>`).join("") : `<li>nothing: it already matches every condition you set, so repeat it to add confidence</li>`}</ul>` : ""}`;
   }
 
   function renderSafer(list, t) {
@@ -260,6 +260,7 @@
   }
 
   async function renderLens() {
+    const want = lens; // a slower earlier fetch must not draw under a newer tab
     const t = lastTarget || target();
     document.querySelectorAll(".lenses .tab").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.lens === lens)));
     const chart = $("chart");
@@ -272,6 +273,7 @@
       }
       if (lens === "coverage") {
         const d = await lensData("coverage");
+        if (lens !== want) return;
         chart.innerHTML = FL.scatter({
           aria: "Tested atmospheres: oxygen against pressure",
           points: d.points.map((p) => ({ x: p.pressure_psi, y: p.o2_pct, id: p.run_id, color: PILLAR_COLOR[p.pillar] || "var(--c-grey)",
@@ -284,6 +286,7 @@
         $("caption").textContent = `Each dot is one of ${d.n_points.toLocaleString()} NASA runs. The dashed box is "close to your design" (±6 oxygen points, ±2 psi). An empty box means no evidence. Click a dot to see its source.`;
       } else if (lens === "coolflame") {
         const d = await lensData("coolflame");
+        if (lens !== want) return;
         chart.innerHTML = FL.scatter({
           aria: "Cool-flame outcomes by oxygen and pressure",
           points: d.points.map((p) => ({ x: p.pressure_psi, y: p.o2_pct, id: p.run_id, color: OUTCOME_COLOR[p.outcome] || "var(--c-grey)",
@@ -298,6 +301,7 @@
         $("caption").innerHTML = `Cool flames keep burning invisibly after the visible flame goes out, making carbon monoxide and formaldehyde. Points come from CFI, ACME CFI-G and FLEX runs.${fList ? `<ul class="modlist" style="margin-top:.55rem">${fList}</ul>` : ""}`;
       } else if (lens === "aerosol") {
         const d = await lensData("aerosol");
+        if (lens !== want) return;
         const rows = d.smoke.map((m) => ({
           label: m.material,
           values: [
@@ -311,6 +315,7 @@
         $("caption").textContent = d.overlap_note + " Smoke values: SAME-R final report, Table 1. Dust: DAFT report. NASA's shuttle smoke detector, later used in mines, tells smoke from dust for exactly this reason.";
       } else if (lens === "spread") {
         const d = await lensData("spread");
+        if (lens !== want) return;
         const colorOf = (p) => (p.investigation === "Saffire-II" ? "var(--c-gold)" : (p.thickness_mm != null && p.thickness_mm < 0.5 ? "var(--c-cyan)" : "var(--c-flame)"));
         chart.innerHTML = FL.scatter({
           aria: "Measured microgravity flame spread rate against airflow",
@@ -330,6 +335,7 @@
         $("caption").textContent = `${d.n_points} measured microgravity spread/regression points from NASA/TM-20210011385 (BASS-II Table 5.1 & text) and PSI-99 (Saffire-II). Thin fabrics and 0.1 mm films spread at 2.1–2.6 mm/s — about 15 to over 200 times faster than 1–5 mm PMMA slabs (0.012–0.144 mm/s). Click any dot to inspect its flight run.`;
       } else if (lens === "tested") {
         const d = await lensData("tested");
+        if (lens !== want) return;
         chart.innerHTML = FL.scatter({
           aria: "Tested conditions: oxygen against airflow",
           points: d.points.map((p) => ({ x: p.airflow_cm_s, y: p.o2_pct, id: p.run_id, color: PILLAR_COLOR[p.pillar] || "var(--c-grey)",
@@ -351,13 +357,16 @@
 
   function basisTag(b) { return b ? `<span class="basis b-${esc(b)}">${esc(b)}</span>` : ""; }
 
+  let drawerSeq = 0;
   async function openEvidence(runId) {
+    const my = ++drawerSeq;
     const d = $("drawer");
     d.hidden = false;
     $("drawertitle").textContent = runId;
     $("drawerbody").innerHTML = "Loading…";
     try {
       const { run: r, investigation: inv } = await get(`/api/evidence/${encodeURIComponent(runId)}`);
+      if (my !== drawerSeq) return; // a newer click is loading
       $("drawerbody").innerHTML = `
         <p><b>${esc(inv?.title || r.investigation)}</b> (${esc(r.psi_id)}, ${esc(r.pillar)})</p>
         <dl class="kv">
@@ -439,7 +448,7 @@
       }
     });
     $("drawerclose").addEventListener("click", () => { $("drawer").hidden = true; });
-    document.addEventListener("keydown", (e) => { if (e.key === "Escape") $("drawer").hidden = true; });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && $("briefwrap").hidden) $("drawer").hidden = true; });
   }
 
 

@@ -49,3 +49,24 @@ Known, harmless: `/api/health` reports `investigations: 26` (all profiles, inclu
 | 8 | Backup internet ready (venue Wi-Fi may be slow) | Leader | Sat morning |
 | 9 | Remember: Vercel is not linked to GitHub. After any code change, redeploy with `vercel deploy --prod --yes`, then re-run `python scripts/validate_live.py .` | Laila | After each change |
 | 10 | A native speaker proofreads the Arabic task files (written by Claude) | Any | Optional |
+
+
+## 4. Deep review (Sat 14 Nov, about 2:30 AM)
+
+Two passes: a separate code reviewer (read the code, stress-tested 5,376 edge-case designs through every route: no crashes, routes always agree) and a scripted walk through the live UI (every control, both themes, phone width, 27 links: no console errors, no failed requests, no overflow).
+
+| # | Problem found | Fix |
+|---|---|---|
+| 1 | Desktop layout: the lens panel ended after one screen, leaving the right half of the page empty for ~3,000 px | Campaign planner and closest investigations moved under the lenses; investigation details stay in view beside the long grid |
+| 2 | "Closest NASA evidence" listed values as different when they matched (for example "≠ pressure 14.7 psi (yours 14.7 psi)"), and missed designs whose atmosphere matches in 0 g | Shows a "gravity only differs" group when the atmosphere matches in microgravity; each "differs" line uses only runs that really differ |
+| 3 | "Airflow not specified" showed as Supported by 2,003 runs and counted in "x of 5" | Airflow shows "Not specified" and is left out of the count and gaps (spacesuit: 2 of 4 supported) |
+| 4 | Fast lens-tab clicks could draw a chart under the wrong tab | A late response is ignored if the tab changed |
+| 5 | Campaign planner could stay stuck on an error | It retries on the next update |
+| 6 | "Run this next" could show an empty "change:" list | Says to repeat the run, which already matches every condition set |
+| 7 | One Escape closed both the evidence drawer and the brief | Escape closes the brief first |
+| 8 | Detection simulator could print "null" for a missing CO₂ value | Shows "not recorded" |
+| 9 | Fast clicks could show stale data in the drawer or the explanation | Only the latest request draws |
+| 10 | /api/rank accepted negative or non-number weights | Rejected with HTTP 422 |
+| 11 | Back on Earth said smoke 0.04–0.3 µm; the data says 0.04–0.29 µm | Corrected |
+
+After the fixes: 79 backend tests and 131 of 131 live checks pass.

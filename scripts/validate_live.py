@@ -96,10 +96,11 @@ for h in habitats + [FAR, CUSTOM]:
     unknown = sorted(i for i in ids if i not in by_id)
     check(g, f"every run ID returned exists in runs.csv ({len(ids)} IDs)", not unknown, f"{unknown[:3]}")
     conds = case["conditions"]
-    ok_status = all(c["status"] in {"Supported", "Weak", "No evidence"} for c in conds) and len(conds) == 5
-    rule = all((c["n"] >= 2 and c["status"] == "Supported") or (c["n"] == 1 and c["status"] == "Weak")
+    ok_status = all(c["status"] in {"Supported", "Weak", "No evidence", "Not specified"} for c in conds) and len(conds) == 5
+    rule = all((c["key"] == "flow" and t["airflow_cm_s"] is None and c["status"] == "Not specified")
+               or (c["n"] >= 2 and c["status"] == "Supported") or (c["n"] == 1 and c["status"] == "Weak")
                or (c["n"] == 0 and c["status"] == "No evidence") for c in conds)
-    check(g, "evidence case: 5 conditions, status follows the 2+/1/0 rule", ok_status and rule,
+    check(g, "evidence case: 5 conditions, status follows the 2+/1/0 rule (unspecified airflow = Not specified)", ok_status and rule,
           "; ".join(f"{c['key']}={c['status']}({c['n']})" for c in conds))
     if h["gravity_g"] not in (0,):
         gc = next(c for c in conds if c["key"] == "grav")

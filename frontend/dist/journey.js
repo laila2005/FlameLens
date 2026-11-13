@@ -24,11 +24,11 @@
         <span>${t.airflow_cm_s == null ? "airflow n/a" : num(t.airflow_cm_s) + " cm/s"}</span><span>${esc(t.fuel_state)}</span></div>
       <div class="jpp">O₂ partial pressure <b>${num(s.o2_partial_pressure)} psi</b></div>
       <div class="jscore"><strong class="t-${tone(sc)}">${sc}<small>/100</small></strong>
-        <span class="hint">${s.whole_n.toLocaleString()} NASA run${s.whole_n === 1 ? "" : "s"} match all five conditions · ${s.supported_count} of 5 supported</span></div>
+        <span class="hint">${s.whole_n.toLocaleString()} NASA run${s.whole_n === 1 ? "" : "s"} match all five conditions · ${s.supported_count} of ${s.counted ?? 5} conditions supported</span></div>
       <div class="sm-bar"><i style="width:${sc}%;background:var(--${tone(sc) === "ok" ? "ok" : tone(sc) === "amber" ? "amber" : "bad"})"></i></div>
       ${s.weakest ? `<div class="jnext"><div class="jflag">Weakest stage · test this next</div>
         <div>Closes: <b>${esc(gaps.join(", ") || "repeat for confidence")}</b></div>
-        ${nr ? `<div>Start from ${run(nr.run_id)} (${esc(nr.investigation)}) and change ${(nx.changes || []).map((ch) => `${esc(FIELD_LABEL[ch.field] || ch.field)} ${esc(val(ch.from))} → ${esc(val(ch.to))}`).join("; ") || "nothing"}.</div>` : ""}
+        ${nr ? `<div>Start from ${run(nr.run_id)} (${esc(nr.investigation)}) and change ${(nx.changes || []).map((ch) => `${esc(FIELD_LABEL[ch.field] || ch.field)} ${esc(val(ch.from))} → ${esc(val(ch.to))}`).join("; ") || "nothing: it already matches every condition you set, so repeat it to add confidence"}.</div>` : ""}
       </div>` : ""}
       <button type="button" class="btn jopen" data-open="${esc(s.id)}">Open this stage ↑</button>
     </li>`;

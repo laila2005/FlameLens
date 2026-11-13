@@ -18,7 +18,7 @@
   const val = (v) => (typeof v === "number" ? num(v) : v == null || v === "" ? "–" : String(v)); // numbers or words (material)
   const psiOf = (runId) => String(runId).replace(/-\d{4}$/, "");
   const tone = (s) => (s >= 65 ? "ok" : s >= 25 ? "amber" : "bad");
-  const stTone = (s) => (s === "Supported" ? "ok" : s === "Weak" ? "amber" : "bad");
+  const stTone = (s) => (s === "Supported" ? "ok" : s === "Weak" ? "amber" : s === "Not specified" ? "na" : "bad");
   const doiLink = (doi) => (doi ? `<a href="https://doi.org/${esc(doi)}" target="_blank" rel="noopener">doi.org/${esc(doi)}</a>` : "–");
   const pill = (text, t) => `<span class="bp bp-${t}">${esc(text)}</span>`;
   const run = (id) => `<span class="brun">${esc(id)}</span>`;
@@ -75,7 +75,7 @@
       : `<p>Testing this exact design closes <b>${(nx.gaps || []).length}</b> evidence gap${(nx.gaps || []).length === 1 ? "" : "s"}: <b>${esc((nx.gaps || []).map((g) => GAP[g] || g).join(", "))}</b>.</p>
          <table class="bt"><tr><th>Oxygen</th><th>Pressure</th><th>Airflow</th><th>Gravity</th><th>Material</th></tr>
          <tr><td>${num(nx.recommended.o2_pct)} %</td><td>${num(nx.recommended.pressure_psi)} psi</td><td>${nx.recommended.airflow_cm_s == null ? "not specified" : num(nx.recommended.airflow_cm_s) + " cm/s"}</td><td>${num(nx.recommended.gravity_g)} g</td><td>${esc(nx.recommended.fuel_state)}</td></tr></table>
-         ${nx.nearest_run ? `<p>Cheapest first step: start from ${run(nx.nearest_run.run_id)} (${esc(nx.nearest_run.investigation)}) and change ${nx.changes.map((ch) => `${esc(FIELD_LABEL[ch.field] || ch.field)} ${esc(val(ch.from))} → ${esc(val(ch.to))}`).join("; ")}.</p>` : ""}`;
+         ${nx.nearest_run ? `<p>Cheapest first step: start from ${run(nx.nearest_run.run_id)} (${esc(nx.nearest_run.investigation)}) and change ${nx.changes.map((ch) => `${esc(FIELD_LABEL[ch.field] || ch.field)} ${esc(val(ch.from))} → ${esc(val(ch.to))}`).join("; ") || "nothing: it already matches every condition you set, so repeat it to add confidence"}.</p>` : ""}`;
 
     const altHtml = alt.length
       ? `<table class="bt"><tr><th>Run</th><th>Investigation</th><th>O₂</th><th>Pressure</th><th>O₂ partial pressure</th><th>Below yours</th><th>Confidence</th></tr>

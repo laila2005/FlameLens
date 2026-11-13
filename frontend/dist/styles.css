@@ -167,7 +167,7 @@ select:hover { border-color: var(--flame); }
 .cond .n { font: 12.5px var(--mono); color: var(--muted); }
 .pill { align-self: flex-start; font: 600 10.5px var(--mono); text-transform: uppercase; letter-spacing: .06em; padding: 3px 8px; border-radius: 999px;
   background: color-mix(in srgb, currentColor 12%, transparent); }
-.s-Supported { color: var(--ok); } .s-Weak { color: var(--amber); } .s-No { color: var(--bad); }
+.s-Supported { color: var(--ok); } .s-Weak { color: var(--amber); } .s-No { color: var(--bad); } .s-Na { color: var(--muted); }
 .meter { display: block; height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
 .meter i { display: block; height: 100%; background: var(--cool); border-radius: 3px; }
 .wholes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -413,6 +413,7 @@ body.brief-open { overflow: hidden; }
 .btot td { font-weight: 600; background: var(--soft); }
 .bp { display: inline-block; font: 600 9.5px var(--mono); text-transform: uppercase; letter-spacing: .05em; padding: 2px 7px; border-radius: 999px;
   -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.bp-na { background: var(--soft); color: var(--mut); }
 .bp-ok { background: var(--gs); color: var(--g); } .bp-amber { background: var(--as); color: var(--a); } .bp-bad { background: var(--rs); color: var(--r); }
 .brun { font: 500 11px var(--mono); background: #e3f0fa; color: #0a6fb0; padding: 0 5px; border-radius: 4px; white-space: nowrap;
   -webkit-print-color-adjust: exact; print-color-adjust: exact; }

@@ -17,7 +17,7 @@
     if (!r.needed || (!r.groups.length && !r.same_partial_pressure)) { el.hidden = true; return; }
     const g0 = t.gravity_g > 0;
     el.innerHTML = `
-      <div class="ptitle"><h2>Closest NASA evidence</h2><span class="hint">NASA tested parts of this design, never all of them together. Here is what is nearest, and what differs.</span></div>
+      <div class="ptitle"><h2>Closest NASA evidence</h2><span class="hint">${r.groups.length && !r.groups[0].relaxed.length ? "NASA tested this atmosphere, but only in microgravity. Here are those runs." : "NASA tested parts of this design, never all of them together. Here is what is nearest, and what differs."}</span></div>
       <div class="clgrid">
         ${r.groups.map((g) => `<div class="clcard">
           <div class="clhead"><b>${g.n.toLocaleString()} run${g.n === 1 ? "" : "s"}</b>

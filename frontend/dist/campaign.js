@@ -29,7 +29,8 @@
     const key = JSON.stringify([n, targets]);
     if (key === lastKey) return;
     lastKey = key;
-    const r = await FL.api.post("/api/campaign", { n, targets });
+    let r;
+    try { r = await FL.api.post("/api/campaign", { n, targets }); } catch (err) { lastKey = ""; throw err; }
     if (key === lastKey) render(r);
   }
 
@@ -59,7 +60,7 @@
             <span>${num(c.gravity_g)} g</span><span>${esc(c.fuel_state)}</span><span>O₂ partial pressure ${num(e.o2_partial_pressure)} psi</span>
           </div>
           <div class="cmpline">Closes: <b>${esc(e.gaps_closed.map((g) => GAP[g] || g).join(", "))}</b></div>
-          ${nr.run_id ? `<div class="cmpline">Start from <button class="runlink" data-run="${esc(nr.run_id)}">${esc(nr.run_id)}</button> (${esc(nr.investigation)}${prof.hardware_group ? `, ${esc(prof.hardware_group)}` : ""}) and change ${e.changes.map((ch) => `${esc(FIELD_LABEL[ch.field] || ch.field)} ${esc(val(ch.from))} → ${esc(val(ch.to))}`).join("; ") || "nothing"}.</div>` : ""}
+          ${nr.run_id ? `<div class="cmpline">Start from <button class="runlink" data-run="${esc(nr.run_id)}">${esc(nr.run_id)}</button> (${esc(nr.investigation)}${prof.hardware_group ? `, ${esc(prof.hardware_group)}` : ""}) and change ${e.changes.map((ch) => `${esc(FIELD_LABEL[ch.field] || ch.field)} ${esc(val(ch.from))} → ${esc(val(ch.to))}`).join("; ") || "nothing: it already matches every condition you set, so repeat it to add confidence"}.</div>` : ""}
           <div class="cmpnote ${e.partial_gravity ? "warn" : ""}">${esc(e.platform_note)}${e.material_note ? ` ${esc(e.material_note)}` : ""}</div>
         </div></li>`;
     }).join("") : `<li class="hint">Every design already has 2 or more NASA runs matching all five conditions. No new experiment is needed for coverage.</li>`;

@@ -1,7 +1,7 @@
 """Request models shared by the engine and the API."""
 from typing import Literal, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 FuelState = Literal["solid", "liquid", "gas", "any"]
 
@@ -17,8 +17,19 @@ class Target(BaseModel):
 
 class RankRequest(BaseModel):
     target: Target
-    weights: Optional[dict] = None  # keys o2, psi, flow, fuel, grav
+    weights: Optional[dict[Literal["o2", "psi", "flow", "fuel", "grav"], float]] = None  # each weight >= 0, see validator
     k: int = Field(default=10, ge=1, le=50)
+
+    @field_validator("weights")
+    @classmethod
+    def _weights_ok(cls, w):
+        return _check_weights(w)
+
+
+def _check_weights(w):
+    if w is not None and any((v is None) or v < 0 or v > 10 for v in w.values()):
+        raise ValueError("weights must be numbers between 0 and 10")
+    return w
 
 
 class TargetRequest(BaseModel):

@@ -239,3 +239,32 @@ def test_journey_custom_stages():
     stages = [{"id": "a", "name": "Cabin", "target": ISS}, {"id": "b", "name": "Lunar", "target": LUNAR}]
     r = client.post("/api/journey", json={"targets": stages}).json()
     assert [s["name"] for s in r["stages"]] == ["Cabin", "Lunar"] and r["weakest"] == "b"
+
+
+# ------------------------------------------------------------ review fixes (14 Nov)
+
+def test_unspecified_airflow_is_not_counted_as_evidence():
+    suit = {"o2_pct": 100, "pressure_psi": 4.3, "airflow_cm_s": None, "gravity_g": 0.16, "fuel_state": "solid"}
+    c = client.post("/api/case", json={"target": suit}).json()
+    flow = next(x for x in c["conditions"] if x["key"] == "flow")
+    assert flow["status"] == "Not specified" and c["counted"] == 4
+    assert c["verdict"].startswith(f"{c['supported_count']} of 4 conditions supported")
+    nx = client.post("/api/next", json={"target": suit}).json()
+    assert "flow" not in nx["gaps"]
+
+
+def test_closest_shows_gravity_only_group_and_never_lists_matching_values_as_different():
+    t = {"o2_pct": 21, "pressure_psi": 14.7, "airflow_cm_s": 12.9, "gravity_g": 0.16, "fuel_state": "any"}
+    r = client.post("/api/closest", json={"target": t}).json()
+    g = r["groups"][0]
+    assert g["relaxed"] == [] and g["n"] == 336 and len(g["differs"]) == 1 and "gravity" in g["differs"][0]
+    rover = client.post("/api/closest", json={"target": ROVER}).json()
+    for grp in rover["groups"]:
+        for d in grp["differs"]:
+            assert "(yours 14.7 psi)" not in d or not d.startswith("pressure 14.7 psi")
+
+
+def test_rank_rejects_bad_weights():
+    assert client.post("/api/rank", json={"target": ISS, "weights": {"o2": "abc"}}).status_code == 422
+    assert client.post("/api/rank", json={"target": ISS, "weights": {"o2": -1}}).status_code == 422
+    assert client.post("/api/rank", json={"target": ISS, "weights": {"o2": 0.5}}).status_code == 200
