@@ -2,6 +2,7 @@
 
 **Live app:** https://flamelens-steel.vercel.app (public, no login)
 **API docs:** https://flamelens-steel.vercel.app/docs
+**Demo video (30 s):** [`media/flamelens-demo-30s.mp4`](media/flamelens-demo-30s.mp4)
 **Challenge:** *Flame in Freefall: SI-Powered Fire Safety Insights from Microgravity Combustion Data*, NASA Space Apps Challenge 2026
 **Team:** AstroSpark, NASA Space Apps Cairo
 
