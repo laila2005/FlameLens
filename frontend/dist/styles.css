@@ -79,9 +79,32 @@ select { background: var(--panel2); border: 1px solid var(--line); border-radius
 .meter i { display: block; height: 100%; background: var(--cool); }
 .wholes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 @media (max-width: 520px) { .wholes { grid-template-columns: 1fr; } }
-.whole { background: var(--panel2); border-radius: 10px; padding: 10px 12px; border-left: 3px solid var(--line); font-size: 14px; }
+.whole { background: var(--panel2); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; border-left: 3px solid var(--line); font-size: 14px; text-align: left; cursor: pointer; }
+.whole:hover { border-color: var(--cool); }
 .whole.s-Supported { border-left-color: var(--ok); } .whole.s-Weak { border-left-color: var(--amber); } .whole.s-No { border-left-color: var(--bad); }
 .whole b { color: var(--fg); }
+
+/* Evidence Strength Meter */
+.smeter { background: var(--panel2); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; }
+.sm-top { display: grid; grid-template-columns: 1.25fr 1fr; gap: 14px; align-items: center; }
+@media (max-width: 800px) { .sm-top { grid-template-columns: 1fr; } }
+.sm-main, .sm-atmo { display: flex; flex-direction: column; gap: 5px; }
+.sm-atmo { padding-left: 14px; border-left: 1px solid var(--line); }
+@media (max-width: 800px) { .sm-atmo { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); padding-top: 10px; } }
+.sm-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.sm-title { font-size: 12.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-family: var(--mono); }
+.sm-score { font-family: var(--mono); font-size: 24px; line-height: 1; }
+.sm-score small { font-size: 12px; color: var(--muted); font-weight: 400; margin-left: 2px; }
+.sm-bar { height: 9px; background: var(--line); border-radius: 5px; overflow: hidden; }
+.sm-bar i { display: block; height: 100%; border-radius: 5px; transition: width .2s ease; }
+.sm-backing { font-size: 13px; color: var(--muted); }
+.sm-backing b { color: var(--fg); font-family: var(--mono); }
+.sm-factors { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; padding-top: 8px; border-top: 1px solid var(--line); }
+@media (max-width: 680px) { .sm-factors { grid-template-columns: 1fr 1fr; } }
+.sm-f { display: flex; flex-direction: column; gap: 3px; font-size: 12px; color: var(--muted); }
+.sm-f b { font-family: var(--mono); color: var(--fg); font-size: 12.5px; }
+.sm-invs { display: flex; flex-wrap: wrap; gap: 5px 6px; align-items: center; padding-top: 6px; border-top: 1px dashed var(--line); font-size: 12.5px; }
+.sm-planned { margin-left: auto; font: 11.5px var(--mono); color: var(--amber); }
 
 /* next and safer */
 .next { border-top: 3px solid var(--flame); }

@@ -12,6 +12,14 @@ PROFILES_JSON = data.CURATED / "investigation_profiles.json"
 MODELING_JSON = data.CURATED / "modeling_studies.json"
 LONG_TEXT = ("objectives", "approach", "hypothesis", "research_impacts")
 
+# Multi-flight series share NTRS overview papers where appropriate
+SHARED_PAPER_IDS = {
+    "PSI-99": ("PSI-99", "PSI-98"),
+    "PSI-100": ("PSI-100", "PSI-98"),
+    "PSI-102": ("PSI-102", "PSI-101"),
+    "PSI-68": ("PSI-68", "PSI-69"),
+}
+
 
 @lru_cache(maxsize=1)
 def _profiles():
@@ -31,10 +39,22 @@ def modeling_for(psi_id):
     return [m for m in modeling_studies() if psi_id in (m.get("uses_flight_psi_ids") or [])]
 
 
+def papers_for(psi_id):
+    targets = SHARED_PAPER_IDS.get(psi_id, (psi_id,))
+    seen = set()
+    out = []
+    for p in data.papers():
+        if p.get("psi_id") in targets and p["ntrs_id"] not in seen:
+            seen.add(p["ntrs_id"])
+            out.append(p)
+    return out
+
+
 def _summary(p):
     """Profile without the full long texts (their *_summary versions stay)."""
     out = {k: v for k, v in p.items() if k not in LONG_TEXT}
     out["modeling_count"] = len(modeling_for(p["psi_id"]))
+    out["papers_count"] = len(papers_for(p["psi_id"]))
     return out
 
 
@@ -46,7 +66,7 @@ def profile(psi_id):
     p = next((p for p in _profiles() if p["psi_id"] == psi_id), None)
     if p is None:
         return None
-    return {**p, "modeling_studies": modeling_for(psi_id)}
+    return {**p, "modeling_studies": modeling_for(psi_id), "papers": papers_for(psi_id)}
 
 
 def _range_text(r):

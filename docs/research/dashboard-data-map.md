@@ -6,23 +6,29 @@ Built on 13 Nov from the real PSI Experimental Tables, a few small PSI documents
 
 | Dashboard feature | Can the real data answer it? | Data used |
 |---|---|---|
-| Evidence case (oxygen, pressure, airflow, fuel, gravity) | **Yes** for oxygen, pressure and fuel. **Partly** for airflow (41 % of runs). **Gravity: all runs are microgravity**, so lunar and Mars gravity will always show "No evidence" | `data/curated/runs.csv`, 1,922 runs |
+| Evidence case (oxygen, pressure, airflow, fuel, gravity) | **Yes** for oxygen, pressure and fuel. **Partly** for airflow. **Gravity: all runs are microgravity**, so lunar and Mars gravity will always show "No evidence" | `data/curated/runs.csv`, 2,003 runs across 18 spaceflight PSIs (+ `PSI-68` FLEX-2 parameter matrix) |
 | Run this next, Safer options, Coverage map | **Yes** | same table |
 | Evidence strength, evidence trail | **Yes**: every row carries its source table, DOI, `value_source`, and a basis for each condition | same table |
-| Lens 3, cool flames | **Yes**: 56 runs with a recorded cool flame, plus 279 hot-flame and 62 no-ignition outcomes at known oxygen and pressure | CFI (PSI-39), ACME CFI-G (PSI-159) |
-| Lens 2, smoke vs dust particle size | **Yes, small but real**: 10 smoke measurements (5 materials, fresh and aged) and 1 dust value | `data/curated/smoke_dust_sizes.csv` (SAME-R report Table 1, DAFT report) |
-| Lens 1, flame spread vs airflow at several oxygen levels | **Not from the tables.** Spread rates are in plots and PDFs. Only 9 Saffire-II rows have a spread value | see "Gaps" and the Lens 1 proposal below |
-| AI explanation with citations | **Yes**: abstracts and full text via the NTRS API, plus the downloaded final reports | NTRS API, `data/raw/docs/` |
+| Lens 3, cool flames | **Yes**: CFI (`PSI-39`), ACME CFI-G (`PSI-159`), and FLEX (`PSI-69`) outcomes + sourced temperature/reignition findings | `runs.csv` + `data/curated/coolflame_notes.csv` |
+| Lens 2, smoke vs dust particle size | **Yes**: 10 smoke measurements (5 materials, fresh and aged) + 4 dust values (1 ground analysis + 3 DAFT flight dust bags: 1.72, 1.57, 1.65 µm) | `data/curated/smoke_dust_sizes.csv` (SAME-R Table 1, DAFT report & `Logged Data Summary`) |
+| Lens 1, flame spread vs airflow | **Yes**: 43 measured 0g spread/regression points (39 BASS-II Table 5.1 PMMA slab steps + 2 BASS-II text benchmarks + 2 Saffire-II SIBAL concurrent points) | `data/curated/spread_rates.csv` (`NASA/TM-20210011385` Table 5.1 & `SAFFIRE-2` CSV) |
+| AI explanation with citations & literature | **Yes**: 27 peer-reviewed NTRS papers with PDF links + citation verifier | `data/curated/papers.csv`, `/api/explain`, `/api/verify` |
 
 ## What was built (reproducible)
 
 | File | What it is |
 |---|---|
 | `scripts/fetch_psi.py` | Searches PSI and downloads every Experimental Table CSV into `data/raw/` (git-ignored). Writes `data/curated/investigations.csv` (id, title, DOI, license) |
-| `scripts/fetch_psi_docs.py` | Downloads 13 small PSI documents (test matrices, fan calibration, readmes, final reports) into `data/raw/docs/` |
-| `scripts/build_runs.py` | Merges the tables into one unified `data/curated/runs.csv` and records where each value came from |
-| `data/curated/runs.csv` | **1,922 runs from 13 investigations**, one schema |
-| `data/curated/smoke_dust_sizes.csv` | Lens 2 data, hand-copied from the reports with page references |
+| `scripts/fetch_psi_docs.py` | Downloads PSI documents (test matrices, fan calibration, readmes, final reports) into `data/raw/docs/` |
+| `scripts/build_runs.py` | Merges all 18 executed spaceflight PSI tables into `data/curated/runs.csv` (2,003 runs) and records where each value came from |
+| `scripts/build_spread_rates.py` | Extracts 43 measured 0g flame spread / regression points into `data/curated/spread_rates.csv` |
+| `scripts/build_bass2_airflow.py` | Extracts 20 MSG flow-duct fan calibration points into `data/curated/bass2_airflow.csv` |
+| `scripts/fetch_ntrs_papers.py` | Queries NASA NTRS API for 27 peer-reviewed combustion papers in `data/curated/papers.csv` |
+| `data/curated/runs.csv` | **2,003 runs from 18 spaceflight investigations**, one schema |
+| `data/curated/spread_rates.csv` | **43 measured 0g flame spread / regression points** (BASS-II + Saffire-II) |
+| `data/curated/smoke_dust_sizes.csv` | **14 smoke & dust particle size records** (SAME-R + DAFT ground & flight bags) |
+| `data/curated/coolflame_notes.csv` | **6 sourced cool-flame findings** (ACME CFI-G, CFI, PSI-142) |
+| `data/curated/modeling_studies.json` | **5 PSI Ground/CFD modeling studies** (`PSI-60, 62, 115, 117, 142`) linked to flight datasets |
 | `data/curated/investigations.csv` | 26 PSI investigations with DOIs and license |
 
 Run order: `python scripts/fetch_psi.py`, then `python scripts/fetch_psi_docs.py`, then `python scripts/build_runs.py`.

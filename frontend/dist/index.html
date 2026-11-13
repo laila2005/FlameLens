@@ -77,7 +77,8 @@
       </div>
 
       <div class="panel">
-        <div class="ptitle"><h2>Evidence case</h2><span class="hint">How many NASA runs match each condition</span></div>
+        <div class="ptitle"><h2>Evidence strength &amp; case</h2><span class="hint">Powered by real NASA PSI burn runs — transparency meter, not a safety rating</span></div>
+        <div class="smeter" id="strengthmeter" aria-live="polite"></div>
         <div class="conditions" id="conditions"></div>
         <div class="wholes" id="wholes"></div>
       </div>
@@ -99,6 +100,7 @@
         <button role="tab" class="tab" data-lens="coverage" aria-selected="true">Coverage map</button>
         <button role="tab" class="tab" data-lens="coolflame" aria-selected="false">Cool flames</button>
         <button role="tab" class="tab" data-lens="aerosol" aria-selected="false">Smoke vs dust</button>
+        <button role="tab" class="tab" data-lens="spread" aria-selected="false">Flame spread</button>
         <button role="tab" class="tab" data-lens="tested" aria-selected="false">Airflow tested</button>
         <button role="tab" class="tab" data-lens="detect" aria-selected="false">Early detection</button>
       </div>
@@ -126,7 +128,9 @@
       <h2>Use the data &amp; predictive modeling</h2>
       <p>Download the curated flight tables for your own flammability models. Every row keeps its source table, DOI and how each value was obtained (measured, read from text, or assumed).</p>
       <div class="dl">
-        <a class="btn" href="/api/export/runs.csv">Runs table (CSV, 1,922 runs)</a>
+        <a class="btn" href="/api/export/runs.csv">Runs table (CSV, 2,003 runs)</a>
+        <a class="btn" href="/api/export/spread_rates.csv">Flame spread rates (CSV, 43 pts)</a>
+        <a class="btn" href="/api/export/papers.csv">NASA NTRS papers (CSV)</a>
         <a class="btn" href="/api/export/investigations.json">Investigation profiles (JSON)</a>
         <a class="btn" href="/docs" target="_blank" rel="noopener">API for developers</a>
       </div>

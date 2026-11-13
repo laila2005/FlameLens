@@ -1,0 +1,21 @@
+restrictors,pot_setting,fan_display,fan_voltage_v,air_display,calibrated_u_cm_s,formula_note,source_ref,doi
+0,10,122,12.2,29,29.1914,"U = 1.0066 * Air_Display (centerline, 56 mm downstream, 36 mm from bottom; fan turns off near 3.8 V)",PSI-25_Reference Data_Fan calibration data.xlsx (GMT 2014-043),10.60555/fd5w-9b48
+0,8,105,10.5,23,23.1518,"U = 1.0066 * Air_Display (centerline, 56 mm downstream, 36 mm from bottom; fan turns off near 3.8 V)",PSI-25_Reference Data_Fan calibration data.xlsx (GMT 2014-043),10.60555/fd5w-9b48
+0,6,88.5,8.85,18,18.1188,"U = 1.0066 * Air_Display (centerline, 56 mm downstream, 36 mm from bottom; fan turns off near 3.8 V)",PSI-25_Reference Data_Fan calibration data.xlsx (GMT 2014-043),10.60555/fd5w-9b48
+0,4,72,7.2,12,12.0792,"U = 1.0066 * Air_Display (centerline, 56 mm downstream, 36 mm from bottom; fan turns off near 3.8 V)",PSI-25_Reference Data_Fan calibration data.xlsx (GMT 2014-043),10.60555/fd5w-9b48
+0,2,55,5.5,6,6.0396,"U = 1.0066 * Air_Display (centerline, 56 mm downstream, 36 mm from bottom; fan turns off near 3.8 V)",PSI-25_Reference Data_Fan calibration data.xlsx (GMT 2014-043),10.60555/fd5w-9b48
+0,1,46.5,4.65,,,"U = 1.0066 * Air_Display (centerline, 56 mm downstream, 36 mm from bottom; fan turns off near 3.8 V)",PSI-25_Reference Data_Fan calibration data.xlsx (GMT 2014-043),10.60555/fd5w-9b48
+0,0,38,3.8,0,0.0,"U = 1.0066 * Air_Display (centerline, 56 mm downstream, 36 mm from bottom; fan turns off near 3.8 V)",PSI-25_Reference Data_Fan calibration data.xlsx (GMT 2014-043),10.60555/fd5w-9b48
+1,10,122,12.2,21,21.1386,"U = 1.0066 * Air_Display (centerline, 56 mm downstream, 36 mm from bottom; fan turns off near 3.8 V)",PSI-25_Reference Data_Fan calibration data.xlsx (GMT 2014-043),10.60555/fd5w-9b48
+1,8,105,10.5,16,16.1056,"U = 1.0066 * Air_Display (centerline, 56 mm downstream, 36 mm from bottom; fan turns off near 3.8 V)",PSI-25_Reference Data_Fan calibration data.xlsx (GMT 2014-043),10.60555/fd5w-9b48
+1,6,88,8.8,12,12.0792,"U = 1.0066 * Air_Display (centerline, 56 mm downstream, 36 mm from bottom; fan turns off near 3.8 V)",PSI-25_Reference Data_Fan calibration data.xlsx (GMT 2014-043),10.60555/fd5w-9b48
+1,4,72,7.2,8,8.0528,"U = 1.0066 * Air_Display (centerline, 56 mm downstream, 36 mm from bottom; fan turns off near 3.8 V)",PSI-25_Reference Data_Fan calibration data.xlsx (GMT 2014-043),10.60555/fd5w-9b48
+1,2,55,5.5,5,5.033,"U = 1.0066 * Air_Display (centerline, 56 mm downstream, 36 mm from bottom; fan turns off near 3.8 V)",PSI-25_Reference Data_Fan calibration data.xlsx (GMT 2014-043),10.60555/fd5w-9b48
+1,0,38,3.8,0,0.0,"U = 1.0066 * Air_Display (centerline, 56 mm downstream, 36 mm from bottom; fan turns off near 3.8 V)",PSI-25_Reference Data_Fan calibration data.xlsx (GMT 2014-043),10.60555/fd5w-9b48
+2,10,122,12.2,18,18.1188,"U = 1.0066 * Air_Display (centerline, 56 mm downstream, 36 mm from bottom; fan turns off near 3.8 V)",PSI-25_Reference Data_Fan calibration data.xlsx (GMT 2014-043),10.60555/fd5w-9b48
+2,8,105,10.5,14.5,14.5957,"U = 1.0066 * Air_Display (centerline, 56 mm downstream, 36 mm from bottom; fan turns off near 3.8 V)",PSI-25_Reference Data_Fan calibration data.xlsx (GMT 2014-043),10.60555/fd5w-9b48
+2,6,88.5,8.85,10.5,10.5693,"U = 1.0066 * Air_Display (centerline, 56 mm downstream, 36 mm from bottom; fan turns off near 3.8 V)",PSI-25_Reference Data_Fan calibration data.xlsx (GMT 2014-043),10.60555/fd5w-9b48
+2,4,72,7.2,7,7.0462,"U = 1.0066 * Air_Display (centerline, 56 mm downstream, 36 mm from bottom; fan turns off near 3.8 V)",PSI-25_Reference Data_Fan calibration data.xlsx (GMT 2014-043),10.60555/fd5w-9b48
+2,2,55,5.5,4,4.0264,"U = 1.0066 * Air_Display (centerline, 56 mm downstream, 36 mm from bottom; fan turns off near 3.8 V)",PSI-25_Reference Data_Fan calibration data.xlsx (GMT 2014-043),10.60555/fd5w-9b48
+2,1,46.5,4.65,,,"U = 1.0066 * Air_Display (centerline, 56 mm downstream, 36 mm from bottom; fan turns off near 3.8 V)",PSI-25_Reference Data_Fan calibration data.xlsx (GMT 2014-043),10.60555/fd5w-9b48
+2,0,38,3.8,0,0.0,"U = 1.0066 * Air_Display (centerline, 56 mm downstream, 36 mm from bottom; fan turns off near 3.8 V)",PSI-25_Reference Data_Fan calibration data.xlsx (GMT 2014-043),10.60555/fd5w-9b48

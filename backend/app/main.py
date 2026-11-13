@@ -148,6 +148,11 @@ def lens_tested():
     return lenses.tested()
 
 
+@app.get("/api/lens/spread", tags=["lenses"], summary="Measured microgravity flame spread and regression rates vs airflow")
+def lens_spread():
+    return lenses.spread()
+
+
 @app.get("/api/detect/evidence", tags=["detect"], summary="Real NASA numbers behind the early-detection simulation")
 def detect_evidence():
     from . import detect
@@ -197,12 +202,34 @@ def modeling_investigations():
     }
 
 
+@app.get("/api/papers", tags=["investigations"], summary="Peer-reviewed NASA NTRS publications linked to PSI combustion investigations")
+def ntrs_papers():
+    items = data.papers()
+    return {"count": len(items), "papers": items}
+
+
 @app.get("/api/export/runs.csv", tags=["export"], summary="Download the curated run table (CSV) for predictive modeling")
 def export_runs():
     from fastapi.responses import Response
     body = data.RUNS_CSV.read_text(encoding="utf-8")
     return Response(content=body, media_type="text/csv",
                     headers={"Content-Disposition": 'attachment; filename="flamelens_runs.csv"'})
+
+
+@app.get("/api/export/spread_rates.csv", tags=["export"], summary="Download measured microgravity flame spread rates (CSV)")
+def export_spread_rates():
+    from fastapi.responses import Response
+    body = data.SPREAD_CSV.read_text(encoding="utf-8")
+    return Response(content=body, media_type="text/csv",
+                    headers={"Content-Disposition": 'attachment; filename="flamelens_spread_rates.csv"'})
+
+
+@app.get("/api/export/papers.csv", tags=["export"], summary="Download NASA NTRS paper library (CSV)")
+def export_papers():
+    from fastapi.responses import Response
+    body = data.PAPERS_CSV.read_text(encoding="utf-8")
+    return Response(content=body, media_type="text/csv",
+                    headers={"Content-Disposition": 'attachment; filename="flamelens_ntrs_papers.csv"'})
 
 
 @app.get("/api/export/investigations.json", tags=["export"], summary="Download all investigation profiles (JSON)")
