@@ -172,12 +172,16 @@ inv = inv.get("investigations", inv) if isinstance(inv, dict) else inv
 check("Requirements", "investigation summaries available (objectives, fuels, conditions)", len(inv) >= 18, f"{len(inv)} profiles")
 cmp_ = jget("/api/compare?a=PSI-25&b=PSI-99")
 check("Requirements", "side-by-side comparison works (BASS-II vs Saffire-II)", bool(cmp_) and "PSI-99" in json.dumps(cmp_))
-for lens in ["coverage", "coolflame", "aerosol", "spread", "tested"]:
+for lens in ["coverage", "coolflame", "aerosol", "spread", "tested", "smokepoint"]:
     d = jget(f"/api/lens/{lens}")
     n = len(d.get("points", [])) or len(d.get("smoke", [])) + len(d.get("dust", []))
     check("Requirements", f"lens '{lens}' returns real data", n > 0, f"{n} items")
 sp = jget("/api/lens/spread")
 check("Requirements", "flame-spread lens has 43 measured points", len(sp["points"]) == 43, str(len(sp["points"])))
+spl = jget("/api/lens/smokepoint")
+linked = [x["run_id"] for x in spl["points"] if x["run_id"]]
+check("Requirements", "smoke-point lens: 55 SPICE flames, linked runs are real and marked 'smoke point'",
+      spl["n_points"] == 55 and all(by_id.get(r, {}).get("outcome") == "smoke point" for r in linked), f"{len(set(linked))} linked runs")
 det = jget("/api/detect/evidence")
 check("Requirements", "early-detection evidence comes from real BASS-II/SAME-R data", bool(det))
 mod = jget("/api/modeling")

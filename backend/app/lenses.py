@@ -147,3 +147,30 @@ def coverage_points(rows=None):
             "counts_by_investigation": dict(Counter(p["investigation"] for p in points)),
             "note": "Each dot is one run. Points with an assumed basis use ISS cabin air (about 14.7 psi, 21 % O2) "
                     "because the source table gave no value."}
+
+
+def smokepoint(path=None):
+    """SPICE microgravity smoke points per flame (Dotson thesis, Appendix 6.4): luminous length vs coflow air rate."""
+    import csv
+    from pathlib import Path
+    p = Path(path) if path else Path(__file__).resolve().parents[2] / "data" / "curated" / "spice_smoke_points.csv"
+    points = []
+    with open(p, encoding="utf-8", newline="") as f:
+        for r in csv.DictReader(f):
+            try:
+                points.append({"fuel": r["fuel"], "nozzle_mm": float(r["nozzle_mm"]), "day_of_year": int(r["day_of_year"]),
+                               "gmt": r["gmt"], "fuel_rate_mg_s": float(r["fuel_rate_mg_s"]),
+                               "air_rate_cm_s": float(r["air_rate_cm_s"]),
+                               "smoke_point_length_mm": float(r["smoke_point_length_mm"]),
+                               "run_id": r["run_id"] or None, "source_ref": r["source_ref"]})
+            except (ValueError, KeyError):
+                continue
+    lengths = [x["smoke_point_length_mm"] for x in points]
+    return {
+        "points": points, "n_points": len(points),
+        "n_linked_runs": len({x["run_id"] for x in points if x["run_id"]}),
+        "counts_by_fuel": dict(Counter(x["fuel"] for x in points)),
+        "length_range_mm": [min(lengths), max(lengths)] if lengths else None,
+        "note": ("Each point is one flame on the ISS at the moment it started to emit smoke (its smoke point), from the SPICE "
+                 "Dotson thesis, Appendix 6.4 (PSI-107). A longer smoke-point flame means a fuel that soots less."),
+    }

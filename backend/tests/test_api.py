@@ -268,3 +268,20 @@ def test_rank_rejects_bad_weights():
     assert client.post("/api/rank", json={"target": ISS, "weights": {"o2": "abc"}}).status_code == 422
     assert client.post("/api/rank", json={"target": ISS, "weights": {"o2": -1}}).status_code == 422
     assert client.post("/api/rank", json={"target": ISS, "weights": {"o2": 0.5}}).status_code == 200
+
+
+# ------------------------------------------------------------ SPICE smoke points (Dotson thesis, Appendix 6.4)
+
+def test_smokepoint_lens_and_linked_runs():
+    from backend.app import data
+    d = client.get("/api/lens/smokepoint").json()
+    assert d["n_points"] == 55 and d["counts_by_fuel"] == {"ethylene": 6, "propane": 6, "50% propylene": 7, "75% propylene": 14, "propylene": 22}
+    by_id = {r["run_id"]: r for r in data.runs()}
+    linked = {p["run_id"] for p in d["points"] if p["run_id"]}
+    assert len(linked) == d["n_linked_runs"] == 45
+    for rid in linked:
+        row = by_id[rid]
+        assert row["psi_id"] == "PSI-107" and row["outcome"] == "smoke point" and "Appendix 6.4" in row["notes"]
+    # values are copied as printed: the first ethylene smoke point in Figure 6.3
+    first = next(p for p in d["points"] if p["fuel"] == "ethylene" and p["gmt"] == "15:48:47")
+    assert (first["fuel_rate_mg_s"], first["air_rate_cm_s"], first["smoke_point_length_mm"]) == (1.627, 18.53, 36.99)

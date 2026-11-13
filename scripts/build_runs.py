@@ -404,6 +404,26 @@ for r in rows:
             f"flames ignited that day: {ign}", "flames_ignited", ign, vsrc="table",
             notes=f"{ttype}; test day {tday}; atmosphere '{atm_clean}' (table footnote: ~1 atm nominal, pressure rises and O2 drops with vitiation); ignition count is for the whole test day")
 
+# ---------- SPICE smoke points (per flame) from the Dotson thesis, linked by scripts/extract_spice_smoke_points.py ----------
+SMOKE = ROOT / "data" / "curated" / "spice_smoke_points.csv"
+if SMOKE.exists():
+    by_run = {}
+    for sp in csv.DictReader(open(SMOKE, encoding="utf-8")):
+        if sp.get("run_id"):
+            by_run.setdefault(sp["run_id"], []).append(sp)
+    linked = 0
+    for row in rows_out:
+        pts = by_run.get(row["run_id"])
+        if not pts:
+            continue
+        row["outcome"] = "smoke point"
+        row["metric_name"], row["metric_value"] = "smoke_point_length_mm", pts[0]["smoke_point_length_mm"]
+        row["notes"] += "; " + "; ".join(
+            f"smoke point at {sp['gmt']} GMT: fuel {sp['fuel_rate_mg_s']} mg/s, air {sp['air_rate_cm_s']} cm/s, "
+            f"luminous length {sp['smoke_point_length_mm']} mm ({sp['source_ref']})" for sp in pts)
+        linked += 1
+    print(f"SPICE smoke points linked to {linked} runs from {SMOKE.name}")
+
 OUT.parent.mkdir(parents=True, exist_ok=True)
 with open(OUT, "w", encoding="utf-8", newline="") as f:
     w = csv.DictWriter(f, fieldnames=FIELDS, lineterminator="\n")

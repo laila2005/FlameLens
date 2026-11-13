@@ -313,6 +313,20 @@
         chart.innerHTML = FL.sizePlot(rows, { aria: "Smoke and dust particle sizes", xDomain: [0.02, 5], xTicks: [0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5], xLabel: "Particle size (micrometres, log scale)" });
         legend([["Smoke, fresh (hollow)", "var(--c-flame)"], ["Smoke, aged 720 s (filled)", "var(--c-flame)"], ["Dust", "var(--c-cyan)"]]);
         $("caption").textContent = d.overlap_note + " Smoke values: SAME-R final report, Table 1. Dust: DAFT report. NASA's shuttle smoke detector, later used in mines, tells smoke from dust for exactly this reason.";
+      } else if (lens === "smokepoint") {
+        const d = await lensData("smokepoint");
+        if (lens !== want) return;
+        const FUEL_COLOR = { "propane": "var(--c-green)", "ethylene": "var(--c-cyan)", "50% propylene": "var(--c-gold)",
+          "75% propylene": "var(--c-flame)", "propylene": "var(--c-violet)" };
+        chart.innerHTML = FL.scatter({
+          aria: "SPICE microgravity smoke points: luminous flame length against coflow air rate",
+          points: d.points.map((p) => ({ x: p.air_rate_cm_s, y: p.smoke_point_length_mm, id: p.run_id || "", color: FUEL_COLOR[p.fuel] || "var(--c-grey)",
+            opacity: p.run_id ? 0.9 : 0.45,
+            title: `${p.fuel}, ${p.nozzle_mm} mm nozzle: smoke point at ${p.fuel_rate_mg_s} mg/s fuel, ${p.air_rate_cm_s} cm/s air, luminous length ${p.smoke_point_length_mm} mm${p.run_id ? " (" + p.run_id + ")" : " (not linked to a table run)"}` })),
+          xDomain: [0, 70], yDomain: [0, 110], xLabel: "Coflow air rate (cm/s)", yLabel: "Smoke-point flame length (mm)", r: 5,
+        });
+        legend(Object.entries(FUEL_COLOR).map(([k, v]) => [`${k} (${d.counts_by_fuel[k] || 0})`, v]).concat([["faint dot = not linked to a table run", "var(--c-faint)"]]));
+        $("caption").textContent = `${d.n_points} SPICE flames on the ISS at the moment each began to smoke (its smoke point), from the SPICE thesis, Appendix 6.4 (PSI-107). A longer smoke-point flame means a fuel that makes less soot: soot rises from propane to ethylene, 50 % propylene, 75 % propylene and propylene (thesis conclusions). ${d.n_linked_runs} runs are linked; click a dot to open its run.`;
       } else if (lens === "spread") {
         const d = await lensData("spread");
         if (lens !== want) return;

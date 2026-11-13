@@ -77,7 +77,7 @@ The user picks a preset (Moon base, pressurized rover, spacesuit, ISS cabin, Mar
 6. Lower-oxygen tested options. Real runs with at least 10 % less oxygen partial pressure.
 7. Ranked investigations. The 18 flight investigations ordered by how close their runs are to the design.
 8. What the evidence says. A short explanation in plain language where every sentence cites a run.
-9. Six lenses: coverage map, cool flames, smoke vs dust, flame spread, airflow tested, and an early-detection simulator.
+9. Seven lenses: coverage map, cool flames, smoke vs dust, smoke points (55 SPICE flames at the moment they began to smoke), flame spread, airflow tested, and an early-detection simulator.
 10. An investigations explorer with a profile of each investigation and a side-by-side comparison.
 11. A printable design review brief, and downloads of the curated data for modelling.
 
@@ -233,11 +233,12 @@ Exactly 7 slides. No faces, names or voices of anyone under 18. Keep the text as
 
 ### Slide 6. The science, made visible
 
-- **Title:** Six lenses on the same data
+- **Title:** Seven lenses on the same data
 - **Points:**
   - Flame spread: 43 measured rates. Thin fabric and film 2.1 to 2.6 mm/s, thick acrylic slabs 0.012 to 0.144 mm/s.
   - Smoke vs dust: smoke 0.04 to 0.29 µm, dust 1.57 to 1.72 µm. Size tells them apart.
   - Cool flames: 56 runs with a recorded cool flame, which makes little light or heat.
+  - Smoke points: 55 ISS flames at the moment they began to smoke; propane makes the least soot, propylene the most.
 - **Visual:** the "Flame spread", "Smoke vs dust" and "Cool flames" charts side by side.
 
 ### Slide 7. Trust, impact and credits

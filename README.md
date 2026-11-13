@@ -33,7 +33,7 @@ You enter a design: oxygen %, pressure, airflow, material state and gravity. Pre
 | **Mission atmosphere journey** | One Artemis-style crew mission as a timeline (ISS cabin → spacesuit → pressurized rover → Moon base). Each stage shows its evidence strength from the same engine; the mission is only as well backed as its weakest stage, which is flagged with the test to run next (today: the spacesuit, 100 % O₂ at 4.3 psi). |
 | **Ranked investigations** | The 18 flight investigations ranked by closeness to the design (weights: oxygen 0.35, pressure 0.20, airflow 0.20, material 0.15, gravity 0.10; a missing value scores a neutral 0.5). |
 | **What the evidence says (AI)** | A short explanation where every sentence cites a run. A citation verifier removes any claim that cites a run outside the evidence, states a number not in that run, or gives a safety threshold. |
-| **Six lenses** | Coverage map, cool flames, smoke vs dust, flame spread, airflow tested, and an early-detection simulator. |
+| **Seven lenses** | Coverage map, cool flames, smoke vs dust, **smoke points** (55 SPICE flames on the ISS at the moment they began to smoke, from the SPICE thesis Appendix 6.4; 45 linked to their runs), flame spread, airflow tested, and an early-detection simulator. |
 | **Investigations explorer** | A profile of each investigation (objective, fuels, hardware, conditions, what varied, what was measured) and a side-by-side comparison. |
 | **Design review brief** | A printable evidence brief for the current design, built from the same API. Open it directly with `/?brief=1`. |
 | **Data downloads** | The curated run table, spread rates, papers and investigation profiles, for flammability modelling. |

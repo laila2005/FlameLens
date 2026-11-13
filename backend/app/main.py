@@ -182,6 +182,11 @@ def lens_spread():
     return lenses.spread()
 
 
+@app.get("/api/lens/smokepoint", tags=["lenses"], summary="SPICE microgravity smoke points per flame (luminous length vs air rate)")
+def lens_smokepoint():
+    return lenses.smokepoint()
+
+
 @app.get("/api/detect/evidence", tags=["detect"], summary="Real NASA numbers behind the early-detection simulation")
 def detect_evidence():
     from . import detect

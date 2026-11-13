@@ -33,6 +33,9 @@ WANTED = [
     (98, "SAFFIRE-I and SAFFIRE-III Readme.docx"),
     (98, "SAFFIRE Objectives, Development and Status.pdf"),
     (107, "SPICE_FinalReport.pdf"),
+    (107, "DotsonThesis"),
+    (107, "SPICE_30-DayPostFlightReport"),
+    (107, "Laminar Smoke Points in Coflow Measured Aboard ISS"),
 ]
 
 
