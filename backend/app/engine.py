@@ -38,6 +38,8 @@ Rules and choices (starting guesses, tune on real data):
 - Tolerances: O2 +-6 points, pressure +-2 psi, airflow +-8 cm/s, same fuel state ("any" matches all),
   same gravity. Supported = 2+ matching runs, Weak = 1, No evidence = 0.
 - A run value that is missing never matches (values are never guessed).
+- Ranker: a missing run value scores a neutral 0.5 for that factor (it is not dropped, so missing data
+  is never rewarded). factors_used counts only factors with real run values.
 - If the target airflow is None ("not specified") the airflow condition matches every run and the
   airflow factor is dropped from the ranker and from distances.
 - Normalised distance: each of oxygen, pressure, airflow is divided by the data range (max - min).
@@ -60,6 +62,7 @@ BASIS = {"o2": "o2_basis", "psi": "pressure_basis", "flow": "airflow_basis"}
 CONF_WEIGHT = {"high": 1.0, "medium": 0.7, "low": 0.4, "placeholder": 0.0}
 SOURCE_QUALITY = {"table": 1.0, "text": 0.8, "plot-read": 0.5}
 MISSING_DISTANCE = 0.5  # normalised distance used when a run lacks a value
+MISSING_CLOSENESS = 0.5  # ranker factor value used when a run lacks a value (neutral, not dropped)
 
 
 # ---------------------------------------------------------------- helpers
@@ -141,18 +144,24 @@ def _factors(target: Target, run, rng) -> dict:
 
 
 def run_score(target: Target, run, rng, weights=None):
-    """Score one run 0-100. Missing factors are dropped and the other weights rescaled.
+    """Score one run 0-100.
 
-    Returns (score, factors, factors_used). Public so tests can check the hand-calculated cases.
+    A factor the run has no value for scores a neutral MISSING_CLOSENESS (0.5): unknown is neither close
+    nor far, so missing data is not rewarded. The only factor that is dropped (and the other weights
+    rescaled) is airflow when the TARGET does not specify airflow.
+    Returns (score, factors, factors_used): factors keep None for missing run values so the UI can show
+    them, and factors_used counts only the factors with real run values ("based on N of 5 factors").
+    Public so tests can check the hand-calculated cases.
     """
     w = {**DEFAULT_WEIGHTS, **(weights or {})}
     factors = _factors(target, run, rng)
-    used = {k: v for k, v in factors.items() if v is not None}
-    wsum = sum(w[k] for k in used)
-    if not used or wsum <= 0:
+    keys = [k for k in KEYS if not (k == "flow" and target.airflow_cm_s is None)]
+    wsum = sum(w[k] for k in keys)
+    if wsum <= 0:
         return 0.0, factors, 0
-    total = sum(w[k] / wsum * v for k, v in used.items())
-    return 100 * total, factors, len(used)
+    total = sum(w[k] / wsum * (factors[k] if factors[k] is not None else MISSING_CLOSENESS) for k in keys)
+    used = sum(1 for k in keys if factors[k] is not None)
+    return 100 * total, factors, used
 
 
 def _round_factors(f):

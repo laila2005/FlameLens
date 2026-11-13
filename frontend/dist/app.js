@@ -108,12 +108,14 @@
   function renderNext(n) {
     const el = $("next");
     if (!n.needed) {
-      el.innerHTML = `<h2>Run this next</h2><p>${esc(n.message)}</p>${n.nearest_run ? `<p class="hint">Repeat: ${runBtn(n.nearest_run.run_id)}</p>` : ""}`;
+      el.innerHTML = `<h2>Run this next</h2><p>Your design is already covered by several runs. The most useful next test is a repeat of the least certain one, to raise confidence.</p>${n.nearest_run ? `<p class="hint">Repeat: ${runBtn(n.nearest_run.run_id)}</p>` : ""}`;
       return;
     }
     const r = n.recommended, nr = n.nearest_run;
+    const GAP = { o2: "oxygen", psi: "pressure", flow: "airflow", fuel: "material", grav: "gravity", whole: "the full combination" };
+    const gaps = (n.gaps || []).map((g) => GAP[g] || g);
     el.innerHTML = `<h2>Run this next</h2>
-      <p>${esc(n.message)}</p>
+      <p>Test your exact design. It closes ${gaps.length} evidence gap${gaps.length === 1 ? "" : "s"}: <b>${esc(gaps.join(", "))}</b>.</p>
       <dl class="kv">
         <dt>Oxygen</dt><dd>${fmt(r.o2_pct)} %</dd>
         <dt>Pressure</dt><dd>${fmt(r.pressure_psi)} psi</dd>

@@ -1,27 +1,5 @@
 [
  {
-  "psi_id": "PSI-26",
-  "investigation": "BASS",
-  "pillar": "Prevention",
-  "doi": "10.60555/58h4-dy80",
-  "score": 90.2,
-  "breakdown": {
-   "o2": null,
-   "psi": 0.933,
-   "flow": 1.0,
-   "fuel": 1.0,
-   "grav": 0.5
-  },
-  "factors_used": 4,
-  "n_runs": 122,
-  "top_runs": [
-   "PSI-26-0001",
-   "PSI-26-0002",
-   "PSI-26-0003"
-  ],
-  "confidence": "medium"
- },
- {
   "psi_id": "PSI-25",
   "investigation": "BASS-II",
   "pillar": "Prevention",
@@ -92,20 +70,107 @@
   "investigation": "Saffire-II",
   "pillar": "Prevention",
   "doi": "10.60555/2chp-m469",
-  "score": 85.9,
+  "score": 85.6,
   "breakdown": {
-   "o2": null,
+   "o2": 0.837,
    "psi": 0.933,
-   "flow": null,
+   "flow": 0.883,
    "fuel": 1.0,
    "grav": 0.5
   },
-  "factors_used": 3,
+  "factors_used": 5,
   "n_runs": 15,
   "top_runs": [
-   "PSI-99-0010",
-   "PSI-99-0011",
-   "PSI-99-0012"
+   "PSI-99-0002",
+   "PSI-99-0003",
+   "PSI-99-0004"
+  ],
+  "confidence": "medium"
+ },
+ {
+  "psi_id": "PSI-98",
+  "investigation": "Saffire-I",
+  "pillar": "Prevention",
+  "doi": "10.60555/0t15-1z43",
+  "score": 78.9,
+  "breakdown": {
+   "o2": 0.829,
+   "psi": 0.933,
+   "flow": 0.883,
+   "fuel": 1.0,
+   "grav": 0.5
+  },
+  "factors_used": 5,
+  "n_runs": 4,
+  "top_runs": [
+   "PSI-98-0001",
+   "PSI-98-0002",
+   "PSI-98-0003"
+  ],
+  "confidence": "medium"
+ },
+ {
+  "psi_id": "PSI-26",
+  "investigation": "BASS",
+  "pillar": "Prevention",
+  "doi": "10.60555/58h4-dy80",
+  "score": 76.2,
+  "breakdown": {
+   "o2": null,
+   "psi": 0.933,
+   "flow": 1.0,
+   "fuel": 1.0,
+   "grav": 0.5
+  },
+  "factors_used": 4,
+  "n_runs": 122,
+  "top_runs": [
+   "PSI-26-0001",
+   "PSI-26-0002",
+   "PSI-26-0003"
+  ],
+  "confidence": "medium"
+ },
+ {
+  "psi_id": "PSI-107",
+  "investigation": "SPICE",
+  "pillar": "Prevention",
+  "doi": "10.60555/9kbh-e962",
+  "score": 72.4,
+  "breakdown": {
+   "o2": 0.822,
+   "psi": 0.933,
+   "flow": 0.999,
+   "fuel": 0.0,
+   "grav": 0.5
+  },
+  "factors_used": 5,
+  "n_runs": 469,
+  "top_runs": [
+   "PSI-107-0141",
+   "PSI-107-0142",
+   "PSI-107-0143"
+  ],
+  "confidence": "medium"
+ },
+ {
+  "psi_id": "PSI-100",
+  "investigation": "Saffire-III",
+  "pillar": "Prevention",
+  "doi": "10.60555/040q-4h36",
+  "score": 71.5,
+  "breakdown": {
+   "o2": null,
+   "psi": 0.933,
+   "flow": 0.765,
+   "fuel": 1.0,
+   "grav": 0.5
+  },
+  "factors_used": 4,
+  "n_runs": 2,
+  "top_runs": [
+   "PSI-100-0001",
+   "PSI-100-0002"
   ],
   "confidence": "medium"
  }

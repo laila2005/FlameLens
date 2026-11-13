@@ -14,7 +14,7 @@ For each factor, closeness = `1 - |target - value| / (max - min)`, clamped to 0 
 | Fuel | 0.15 | 1 if same `fuel_state`, 0 if different, 0.5 if the user chose "any" |
 | Gravity | 0.10 | 1 if same g, 0.5 if both are below 1 g (for example lunar vs microgravity), else 0 |
 
-If a run lacks a field, drop that factor and rescale the remaining weights so they sum to 1, and show "based on N of 5 factors". Score = 100 x sum.
+If a run lacks a field, that factor scores a **neutral 0.5** (unknown is neither close nor far), so missing data is never rewarded. The UI still shows "based on N of 5 factors", counting only real values. The one exception: if the user leaves airflow "not specified", the airflow factor is dropped and the other weights are rescaled to sum to 1. Score = 100 x sum. (Changed 13 Nov: the first rule dropped missing factors, which ranked BASS, with no oxygen data, first for a 34 % oxygen design.)
 
 ## The five cases
 
@@ -22,14 +22,14 @@ If a run lacks a field, drop that factor and rescale the remaining weights so th
 |---|---|---|---|---|
 | R1 | 34, 10.2, 12, gas, 0 | PH-05-R01 (34, 10.2, 12, gas, 0) | 1, 1, 1, 1, 1 | **100.0** |
 | R2 | 21, 14.7, 0, solid, 0 | PH-08-R01 (40, 14.7, 0, liquid, 0) | 0, 1, 1, 0, 1 | **50.0** |
-| R3 | 21, 14.7, 10, solid, 0 | PH-02-R03 (25, 14.7, airflow missing, solid, 0) | 0.789, 1, missing, 1, 1 | **90.8** (4 of 5 factors) |
+| R3 | 21, 14.7, 10, solid, 0 | PH-02-R03 (25, 14.7, airflow missing, solid, 0) | 0.789, 1, missing (0.5), 1, 1 | **82.6** (4 of 5 factors) |
 | R4 | 30, 10.2, 12, solid, 0 | PH-05-R02 (30, 10.2, 12, gas, 0) | 1, 1, 1, 0, 1 | **85.0** |
 | R5 | 34, 10.2, 10, solid, 0.16 | PH-04-R01 (26, 10.2, 5, solid, 0) | 0.579, 1, 0.75, 1, 0.5 | **75.3** |
 
 ## Worked arithmetic
 
 - **R2:** 0.35 x 0 + 0.20 x 1 + 0.20 x 1 + 0.15 x 0 + 0.10 x 1 = 0.50 -> 50.0.
-- **R3 (missing airflow):** O2 closeness = 1 - 4/19 = 0.789. Used weights: 0.35 + 0.20 + 0.15 + 0.10 = 0.80. Sum = 0.35 x 0.789 + 0.20 + 0.15 + 0.10 = 0.7263. Rescaled: 0.7263 / 0.80 = 0.9079 -> 90.8.
+- **R3 (missing airflow):** O2 closeness = 1 - 4/19 = 0.789. Airflow is missing, so it scores the neutral 0.5. Sum = 0.35 x 0.789 + 0.20 x 1 + 0.20 x 0.5 + 0.15 x 1 + 0.10 x 1 = 0.2763 + 0.20 + 0.10 + 0.15 + 0.10 = 0.8263 -> 82.6.
 - **R4:** every factor 1 except fuel 0 -> 1 - 0.15 = 0.85 -> 85.0.
 - **R5:** O2 = 1 - 8/19 = 0.579; airflow = 1 - 5/20 = 0.75; gravity 0.5. Sum = 0.35 x 0.579 + 0.20 + 0.20 x 0.75 + 0.15 + 0.10 x 0.5 = 0.2026 + 0.20 + 0.15 + 0.15 + 0.05 = 0.7526 -> 75.3.
 

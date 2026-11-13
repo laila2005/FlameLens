@@ -37,14 +37,14 @@ def test_mock_ranges_match_the_doc():
 @pytest.mark.parametrize("name,target,run_id,no_airflow,expected,used", [
     ("R1", T(34, 10.2, 12, "gas", 0), "PH-05-R01", False, 100.0, 5),
     ("R2", T(21, 14.7, 0, "solid", 0), "PH-08-R01", False, 50.0, 5),
-    ("R3", T(21, 14.7, 10, "solid", 0), "PH-02-R03", True, 90.8, 4),
+    ("R3", T(21, 14.7, 10, "solid", 0), "PH-02-R03", True, 82.6, 4),
     ("R4", T(30, 10.2, 12, "solid", 0), "PH-05-R02", False, 85.0, 5),
     ("R5", T(34, 10.2, 10, "solid", 0.16), "PH-04-R01", False, 75.3, 5),
 ])
 def test_ranker_hand_checked_cases(name, target, run_id, no_airflow, expected, used):
     run = dict(BY_ID[run_id])
     if no_airflow:
-        run["airflow_cm_s"] = None  # missing field: the factor is dropped and the weights rescaled
+        run["airflow_cm_s"] = None  # missing field: the factor scores a neutral 0.5 (not dropped)
     score, _, factors_used = engine.run_score(target, run, MOCK_RNG)
     assert round(score, 1) == expected
     assert factors_used == used

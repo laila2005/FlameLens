@@ -68,7 +68,7 @@ Weighted closeness score from 0 to 100.
 | Gravity fit | 0.10 |
 
 Rules:
-- If a run lacks a field, drop that term, rescale the other weights, and show "based on N of 5 factors".
+- If a run lacks a field, that term scores a neutral 0.5 (not dropped, so missing data is never rewarded); show "based on N of 5 factors" counting real values only. Only an airflow the user left unspecified is dropped and the weights rescaled.
 - Normalise with the dataset's actual min and max and clamp to 0–1.
 - Return the per-term breakdown so the UI can draw it.
 - Rank runs, then roll up to the investigation using the best 3 runs.
