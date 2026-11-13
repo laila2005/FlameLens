@@ -138,3 +138,8 @@ The challenge asks the dashboard to summarize and compare investigations (object
 - Raw PSI records are cached in `data/raw/psi_json/` (git-ignored). The CFI record (about 4 MB) needed several attempts on the venue network.
 
 Routes: `GET /api/investigations`, `GET /api/investigations/{psi_id}`, `GET /api/compare?a=&b=` (same, different, measurements shared or only in one), `GET /api/export/runs.csv` (curated run table for modeling), `GET /api/export/investigations.json`.
+
+
+## BASS conditions from its SRD (13 Nov, evening)
+
+Source: `PSI-26_Science Documents_SRD_BASS.pdf`. It states (a) pressure is the **ambient cabin pressure** (same as SPICE), and (b) the cabin oxygen was measured on each test day and **testing was restricted to oxygen at or above 21 %**. So the 122 BASS runs now carry oxygen = 21 % as a **lower bound** (basis `text`), no longer empty. They are still not a measured per-test value, and pressure stays the assumed 14.7 psi (the SRD gives no number). Download tip: for files whose `redirect=false` link comes back empty, use `...&redirect=true` and follow the redirect.

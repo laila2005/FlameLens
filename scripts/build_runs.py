@@ -201,9 +201,11 @@ try:
             continue
         air = str(r[iair] or "")
         flow = num(air) if re.match(r"^\s*\d", air) else None
-        add(26, "PSI-26 As Run Test Matrix.xlsx", str(mat), "solid", None, "unknown", CABIN_PSI, "assumed", flow,
+        # BASS SRD (PSI-26_Science Documents_SRD_BASS.pdf): testing was restricted to cabin oxygen at or above 21 %,
+        # measured each test day, at ambient cabin pressure. So 21 % is a lower bound, not a measured value.
+        add(26, "PSI-26 As Run Test Matrix.xlsx", str(mat), "solid", 21.0, "text", CABIN_PSI, "assumed", flow,
             "text" if flow is not None else "unknown", "tested", vsrc="text",
-            notes=f"air display (cm/s, first reading): {air}; oxygen not in the matrix (nitrogen dilution used); pressure assumed ISS cabin")
+            notes=f"air display (cm/s, first reading): {air}; oxygen 21 % = lower bound (SRD: cabin oxygen at or above 21 %, not in the matrix); pressure = ambient cabin (SRD), 14.7 psi assumed")
 except Exception as exc:
     print("BASS as-run matrix not read:", exc)
 
