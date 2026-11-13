@@ -92,11 +92,12 @@ Six roles (names in `docs/02-team-roles.md`): A tech lead and backend, B fronten
 ## 6. Rules for working in this repo
 
 1. **No product code before the hackathon starts (Fri 13 Nov, 1:00 PM Cairo).** The official guide: planning and task split are allowed, presenting ready or half-finished projects is prohibited, actual work starts at the start. Docs, designs, research notes and tooling are fine. Practice code stays outside the repo and is never reused. The interactive dashboard mockup is a design sketch only: rebuild everything from scratch after 1:00 PM and do not present it as built.
-2. Do not invent scientific values, thresholds, oxygen limits or experiment results. Anything scientific needs a source in `docs/research/claims.md` (task F5) or must be labelled as an example/guess.
-3. Do not put secrets in the repo. `.env` is git-ignored; `.env.example` documents the variables.
-4. Commit and push only when the user asks. Never force-push `main`. Commit messages end with the attribution line the session instructs.
-5. Keep docs plain and short: sentences a non-expert can follow, tables for structure, no jargon without a definition.
-6. When you change a task, role or decision, update all places: the doc, `TASKS.md`, the Arabic copy if one exists, and the Status log below.
+2. Earth spin-off text must come from the NASA spin-off pages in `docs/12-resources.md` section 0; never invent one.
+3. Do not invent scientific values, thresholds, oxygen limits or experiment results. Anything scientific needs a source in `docs/research/claims.md` (task F5) or must be labelled as an example/guess.
+4. Do not put secrets in the repo. `.env` is git-ignored; `.env.example` documents the variables.
+5. Commit and push only when the user asks. Never force-push `main`. Commit messages end with the attribution line the session instructs.
+6. Keep docs plain and short: sentences a non-expert can follow, tables for structure, no jargon without a definition.
+7. When you change a task, role or decision, update all places: the doc, `TASKS.md`, the Arabic copy if one exists, and the Status log below.
 
 ## 7. About the user and how to help
 
@@ -143,6 +144,8 @@ gh auth status                    # GitHub CLI login for pushing
 ## Status log
 
 Newest first. One line per change: date, what, who or what session.
+
+- 2026-11-13 (hackathon day, 8:30 AM Cairo when written; hackathon starts 1:00 PM): NASA shared the official resource list; added to `docs/12-resources.md` section 0. PSI combustion search is the data source. Spin-off text must come from the three NASA spin-off pages. Investigation list re-checked against NASA's Combustion Science page: CFI, SAME-R, DAFT-2, ACME E-FIELD still unverified.
 
 - 2026-11-09: Web research added as `docs/12-resources.md`. Our challenge is "Flame in Freefall: SI-Powered Fire Safety Insights from Microgravity Combustion Data". PSI has no documented API (manual downloads), NTRS API works for papers, AWS bucket `nasa-psi` may not hold combustion data. The official challenge page was NOT read (certificate error in the research tool): F must read it and paste the statement into docs/12. If it expects an AI component, move the cited AI explanation to Must ship.
 

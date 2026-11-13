@@ -2,6 +2,29 @@
 
 Reading and research are allowed before the hackathon. Building is not (see [11 Event facts](11-event-facts.md)). This page lists what is public, how to reach it, and what to do with it on Friday. Everything here comes from web pages read on 9 Nov 2026. Items marked **unverified** came from third parties or could not be confirmed. Re-check before relying on them.
 
+## 0. Official NASA resources (shared 13 Nov, the day of the hackathon)
+
+These came from the organizers on the day. They replace our guesses where they differ.
+
+| Resource | Link | How we use it |
+|---|---|---|
+| **PSI Data Repository, Combustion Science** | https://psi.nasa.gov/physci/repo/search?q=combustion | **The data our app is based on.** D and F start here at 1:00 PM |
+| NASA Combustion Science | https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/ | Basic info on most investigations in PSI. Fact sheet PDFs for archived ones. See section 4 |
+| ScienceCasts: The Power of Studying Combustion on the ISS (3.6 min video, 2018) | https://www.youtube.com/watch?v=W1oXykoz9zg | F, for the video storyboard |
+| A Researcher's Guide to ISS Combustion Science (2015, 50+ pages) | https://www.nasa.gov/missions/station/a-researchers-guide-to-combustion-science/ (PDF: https://www.nasa.gov/wp-content/uploads/2016/05/np-2015-10-034-jsc_combustion_in_reduced_gravity-iss-mini-book-011116-508.pdf) | Investigation descriptions for most PSI combustion entries. E and D read it for context and prompts |
+| Apollo 1 | https://sma.nasa.gov/sma-disciplines/accllp/apollo-1 | Pitch hook: why fire safety matters. A real, sourced story (crew lost in a pre-launch fire) |
+| Apollo 13 | https://sma.nasa.gov/sma-disciplines/accllp/apollo-13 | Same: oxygen tank explosion, lessons learned |
+| 25 Years Ago: Fire Aboard Space Station Mir | https://www.nasa.gov/history/25-years-ago-fire-aboard-space-station-mir/ | Pitch hook: a real fire in 1997 caused by an oxygen generator failure |
+| Fire Detector (spin-off) | https://spinoff.nasa.gov/node/9407 | **Earth spin-off text for the detection investigations.** 1970s shuttle smoke detector that tells smoke from dust, fewer nuisance alarms, used in mining |
+| Fireman's Air Tanks (spin-off) | https://spinoff.nasa.gov/node/9582 | Earth spin-off example (spacesuit technology for firefighter breathing gear) |
+| New Technology for the Fire Attire (spin-off) | https://spinoff.nasa.gov/node/9918 | Earth spin-off example (spacesuit technology for firefighter clothing) |
+
+Rules for using them:
+- **Earth spin-off text in the app must come from these three NASA spin-off pages.** Do not invent spin-offs. The examples written in the planning mockup were placeholders.
+- The Apollo 1, Apollo 13 and Mir pages are for the story only. Do not put numbers from them in the UI without F's claims table entry.
+- The smoke detector spin-off matches our Lens 2 (smoke vs dust): use it as the real-world link on that lens.
+- Official statement: the resource list says PSI is "the source of the data upon which the NASA Space App is to be based". Our dashboard is built on PSI as planned.
+
 ## 1. The official challenge
 
 | Item | Finding |
@@ -11,7 +34,7 @@ Reading and research are allowed before the hackathon. Building is not (see [11 
 | Our access | The page could not be opened by our research tool (a certificate error), so **we have not read the official text**. **F reads it in a normal browser tonight and copies the exact statement into this file** |
 | What a third-party summary says (unverified) | Build a dashboard that **summarizes, ranks and explains** decades of NASA microgravity combustion results, to inform fire safety for Moon and Mars missions. Difficulty: intermediate to advanced. Category: space exploration |
 | What "SI-Powered" means | Not confirmed. A third-party site reads it as "super intelligence", meaning AI. If the official text expects an AI component, **move the cited AI explanation from Should ship to Must ship** |
-| Official resource list | A third-party source says the official resources open on the Space Apps site on 13 Nov |
+| Official resource list | **Shared on 13 Nov, see section 0** |
 
 Why it matters: "summarize, rank and explain" matches FlameLens (summary cards, ranker, evidence case with explanation). Quote the challenge wording in our summary and slides.
 
@@ -73,9 +96,12 @@ Source: https://www.nasa.gov/missions/station/iss-research/studying-combustion-a
 | Confined Combustion (ISS National Lab) | Flame spread in confined spaces of different shapes | Prevention |
 | SAME, DAFT | Smoke particle size and a particle counter on the ISS; the ISS detector failed to alarm on Kapton smoke in half the tests (SAME paper) | Detection |
 | SPICE | Hardware used with BASS (slightly modified); details not confirmed | Prevention |
-| FLARE (JAXA) | Material flammability in microgravity; no detail found | (other) |
+| FLARE (Flammability Limits At Reduced-g Experiment) | A method to relate material flammability limits at normal and reduced gravity, so microgravity limits can be estimated from ground data. Current | Prevention |
+| FM2 (Flammability of Materials on the Moon) | First combustion experiment on another planetary body, at lunar gravity (1/6 g). Current | Prevention |
+| SLICE | Coflow laminar diffusion flames: flame structure and liftoff. Archived | (other) |
+| SoFIE (current, per NASA Combustion Science page) | Fire growth and fire-safety techniques; whether the 1-g flame test in NASA-STD-6001 is conservative in low gravity | Prevention |
 
-Not found on those NASA pages and so **unverified**: CFI, DAFT-2, SAME-R, ACME E-FIELD Flames. They came from the original idea text. D and F check each on PSI. Update [02](02-team-roles.md), [06](06-data-guide.md) and the research index if the real list differs.
+**Checked against the NASA Combustion Science page (13 Nov).** It names: FM2, SoFIE, FLARE, ACME, BASS, DAFT, FLEX, Saffire, SAME, SLICE, SPICE. It does **not** name BASS-II, SAME-R, DAFT-2, FLEX-2, CFI, BRE or Confined Combustion (some of these appear on the other NASA page above). **CFI, SAME-R, DAFT-2 and "ACME E-FIELD Flames" are still unverified** and may not be in PSI. D and F confirm each in PSI search at 1:00 PM and update [02](02-team-roles.md), [06](06-data-guide.md) and the research index.
 
 NASA text also says: some materials may be **more flammable in partial gravity**, and a planned study (Flammability of Materials on the Moon, FM2) will test flame size and spread. This supports why Moon habitats need this data.
 

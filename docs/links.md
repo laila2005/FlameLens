@@ -14,6 +14,6 @@ The documents in this repo are the source of truth. The older planning pages bel
 | Item | Link |
 |---|---|
 | Official challenge page | https://www.spaceappschallenge.org/2026/challenges/flame-in-freefall/ |
-| PSI repository | https://psi.nasa.gov |
+| PSI repository (combustion) | https://psi.nasa.gov/physci/repo/search?q=combustion |
 | Shared drive for large files | https://drive.google.com/drive/folders/1NmOPB8hY533lgdi9hUpG5A6HVme1rOQn?usp=sharing |
 | Figma or design folder | |

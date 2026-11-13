@@ -43,6 +43,8 @@ Plain words, no jargon, readable on a phone. Screen recording of the tagged buil
 | 20–25 | Run this next and Safer options | "Tells you what to test next and what to change" |
 | 25–30 | Logo, "Every claim cites a real run" | "FlameLens: evidence you can trust" |
 
+Hook options that are real and sourced (see [12 Resources](12-resources.md#0-official-nasa-resources-shared-13-nov-the-day-of-the-hackathon)): the Apollo 1 pre-launch fire, the 1997 fire on the Mir space station, or the NASA smoke detector that tells smoke from dust and ended up in mines.
+
 ## 7-slide outline (backup, or if we choose slides)
 
 1. Challenge: what NASA asks and why fire safety in space matters
