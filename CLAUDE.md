@@ -146,6 +146,8 @@ gh auth status                    # GitHub CLI login for pushing
 
 Newest first. One line per change: date, what, who or what session.
 
+- 2026-11-13 ~4 PM Cairo: Laila: drop Vercel redeploys for now. The live URL still serves the 1:51 PM build (no AI panel). Vercel CLI 65.15.0 is installed on this laptop but not logged in. Run locally with `python -m uvicorn backend.app.main:app --port 8000` (serves dashboard + API at http://localhost:8000). Decide hosting for the final submission before hour 17 (links must be public).
+
 - 2026-11-13 ~3:30 PM Cairo (hour 2.5): AI part built (challenge asks for "SI-powered"): `backend/app/explain.py` (retrieval from the engine, citation verifier, template fallback, optional OpenAI-compatible model), `POST /api/explain`, `POST /api/verify`, `scripts/build_explanations.py`, dashboard panel "What the evidence says", 9 new tests (64 pass). No model downloaded (Laila: not now), so the panel shows the verified template until Dai pushes `data/curated/explanations.json`. Fixed verdict subtitle bug (0 g, no match showed the wrong line). Laila confirmed: auto commit and push (rule 5). Vercel CLI is not installed on this laptop, so this push is NOT yet on the live site.
 
 - 2026-11-13 afternoon: LIVE at https://flamelens-steel.vercel.app (Vercel project flamelens, team laila-mohameds-projects; not linked to GitHub, redeploy with `vercel deploy --prod --yes`). Dashboard is static HTML/JS in frontend/dist (no build step, works offline). Added: ranker missing values = neutral 0.5; early-detection simulator tab (illustration) + /api/detect/evidence (real BASS-II CO/CO2, SAME-R/DAFT sizes, cool flames). 49 tests.
