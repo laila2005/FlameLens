@@ -51,3 +51,22 @@ def test_export_investigations_json():
     r = client.get("/api/export/investigations.json")
     assert r.status_code == 200
     assert len(r.json()) >= 19
+
+
+def test_modeling_studies_endpoint_and_links():
+    m = client.get("/api/modeling").json()
+    assert m["count"] == 5
+    mod_ids = {s["psi_id"] for s in m["studies"]}
+    assert mod_ids == {"PSI-60", "PSI-62", "PSI-115", "PSI-117", "PSI-142"}
+    assert all(s["doi"] and s["uses_flight_psi_ids"] for s in m["studies"])
+
+    # FLEX (PSI-69) should link to PSI-117 and PSI-142; BASS-II (PSI-25) to PSI-62
+    flex = client.get("/api/investigations/PSI-69").json()
+    assert {s["psi_id"] for s in flex["modeling_studies"]} == {"PSI-117", "PSI-142"}
+    bass2 = client.get("/api/investigations/PSI-25").json()
+    assert {s["psi_id"] for s in bass2["modeling_studies"]} == {"PSI-62"}
+
+    # Ensure ground/CFD modeling studies never pollute physical flight runs in runs.csv
+    runs_csv = client.get("/api/export/runs.csv").text
+    for mid in mod_ids:
+        assert f",{mid}," not in runs_csv

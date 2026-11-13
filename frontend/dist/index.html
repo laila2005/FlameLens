@@ -123,14 +123,19 @@
 
   <section class="layout3" aria-label="Data and Earth benefits">
     <div class="panel">
-      <h2>Use the data</h2>
-      <p>Download the curated tables for your own flammability models. Every row keeps its source table, DOI and how each value was obtained (measured, read from text, or assumed).</p>
+      <h2>Use the data &amp; predictive modeling</h2>
+      <p>Download the curated flight tables for your own flammability models. Every row keeps its source table, DOI and how each value was obtained (measured, read from text, or assumed).</p>
       <div class="dl">
         <a class="btn" href="/api/export/runs.csv">Runs table (CSV, 1,922 runs)</a>
         <a class="btn" href="/api/export/investigations.json">Investigation profiles (JSON)</a>
         <a class="btn" href="/docs" target="_blank" rel="noopener">API for developers</a>
       </div>
       <p class="hint">License: NASA PSI data is CC0. Please cite each investigation's DOI.</p>
+      <div class="modbox" id="modelingbox">
+        <h3>Predictive models built from PSI flight data (ground &amp; CFD)</h3>
+        <p class="hint" id="modelingnote">Loading PSI ground &amp; CFD modeling studies…</p>
+        <ul class="modlist" id="modelinglist"></ul>
+      </div>
     </div>
     <div class="panel">
       <h2>Back on Earth</h2>

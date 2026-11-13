@@ -362,8 +362,12 @@
     $("invgrid").innerHTML = list.map((p) => `<button class="inv" data-inv="${esc(p.psi_id)}" aria-pressed="${invSel.includes(p.psi_id)}">
         <span class="t"><b>${esc(p.acronym)}</b><span class="tag p-${esc(p.pillar)}">${esc(p.pillar)}</span></span>
         <span class="rel">${esc(p.relevance || p.title)}</span>
-        <span class="meta">${esc(p.psi_id)} · ${p.n_runs || 0} runs · ${esc(p.hardware_group || "")}${p.challenge_mentions ? " · named in the challenge" : ""}</span>
+        <span class="meta">${esc(p.psi_id)} · ${p.n_runs || 0} runs · ${esc(p.hardware_group || "")}${p.challenge_mentions ? " · named in the challenge" : ""}${modCountLabel(p.modeling_count)}</span>
       </button>`).join("");
+  }
+
+  function modCountLabel(n) {
+    return n ? ` · ${n} PSI ${n === 1 ? "model study" : "model studies"}` : "";
   }
 
   async function renderInvDetail() {
@@ -373,6 +377,7 @@
       if (invSel.length === 1) {
         const p = await get(`/api/investigations/${encodeURIComponent(invSel[0])}`);
         const r = p.ranges || {};
+        const mods = p.modeling_studies || [];
         el.innerHTML = `<h2>${esc(p.acronym)}: ${esc(p.title)}</h2>
           <p class="hint">${esc(p.psi_id)} · ${esc(p.pillar)} · ${esc(p.hardware_group || "")} · ${esc(p.start_date || "")}–${esc(p.end_date || "")} ·
             <a href="${esc(p.psi_url)}" target="_blank" rel="noopener">PSI page</a>${p.doi ? ` · <a href="https://doi.org/${esc(p.doi)}" target="_blank" rel="noopener">DOI</a>` : ""}</p>
@@ -391,6 +396,7 @@
             <dt>Outcomes</dt><dd>${Object.entries(p.outcome_counts || {}).map(([k, v]) => `${esc(k)} ${v}`).join(", ") || "–"}</dd>
           </dl>
           ${p.research_impacts_summary ? `<p><b>Earth benefits (NASA):</b> ${esc(p.research_impacts_summary)}</p>` : ""}
+          ${mods.length ? `<div class="modbox"><h3>Predictive models built from ${esc(p.acronym)} data (PSI ground studies)</h3><ul class="modlist">${mods.map((m) => `<li><b>${esc(m.psi_id)}:</b> ${esc(m.title)} <span class="hint">(${esc(m.method)})</span> · <a href="${esc(m.psi_url)}" target="_blank" rel="noopener">PSI</a>${m.doi ? ` · <a href="https://doi.org/${esc(m.doi)}" target="_blank" rel="noopener">DOI</a>` : ""}</li>`).join("")}</ul></div>` : ""}
           <p class="hint">Ranges count measured and text values only. Select a second investigation to compare.</p>`;
       } else {
         const c = await get(`/api/compare?a=${encodeURIComponent(invSel[0])}&b=${encodeURIComponent(invSel[1])}`);
@@ -405,6 +411,37 @@
       }
     } catch (e) {
       el.innerHTML = `<h2>Details and comparison</h2><p class="err">${esc(e.message)}</p>`;
+    }
+  }
+
+  async function initModeling() {
+    const listEl = $("modelinglist"), noteEl = $("modelingnote");
+    if (!listEl) return;
+    try {
+      const d = await get("/api/modeling");
+      noteEl.textContent = d.note;
+      listEl.innerHTML = (d.studies || []).map((m) => {
+        const chips = (m.uses_flight_psi_ids || []).map((fid, idx) => {
+          const acr = (m.uses_acronyms || [])[idx] || fid;
+          return `<button type="button" class="modchip" data-jump-inv="${esc(fid)}" title="Inspect ${esc(acr)} (${esc(fid)}) flight investigation">${esc(acr)}</button>`;
+        }).join(" ");
+        return `<li>
+          <div class="modhead"><b>${esc(m.psi_id)}</b> · <a href="${esc(m.psi_url)}" target="_blank" rel="noopener">${esc(m.title)}</a></div>
+          <div class="modsub">${esc(m.objective_summary)}</div>
+          <div class="modmeta">Uses flight data: ${chips} · Method: ${esc(m.method)}${m.doi ? ` · <a href="https://doi.org/${esc(m.doi)}" target="_blank" rel="noopener">doi.org/${esc(m.doi)}</a>` : ""}</div>
+        </li>`;
+      }).join("");
+      listEl.addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-jump-inv]");
+        if (!btn) return;
+        invPillar = "All";
+        invSel = [btn.dataset.jumpInv];
+        renderInvGrid();
+        renderInvDetail();
+        $("invdetail")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      });
+    } catch (e) {
+      noteEl.textContent = `Could not load modeling studies (${e.message}).`;
     }
   }
 
@@ -443,4 +480,5 @@
 
   init();
   initInvestigations();
+  initModeling();
 })();

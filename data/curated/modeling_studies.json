@@ -1,0 +1,62 @@
+[
+ {
+  "psi_id": "PSI-62",
+  "title": "Concurrent Flame Spread Modeling using Flamelet Generated Manifolds in Microgravity with Comparison to BASS Experiments using Two-Color Tomography",
+  "doi": "10.60555/e9xp-ex83",
+  "license": "CC0-1.0",
+  "psi_url": "https://psi.nasa.gov/physci/repo/data/investigations/PSI-62",
+  "project_type": "Ground Investigation",
+  "uses_flight_psi_ids": ["PSI-26", "PSI-25"],
+  "uses_acronyms": ["BASS", "BASS-II"],
+  "method": "Unsteady Flamelet Generated Manifold (UFGM) CFD + 3D two-color DSLR tomography",
+  "objective_summary": "Develops and validates unsteady flamelet generated manifold (UFGM) simulations of concurrent solid-fuel flame spread in microgravity, benchmarked directly against NASA BASS and BASS-II PMMA and wax experiments."
+ },
+ {
+  "psi_id": "PSI-60",
+  "title": "Computational and Experimental Analysis of SPICE Data Sets",
+  "doi": "10.60555/mzjm-yv57",
+  "license": "CC0-1.0",
+  "psi_url": "https://psi.nasa.gov/physci/repo/data/investigations/PSI-60",
+  "project_type": "Ground Investigation",
+  "uses_flight_psi_ids": ["PSI-107"],
+  "uses_acronyms": ["SPICE"],
+  "method": "Computational soot & radiation modeling across 1,600+ raw DSLR flame images",
+  "objective_summary": "Integrates computational soot models with over 1,600 raw DSLR images from the ISS SPICE dataset to derive temperature distributions, soot volume fractions, and smoke-point behavior in 0g vs. 1g."
+ },
+ {
+  "psi_id": "PSI-115",
+  "title": "Utilization of the Smoke Aerosol Measurement Experiment Data for Advanced Modeling and Simulation of Smoke Generation in Micro-Gravity",
+  "doi": "10.60555/q0v5-1v28",
+  "license": "CC0-1.0",
+  "psi_url": "https://psi.nasa.gov/physci/repo/data/investigations/PSI-115",
+  "project_type": "Ground Investigation",
+  "uses_flight_psi_ids": ["PSI-102"],
+  "uses_acronyms": ["SAME"],
+  "method": "Direct Numerical Simulation (Navier-Stokes nodal aerosol dynamics)",
+  "objective_summary": "Uses direct numerical simulation in a SAME-like cross-flow geometry to quantify how microgravity vs. Earth buoyancy changes pyrolysis smoke wake structure, thermophoresis, and particle size growth."
+ },
+ {
+  "psi_id": "PSI-117",
+  "title": "Effect of External Thermo-Convective Perturbation on Cool Flame Dynamics: A Multidimensional Multi-Physics CFD Analysis",
+  "doi": "10.60555/gz0q-b577",
+  "license": "CC0-1.0",
+  "psi_url": "https://psi.nasa.gov/physci/repo/data/investigations/PSI-117",
+  "project_type": "Ground Investigation",
+  "uses_flight_psi_ids": ["PSI-69"],
+  "uses_acronyms": ["FLEX"],
+  "method": "OpenFOAM 3D multi-physics CFD with coupled low-temperature chemistry and radiation",
+  "objective_summary": "Uses ISS FLEX flight data from PSI to model 3D n-alkane droplet cool flames, mapping stability windows for sustained oscillation, hot-flame transition, drift-induced convection, and extinction."
+ },
+ {
+  "psi_id": "PSI-142",
+  "title": "Quantitative Studies of Cool Flame Transitions at Radiation / Stretch Extinction Using Counterflow Flames",
+  "doi": "10.60555/80qf-vj95",
+  "license": "CC0-1.0",
+  "psi_url": "https://psi.nasa.gov/physci/repo/data/investigations/PSI-142",
+  "project_type": "Ground Investigation",
+  "uses_flight_psi_ids": ["PSI-69"],
+  "uses_acronyms": ["FLEX"],
+  "method": "1D/counterflow numerical continuation + ozone-sensitized ground validation",
+  "objective_summary": "Uses ISS FLEX experimental conditions from PSI to map flammability and radiation/stretch extinction boundaries separating hot flames and diffusional cool flames across oxygen and pressure levels."
+ }
+]

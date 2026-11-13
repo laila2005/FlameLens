@@ -189,3 +189,13 @@ select { background: var(--panel2); border: 1px solid var(--line); border-radius
 .claims .ok { color: var(--ok); }
 .removed summary { cursor: pointer; color: var(--muted); font-size: 13px; }
 .removed s { color: var(--muted); }
+
+/* Predictive modeling studies (PSI ground & CFD) */
+.modbox { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--line); }
+.modbox h3 { margin: 0 0 6px; font-size: 14px; color: var(--cool); }
+.modlist { margin: 6px 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 8px; font-size: 13px; }
+.modhead { line-height: 1.35; }
+.modsub { color: var(--muted); font-size: 12.5px; margin-top: 2px; line-height: 1.4; }
+.modmeta { font: 11.5px var(--mono); color: var(--muted); margin-top: 4px; display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+.modchip { font: 11px var(--mono); background: var(--panel2); color: var(--cool); border: 1px solid var(--line); border-radius: 5px; padding: 1px 6px; cursor: pointer; }
+.modchip:hover { border-color: var(--flame); color: var(--fg); }

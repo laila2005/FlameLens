@@ -186,6 +186,17 @@ def compare_investigations(a: str, b: str):
     return out
 
 
+@app.get("/api/modeling", tags=["investigations"], summary="Ground and CFD modeling investigations in PSI built on the flight datasets")
+def modeling_investigations():
+    from . import profiles
+    studies = profiles.modeling_studies()
+    return {
+        "count": len(studies),
+        "note": "Ground/CFD modeling studies in NASA PSI that consume spaceflight datasets (BASS, BASS-II, SPICE, SAME, FLEX). Kept separate from runs.csv so the Evidence Case counts only physical burn experiments.",
+        "studies": studies,
+    }
+
+
 @app.get("/api/export/runs.csv", tags=["export"], summary="Download the curated run table (CSV) for predictive modeling")
 def export_runs():
     from fastapi.responses import Response

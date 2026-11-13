@@ -9,6 +9,7 @@ from functools import lru_cache
 from . import data
 
 PROFILES_JSON = data.CURATED / "investigation_profiles.json"
+MODELING_JSON = data.CURATED / "modeling_studies.json"
 LONG_TEXT = ("objectives", "approach", "hypothesis", "research_impacts")
 
 
@@ -18,9 +19,23 @@ def _profiles():
         return json.load(f)
 
 
+@lru_cache(maxsize=1)
+def modeling_studies():
+    if not MODELING_JSON.exists():
+        return []
+    with open(MODELING_JSON, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def modeling_for(psi_id):
+    return [m for m in modeling_studies() if psi_id in (m.get("uses_flight_psi_ids") or [])]
+
+
 def _summary(p):
     """Profile without the full long texts (their *_summary versions stay)."""
-    return {k: v for k, v in p.items() if k not in LONG_TEXT}
+    out = {k: v for k, v in p.items() if k not in LONG_TEXT}
+    out["modeling_count"] = len(modeling_for(p["psi_id"]))
+    return out
 
 
 def all_profiles():
@@ -28,7 +43,10 @@ def all_profiles():
 
 
 def profile(psi_id):
-    return next((p for p in _profiles() if p["psi_id"] == psi_id), None)
+    p = next((p for p in _profiles() if p["psi_id"] == psi_id), None)
+    if p is None:
+        return None
+    return {**p, "modeling_studies": modeling_for(psi_id)}
 
 
 def _range_text(r):
