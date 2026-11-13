@@ -1,9 +1,12 @@
 """Load the curated FlameLens tables once and share them across the app.
 
 Files (see docs/research/dashboard-data-map.md):
-  data/curated/runs.csv                  1,922 runs, one schema
+  data/curated/runs.csv                  2,003 runs across 18 spaceflight PSIs, one schema
   data/curated/investigations.csv        26 PSI investigations with DOIs
-  data/curated/smoke_dust_sizes.csv      smoke and dust particle sizes (Lens 2)
+  data/curated/smoke_dust_sizes.csv      smoke and dust particle sizes (SAME-R + DAFT)
+  data/curated/spread_rates.csv          43 measured 0g flame spread / regression rates (BASS-II + Saffire-II)
+  data/curated/coolflame_notes.csv       sourced cool-flame findings (ACME CFI-G, CFI, PSI-142)
+  data/curated/papers.csv                NASA NTRS peer-reviewed paper library
 Tests can pass another runs file (for example data/mock/runs_placeholder.csv) to load_runs().
 """
 import csv
@@ -15,6 +18,9 @@ CURATED = ROOT / "data" / "curated"
 RUNS_CSV = CURATED / "runs.csv"
 INVESTIGATIONS_CSV = CURATED / "investigations.csv"
 SIZES_CSV = CURATED / "smoke_dust_sizes.csv"
+SPREAD_CSV = CURATED / "spread_rates.csv"
+COOLNOTES_CSV = CURATED / "coolflame_notes.csv"
+PAPERS_CSV = CURATED / "papers.csv"
 
 NUMERIC = ("o2_pct", "pressure_psi", "airflow_cm_s", "gravity_g")
 
@@ -59,6 +65,37 @@ def sizes():
                 r[k] = _num(r.get(k))
             rows.append(r)
     return rows
+
+
+@lru_cache(maxsize=1)
+def spread_rates():
+    if not SPREAD_CSV.exists():
+        return []
+    rows = []
+    num_cols = ("thickness_mm", "width_cm", "sides_burning", "airflow_cm_s",
+                "o2_initial_pct", "o2_final_pct", "pressure_psi", "spread_rate_mm_s", "burn_time_s")
+    with open(SPREAD_CSV, encoding="utf-8", newline="") as f:
+        for r in csv.DictReader(f):
+            for k in num_cols:
+                r[k] = _num(r.get(k))
+            rows.append(r)
+    return rows
+
+
+@lru_cache(maxsize=1)
+def coolflame_notes():
+    if not COOLNOTES_CSV.exists():
+        return []
+    with open(COOLNOTES_CSV, encoding="utf-8", newline="") as f:
+        return list(csv.DictReader(f))
+
+
+@lru_cache(maxsize=1)
+def papers():
+    if not PAPERS_CSV.exists():
+        return []
+    with open(PAPERS_CSV, encoding="utf-8", newline="") as f:
+        return list(csv.DictReader(f))
 
 
 def ranges(rows=None):

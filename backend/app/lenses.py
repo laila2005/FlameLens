@@ -53,13 +53,14 @@ def coolflame(rows=None):
         "counts_by_outcome": dict(Counter(p["outcome"] for p in points)),
         "counts_by_fuel": dict(Counter(p["fuel"] for p in points)),
         "regime_grid": regime_grid,
+        "findings": data.coolflame_notes(),
         "note": ("Outcomes come from the PSI Experimental Tables (CFI summary sheet, ACME CFI-G table, FLEX table). "
                  "FLEX outcomes (extinction, disruption, completion) are kept as 'other' with the raw label in outcome_raw."),
     }
 
 
 def aerosol(sizes=None):
-    """Measured smoke and dust particle sizes (SAME-R Table 1, DAFT report). No distributions are invented."""
+    """Measured smoke and dust particle sizes (SAME-R Table 1, DAFT report & flight bags). No distributions are invented."""
     sizes = sizes if sizes is not None else data.sizes()
     smoke = defaultdict(dict)
     dust = []
@@ -86,16 +87,34 @@ def aerosol(sizes=None):
         "smoke": smoke_list,
         "dust": dust,
         "smoke_geometric_mean_range_um": [min(smoke_gm), max(smoke_gm)] if smoke_gm else None,
-        "overlap_note": ("Dust (Arizona Road Dust, 1.65 um average in the DAFT sample analysis) is much larger than smoke "
+        "overlap_note": ("Dust (Arizona Road Dust, 1.57–1.72 um across DAFT flight bags, 1.65 um average) is much larger than smoke "
                          + (f"particles (geometric mean {min(smoke_gm):.2f} to {max(smoke_gm):.2f} um in SAME-R)" if smoke_gm
                             else "particles")
-                         + ", so a detector that measures particle size can tell them apart. The dust value is a ground "
-                         "analysis of the sample bags, not a flight size distribution."),
+                         + ", so a detector that measures particle size can tell them apart."),
+    }
+
+
+def spread(rows=None):
+    """Measured microgravity flame spread and rod regression rates vs airflow (BASS-II Summary Report + SAFFIRE-2)."""
+    rows = rows if rows is not None else data.spread_rates()
+    points = [r for r in rows if r.get("airflow_cm_s") is not None and r.get("spread_rate_mm_s") is not None]
+    flows = [p["airflow_cm_s"] for p in points]
+    rates = [p["spread_rate_mm_s"] for p in points]
+    return {
+        "points": points,
+        "n_points": len(points),
+        "counts_by_investigation": dict(Counter(p["investigation"] for p in points)),
+        "counts_by_direction": dict(Counter(p["flow_direction"] for p in points)),
+        "airflow_range_cm_s": [min(flows), max(flows)] if flows else None,
+        "spread_rate_range_mm_s": [min(rates), max(rates)] if rates else None,
+        "note": ("Measured microgravity flame spread and regression rates from NASA/TM-20210011385 (BASS-II Summary Report, "
+                 "Table 5.1 & text) and PSI-99 (SAFFIRE-2 CSV). Thin fabrics/films (0.1–0.37 mm) spread at 2.1–2.6 mm/s, "
+                 "nearly two orders of magnitude faster than thick PMMA slabs (1–5 mm, 0.012–0.144 mm/s)."),
     }
 
 
 def tested(rows=None):
-    """Oxygen vs airflow scatter of tested conditions (replaces the spread-rate lens: no spread-rate table exists)."""
+    """Oxygen vs airflow scatter of tested conditions."""
     rows = rows if rows is not None else data.runs()
     points = []
     for r in rows:

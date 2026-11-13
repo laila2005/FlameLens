@@ -24,8 +24,9 @@
     const W = opts.width || 640, H = opts.height || 420, L = 56, R = 18, T = 16, B = 48;
     const [x0, x1] = opts.xDomain, [y0, y1] = opts.yDomain;
     const lx = (v) => (opts.logX ? Math.log10(v) : v);
+    const ly = (v) => (opts.logY ? Math.log10(v) : v);
     const X = (v) => L + ((lx(v) - lx(x0)) / (lx(x1) - lx(x0))) * (W - L - R);
-    const Y = (v) => H - B - ((v - y0) / (y1 - y0)) * (H - T - B);
+    const Y = (v) => H - B - ((ly(v) - ly(y0)) / (ly(y1) - ly(y0))) * (H - T - B);
     const inX = (v) => v != null && v >= x0 && v <= x1;
     const inY = (v) => v != null && v >= y0 && v <= y1;
     let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${FL.esc(opts.aria || "chart")}">`;

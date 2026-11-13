@@ -231,7 +231,8 @@
         });
         const c = d.counts_by_outcome;
         legend(Object.keys(OUTCOME_COLOR).map((k) => [`${OUTCOME_LABEL[k]} (${c[k] || 0})`, OUTCOME_COLOR[k]]));
-        $("caption").textContent = "Cool flames keep burning invisibly after the visible flame goes out, making carbon monoxide and formaldehyde. Points come from the CFI, ACME CFI-G and FLEX droplet and gas-flame runs. Hiding a visible flame is not the same as putting the fire out.";
+        const fList = (d.findings || []).slice(0, 4).map((f) => `<li><b>${esc(f.investigation)} (${esc(f.measured_values)}):</b> ${esc(f.finding)} <span class="hint">[${esc(f.source_ref)}]</span></li>`).join("");
+        $("caption").innerHTML = `Cool flames keep burning invisibly after the visible flame goes out, making carbon monoxide and formaldehyde. Points come from CFI, ACME CFI-G and FLEX runs.${fList ? `<ul class="modlist" style="margin-top:.55rem">${fList}</ul>` : ""}`;
       } else if (lens === "aerosol") {
         const d = await lensData("aerosol");
         const rows = d.smoke.map((m) => ({
@@ -245,6 +246,25 @@
         chart.innerHTML = FL.sizePlot(rows, { aria: "Smoke and dust particle sizes", xDomain: [0.02, 5], xTicks: [0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5], xLabel: "Particle size (micrometres, log scale)" });
         legend([["Smoke, fresh (hollow)", "#ff8a24"], ["Smoke, aged 720 s (filled)", "#ff8a24"], ["Dust", "#5cd6ff"]]);
         $("caption").textContent = d.overlap_note + " Smoke values: SAME-R final report, Table 1. Dust: DAFT report. NASA's shuttle smoke detector, later used in mines, tells smoke from dust for exactly this reason.";
+      } else if (lens === "spread") {
+        const d = await lensData("spread");
+        const colorOf = (p) => (p.investigation === "Saffire-II" ? "#ffc84a" : (p.thickness_mm != null && p.thickness_mm < 0.5 ? "#5cd6ff" : "#ff8a24"));
+        chart.innerHTML = FL.scatter({
+          aria: "Measured microgravity flame spread rate against airflow",
+          points: d.points.map((p) => ({
+            x: p.airflow_cm_s, y: p.spread_rate_mm_s, id: p.run_id, color: colorOf(p), opacity: 0.9,
+            title: `${p.spread_id} (${p.run_id || p.psi_id} ${p.test_code}): ${p.material}, ${p.flow_direction} ${p.airflow_cm_s} cm/s, ${p.o2_initial_pct}% O2 -> ${p.spread_rate_mm_s} mm/s (${p.source_ref})`
+          })),
+          xDomain: [0, 32], yDomain: [0.01, 4], logY: true,
+          yTicks: [0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 4],
+          xLabel: "Airflow velocity (cm/s)", yLabel: "Spread rate (mm/s, log scale)", r: 4.4,
+        });
+        legend([
+          ["BASS-II thick PMMA slabs/rods (1–9.5 mm)", "#ff8a24"],
+          ["BASS-II thin PMMA film (0.1 mm)", "#5cd6ff"],
+          ["Saffire-II SIBAL fabric (0.37 mm, Cygnus)", "#ffc84a"],
+        ]);
+        $("caption").textContent = `${d.n_points} measured microgravity spread/regression points from NASA/TM-20210011385 (BASS-II Table 5.1 & text) and PSI-99 (Saffire-II). Thin fabrics and 0.1 mm films spread at 2.1–2.6 mm/s — nearly 20–200× faster than 1–5 mm PMMA slabs (0.012–0.144 mm/s). Click any dot to inspect its flight run.`;
       } else if (lens === "tested") {
         const d = await lensData("tested");
         chart.innerHTML = FL.scatter({
@@ -257,7 +277,7 @@
           box: t.airflow_cm_s == null ? null : { x0: t.airflow_cm_s - 8, x1: t.airflow_cm_s + 8, y0: t.o2_pct - 6, y1: t.o2_pct + 6 },
         });
         legend([["Prevention", PILLAR_COLOR.Prevention], ["Detection", PILLAR_COLOR.Detection], ["faint dot = assumed cabin air", "#55608a"]]);
-        $("caption").textContent = `${d.n_points} runs recorded both oxygen and airflow (BASS-II, Saffire, SPICE, SAME). Airflow matters in space because without gravity there is no rising hot air: the ventilation feeds the flame. Spread-rate curves are not in the PSI tables, so we show where tests were done.`;
+        $("caption").textContent = `${d.n_points} runs recorded both oxygen and airflow (BASS-II, Saffire, SPICE, SAME). Airflow matters in space because without gravity there is no rising hot air: cabin ventilation feeds the flame. Open the Flame spread tab for measured spread rates (mm/s).`;
       }
     } catch (e) {
       chart.innerHTML = `<p class="err">Could not load this lens: ${esc(e.message)}</p>`;
@@ -337,7 +357,7 @@
       const run = e.target.closest("[data-run]");
       if (run) return openEvidence(run.dataset.run);
       const pt = e.target.closest("circle.pt");
-      if (pt) return openEvidence(pt.dataset.id);
+      if (pt && pt.dataset.id) return openEvidence(pt.dataset.id);
       const cond = e.target.closest("[data-list]");
       if (cond) {
         const lists = JSON.parse($("conditions").dataset.lists || "{}");
@@ -362,7 +382,7 @@
     $("invgrid").innerHTML = list.map((p) => `<button class="inv" data-inv="${esc(p.psi_id)}" aria-pressed="${invSel.includes(p.psi_id)}">
         <span class="t"><b>${esc(p.acronym)}</b><span class="tag p-${esc(p.pillar)}">${esc(p.pillar)}</span></span>
         <span class="rel">${esc(p.relevance || p.title)}</span>
-        <span class="meta">${esc(p.psi_id)} · ${p.n_runs || 0} runs · ${esc(p.hardware_group || "")}${p.challenge_mentions ? " · named in the challenge" : ""}${modCountLabel(p.modeling_count)}</span>
+        <span class="meta">${esc(p.psi_id)} · ${p.n_runs ? `${p.n_runs} runs` : (p.planned_matrix ? "parameter matrix" : "0 runs")} · ${esc(p.hardware_group || "")}${p.challenge_mentions ? " · named in the challenge" : ""}${modCountLabel(p.modeling_count)}</span>
       </button>`).join("");
   }
 
@@ -378,6 +398,8 @@
         const p = await get(`/api/investigations/${encodeURIComponent(invSel[0])}`);
         const r = p.ranges || {};
         const mods = p.modeling_studies || [];
+        const papers = p.papers || [];
+        const pm = p.planned_matrix;
         el.innerHTML = `<h2>${esc(p.acronym)}: ${esc(p.title)}</h2>
           <p class="hint">${esc(p.psi_id)} · ${esc(p.pillar)} · ${esc(p.hardware_group || "")} · ${esc(p.start_date || "")}–${esc(p.end_date || "")} ·
             <a href="${esc(p.psi_url)}" target="_blank" rel="noopener">PSI page</a>${p.doi ? ` · <a href="https://doi.org/${esc(p.doi)}" target="_blank" rel="noopener">DOI</a>` : ""}</p>
@@ -385,8 +407,8 @@
           <p><b>Objective:</b> ${esc(p.objectives_summary || "not listed")}</p>
           <p><b>Approach:</b> ${esc(p.approach_summary || "not listed")}</p>
           <dl class="kv">
-            <dt>Runs</dt><dd>${p.n_runs || 0}</dd>
-            <dt>Fuels</dt><dd>${(p.fuels || []).map((f) => `${esc(f.name)} (${f.runs})`).join(", ") || "not recorded"}</dd>
+            <dt>Runs</dt><dd>${p.n_runs || 0}${pm ? " (parameter matrix published; see below)" : ""}</dd>
+            <dt>Fuels</dt><dd>${(p.fuels || []).map((f) => `${esc(f.name)} (${f.runs})`).join(", ") || (pm ? esc(pm.fuels.join(", ")) : "not recorded")}</dd>
             <dt>Oxygen</dt><dd>${rng(r.o2_pct, "%")}</dd>
             <dt>Pressure</dt><dd>${rng(r.pressure_psi, "psi")}</dd>
             <dt>Airflow</dt><dd>${rng(r.airflow_cm_s, "cm/s")}</dd>
@@ -395,8 +417,10 @@
             <dt>Measured</dt><dd>${esc((p.measurements_mentioned || []).join(", ") || "not stated in the PSI text")}</dd>
             <dt>Outcomes</dt><dd>${Object.entries(p.outcome_counts || {}).map(([k, v]) => `${esc(k)} ${v}`).join(", ") || "–"}</dd>
           </dl>
+          ${pm ? `<div class="modbox"><h3>Published parameter matrix (${esc(pm.source_table)})</h3><p class="hint">${esc(pm.note)}</p><p><b>Oxygen levels:</b> ${esc(pm.o2_pct_levels.join(", "))}% · <b>Pressure:</b> ${esc(pm.pressure_atm_levels.join(", "))} atm (${esc(pm.pressure_psi_range.join("–"))} psi) · <b>Flow:</b> ${esc(pm.airflow_cm_s_range.join("–"))} cm/s · <b>Droplet:</b> ${esc(pm.droplet_diameter_mm)} mm in ${esc(pm.ambient_gas)}</p></div>` : ""}
           ${p.research_impacts_summary ? `<p><b>Earth benefits (NASA):</b> ${esc(p.research_impacts_summary)}</p>` : ""}
           ${mods.length ? `<div class="modbox"><h3>Predictive models built from ${esc(p.acronym)} data (PSI ground studies)</h3><ul class="modlist">${mods.map((m) => `<li><b>${esc(m.psi_id)}:</b> ${esc(m.title)} <span class="hint">(${esc(m.method)})</span> · <a href="${esc(m.psi_url)}" target="_blank" rel="noopener">PSI</a>${m.doi ? ` · <a href="https://doi.org/${esc(m.doi)}" target="_blank" rel="noopener">DOI</a>` : ""}</li>`).join("")}</ul></div>` : ""}
+          ${papers.length ? `<div class="modbox"><h3>NASA NTRS publications (${papers.length})</h3><ul class="modlist">${papers.map((pp) => `<li><b>${esc(pp.title)}</b> ${pp.year ? `<span class="hint">(${esc(pp.year)})</span>` : ""} · <a href="${esc(pp.ntrs_url)}" target="_blank" rel="noopener">NTRS</a>${pp.pdf_url ? ` · <a href="${esc(pp.pdf_url)}" target="_blank" rel="noopener">PDF</a>` : ""}</li>`).join("")}</ul></div>` : ""}
           <p class="hint">Ranges count measured and text values only. Select a second investigation to compare.</p>`;
       } else {
         const c = await get(`/api/compare?a=${encodeURIComponent(invSel[0])}&b=${encodeURIComponent(invSel[1])}`);

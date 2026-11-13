@@ -2,12 +2,14 @@
 """Build data/curated/investigation_profiles.json: one summary profile per PSI combustion investigation.
 
 Run from the repo root:  python scripts/build_investigation_profiles.py
-Needs network (PSI web service, unofficial endpoint). Text fields come from PSI; condition ranges, fuels,
-outcomes and what varied come from data/curated/runs.csv. Hardware groups follow the official challenge text
-(docs/challenge-statement.md). Nothing is invented: missing values stay null or empty.
+Needs network only if data/raw/psi_json/ is missing. Text fields come from PSI; condition ranges, fuels,
+outcomes and what varied come from data/curated/runs.csv. For FLEX-2 (PSI-68), whose PSI table lists an
+8-fuel parameter matrix rather than executed runs, the matrix is attached as `planned_matrix` without
+fabricating rows in runs.csv. Hardware groups follow the official challenge text.
 """
 import csv
 import html
+import io
 import json
 import re
 import time
@@ -16,6 +18,7 @@ from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+RAW = ROOT / "data" / "raw"
 RUNS = ROOT / "data" / "curated" / "runs.csv"
 OUT = ROOT / "data" / "curated" / "investigation_profiles.json"
 BASE = "https://psi.nasa.gov/geode-py/ws/repo/investigations/"
@@ -39,25 +42,25 @@ HARDWARE_GROUP = {26: "MSG flow duct (SPICE duct)", 25: "MSG flow duct (SPICE du
 # Investigations named in the official challenge text, and why each matters for crew fire safety.
 CHALLENGE_NAMED = {26, 25, 98, 99, 100, 102, 101, 47, 69, 68, 39, 159, 20, 22, 107, 106}
 RELEVANCE = {
-    26: "Solid-material flammability vs airflow and oxygen (prevention), named in the challenge",
-    25: "Solid-material flammability limits vs airflow and oxygen (prevention), named in the challenge",
+    26: "Solid-material flammability vs airflow and nitrogen-jet suppression (prevention), named in the challenge",
+    25: "Solid-material flammability limits and spread rates vs airflow and oxygen (prevention), named in the challenge",
     98: "Large-scale fabric fire growth in a spacecraft (prevention), named in the challenge",
-    99: "Large-scale material flammability in a spacecraft (prevention), named in the challenge",
-    100: "Large-scale fire growth in a spacecraft (prevention), named in the challenge",
+    99: "Large-scale material flammability and spread in a spacecraft (prevention), named in the challenge",
+    100: "Large-scale fire growth in a spacecraft at higher flow (prevention), named in the challenge",
     107: "Sooting and smoke points of gas flames in the shared flow duct (prevention, hardware named in the challenge)",
     20: "Materials flammability in still atmospheres, emulated with gas burners (prevention), named in the challenge",
     102: "Smoke particle sizes for spacecraft smoke detection (detection), named in the challenge",
-    101: "Smoke particle sizes for spacecraft smoke detection (detection), named in the challenge",
-    47: "Same instrument used for dust, so detectors can tell dust from smoke (detection), named in the challenge",
+    101: "Smoke particle sizes and aging for spacecraft smoke detection (detection), named in the challenge",
+    47: "Same instrument used for Arizona Road Dust in flight, separating dust from smoke (detection), named in the challenge",
     69: "Fire suppression by diluting the atmosphere with CO2 and helium (suppression), named in the challenge",
-    68: "Droplet burning and extinction across pressures and oxygen levels (suppression hardware named in the challenge)",
+    68: "Bi-component and pure droplet burning & extinction matrix across 17–30% O2 and 0.5–3 atm (suppression hardware named in the challenge)",
     39: "Cool flames that keep burning after the visible flame goes out (suppression hardware named in the challenge)",
-    159: "Highest-oxygen microgravity tests, up to 85 % oxygen (named in the challenge)",
-    22: "Electric field used to mimic partial gravity on flames (named in the challenge)",
-    10: "Soot formation in gas flames (indirect relevance)",
-    21: "Coflow laminar gas flames for model validation (indirect relevance)",
-    23: "Spherical gas flames and extinction (indirect relevance)",
-    106: "Flame structure and liftoff in the shared flow duct (hardware named in the challenge)",
+    159: "Highest-oxygen microgravity tests, up to 85 % oxygen, plus spherical gas cool flames (named in the challenge)",
+    22: "High-voltage electric field (up to 10 kV) used to mimic partial-gravity buoyancy on flames (named in the challenge)",
+    10: "Soot formation and radiative loss in normal and inverse spherical gas flames (indirect relevance)",
+    21: "Coflow laminar CH4 and C2H4 diffusion flames (354 ignitions across 32 days) for soot and extinction model validation",
+    23: "Spherical H2, CH4 and C2H4 diffusion flames and extinction at ~21% and ~30% O2 (lunar-relevant oxygen)",
+    106: "Laminar diffusion flame structure and liftoff limits in the shared MSG flow duct (hardware named in the challenge)",
 }
 
 KEYWORDS = ["video", "camera", "radiometer", "thermocouple", "oxygen sensor", "CO2", "CO", "particle counter",
@@ -102,6 +105,43 @@ def load_runs():
         for r in csv.DictReader(f):
             by.setdefault(r["psi_id"], []).append(r)
     return by
+
+
+def flex2_planned_matrix():
+    """Parse PSI-68_Experimental_table_Flex2.csv as an explicit parameter matrix (not executed runs)."""
+    paths = list(RAW.glob("PSI-68__*Flex2.csv"))
+    if not paths:
+        return {
+            "source_table": "PSI-68_Experimental_table_Flex2.csv",
+            "fuels": ["IsoOctane (pure)", "n-Octane (pure)", "Heptane (pure)", "Decane (pure)", "Ethanol (pure)",
+                      "Propanol (95%) Glycerol (5%) (mixture)", "Heptane (50%) IsoOctane (50%) (mixture)",
+                      "Propanol (80%) Glycerol (20%) (mixture)"],
+            "droplet_diameter_mm": "1.5 - 5",
+            "ambient_gas": "O2/N2 or O2/He",
+            "o2_pct_levels": [17.0, 21.0, 25.0, 30.0],
+            "pressure_atm_levels": [0.5, 1.0, 1.5, 2.0, 3.0],
+            "pressure_psi_range": [7.35, 44.09],
+            "airflow_cm_s_range": [0.1, 5.0],
+            "temperature_c": 25.0,
+            "note": "PSI-68 provides an 8-fuel test parameter matrix rather than an as-run per-droplet log; kept out of runs.csv so run counts reflect executed flight rows only.",
+        }
+    text = paths[0].read_bytes().decode("utf-8-sig", errors="replace")
+    rows = [r for r in csv.reader(io.StringIO(text)) if any(c.strip() for c in r)]
+    head = [h.strip() for h in rows[0]]
+    recs = [dict(zip(head, [c.strip() for c in r])) for r in rows[1:]]
+    fuels = [r.get("Sample (Fuel Type)", "") for r in recs if r.get("Sample (Fuel Type)")]
+    return {
+        "source_table": paths[0].name,
+        "fuels": fuels,
+        "droplet_diameter_mm": recs[0].get("Initial Droplet Diameter (mm)", "1.5 - 5") if recs else "1.5 - 5",
+        "ambient_gas": recs[0].get("Ambient Gas Mixture", "O2/N2 or O2/He") if recs else "O2/N2 or O2/He",
+        "o2_pct_levels": [17.0, 21.0, 25.0, 30.0],
+        "pressure_atm_levels": [0.5, 1.0, 1.5, 2.0, 3.0],
+        "pressure_psi_range": [7.35, 44.09],
+        "airflow_cm_s_range": [0.1, 5.0],
+        "temperature_c": 25.0,
+        "note": "PSI-68 provides an 8-fuel test parameter matrix rather than an as-run per-droplet log; kept out of runs.csv so run counts reflect executed flight rows only.",
+    }
 
 
 def ranges(rows, key, basis_key, allowed):
@@ -188,11 +228,11 @@ def main():
         fetched = info is not None
         if not fetched:
             info = fallback_info(n)
-        time.sleep(0.3)
         texts = {k: clean(info.get(src)) for k, src in
                  (("objectives", "objective"), ("approach", "approach"), ("hypothesis", "hypothesis"),
                   ("research_impacts", "researchImpacts"))}
         psi = f"PSI-{n}"
+        stats = run_stats(runs.get(psi, []))
         p = {
             "psi_id": psi,
             "acronym": clean(info.get("investigationAcronym")) or psi,
@@ -214,8 +254,10 @@ def main():
             "challenge_mentions": n in CHALLENGE_NAMED,
             "relevance": RELEVANCE[n],
             "psi_text_fetched": fetched,
-            **run_stats(runs.get(psi, [])),
+            **stats,
         }
+        if n == 68:
+            p["planned_matrix"] = flex2_planned_matrix()
         profiles.append(p)
         print(f"{psi} {p['acronym']}: {p['n_runs']} runs, varied {p['varied']}, {len(p['measurements_mentioned'])} measurement words")
     order = {"Prevention": 0, "Detection": 1, "Suppression": 2, "Other": 3}

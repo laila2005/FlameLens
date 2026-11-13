@@ -123,7 +123,7 @@
   "measurements_mentioned": [],
   "publications_count": 10,
   "challenge_mentions": true,
-  "relevance": "Solid-material flammability vs airflow and oxygen (prevention), named in the challenge",
+  "relevance": "Solid-material flammability vs airflow and nitrogen-jet suppression (prevention), named in the challenge",
   "psi_text_fetched": true,
   "n_runs": 122,
   "fuels": [
@@ -230,7 +230,7 @@
   ],
   "publications_count": 17,
   "challenge_mentions": true,
-  "relevance": "Solid-material flammability limits vs airflow and oxygen (prevention), named in the challenge",
+  "relevance": "Solid-material flammability limits and spread rates vs airflow and oxygen (prevention), named in the challenge",
   "psi_text_fetched": true,
   "n_runs": 129,
   "fuels": [
@@ -297,7 +297,11 @@
    ]
   },
   "outcome_counts": {
-   "tested": 129
+   "tested": 54,
+   "quenched": 22,
+   "blowoff": 8,
+   "no ignition": 11,
+   "burned": 34
   },
   "varied": [
    "o2",
@@ -342,22 +346,14 @@
   "challenge_mentions": true,
   "relevance": "Large-scale fabric fire growth in a spacecraft (prevention), named in the challenge",
   "psi_text_fetched": true,
-  "n_runs": 4,
+  "n_runs": 2,
   "fuels": [
    {
     "name": "SIBAL Fabric",
     "runs": 2
-   },
-   {
-    "name": "Pre-test flow visulation data for sample 1",
-    "runs": 1
-   },
-   {
-    "name": "Pre-test flow visulation data for sample 2",
-    "runs": 1
    }
   ],
-  "n_distinct_fuels": 3,
+  "n_distinct_fuels": 1,
   "fuel_states": [
    "solid"
   ],
@@ -388,12 +384,9 @@
   },
   "outcome_counts": {
    "burned concurrent": 1,
-   "burned opposed": 1,
-   "tested": 2
+   "burned opposed": 1
   },
-  "varied": [
-   "fuel"
-  ],
+  "varied": [],
   "constant": [
    {
     "condition": "o2",
@@ -409,6 +402,11 @@
     "condition": "airflow",
     "value": 20.0,
     "basis": "text"
+   },
+   {
+    "condition": "fuel",
+    "value": "SIBAL Fabric",
+    "basis": "table"
    }
   ]
  },
@@ -440,9 +438,9 @@
   ],
   "publications_count": 7,
   "challenge_mentions": true,
-  "relevance": "Large-scale material flammability in a spacecraft (prevention), named in the challenge",
+  "relevance": "Large-scale material flammability and spread in a spacecraft (prevention), named in the challenge",
   "psi_text_fetched": true,
-  "n_runs": 15,
+  "n_runs": 9,
   "fuels": [
    {
     "name": "Silicone",
@@ -450,26 +448,18 @@
    },
    {
     "name": "Cotton-Fiberglass (SIBAL)",
-    "runs": 1
+    "runs": 2
+   },
+   {
+    "name": "PMMA",
+    "runs": 2
    },
    {
     "name": "PMMA & Nomex",
     "runs": 1
-   },
-   {
-    "name": "PMMA",
-    "runs": 1
-   },
-   {
-    "name": "Pre-test flow visulation data for sample 2-1",
-    "runs": 1
-   },
-   {
-    "name": "Pre-test flow visulation data for sample 2-2",
-    "runs": 1
    }
   ],
-  "n_distinct_fuels": 6,
+  "n_distinct_fuels": 4,
   "fuel_states": [
    "solid"
   ],
@@ -499,9 +489,8 @@
    ]
   },
   "outcome_counts": {
-   "burned concurrent": 8,
-   "burned opposed": 1,
-   "tested": 6
+   "no sustained burn": 4,
+   "burned concurrent": 5
   },
   "varied": [
    "o2",
@@ -548,7 +537,7 @@
   ],
   "publications_count": 3,
   "challenge_mentions": true,
-  "relevance": "Large-scale fire growth in a spacecraft (prevention), named in the challenge",
+  "relevance": "Large-scale fire growth in a spacecraft at higher flow (prevention), named in the challenge",
   "psi_text_fetched": true,
   "n_runs": 2,
   "fuels": [
@@ -744,16 +733,61 @@
   ],
   "publications_count": 2,
   "challenge_mentions": true,
-  "relevance": "Same instrument used for dust, so detectors can tell dust from smoke (detection), named in the challenge",
+  "relevance": "Same instrument used for Arizona Road Dust in flight, separating dust from smoke (detection), named in the challenge",
   "psi_text_fetched": true,
-  "n_runs": 0,
-  "fuels": [],
-  "fuel_states": [],
-  "ranges": null,
-  "ranges_incl_assumed": null,
-  "outcome_counts": {},
+  "n_runs": 2,
+  "fuels": [
+   {
+    "name": "Arizona Road Dust (ARD Fine)",
+    "runs": 2
+   }
+  ],
+  "n_distinct_fuels": 1,
+  "fuel_states": [
+   "solid"
+  ],
+  "ranges": {
+   "o2_pct": null,
+   "pressure_psi": null,
+   "airflow_cm_s": null
+  },
+  "ranges_incl_assumed": {
+   "o2_pct": [
+    21.0,
+    21.0
+   ],
+   "pressure_psi": [
+    14.7,
+    14.7
+   ],
+   "airflow_cm_s": null
+  },
+  "outcome_counts": {
+   "dust aerosol sampled": 2
+  },
   "varied": [],
-  "constant": []
+  "constant": [
+   {
+    "condition": "o2",
+    "value": 21.0,
+    "basis": "assumed"
+   },
+   {
+    "condition": "pressure",
+    "value": 14.7,
+    "basis": "assumed"
+   },
+   {
+    "condition": "airflow",
+    "value": null,
+    "basis": "unknown"
+   },
+   {
+    "condition": "fuel",
+    "value": "Arizona Road Dust (ARD Fine)",
+    "basis": "table"
+   }
+  ]
  },
  {
   "psi_id": "PSI-102",
@@ -881,7 +915,7 @@
   ],
   "publications_count": 6,
   "challenge_mentions": true,
-  "relevance": "Smoke particle sizes for spacecraft smoke detection (detection), named in the challenge",
+  "relevance": "Smoke particle sizes and aging for spacecraft smoke detection (detection), named in the challenge",
   "psi_text_fetched": true,
   "n_runs": 109,
   "fuels": [
@@ -977,7 +1011,7 @@
   "measurements_mentioned": [],
   "publications_count": 2,
   "challenge_mentions": true,
-  "relevance": "Highest-oxygen microgravity tests, up to 85 % oxygen (named in the challenge)",
+  "relevance": "Highest-oxygen microgravity tests, up to 85 % oxygen, plus spherical gas cool flames (named in the challenge)",
   "psi_text_fetched": true,
   "n_runs": 333,
   "fuels": [
@@ -1083,16 +1117,70 @@
   ],
   "publications_count": 25,
   "challenge_mentions": true,
-  "relevance": "Electric field used to mimic partial gravity on flames (named in the challenge)",
+  "relevance": "High-voltage electric field (up to 10 kV) used to mimic partial-gravity buoyancy on flames (named in the challenge)",
   "psi_text_fetched": true,
-  "n_runs": 0,
-  "fuels": [],
-  "fuel_states": [],
-  "ranges": null,
-  "ranges_incl_assumed": null,
-  "outcome_counts": {},
-  "varied": [],
-  "constant": []
+  "n_runs": 20,
+  "fuels": [
+   {
+    "name": "100% CH4",
+    "runs": 6
+   },
+   {
+    "name": "40% CH4",
+    "runs": 5
+   },
+   {
+    "name": "100% C2H4",
+    "runs": 5
+   },
+   {
+    "name": "30% C2H4",
+    "runs": 4
+   }
+  ],
+  "n_distinct_fuels": 4,
+  "fuel_states": [
+   "gas"
+  ],
+  "ranges": {
+   "o2_pct": null,
+   "pressure_psi": null,
+   "airflow_cm_s": null
+  },
+  "ranges_incl_assumed": {
+   "o2_pct": null,
+   "pressure_psi": null,
+   "airflow_cm_s": null
+  },
+  "outcome_counts": {
+   "flames ignited that day: 10": 6,
+   "flames ignited that day: 8": 2,
+   "flames ignited that day: 11": 5,
+   "flames ignited that day: 13": 4,
+   "flames ignited that day: 15": 1,
+   "flames ignited that day: 12": 1,
+   "flames ignited that day: 9": 1
+  },
+  "varied": [
+   "fuel"
+  ],
+  "constant": [
+   {
+    "condition": "o2",
+    "value": null,
+    "basis": "unknown"
+   },
+   {
+    "condition": "pressure",
+    "value": null,
+    "basis": "unknown"
+   },
+   {
+    "condition": "airflow",
+    "value": null,
+    "basis": "unknown"
+   }
+  ]
  },
  {
   "psi_id": "PSI-39",
@@ -1299,7 +1387,7 @@
   ],
   "publications_count": 48,
   "challenge_mentions": true,
-  "relevance": "Droplet burning and extinction across pressures and oxygen levels (suppression hardware named in the challenge)",
+  "relevance": "Bi-component and pure droplet burning & extinction matrix across 17–30% O2 and 0.5–3 atm (suppression hardware named in the challenge)",
   "psi_text_fetched": true,
   "n_runs": 0,
   "fuels": [],
@@ -1308,7 +1396,45 @@
   "ranges_incl_assumed": null,
   "outcome_counts": {},
   "varied": [],
-  "constant": []
+  "constant": [],
+  "planned_matrix": {
+   "source_table": "PSI-68__PSI-68_Experimental_table_Flex2.csv",
+   "fuels": [
+    "IsoOctane (pure)",
+    "n-Octane (pure)",
+    "Heptane (pure)",
+    "Decane (pure)",
+    "Ethanol (pure)",
+    "Propanol (95%) Glycerol (5%) (mixture)",
+    "Heptane (50%) IsoOctane (50%) (mixture)",
+    "Propanol (80%) Glycerol (20%) (mixture)"
+   ],
+   "droplet_diameter_mm": "1.5 - 5",
+   "ambient_gas": "O2/N2 or O2/He",
+   "o2_pct_levels": [
+    17.0,
+    21.0,
+    25.0,
+    30.0
+   ],
+   "pressure_atm_levels": [
+    0.5,
+    1.0,
+    1.5,
+    2.0,
+    3.0
+   ],
+   "pressure_psi_range": [
+    7.35,
+    44.09
+   ],
+   "airflow_cm_s_range": [
+    0.1,
+    5.0
+   ],
+   "temperature_c": 25.0,
+   "note": "PSI-68 provides an 8-fuel test parameter matrix rather than an as-run per-droplet log; kept out of runs.csv so run counts reflect executed flight rows only."
+  }
  },
  {
   "psi_id": "PSI-21",
@@ -1339,21 +1465,91 @@
   ],
   "publications_count": 18,
   "challenge_mentions": false,
-  "relevance": "Coflow laminar gas flames for model validation (indirect relevance)",
+  "relevance": "Coflow laminar CH4 and C2H4 diffusion flames (354 ignitions across 32 days) for soot and extinction model validation",
   "psi_text_fetched": true,
-  "n_runs": 0,
-  "fuels": [],
-  "fuel_states": [],
-  "ranges": null,
-  "ranges_incl_assumed": null,
-  "outcome_counts": {},
-  "varied": [],
-  "constant": []
+  "n_runs": 32,
+  "fuels": [
+   {
+    "name": "40% CH4",
+    "runs": 13
+   },
+   {
+    "name": "100% C2H4",
+    "runs": 8
+   },
+   {
+    "name": "50% C2H4",
+    "runs": 6
+   },
+   {
+    "name": "100% CH4",
+    "runs": 3
+   },
+   {
+    "name": "30% C2H4",
+    "runs": 1
+   },
+   {
+    "name": "30% C2H5",
+    "runs": 1
+   }
+  ],
+  "n_distinct_fuels": 6,
+  "fuel_states": [
+   "gas"
+  ],
+  "ranges": {
+   "o2_pct": null,
+   "pressure_psi": null,
+   "airflow_cm_s": null
+  },
+  "ranges_incl_assumed": {
+   "o2_pct": null,
+   "pressure_psi": null,
+   "airflow_cm_s": null
+  },
+  "outcome_counts": {
+   "flames ignited that day: 10": 3,
+   "flames ignited that day: 5": 1,
+   "flames ignited that day: 8": 3,
+   "flames ignited that day: 3": 3,
+   "flames ignited that day: 9": 3,
+   "flames ignited that day: 7": 1,
+   "flames ignited that day: 14": 4,
+   "flames ignited that day: 16": 6,
+   "flames ignited that day: 13": 2,
+   "flames ignited that day: 2": 1,
+   "flames ignited that day: 18": 1,
+   "flames ignited that day: 6": 1,
+   "flames ignited that day: 12": 1,
+   "flames ignited that day: 15": 1,
+   "flames ignited that day: 11": 1
+  },
+  "varied": [
+   "fuel"
+  ],
+  "constant": [
+   {
+    "condition": "o2",
+    "value": null,
+    "basis": "unknown"
+   },
+   {
+    "condition": "pressure",
+    "value": null,
+    "basis": "unknown"
+   },
+   {
+    "condition": "airflow",
+    "value": null,
+    "basis": "unknown"
+   }
+  ]
  },
  {
   "psi_id": "PSI-23",
   "acronym": "ACME s-Flame",
-  "title": "Opportunities and challenges of combustion in microgravity",
+  "title": "Advanced Combustion via Microgravity Experiments-Structure and Response of Spherical Diffusion Flames",
   "doi": "10.60555/k57n-p030",
   "license": "CC0-1.0",
   "psi_url": "https://psi.nasa.gov/physci/repo/data/investigations/PSI-23",
@@ -1376,18 +1572,101 @@
    "soot",
    "chemiluminescence"
   ],
-  "publications_count": 1,
+  "publications_count": 44,
   "challenge_mentions": false,
-  "relevance": "Spherical gas flames and extinction (indirect relevance)",
+  "relevance": "Spherical H2, CH4 and C2H4 diffusion flames and extinction at ~21% and ~30% O2 (lunar-relevant oxygen)",
   "psi_text_fetched": true,
-  "n_runs": 0,
-  "fuels": [],
-  "fuel_states": [],
-  "ranges": null,
-  "ranges_incl_assumed": null,
-  "outcome_counts": {},
-  "varied": [],
-  "constant": []
+  "n_runs": 23,
+  "fuels": [
+   {
+    "name": "50% C2H4 with N2",
+    "runs": 3
+   },
+   {
+    "name": "45% CH4 with N2",
+    "runs": 2
+   },
+   {
+    "name": "100% H2",
+    "runs": 2
+   },
+   {
+    "name": "45% H2 with He",
+    "runs": 2
+   },
+   {
+    "name": "45% CH4 with He",
+    "runs": 2
+   },
+   {
+    "name": "25% C2H4 with He",
+    "runs": 2
+   },
+   {
+    "name": "30% C2H4 with He",
+    "runs": 2
+   },
+   {
+    "name": "35% H2 with He",
+    "runs": 2
+   }
+  ],
+  "n_distinct_fuels": 14,
+  "fuel_states": [
+   "gas"
+  ],
+  "ranges": {
+   "o2_pct": [
+    21.0,
+    30.0
+   ],
+   "pressure_psi": [
+    14.7,
+    14.7
+   ],
+   "airflow_cm_s": null
+  },
+  "ranges_incl_assumed": {
+   "o2_pct": [
+    21.0,
+    30.0
+   ],
+   "pressure_psi": [
+    14.7,
+    14.7
+   ],
+   "airflow_cm_s": null
+  },
+  "outcome_counts": {
+   "flames ignited that day: 13": 1,
+   "flames ignited that day: 16": 2,
+   "flames ignited that day: 9": 3,
+   "flames ignited that day: 21": 4,
+   "flames ignited that day: 10": 1,
+   "flames ignited that day: 17": 2,
+   "flames ignited that day: 22": 1,
+   "flames ignited that day: 7": 1,
+   "flames ignited that day: 11": 2,
+   "flames ignited that day: 12": 2,
+   "flames ignited that day: 20": 2,
+   "flames ignited that day: 23": 2
+  },
+  "varied": [
+   "o2",
+   "fuel"
+  ],
+  "constant": [
+   {
+    "condition": "pressure",
+    "value": 14.7,
+    "basis": "text"
+   },
+   {
+    "condition": "airflow",
+    "value": null,
+    "basis": "unknown"
+   }
+  ]
  },
  {
   "psi_id": "PSI-10",
@@ -1398,7 +1677,7 @@
   "psi_url": "https://psi.nasa.gov/physci/repo/data/investigations/PSI-10",
   "pillar": "Other",
   "hardware_group": "CIR / ACME gas flames",
-  "hardware": "{'Name': 'Advanced Combustion via Microgravity Experiments (ACME) Combustion Integrated Rack (CIR) Reconfiguration of Combustion Integrated Rack (CIR)', 'Link': 'https://www1.grc.nasa.gov/space/iss-research/iss-fcf/combustion-science/acme/implementation/ https://www1.grc.nasa.gov/space/iss-research/iss-fcf/cir/ https://www.esa.int/ESA_Multimedia/Videos/2017/11/Refurbishing_the_ISS_combustion_rack'}",
+  "hardware": "Advanced Combustion via Microgravity Experiments (ACME), Combustion Integrated Rack (CIR), Reconfiguration of Combustion Integrated Rack (CIR)",
   "platform": "International Space Station (ISS)",
   "project_type": "Microgravity Investigation",
   "start_date": "01-14-1999",
@@ -1415,9 +1694,9 @@
    "CO2",
    "soot"
   ],
-  "publications_count": 1,
+  "publications_count": 33,
   "challenge_mentions": false,
-  "relevance": "Soot formation in gas flames (indirect relevance)",
+  "relevance": "Soot formation and radiative loss in normal and inverse spherical gas flames (indirect relevance)",
   "psi_text_fetched": true,
   "n_runs": 327,
   "fuels": [
@@ -1500,15 +1779,77 @@
   ],
   "publications_count": 5,
   "challenge_mentions": true,
-  "relevance": "Flame structure and liftoff in the shared flow duct (hardware named in the challenge)",
+  "relevance": "Laminar diffusion flame structure and liftoff limits in the shared MSG flow duct (hardware named in the challenge)",
   "psi_text_fetched": true,
-  "n_runs": 0,
-  "fuels": [],
-  "fuel_states": [],
-  "ranges": null,
-  "ranges_incl_assumed": null,
-  "outcome_counts": {},
-  "varied": [],
-  "constant": []
+  "n_runs": 12,
+  "fuels": [
+   {
+    "name": "100% CH4",
+    "runs": 3
+   },
+   {
+    "name": "70% CH4 (balance N2)",
+    "runs": 3
+   },
+   {
+    "name": "40% CH4 (balance N2)",
+    "runs": 2
+   },
+   {
+    "name": "20% C2H4 (balance N2)",
+    "runs": 2
+   },
+   {
+    "name": "100% C2H6",
+    "runs": 1
+   },
+   {
+    "name": "100% C2H4",
+    "runs": 1
+   }
+  ],
+  "n_distinct_fuels": 6,
+  "fuel_states": [
+   "gas"
+  ],
+  "ranges": {
+   "o2_pct": null,
+   "pressure_psi": null,
+   "airflow_cm_s": null
+  },
+  "ranges_incl_assumed": {
+   "o2_pct": [
+    21.0,
+    21.0
+   ],
+   "pressure_psi": [
+    14.7,
+    14.7
+   ],
+   "airflow_cm_s": null
+  },
+  "outcome_counts": {
+   "tested": 12
+  },
+  "varied": [
+   "fuel"
+  ],
+  "constant": [
+   {
+    "condition": "o2",
+    "value": 21.0,
+    "basis": "assumed"
+   },
+   {
+    "condition": "pressure",
+    "value": 14.7,
+    "basis": "assumed"
+   },
+   {
+    "condition": "airflow",
+    "value": null,
+    "basis": "unknown"
+   }
+  ]
  }
 ]
