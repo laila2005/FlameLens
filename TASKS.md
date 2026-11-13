@@ -136,7 +136,8 @@ Validated on Fri 13 Nov at about 11 PM: 117 of 117 automatic checks passed. Deta
 
 | Done | Owner | Task | المهمة |
 |---|---|---|---|
-| [ ] | Yousseif / Laila | 30-second demo video (screen only, no under-18 faces or voices) or exactly 7 slides, on a public link | فيديو العرض 30 ثانية (الشاشة فقط، بلا وجوه أو أصوات لمن هم دون 18) أو 7 شرائح بالضبط، برابط عام |
+| [x] | Claude / Laila | 30-second demo video made: `media/flamelens-demo-30s.mp4` (screen only, captions, no voices or faces) | تم إنشاء فيديو العرض 30 ثانية: `media/flamelens-demo-30s.mp4` (الشاشة فقط، نصوص، بلا أصوات أو وجوه) |
+| [ ] | Leader | Upload the video to YouTube (unlisted) or Google Drive (anyone with the link) and test it in a private window | رفع الفيديو على YouTube (غير مدرج) أو Google Drive (لأي شخص لديه الرابط) واختباره في نافذة خاصة |
 | [ ] | Team | Choose the team leader who submits | اختيار قائد الفريق الذي يسلّم |
 | [ ] | F / Laila | Confirm the final deadline on Discord | تأكيد الموعد النهائي على Discord |
 | [ ] | Any | Proofread the project summary in `docs/FINAL-SUBMISSION.md` | مراجعة ملخص المشروع في `docs/FINAL-SUBMISSION.md` |

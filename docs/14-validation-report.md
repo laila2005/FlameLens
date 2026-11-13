@@ -39,7 +39,7 @@ Known, harmless: `/api/health` reports `investigations: 26` (all profiles, inclu
 
 | # | Task | Owner | By |
 |---|---|---|---|
-| 1 | **Demo:** a 30-second screen video (no faces or voices of anyone under 18) or exactly 7 slides, on a public link. The storyboard is in `docs/FINAL-SUBMISSION.md` Part 3. Record it from the live site after the final redeploy | Yousseif / Laila | Sat 9:00 AM |
+| 1 | **Demo:** video DONE (`media/flamelens-demo-30s.mp4`, 30 s, 1080p, captions only). Still to do: upload it to YouTube (unlisted) or Google Drive and test the link in a private window | Leader | Sat 9:00 AM |
 | 2 | Choose the **team leader** who submits | Team | Now |
 | 3 | Confirm the final deadline (Sat 1:00 PM?) on Discord | F / Laila | Sat morning |
 | 4 | A teammate proofreads the project summary in `docs/FINAL-SUBMISSION.md` | Any | Sat 9:00 AM |

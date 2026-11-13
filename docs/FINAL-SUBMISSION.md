@@ -160,17 +160,22 @@ OTHER NASA RESOURCES & TOOLS:
 
 ---
 
-## Part 3 — 30-Second Video Storyboard & Script (Alternative to Slides)
+## Part 3 — 30-Second Demo Video (made 14 Nov, ~12:45 AM)
 
-> **Recording tip:** Open `https://flamelens-steel.vercel.app` at 100% zoom (1920×1080), record screen only (no faces/voices of anyone under 18), and paste the on-screen captions below.
+**File:** `media/flamelens-demo-30s.mp4` (1920×1080, 60 fps, 30.0 s, H.264 + AAC). Screen recording of the live site, captions only, synthesized background sound. **No faces, no names of people, no voices.** Re-record with `scripts/demo_video/` (see its README) if the dashboard changes.
 
-| Time | Screen Action on `https://flamelens-steel.vercel.app` | On-Screen Caption / Voiceover (75 words total) |
+| Time | On screen (live site) | Caption |
 |---|---|---|
-| **0:00–0:05** | Show the **Pressurized rover** preset (`30% O₂, 10.2 psi, 0.16g`) and the amber Verdict banner + **Evidence Strength Meter**. | *"In space, flames don't rise—and planned 30%-oxygen lunar rovers make materials far more flammable."* |
-| **0:05–0:11** | Hover over the **Evidence Strength Meter** (`2,003 real NASA runs · 18 PSI investigations`) and click **ISS cabin** (`336 runs, 82.5/100`), then back to **Pressurized rover** (`0 runs`). | *"FlameLens unifies 2,003 real NASA PSI combustion runs to show where your habitat design is proven—and where zero evidence exists."* |
-| **0:11–0:18** | Highlight **What the evidence says** (`✓ verified`), **Run this next** (`PSI-25-0023`), and **Safer tested options**; click `PSI-25-0023` to pop open the **Evidence Drawer** with its DOI. | *"Every claim is citation-verified. FlameLens pinpoints the exact next experiment to run and safer tested atmospheres—linked directly to NASA DOIs."* |
-| **0:18–0:25** | Click through the **Flame spread**, **Cool flames**, **Smoke vs dust**, and **Early detection** tabs. | *"Six interactive lenses map microgravity flame spread, invisible cool flames, and smoke-versus-dust detection."* |
-| **0:25–0:30** | Scroll to **Investigations comparison** and **Use the data & predictive modeling** CSV downloads. | *"FlameLens: Space-fire evidence you can trust."* |
+| 0:00–0:04 | Pressurized rover preset: 30 % O₂, 10.2 psi, 0.16 g; red verdict | Planned Moon rovers: 30 % oxygen at 10.2 psi. Has NASA ever tested fire in that air? |
+| 0:04–0:08 | Click ISS cabin: green verdict, Evidence strength **83/100**, 336 of 2,003 runs | FlameLens checks any habitat design against 2,003 real NASA flight runs from 18 PSI investigations |
+| 0:08–0:13 | Back to the rover: **Closest NASA evidence** (308 / 33 / 153 runs, what differs) | No exact match for the rover? It shows the closest real NASA tests, and exactly what differs |
+| 0:13–0:18 | Verified claims; click PSI-25-0023, evidence drawer with DOI 10.60555/4qc4-de67 | Every sentence is citation-verified and links to its NASA run and DOI |
+| 0:18–0:22 | **Test campaign planner**: NASA can fly 1 → 3 experiments, all 5 designs covered or planned | Campaign planner: 3 experiments NASA could fly next to give all 5 habitat designs a matching test |
+| 0:22–0:26 | Lenses: flame spread, cool flames, smoke vs dust | Physics lenses from real runs: flame spread, cool flames, smoke vs dust |
+| 0:26–0:28 | **Design review brief** preview | One click: a printable design-review brief with every NASA source |
+| 0:28–0:30 | Title card | FlameLens · Space-fire data, made clear · flamelens-steel.vercel.app · Team AstroSpark · NASA Space Apps Cairo 2026 · NASA PSI data (CC0) |
+
+**To submit:** upload the MP4 to YouTube (Unlisted or Public) or Google Drive ("Anyone with the link can view"), then open the link in a private window. The file is also in the public GitHub repo as a backup.
 
 ---
 
@@ -180,5 +185,5 @@ OTHER NASA RESOURCES & TOOLS:
 - [x] **API & Data Exports Live:** `/api/health`, `/api/export/runs.csv`, `/api/export/spread_rates.csv`, and `/docs` open cleanly without authentication.
 - [x] **Automated Tests Passing:** `67/67` backend & scientific-integrity tests passing (`python -m pytest backend/tests -q`).
 - [x] **Open-Source License & README:** `LICENSE` (MIT + CC0-1.0 data notice) and judge-facing `README.md` committed on `main`.
-- [ ] **Demo Link Public:** Upload either the **7-Slide Deck** or **30-Second Video** to Google Drive / YouTube (unlisted or public) and test the link in an incognito window.
+- [ ] **Demo Link Public:** the 30-second video is ready (`media/flamelens-demo-30s.mp4`). Upload it to YouTube (unlisted or public) or Google Drive (anyone with the link) and test the link in an incognito window.
 - [ ] **Team Leader Submission:** Team leader submits on both the local Cairo form and the official NASA Space Apps page, and saves confirmation screenshots.
