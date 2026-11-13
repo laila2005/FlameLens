@@ -45,7 +45,7 @@
     const r = opts.r || 3.2;
     for (const p of opts.points) {
       if (!inX(p.x) || !inY(p.y)) continue;
-      s += `<circle class="pt" data-id="${FL.esc(p.id)}" cx="${X(p.x).toFixed(1)}" cy="${Y(p.y).toFixed(1)}" r="${r}" fill="${p.color}" fill-opacity="${p.opacity ?? 0.7}"><title>${FL.esc(p.title)}</title></circle>`;
+      s += `<circle class="pt" data-id="${FL.esc(p.id)}" cx="${X(p.x).toFixed(1)}" cy="${Y(p.y).toFixed(1)}" r="${r}" style="fill:${p.color};fill-opacity:${p.opacity ?? 0.7}"><title>${FL.esc(p.title)}</title></circle>`;
     }
     if (opts.marker && inX(opts.marker.x) && inY(opts.marker.y)) {
       const mx = X(opts.marker.x), my = Y(opts.marker.y);
@@ -67,13 +67,13 @@
     const X = (v) => L + ((Math.log10(v) - Math.log10(x0)) / (Math.log10(x1) - Math.log10(x0))) * (W - L - R);
     let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${FL.esc(opts.aria)}">`;
     for (const v of opts.xTicks) s += `<line class="grid" x1="${X(v)}" x2="${X(v)}" y1="${T}" y2="${H - B}"/><text x="${X(v)}" y="${H - B + 16}" text-anchor="middle">${v}</text>`;
-    if (opts.band) s += `<rect x="${X(opts.band[0])}" y="${T}" width="${X(opts.band[1]) - X(opts.band[0])}" height="${H - B - T}" fill="rgba(255,200,74,.10)"/><text x="${X(opts.band[0]) + 4}" y="${T + 12}" style="fill:var(--amber)">${FL.esc(opts.bandLabel || "")}</text>`;
+    if (opts.band) s += `<rect x="${X(opts.band[0])}" y="${T}" width="${X(opts.band[1]) - X(opts.band[0])}" height="${H - B - T}" style="fill:var(--c-band)"/><text x="${X(opts.band[0]) + 4}" y="${T + 12}" style="fill:var(--c-gold)">${FL.esc(opts.bandLabel || "")}</text>`;
     rows.forEach((row, i) => {
       const y = T + i * rowH + rowH / 2;
       s += `<text x="${L - 10}" y="${y + 4}" text-anchor="end">${FL.esc(row.label)}</text><line class="grid" x1="${L}" x2="${W - R}" y1="${y}" y2="${y}"/>`;
       for (const v of row.values) {
         if (v.x == null) continue;
-        s += `<circle cx="${X(v.x)}" cy="${y}" r="7" fill="${v.hollow ? "none" : v.color}" stroke="${v.color}" stroke-width="2.5"><title>${FL.esc(v.title)}</title></circle>`;
+        s += `<circle cx="${X(v.x)}" cy="${y}" r="7" style="fill:${v.hollow ? "none" : v.color};stroke:${v.color};stroke-width:2.5"><title>${FL.esc(v.title)}</title></circle>`;
       }
     });
     s += `<text x="${(L + W - R) / 2}" y="${H - 10}" text-anchor="middle">${FL.esc(opts.xLabel)}</text>`;

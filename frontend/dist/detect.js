@@ -153,7 +153,7 @@
     const field = { co: F.CO, heat: F.T, smoke: F.SM }[st.show];
     const max = { co: 150, heat: 40, smoke: 4 }[st.show];
     let s = `<svg viewBox="0 0 ${W} ${H}" id="detsvg" role="img" aria-label="Cabin sensor simulation">`;
-    s += `<rect x="${X(0)}" y="${Y(0)}" width="${LX * S}" height="${LY * S}" fill="#0d1230" stroke="#3a4680" stroke-width="2" rx="6"/>`;
+    s += `<rect x="${X(0)}" y="${Y(0)}" width="${LX * S}" height="${LY * S}" rx="6" style="fill:var(--c-room);stroke:var(--c-roomline);stroke-width:2"/>`;
     for (let j = 0; j < NY; j++) for (let i = 0; i < NX; i++) {
       const c = color(field[idx(i, j)], max);
       if (c) s += `<rect x="${X(i * DX)}" y="${Y(j * DX)}" width="${DX * S + 0.5}" height="${DX * S + 0.5}" fill="${c}"/>`;
@@ -161,18 +161,18 @@
     s += `<text x="${X(0)}" y="${T - 10}">air in →</text><text x="${X(LX)}" y="${T - 10}" text-anchor="end">→ air out (${st.airflow} cm/s)</text>`;
     if (st.airflow === 0) s += `<text x="${W / 2}" y="${T - 10}" text-anchor="middle" style="fill:var(--amber)">ventilation off: only slow mixing moves smoke</text>`;
     // source
-    s += `<g transform="translate(${X(st.src.x)} ${Y(st.src.y)})"><circle r="9" fill="none" stroke="#ff8a24" stroke-width="2.5"/><path d="M0 -6 C 4 -1, 4 4, 0 6 C -4 4, -4 -1, 0 -6 Z" fill="#ff8a24"/></g>`;
+    s += `<g transform="translate(${X(st.src.x)} ${Y(st.src.y)})"><circle r="9" style="fill:none;stroke:var(--c-flame);stroke-width:2.5"/><path d="M0 -6 C 4 -1, 4 4, 0 6 C -4 4, -4 -1, 0 -6 Z" style="fill:var(--c-flame)"/></g>`;
     // estimated location
     if (result && result.loc) {
       const { x, y } = result.loc;
-      s += `<g transform="translate(${X(x)} ${Y(y)})" stroke="#5cd6ff" stroke-width="2.5"><line x1="-8" y1="-8" x2="8" y2="8"/><line x1="-8" y1="8" x2="8" y2="-8"/></g>`;
+      s += `<g transform="translate(${X(x)} ${Y(y)})" style="stroke:var(--c-cyan);stroke-width:2.5"><line x1="-8" y1="-8" x2="8" y2="8"/><line x1="-8" y1="8" x2="8" y2="-8"/></g>`;
     }
     for (const r of readings) {
       const f = r.flags || {};
       const n = (f.rate ? 1 : 0) + (f.co ? 1 : 0) + (f.small ? 1 : 0) + (f.ir ? 1 : 0);
-      const fill = n >= 2 ? "#ff7a7a" : n === 1 ? "#ffc84a" : "#5aebaa";
-      s += `<circle cx="${X(r.x)}" cy="${Y(r.y)}" r="8" fill="${fill}" stroke="#0a0e22" stroke-width="2"><title>Sensor ${r.id}: +${r.T.toFixed(1)} K, ${r.CO.toFixed(0)} ppm CO, smoke ${r.SM.toFixed(2)}, dust ${r.DU.toFixed(2)}${r.ir ? ", IR flame seen" : ""}${r.SM > 0.05 ? `, smoke particles ${smokeSize()} µm` : ""}${r.DU > 0.05 ? `, dust particles ${dustSize()} µm` : ""}</title></circle>`;
-      s += `<text x="${X(r.x)}" y="${Y(r.y) + 4}" text-anchor="middle" style="fill:#0a0e22;font-weight:700">${r.id}</text>`;
+      const fill = n >= 2 ? "var(--c-red)" : n === 1 ? "var(--c-gold)" : "var(--c-green)";
+      s += `<circle cx="${X(r.x)}" cy="${Y(r.y)}" r="8" style="fill:${fill};stroke:var(--c-ink-on);stroke-width:2"><title>Sensor ${r.id}: +${r.T.toFixed(1)} K, ${r.CO.toFixed(0)} ppm CO, smoke ${r.SM.toFixed(2)}, dust ${r.DU.toFixed(2)}${r.ir ? ", IR flame seen" : ""}${r.SM > 0.05 ? `, smoke particles ${smokeSize()} µm` : ""}${r.DU > 0.05 ? `, dust particles ${dustSize()} µm` : ""}</title></circle>`;
+      s += `<text x="${X(r.x)}" y="${Y(r.y) + 4}" text-anchor="middle" style="fill:var(--c-ink-on);font-weight:700">${r.id}</text>`;
     }
     s += `<text x="${L}" y="${H - 8}">t = ${st.t.toFixed(0)} s · showing ${st.show === "co" ? "CO gas" : st.show === "heat" ? "temperature rise" : "smoke particles"} · click the cabin to move the source</text>`;
     return s + "</svg>";
@@ -289,7 +289,7 @@
         <div id="detmap"></div>
         <div id="detresults"></div>
         <div id="detevidence">${evidenceHtml()}</div>`;
-      legend.innerHTML = `<span style="--c:#5aebaa">sensor quiet</span><span style="--c:#ffc84a">one sign</span><span style="--c:#ff7a7a">two or more signs</span><span style="--c:#ff8a24">true source</span><span style="--c:#5cd6ff">estimated source (×)</span>`;
+      legend.innerHTML = `<span style="--c:var(--c-green)">sensor quiet</span><span style="--c:var(--c-gold)">one sign</span><span style="--c:var(--c-red)">two or more signs</span><span style="--c:var(--c-flame)">true source</span><span style="--c:var(--c-cyan)">estimated source (×)</span>`;
       caption.textContent = "Illustration, not a validated fire model. Eight sensors in a 10 × 4 m module. In microgravity hot gas does not rise, so ventilation and slow mixing decide what each sensor sees. Heat alone cannot prove a fire; FlameLens fuses temperature rate of rise, CO, particle size and infrared flame signals. Thresholds are illustrative; real use needs engineering tests and certification.";
       const re = () => reset();
       document.getElementById("detscen").addEventListener("change", (e) => { st.scenario = e.target.value; showSelectors(); re(); });

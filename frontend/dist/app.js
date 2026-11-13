@@ -5,10 +5,10 @@
   const $ = (id) => document.getElementById(id);
   const API = "";
 
-  const PILLAR_COLOR = { Prevention: "#5aebaa", Detection: "#ffc84a", Suppression: "#5cd6ff", Other: "#a99bff" };
-  const OUTCOME_COLOR = { cool_flame: "#5cd6ff", hot_flame: "#ff8a24", no_ignition: "#9aa3c7", other: "#a99bff" };
+  const PILLAR_COLOR = { Prevention: "var(--c-green)", Detection: "var(--c-gold)", Suppression: "var(--c-cyan)", Other: "var(--c-violet)" };
+  const OUTCOME_COLOR = { cool_flame: "var(--c-cyan)", hot_flame: "var(--c-flame)", no_ignition: "var(--c-grey)", other: "var(--c-violet)" };
   const OUTCOME_LABEL = { cool_flame: "Cool flame", hot_flame: "Hot flame", no_ignition: "Did not ignite", other: "Other end (extinction, disruption, completion)" };
-  const FACTOR_COLOR = { o2: "#ff8a24", psi: "#5cd6ff", flow: "#a99bff", fuel: "#5aebaa", grav: "#ffc84a" };
+  const FACTOR_COLOR = { o2: "var(--c-flame)", psi: "var(--c-cyan)", flow: "var(--c-violet)", fuel: "var(--c-green)", grav: "var(--c-gold)" };
   const WEIGHTS = { o2: 0.35, psi: 0.2, flow: 0.2, fuel: 0.15, grav: 0.1 };
   const FIELD_LABEL = { o2_pct: "Oxygen %", pressure_psi: "Pressure psi", airflow_cm_s: "Airflow cm/s", gravity_g: "Gravity g", fuel_state: "Fuel" };
   const EARTH_PP = 21 * 14.7 / 100; // oxygen partial pressure of sea-level air, psi
@@ -49,6 +49,10 @@
     $("psio").textContent = `${t.pressure_psi.toFixed(1)} psi`;
     $("flowo").textContent = t.airflow_cm_s == null ? "not specified" : `${t.airflow_cm_s} cm/s`;
     $("flow").disabled = t.airflow_cm_s == null;
+    for (const id of ["o2", "psi", "flow"]) { // filled part of each slider track
+      const el = $(id);
+      el.style.setProperty("--p", `${((el.value - el.min) / (el.max - el.min)) * 100}%`);
+    }
     const pp = (t.o2_pct * t.pressure_psi) / 100;
     $("ppv").textContent = `${pp.toFixed(2)} psi`;
     const d = (pp / EARTH_PP - 1) * 100;
@@ -270,19 +274,19 @@
         const d = await lensData("coverage");
         chart.innerHTML = FL.scatter({
           aria: "Tested atmospheres: oxygen against pressure",
-          points: d.points.map((p) => ({ x: p.pressure_psi, y: p.o2_pct, id: p.run_id, color: PILLAR_COLOR[p.pillar] || "#888",
+          points: d.points.map((p) => ({ x: p.pressure_psi, y: p.o2_pct, id: p.run_id, color: PILLAR_COLOR[p.pillar] || "var(--c-grey)",
             opacity: p.pressure_basis === "assumed" || p.o2_basis === "assumed" ? 0.25 : 0.75,
             title: `${p.run_id} ${p.investigation}: ${p.o2_pct} % O2, ${p.pressure_psi} psi (${p.o2_basis}/${p.pressure_basis})` })),
           xDomain: [0, 75], yDomain: [10, 100], xLabel: "Pressure (psi)", yLabel: "Oxygen (%)",
           marker: { x: t.pressure_psi, y: t.o2_pct }, box: { x0: t.pressure_psi - 2, x1: t.pressure_psi + 2, y0: t.o2_pct - 6, y1: t.o2_pct + 6 },
         });
-        legend(Object.entries(PILLAR_COLOR).map(([k, v]) => [k, v]).concat([["faint dot = assumed cabin air", "#55608a"]]));
+        legend(Object.entries(PILLAR_COLOR).map(([k, v]) => [k, v]).concat([["faint dot = assumed cabin air", "var(--c-faint)"]]));
         $("caption").textContent = `Each dot is one of ${d.n_points.toLocaleString()} NASA runs. The dashed box is "close to your design" (±6 oxygen points, ±2 psi). An empty box means no evidence. Click a dot to see its source.`;
       } else if (lens === "coolflame") {
         const d = await lensData("coolflame");
         chart.innerHTML = FL.scatter({
           aria: "Cool-flame outcomes by oxygen and pressure",
-          points: d.points.map((p) => ({ x: p.pressure_psi, y: p.o2_pct, id: p.run_id, color: OUTCOME_COLOR[p.outcome] || "#888",
+          points: d.points.map((p) => ({ x: p.pressure_psi, y: p.o2_pct, id: p.run_id, color: OUTCOME_COLOR[p.outcome] || "var(--c-grey)",
             opacity: p.outcome === "cool_flame" ? 0.95 : 0.55,
             title: `${p.run_id} ${p.investigation} (${p.fuel}): ${OUTCOME_LABEL[p.outcome] || p.outcome}${p.outcome_raw ? " - " + p.outcome_raw : ""}` })),
           xDomain: [0, 75], yDomain: [10, 100], xLabel: "Pressure (psi)", yLabel: "Oxygen (%)", r: 3.6,
@@ -297,17 +301,17 @@
         const rows = d.smoke.map((m) => ({
           label: m.material,
           values: [
-            m.fresh && { x: m.fresh.geometric_mean_um, color: "#ff8a24", hollow: true, title: `${m.material} fresh smoke: ${m.fresh.geometric_mean_um} µm (${m.fresh.source_ref})` },
-            m.aged_720s && { x: m.aged_720s.geometric_mean_um, color: "#ff8a24", hollow: false, title: `${m.material} smoke aged 720 s: ${m.aged_720s.geometric_mean_um} µm` },
+            m.fresh && { x: m.fresh.geometric_mean_um, color: "var(--c-flame)", hollow: true, title: `${m.material} fresh smoke: ${m.fresh.geometric_mean_um} µm (${m.fresh.source_ref})` },
+            m.aged_720s && { x: m.aged_720s.geometric_mean_um, color: "var(--c-flame)", hollow: false, title: `${m.material} smoke aged 720 s: ${m.aged_720s.geometric_mean_um} µm` },
           ].filter(Boolean),
         }));
-        for (const dust of d.dust) rows.push({ label: dust.material.replace(" (fine)", ""), values: [{ x: dust.count_mean_um ?? dust.geometric_mean_um, color: "#5cd6ff", title: `${dust.material}: ${dust.count_mean_um} µm average (${dust.source_ref})` }] });
+        for (const dust of d.dust) rows.push({ label: dust.material.replace(" (fine)", ""), values: [{ x: dust.count_mean_um ?? dust.geometric_mean_um, color: "var(--c-cyan)", title: `${dust.material}: ${dust.count_mean_um} µm average (${dust.source_ref})` }] });
         chart.innerHTML = FL.sizePlot(rows, { aria: "Smoke and dust particle sizes", xDomain: [0.02, 5], xTicks: [0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5], xLabel: "Particle size (micrometres, log scale)" });
-        legend([["Smoke, fresh (hollow)", "#ff8a24"], ["Smoke, aged 720 s (filled)", "#ff8a24"], ["Dust", "#5cd6ff"]]);
+        legend([["Smoke, fresh (hollow)", "var(--c-flame)"], ["Smoke, aged 720 s (filled)", "var(--c-flame)"], ["Dust", "var(--c-cyan)"]]);
         $("caption").textContent = d.overlap_note + " Smoke values: SAME-R final report, Table 1. Dust: DAFT report. NASA's shuttle smoke detector, later used in mines, tells smoke from dust for exactly this reason.";
       } else if (lens === "spread") {
         const d = await lensData("spread");
-        const colorOf = (p) => (p.investigation === "Saffire-II" ? "#ffc84a" : (p.thickness_mm != null && p.thickness_mm < 0.5 ? "#5cd6ff" : "#ff8a24"));
+        const colorOf = (p) => (p.investigation === "Saffire-II" ? "var(--c-gold)" : (p.thickness_mm != null && p.thickness_mm < 0.5 ? "var(--c-cyan)" : "var(--c-flame)"));
         chart.innerHTML = FL.scatter({
           aria: "Measured microgravity flame spread rate against airflow",
           points: d.points.map((p) => ({
@@ -319,23 +323,23 @@
           xLabel: "Airflow velocity (cm/s)", yLabel: "Spread rate (mm/s, log scale)", r: 4.4,
         });
         legend([
-          ["BASS-II thick PMMA slabs/rods (1–9.5 mm)", "#ff8a24"],
-          ["BASS-II thin PMMA film (0.1 mm)", "#5cd6ff"],
-          ["Saffire-II SIBAL fabric (0.37 mm, Cygnus)", "#ffc84a"],
+          ["BASS-II thick PMMA slabs/rods (1–9.5 mm)", "var(--c-flame)"],
+          ["BASS-II thin PMMA film (0.1 mm)", "var(--c-cyan)"],
+          ["Saffire-II SIBAL fabric (0.37 mm, Cygnus)", "var(--c-gold)"],
         ]);
         $("caption").textContent = `${d.n_points} measured microgravity spread/regression points from NASA/TM-20210011385 (BASS-II Table 5.1 & text) and PSI-99 (Saffire-II). Thin fabrics and 0.1 mm films spread at 2.1–2.6 mm/s — nearly 20–200× faster than 1–5 mm PMMA slabs (0.012–0.144 mm/s). Click any dot to inspect its flight run.`;
       } else if (lens === "tested") {
         const d = await lensData("tested");
         chart.innerHTML = FL.scatter({
           aria: "Tested conditions: oxygen against airflow",
-          points: d.points.map((p) => ({ x: p.airflow_cm_s, y: p.o2_pct, id: p.run_id, color: PILLAR_COLOR[p.pillar] || "#888",
+          points: d.points.map((p) => ({ x: p.airflow_cm_s, y: p.o2_pct, id: p.run_id, color: PILLAR_COLOR[p.pillar] || "var(--c-grey)",
             opacity: p.o2_basis === "assumed" ? 0.3 : 0.8,
             title: `${p.run_id} ${p.investigation} (${p.fuel_state}): ${p.o2_pct} % O2, ${p.airflow_cm_s} cm/s (${p.o2_basis}/${p.airflow_basis})` })),
           xDomain: [0, 90], yDomain: [10, 40], xLabel: "Airflow (cm/s)", yLabel: "Oxygen (%)",
           marker: t.airflow_cm_s == null ? null : { x: t.airflow_cm_s, y: t.o2_pct },
           box: t.airflow_cm_s == null ? null : { x0: t.airflow_cm_s - 8, x1: t.airflow_cm_s + 8, y0: t.o2_pct - 6, y1: t.o2_pct + 6 },
         });
-        legend([["Prevention", PILLAR_COLOR.Prevention], ["Detection", PILLAR_COLOR.Detection], ["faint dot = assumed cabin air", "#55608a"]]);
+        legend([["Prevention", PILLAR_COLOR.Prevention], ["Detection", PILLAR_COLOR.Detection], ["faint dot = assumed cabin air", "var(--c-faint)"]]);
         $("caption").textContent = `${d.n_points} runs recorded both oxygen and airflow (BASS-II, Saffire, SPICE, SAME). Airflow matters in space because without gravity there is no rising hot air: cabin ventilation feeds the flame. Open the Flame spread tab for measured spread rates (mm/s).`;
       }
     } catch (e) {
