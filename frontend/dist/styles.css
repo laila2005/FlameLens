@@ -105,6 +105,7 @@ select { background: var(--panel2); border: 1px solid var(--line); border-radius
 .sm-f b { font-family: var(--mono); color: var(--fg); font-size: 12.5px; }
 .sm-invs { display: flex; flex-wrap: wrap; gap: 5px 6px; align-items: center; padding-top: 6px; border-top: 1px dashed var(--line); font-size: 12.5px; }
 .sm-planned { margin-left: auto; font: 11.5px var(--mono); color: var(--amber); }
+@media (max-width: 680px) { .sm-planned { margin-left: 0; width: 100%; } }
 
 /* next and safer */
 .next { border-top: 3px solid var(--flame); }
@@ -222,3 +223,10 @@ select { background: var(--panel2); border: 1px solid var(--line); border-radius
 .modmeta { font: 11.5px var(--mono); color: var(--muted); margin-top: 4px; display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
 .modchip { font: 11px var(--mono); background: var(--panel2); color: var(--cool); border: 1px solid var(--line); border-radius: 5px; padding: 1px 6px; cursor: pointer; }
 .modchip:hover { border-color: var(--flame); color: var(--fg); }
+
+@media (max-width: 520px) {
+  .panel { padding: 12px; }
+  .presets { grid-template-columns: 1fr; }
+  .dettable, .cmp { display: block; overflow-x: auto; max-width: 100%; }
+  .drawer { right: 8px; bottom: 8px; width: calc(100vw - 16px); max-height: 80vh; padding: 12px; }
+}
