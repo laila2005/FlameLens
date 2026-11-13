@@ -32,6 +32,7 @@ A deterministic ranker scores the experiments. AI only explains, and a citation 
 | [08 Working agreements](docs/08-working-agreements.md) | Git flow, reviews, communication, rule check |
 | [09 Pitch and submission](docs/09-pitch-and-submission.md) | Demo script, QA checklist, submission checklist |
 | [11 Event facts](docs/11-event-facts.md) | Official dates, rules, submission format and judging criteria from the organizers' guides |
+| **[13 Start now](docs/13-start-now.md)** | Hackathon day: resource summary, who reads what, the first hour |
 | [12 Resources](docs/12-resources.md) | Web research: the official challenge name, how to reach PSI data, NTRS API, key papers, investigation list |
 | [10 Idea brainstorm](docs/10-idea-brainstorm.md) | How we make the dashboard smarter than other teams, ranked by impact and effort |
 | [Choose your role / اختر دورك](docs/roles/00-choose-your-role.md) | Experience needed for each role, so you can pick the one that fits you (English and Arabic) |

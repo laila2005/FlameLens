@@ -43,6 +43,7 @@ Supporting pieces: a deterministic ranker (weights 0.35 O₂, 0.20 pressure, 0.2
 | Hour-by-hour plan for the 24 h | `docs/04-hackathon-timeline.md` |
 | **Official event facts, rules, submission format, judging criteria** | `docs/11-event-facts.md` (from the organizers' two PDFs) |
 | Web research: challenge name, PSI access routes, NTRS API, papers, investigations | `docs/12-resources.md` |
+| Hackathon-day start: resource summary, reading assignments, first hour | `docs/13-start-now.md` |
 | Stack, API contract, ranker, decision-route rules | `docs/05-architecture-and-api.md` |
 | Data row format and extraction rules | `docs/06-data-guide.md` |
 | AI model, prompts, verifier rules, bake-off | `docs/07-ai-guide.md` |
@@ -144,6 +145,8 @@ gh auth status                    # GitHub CLI login for pushing
 ## Status log
 
 Newest first. One line per change: date, what, who or what session.
+
+- 2026-11-13 12:35 Cairo: added `docs/13-start-now.md` (resource summary, reading assignments per person, first-hour plan, decisions to make). Hackathon starts 1:00 PM.
 
 - 2026-11-13 (hackathon day, 8:30 AM Cairo when written; hackathon starts 1:00 PM): NASA shared the official resource list; added to `docs/12-resources.md` section 0. PSI combustion search is the data source. Spin-off text must come from the three NASA spin-off pages. Investigation list re-checked against NASA's Combustion Science page: CFI, SAME-R, DAFT-2, ACME E-FIELD still unverified.
 
