@@ -35,6 +35,10 @@
       </div>
     </div>
     <div class="topright">
+      <button class="btn btn-primary" id="briefbtn" type="button" title="One-page evidence brief for this design, ready to print or save as PDF">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/></svg>
+        <span>Design review brief</span>
+      </button>
       <div class="datachip" id="datachip">Loading data…</div>
       <button class="themebtn" id="themebtn" type="button" aria-label="Switch to dark theme" title="Switch theme">
         <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
@@ -192,6 +196,16 @@
     <div id="drawerbody"></div>
   </div>
 
+  <!-- Design review brief (print preview) -->
+  <div class="briefwrap" id="briefwrap" hidden role="dialog" aria-modal="true" aria-labelledby="brieftitle">
+    <div class="brieftools">
+      <span class="hint">Preview · prints as a clean document (choose "Save as PDF" to keep a file)</span>
+      <button class="btn btn-primary" id="briefprint" type="button">Print / Save as PDF</button>
+      <button class="btn" id="briefclose" type="button">Close</button>
+    </div>
+    <article class="paper" id="brief"></article>
+  </div>
+
   <footer class="foot">
     <div class="footcols">
       <div><h3>Data</h3><p>NASA Physical Sciences Informatics (PSI), combustion investigations, license CC0-1.0. Each run links to its investigation DOI. Some pressures and oxygen values are <em>assumed</em> ISS cabin air where the source table gave none; they are marked and given lower confidence.</p></div>
@@ -204,6 +218,7 @@
   <script src="charts.js"></script>
   <script src="detect.js"></script>
   <script src="app.js"></script>
+  <script src="brief.js"></script>
   <script>
     (function () {
       var btn = document.getElementById("themebtn"), root = document.documentElement;

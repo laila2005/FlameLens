@@ -565,6 +565,9 @@
     }
   }
 
+  FL.api = { get, post }; // shared with brief.js
+  FL.target = target;
+
   init();
   initInvestigations();
   initModeling();

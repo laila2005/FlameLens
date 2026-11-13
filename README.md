@@ -17,7 +17,7 @@ NASA's **Physical Sciences Informatics (PSI)** repository holds decades of Space
 1. **Evidence Strength Meter (`0–100`) & Evidence Case:** Evaluates any habitat design (`O₂ %`, `pressure psi`, `airflow cm/s`, `fuel state`, `gravity g`) condition-by-condition and as a combined environment. Computes both **Whole-Habitat Evidence Strength** and the **`0 g` Atmosphere-Only Bound**, showing the exact number of backing NASA runs, measured vs. assumed values, and contributing PSI investigations.
 2. **Run This Next (Campaign Planner):** Pinpoints the exact experimental gap(s) in a habitat design (for example, `0` partial-gravity runs at `0.16 g` or `0` combined runs at `30% O₂ / 10.2 psi / 8.1 cm/s / solid`) and identifies the nearest existing NASA run (e.g., `PSI-25-0023` in `BASS-II`) with the smallest parameter changes needed for the next experiment.
 3. **Safer Tested Options:** Finds real tested NASA runs with at least `10%` lower oxygen partial pressure (`P_O2 = O₂% × psi / 100`) and shows the exact parameter deltas required to reach them.
-4. **Deterministic 5-Factor Investigation Ranker:** Ranks all 18 flight investigations by proximity to the user's habitat across oxygen (`0.30`), pressure (`0.20`), airflow (`0.20`), fuel state (`0.15`), and gravity (`0.15`), treating missing table columns as neutral (`0.50`) rather than penalties.
+4. **Deterministic 5-Factor Investigation Ranker:** Ranks all 18 flight investigations by proximity to the user's habitat across oxygen (`0.35`), pressure (`0.20`), airflow (`0.20`), fuel state (`0.15`), and gravity (`0.10`), treating missing table columns as neutral (`0.50`) rather than penalties.
 5. **Citation-Verified AI Explanation ("What the Evidence Says"):** Summarizes retrieved runs into structured claims with engineering recommendations. A deterministic **citation verifier (`backend/app/explain.py`)** strips any claim whose `run_id` is not in the retrieved evidence, whose numbers do not match that run, or that invents a flammability threshold or safety verdict.
 6. **Six Interactive Visual Lenses + Side-by-Side Investigation Comparison:**
    - **Coverage Map (`O₂ %` vs. `Pressure psi`):** Plots tested atmospheres across all pillars (`Prevention`, `Detection`, `Suppression`, `Other`) with a live `±6% O₂, ±2 psi` tolerance box around the user's habitat.
@@ -26,6 +26,8 @@ NASA's **Physical Sciences Informatics (PSI)** repository holds decades of Space
    - **Flame Spread (`BASS-II` & `Saffire-II`):** Log-scale plot of `43` measured microgravity spread/regression rates (`mm/s`) vs. opposing/concurrent airflow (`0–32 cm/s`).
    - **Airflow Tested (`O₂ %` vs. `Airflow cm/s`):** Visualizes the `681` runs where both oxygen and ventilation flow were recorded.
    - **Early Detection Simulator + Real `BASS-II` Gas Evidence:** Interactive cabin sensor placement simulator paired with real `BASS-II` `CO`/`CO₂` burn traces (`129` runs) and `SAME-R`/`DAFT` particle size distributions.
+
+7. **Design Review Brief (printable / PDF):** One click turns the current habitat design into a 2–3 page evidence brief for a design review: design inputs and oxygen partial pressure, verdict, evidence strength, condition-by-condition case with run IDs, the gap to close next, lower-oxygen tested options, the citation-verified explanation, closest investigations and every cited PSI DOI. Built fresh from the same deterministic API routes, so it never shows a number the dashboard does not. Open directly with `https://flamelens-steel.vercel.app/?brief=1`.
 
 ---
 
