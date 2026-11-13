@@ -327,7 +327,7 @@
           ["BASS-II thin PMMA film (0.1 mm)", "var(--c-cyan)"],
           ["Saffire-II SIBAL fabric (0.37 mm, Cygnus)", "var(--c-gold)"],
         ]);
-        $("caption").textContent = `${d.n_points} measured microgravity spread/regression points from NASA/TM-20210011385 (BASS-II Table 5.1 & text) and PSI-99 (Saffire-II). Thin fabrics and 0.1 mm films spread at 2.1–2.6 mm/s — nearly 20–200× faster than 1–5 mm PMMA slabs (0.012–0.144 mm/s). Click any dot to inspect its flight run.`;
+        $("caption").textContent = `${d.n_points} measured microgravity spread/regression points from NASA/TM-20210011385 (BASS-II Table 5.1 & text) and PSI-99 (Saffire-II). Thin fabrics and 0.1 mm films spread at 2.1–2.6 mm/s — about 15 to over 200 times faster than 1–5 mm PMMA slabs (0.012–0.144 mm/s). Click any dot to inspect its flight run.`;
       } else if (lens === "tested") {
         const d = await lensData("tested");
         chart.innerHTML = FL.scatter({

@@ -9,3 +9,4 @@ backend/tests
 .claude
 *.md
 !frontend/**
+media
