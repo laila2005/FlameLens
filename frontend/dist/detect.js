@@ -19,8 +19,12 @@
     [0.6, 0.5], [5, 0.4], [9.4, 0.5], [0.6, 3.5], [5, 3.6], [9.4, 3.5], [2.8, 2], [7.2, 2],
   ].map(([x, y], i) => ({ id: i + 1, x, y }));
 
-  // thresholds (illustrative)
-  const TH = { heat: 8, rate: 0.08, co: 25, small: 0.3, smokeDet: 0.6, irRange: 7 };
+  // NASA Spacecraft Maximum Allowable Concentrations for carbon monoxide, ppm (JSC 20584 Rev C, 13 Jun 2024, p. 11)
+  const SMAC_CO = { "1 h": 425, "24 h": 100, "7 d": 55, "30-1000 d": 15 };
+  const SMAC_SRC = "NASA JSC 20584 Rev C (2024), Spacecraft Maximum Allowable Concentrations, p. 11";
+  // thresholds: the CO alarm is NASA's long-mission CO limit (15 ppm): more CO than a crew may breathe for months means
+  // something is producing it. Heat, rate-of-rise, particle and infrared thresholds are illustrative.
+  const TH = { heat: 8, rate: 0.08, co: SMAC_CO["30-1000 d"], small: 0.3, smokeDet: 0.6, irRange: 7 };
 
   // scenarios: source strengths per second at full growth (illustrative), plus flags
   const SCENARIOS = {
@@ -108,6 +112,7 @@
     hist.push({ t: st.t, T: readings.map((r) => r.T) });
     while (hist.length && st.t - hist[0].t > 10) hist.shift();
     const old = hist[0];
+    result.coPeak = Math.max(result.coPeak || 0, ...readings.map((r) => r.CO));
     readings.forEach((r, k) => {
       r.rate = old && st.t > old.t ? (r.T - old.T[k]) / (st.t - old.t) : 0;
       r.flags = { rate: r.rate >= TH.rate, co: r.CO >= TH.co, small: r.SM >= TH.small, ir: r.ir > 0, dustOnly: r.DU >= TH.small && r.SM < TH.small };
@@ -189,7 +194,11 @@
       <tr><td>Heat only (+${TH.heat} K)</td><td>${fmtT(r.heat)}${falseA(r.heat)}${missed(r.heat)}</td><td>${s.fire ? "Waits for heat to travel to a sensor." : "Heat alone cannot tell a hot laptop from a fire."}</td></tr>
       <tr><td>Smoke only (any particle)</td><td>${fmtT(r.smoke)}${falseA(r.smoke)}${missed(r.smoke)}</td><td>Cannot tell smoke from dust.</td></tr>
       <tr><td><b>FlameLens fusion</b></td><td><b>${fmtT(r.fused)}</b>${falseA(r.fused)}${missed(r.fused)}</td><td>${r.verdict ? esc(r.verdict) : esc(r.note || "Watching: needs two independent signs.")}${r.loc ? `<br>Located within ${r.loc.err.toFixed(1)} m (blue ×).` : ""}</td></tr>
-    </tbody></table>`;
+    </tbody></table>
+    <p class="hint detsmac">Crew exposure: peak CO at any sensor so far <b>${Math.round(r.coPeak || 0)} ppm</b>${(() => {
+      const over = Object.entries(SMAC_CO).filter(([, v]) => (r.coPeak || 0) > v).map(([k]) => k);
+      return over.length ? ` · above NASA's ${esc(over.join(", "))} limit${over.length > 1 ? "s" : ""}` : " · below every NASA limit";
+    })()}. NASA CO limits: ${Object.entries(SMAC_CO).map(([k, v]) => `${k} ${v} ppm`).join(", ")} (${esc(SMAC_SRC)}). The CO alarm uses the 15 ppm long-mission limit.</p>`;
   }
 
   function evidenceHtml() {
@@ -290,7 +299,7 @@
         <div id="detresults"></div>
         <div id="detevidence">${evidenceHtml()}</div>`;
       legend.innerHTML = `<span style="--c:var(--c-green)">sensor quiet</span><span style="--c:var(--c-gold)">one sign</span><span style="--c:var(--c-red)">two or more signs</span><span style="--c:var(--c-flame)">true source</span><span style="--c:var(--c-cyan)">estimated source (×)</span>`;
-      caption.textContent = "Illustration, not a validated fire model. Eight sensors in a 10 × 4 m module. In microgravity hot gas does not rise, so ventilation and slow mixing decide what each sensor sees. Heat alone cannot prove a fire; FlameLens fuses temperature rate of rise, CO, particle size and infrared flame signals. Thresholds are illustrative; real use needs engineering tests and certification.";
+      caption.textContent = "Illustration, not a validated fire model. Eight sensors in a 10 × 4 m module. In microgravity hot gas does not rise, so ventilation and slow mixing decide what each sensor sees. Heat alone cannot prove a fire; FlameLens fuses temperature rate of rise, CO, particle size and infrared flame signals. The CO alarm is NASA's long-mission CO limit (15 ppm, JSC 20584 Rev C); the mixing, fire growth and other thresholds are illustrative; real use needs engineering tests and certification.";
       const re = () => reset();
       document.getElementById("detscen").addEventListener("change", (e) => { st.scenario = e.target.value; showSelectors(); re(); });
       document.getElementById("dettest").addEventListener("change", (e) => {

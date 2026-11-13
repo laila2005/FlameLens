@@ -30,12 +30,13 @@ HABITATS = [
      "fuel_state": "solid", "sourced": True,
      "note": "Challenge text: spacesuits are filled with 100 % oxygen at 4.3 psi.", "source": CHALLENGE},
     {"id": "iss-cabin", "name": "ISS cabin", "o2_pct": 21, "pressure_psi": 14.7, "airflow_cm_s": 12.9, "gravity_g": 0,
-     "fuel_state": "any", "sourced": False,
-     "note": "Earth-like air (14.7 psi is Earth sea level, from the challenge text). ISS cabin values not separately sourced. Airflow 12.9 cm/s = median of NASA runs with recorded airflow.",
-     "source": ""},
-    {"id": "mars-habitat", "name": "Mars habitat", "o2_pct": 30, "pressure_psi": 10.2, "airflow_cm_s": 12.9, "gravity_g": 0.38,
-     "fuel_state": "any", "sourced": False,
-     "note": "Assumed similar to the Moon base; no Mars atmosphere value is given in the challenge text.", "source": ""},
+     "fuel_state": "any", "sourced": True, "source_label": "from a NASA document",
+     "note": "NASA-STD-3001 Technical Brief 'Habitable Atmosphere' (OCHMO-TB-003 Rev A), p. 8: the ISS cabin is typically kept at 14.7 psia with 21 % O2, equivalent to sea level. Airflow 12.9 cm/s = median of NASA runs with recorded airflow.",
+     "source": "https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-003-habitable-atmosphere.pdf"},
+    {"id": "mars-habitat", "name": "Mars habitat", "o2_pct": 34, "pressure_psi": 8.2, "airflow_cm_s": 12.9, "gravity_g": 0.38,
+     "fuel_state": "any", "sourced": True, "source_label": "from a NASA document",
+     "note": "NASA's exploration atmosphere, 8.2 psia with 34 % O2: the Exploration Atmospheres Working Group recommends it as a capability for future Moon and Mars missions (recommended, not required). NASA AsMA 2022 panel 'NASA's Exploration Atmospheres & EVA Strategies', NTRS 20220005716, slide 39. Airflow 12.9 cm/s = median of NASA runs with recorded airflow.",
+     "source": "https://ntrs.nasa.gov/citations/20220005716"},
 ]
 
 

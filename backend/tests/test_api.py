@@ -26,7 +26,10 @@ def test_habitats():
     names = {h["name"]: h for h in items}
     assert set(names) == {"Moon base", "Pressurized rover", "Spacesuit", "ISS cabin", "Mars habitat"}
     assert names["Moon base"]["sourced"] is True and names["Moon base"]["o2_pct"] == 30 and names["Moon base"]["pressure_psi"] == 10.2
-    assert names["Mars habitat"]["sourced"] is False
+    # ISS cabin and Mars habitat now cite NASA documents (OCHMO-TB-003 p. 8; NTRS 20220005716 slide 39)
+    assert names["ISS cabin"]["sourced"] is True and "OCHMO-TB-003" in names["ISS cabin"]["note"]
+    mars = names["Mars habitat"]
+    assert mars["sourced"] is True and mars["o2_pct"] == 34 and mars["pressure_psi"] == 8.2 and "20220005716" in mars["note"]
 
 
 def test_evidence_found_and_missing():

@@ -119,8 +119,10 @@ for h in habitats + [FAR, CUSTOM]:
     check(g, f"explanation: {expl['source']} text, every claim verified, 0 removed",
           all(c.get("verified") for c in expl["claims"]) and not expl.get("removed") and expl["claims"],
           f"{len(expl['claims'])} claims, removed={len(expl.get('removed') or [])}")
-    if h["id"] in {x["id"] for x in habitats}:
+    if h["id"] in {x["id"] for x in habitats} and h["id"] != "mars-habitat":
         check(g, "explanation served from verified AI cache", expl["source"] == "cache", expl["source"])
+    elif h["id"] == "mars-habitat":
+        check(g, "explanation is verified (AI cache, or template until the model is re-run for 8.2 psia / 34 % O2)", expl["source"] in ("cache", "template"), expl["source"])
     else:
         check(g, "AI off / no cache -> deterministic template still works", expl["source"] in {"template", "cache", "model"}, expl["source"])
     texts = " ".join([c["claim"] + " " + (c.get("engineering_recommendation") or "") for c in expl["claims"]])

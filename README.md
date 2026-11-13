@@ -20,7 +20,7 @@ It is built on **2,003 real spaceflight runs from 18 NASA PSI combustion investi
 
 ## 2. What FlameLens does
 
-You enter a design: oxygen %, pressure, airflow, material state and gravity. Presets cover the Moon base, a pressurized rover and a spacesuit (values from the challenge text), plus an ISS cabin and a Mars habitat (example values, labelled as such).
+You enter a design: oxygen %, pressure, airflow, material state and gravity. Presets cover the Moon base, a pressurized rover and a spacesuit (values from the challenge text), plus an ISS cabin (14.7 psia, 21 % O₂, from NASA-STD-3001 technical brief OCHMO-TB-003) and a Mars habitat at NASA's recommended exploration atmosphere (8.2 psia, 34 % O₂, NTRS 20220005716). Every preset cites its source; see `docs/research/claims.md`.
 
 | Feature | What you get |
 |---|---|

@@ -68,7 +68,7 @@
     $("grav").value = String(p.gravity_g);
     $("fuel").value = p.fuel_state;
     document.querySelectorAll(".pre").forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
-    $("presetnote").innerHTML = `<span class="badge ${p.sourced ? "src" : "ex"}">${p.sourced ? "from the challenge text" : "example values"}</span> ${esc(p.note || "")}`;
+    $("presetnote").innerHTML = `<span class="badge ${p.sourced ? "src" : "ex"}">${esc(p.source_label || (p.sourced ? "from the challenge text" : "example values"))}</span> ${esc(p.note || "")}${p.source && p.source.startsWith("http") ? ` <a href="${esc(p.source)}" target="_blank" rel="noopener">Source</a>` : ""}`;
     schedule(0);
   }
 
