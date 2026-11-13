@@ -55,3 +55,21 @@ Real example responses for every route are in [docs/design/mock-json](../docs/de
 ## Deploy
 
 `Dockerfile` and `render.yaml` at the repo root. The image holds `backend/` and `data/curated/` only. If `frontend/package.json` exists the image builds the frontend and serves it.
+
+## Deploy on Vercel
+
+Live: https://flamelens-steel.vercel.app (Vercel project `flamelens`, account `laila-mohameds-projects`).
+
+How it is set up:
+- `frontend/dist` is served as static files (no build step).
+- `api/index.py` is a Python serverless function that imports the FastAPI app (`backend.app.main:app`). It bundles `backend/**` and `data/curated/**` (`vercel.json`, `functions.includeFiles`).
+- `vercel.json` rewrites `/api/(.*)`, `/docs` and `/openapi.json` to that function; the original path is kept, so the routes work unchanged.
+- `requirements.txt` at the repo root lists only what the function needs (fastapi, pydantic). `.vercelignore` keeps `data/raw` and caches out of the upload.
+
+Redeploy from the repo root (Vercel CLI logged in to the account):
+
+```bash
+vercel deploy --prod --yes
+```
+
+The repo is linked to the project in `.vercel/` (git-ignored). On a new computer run `vercel link --yes --project flamelens` first. The deploy uploads the working tree, so commit and test before deploying.
