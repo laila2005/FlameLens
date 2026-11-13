@@ -9,6 +9,7 @@
   const FIELD_LABEL = { o2_pct: "Oxygen %", pressure_psi: "Pressure psi", airflow_cm_s: "Airflow cm/s", gravity_g: "Gravity g", fuel_state: "Material" };
   const GNAME = (g) => (g === 0 ? "Microgravity" : g === 0.16 ? "Lunar-gravity" : g === 0.38 ? "Mars-gravity" : g === 1 ? "Earth-gravity" : `${g} g`);
   const num = (v) => (v == null ? "–" : String(+(+v).toFixed(2)));
+  const val = (v) => (typeof v === "number" ? num(v) : v == null || v === "" ? "–" : String(v)); // numbers or words (material)
   let n = 3, habitats = null, profiles = null, lastKey = "", timer = null;
 
   function presetTargets() {
@@ -58,7 +59,7 @@
             <span>${num(c.gravity_g)} g</span><span>${esc(c.fuel_state)}</span><span>O₂ partial pressure ${num(e.o2_partial_pressure)} psi</span>
           </div>
           <div class="cmpline">Closes: <b>${esc(e.gaps_closed.map((g) => GAP[g] || g).join(", "))}</b></div>
-          ${nr.run_id ? `<div class="cmpline">Start from <button class="runlink" data-run="${esc(nr.run_id)}">${esc(nr.run_id)}</button> (${esc(nr.investigation)}${prof.hardware_group ? `, ${esc(prof.hardware_group)}` : ""}) and change ${e.changes.map((ch) => `${esc(FIELD_LABEL[ch.field] || ch.field)} ${num(ch.from)} → ${esc(typeof ch.to === "number" ? num(ch.to) : ch.to)}`).join("; ") || "nothing"}.</div>` : ""}
+          ${nr.run_id ? `<div class="cmpline">Start from <button class="runlink" data-run="${esc(nr.run_id)}">${esc(nr.run_id)}</button> (${esc(nr.investigation)}${prof.hardware_group ? `, ${esc(prof.hardware_group)}` : ""}) and change ${e.changes.map((ch) => `${esc(FIELD_LABEL[ch.field] || ch.field)} ${esc(val(ch.from))} → ${esc(val(ch.to))}`).join("; ") || "nothing"}.</div>` : ""}
           <div class="cmpnote ${e.partial_gravity ? "warn" : ""}">${esc(e.platform_note)}${e.material_note ? ` ${esc(e.material_note)}` : ""}</div>
         </div></li>`;
     }).join("") : `<li class="hint">Every design already has 2 or more NASA runs matching all five conditions. No new experiment is needed for coverage.</li>`;
