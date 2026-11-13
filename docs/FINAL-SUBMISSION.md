@@ -97,6 +97,7 @@ OTHER NASA RESOURCES & TOOLS:
 ```text
 1. In-Product AI & Guardrails: All engineering rankings, evidence strength scores (0–100), gap detection, "Run This Next" recommendations, and "Safer Tested Options" are computed by 100% deterministic arithmetic over NASA PSI tables—never by AI. In the "What the evidence says" explanation panel, a deterministic Citation Verifier (backend/app/explain.py) checks every claim against the retrieved NASA run IDs and removes any sentence with an unverified run ID, mismatched number, or invented safety threshold.
 2. Development Tools: AI coding assistants (Claude / Gemini in Antigravity) assisted Team AstroSpark during the 24-hour hackathon with ETL script authoring, FastAPI route scaffolding, SVG chart code, and documentation formatting. Every scientific value and test case was validated against the raw NASA PSI CSV tables and Technical Memoranda.
+3. Media: the logo illustration was generated with Google Gemini. The demo video was composed by our own scripts (scripts/demo_video, written with Claude) from screen captures of the live site; the soundtrack is synthesized by code, with no samples and no AI-generated music. No voices or faces are used.
 ```
 
 ---

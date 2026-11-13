@@ -89,7 +89,7 @@
 
     $("brief").innerHTML = `
       <header class="bhead">
-        <div class="bbrand"><span class="bmark" aria-hidden="true"></span><div><div class="bkicker">FlameLens · Design review evidence brief</div>
+        <div class="bbrand"><img class="bmark" src="logo.png" alt="" width="44" height="44"><div><div class="bkicker">FlameLens · Design review evidence brief</div>
           <h2 id="brieftitle">${esc(name)}</h2></div></div>
         <dl class="bmeta"><dt>Reference</dt><dd>${esc(ref)}</dd><dt>Generated</dt><dd>${esc(when)}</dd>
           <dt>Data</dt><dd>${(ds.total_runs || 2003).toLocaleString()} NASA PSI flight runs · ${ds.total_investigations || 18} investigations · CC0</dd></dl>

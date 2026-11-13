@@ -1,18 +1,35 @@
-"""Compose the 30 s FlameLens demo (1920x1080, 60 fps) from 2x screenshots: camera moves, cursor, captions, title card.
-Usage: render.py <shots_dir> <out.mp4> <audio.wav> [--preview]"""
-import json, math, subprocess, sys
+"""Premium 30 s FlameLens demo (1920x1080, 60 fps): branded dark stage, the live dashboard in a floating browser
+window with camera moves, cursor and click ripples, numbered captions below the window, and the FlameLens
+illustration as intro and end card.
+
+Usage: render.py <shots_dir> <out.mp4> <soundtrack.wav> <illustration.(png|jpg)> <logo.png> [--preview]
+Timing must match soundtrack.py (scene changes, clicks, end card).
+"""
+import json, subprocess, sys
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 import imageio_ffmpeg
 
-SHOTS, OUT, WAV = Path(sys.argv[1]), Path(sys.argv[2]), Path(sys.argv[3])
+SHOTS, OUT, WAV, ILLU, LOGO = (Path(a) for a in sys.argv[1:6])
 PREVIEW = "--preview" in sys.argv
 W, H, FPS, DUR = 1920, 1080, 60, 30.0
 META = json.loads((SHOTS / "meta.json").read_text(encoding="utf-8"))
-FONT_B = "C:/Windows/Fonts/segoeuib.ttf"
-FONT_SB = "C:/Windows/Fonts/seguisb.ttf"
-FONT_M = "C:/Windows/Fonts/consolab.ttf"
-NAVY, FLAME = (20, 33, 61), (224, 88, 28)
+F_B, F_SB, F_R, F_M = ("C:/Windows/Fonts/segoeuib.ttf", "C:/Windows/Fonts/seguisb.ttf",
+                       "C:/Windows/Fonts/segoeui.ttf", "C:/Windows/Fonts/consolab.ttf")
+F_D = "C:/Windows/Fonts/bahnschrift.ttf"
+FLAME, CYAN, WHITE = (255, 138, 36), (92, 214, 255), (255, 255, 255)
+font = lambda p, s: ImageFont.truetype(p, s)
+
+# stage layout: browser window with a 16:9 content area, captions below it
+CW, CH = 1520, 855
+WX, BAR = (W - CW) // 2, 38
+WY = 26
+CX, CY = WX, WY + BAR            # content top-left on screen
+CAP_Y = CY + CH + 18             # caption row
+
+ease = lambda t: t * t * (3 - 2 * t)
+lerp = lambda a, b, t: a + (b - a) * t
+clamp = lambda v: max(0.0, min(1.0, v))
 
 _imgs = {}
 def img(name):
@@ -24,230 +41,315 @@ def center(shot, key):
     x, y, w, h = META[shot][key]
     return (x + w / 2, y + h / 2)
 
-ease = lambda t: t * t * (3 - 2 * t)
-lerp = lambda a, b, t: a + (b - a) * t
-
 # ---------------------------------------------------------------- timeline
-# segment: (start, end, shot, cam_from (cx, cy, zoom), cam_to)
+INTRO_END, END_CARD = 1.6, 27.6
 SEG = [
-    (0.0, 4.2, "s1_top_rover", (960, 540, 1.0), (960, 330, 1.15)),
-    (4.2, 5.6, "s2_top_iss", (960, 330, 1.15), (900, 320, 1.2)),
-    (5.6, 8.4, "s2_meter_iss", (479, 330, 1.55), (479, 300, 1.7)),
-    (8.4, 13.2, "s3_closest", (478, 190, 1.6), (478, 420, 1.42)),
-    (13.2, 15.4, "s4_explain", (478, 330, 1.55), (478, 300, 1.6)),
-    (15.4, 17.8, "s4_drawer", (900, 560, 1.15), (1560, 800, 1.5)),
-    (17.8, 19.0, "s5_campaign_n1", (478, 300, 1.5), (478, 300, 1.52)),
-    (19.0, 22.4, "s5_campaign_n3", (478, 300, 1.52), (478, 600, 1.4)),
-    (22.4, 23.7, "s6_spread", (1405, 362, 1.6), (1405, 360, 1.62)),
-    (23.7, 25.0, "s6_coolflame", (1405, 362, 1.6), (1405, 360, 1.62)),
-    (25.0, 26.2, "s6_aerosol", (1405, 362, 1.6), (1405, 360, 1.62)),
-    (26.2, 28.4, "s7_brief_top", (960, 540, 1.0), (960, 470, 1.25)),
-    (28.4, 30.0, "TITLE", None, None),
+    (1.6, 5.2, "s1_top_rover", (960, 540, 1.0), (960, 330, 1.15)),
+    (5.2, 6.3, "s2_top_iss", (960, 330, 1.15), (900, 320, 1.2)),
+    (6.3, 8.9, "s2_meter_iss", (479, 330, 1.55), (479, 300, 1.7)),
+    (8.9, 13.3, "s3_closest", (478, 190, 1.6), (478, 420, 1.42)),
+    (13.3, 15.3, "s4_explain", (478, 330, 1.55), (478, 300, 1.6)),
+    (15.3, 17.6, "s4_drawer", (900, 560, 1.15), (1560, 800, 1.5)),
+    (17.6, 18.7, "s5_campaign_n1", (478, 300, 1.5), (478, 300, 1.52)),
+    (18.7, 21.9, "s5_campaign_n3", (478, 300, 1.52), (478, 600, 1.4)),
+    (21.9, 23.1, "s6_spread", (1405, 362, 1.6), (1405, 360, 1.62)),
+    (23.1, 24.3, "s6_coolflame", (1405, 362, 1.6), (1405, 360, 1.62)),
+    (24.3, 25.4, "s6_aerosol", (1405, 362, 1.6), (1405, 360, 1.62)),
+    (25.4, 27.6, "s7_brief_top", (960, 540, 1.0), (960, 470, 1.25)),
 ]
 XFADE = 0.32
-
 CAPTIONS = [
-    (0.25, 4.15, "Planned Moon rovers: 30 % oxygen at 10.2 psi.", "Has NASA ever tested fire in that air?"),
-    (4.3, 8.35, "FlameLens checks any habitat design against", "2,003 real NASA flight runs from 18 PSI investigations"),
-    (8.5, 13.15, "No exact match for the rover? It shows the closest", "real NASA tests, and exactly what differs"),
-    (13.3, 17.75, "Every sentence is citation-verified and links", "to its NASA run and DOI", "top"),
-    (17.9, 22.35, "Campaign planner: 3 experiments NASA could fly next", "to give all 5 habitat designs a matching test"),
-    (22.5, 26.15, "Physics lenses from real runs:", "flame spread, cool flames, smoke vs dust"),
-    (26.3, 28.35, "One click: a printable design-review brief", "with every NASA source"),
+    (1.85, 5.15, "Planned Moon rovers: 30 % oxygen at 10.2 psi.", "Has NASA ever tested fire in that air?"),
+    (5.3, 8.85, "FlameLens checks any habitat design", "against 2,003 real NASA flight runs from 18 PSI investigations"),
+    (9.0, 13.25, "No exact match for the rover?", "It shows the closest real NASA tests, and exactly what differs"),
+    (13.4, 17.55, "Every sentence is citation-verified", "and links to its NASA run and DOI"),
+    (17.7, 21.85, "Campaign planner: what NASA could fly next", "3 experiments give all 5 habitat designs a matching test"),
+    (22.0, 25.35, "Physics lenses built from real runs", "flame spread, cool flames, smoke vs dust"),
+    (25.5, 27.55, "One click: a printable design-review brief", "with every NASA source cited"),
 ]
-
-# cursor: list of (t, shot-for-coords, x, y); clicks at times
-S = lambda shot, key: (shot,) + center(shot, key)
+c = lambda shot, key: center(shot, key)
 CURSOR = [
-    (2.6, "s1_top_rover", 1150, 620), (3.95, *S("s1_top_rover", "iss")[0:1], *center("s1_top_rover", "iss")),
-    (4.25, "s1_top_rover", *center("s1_top_rover", "iss")), (5.5, "s1_top_rover", 1500, 420),
-    (13.4, "s4_explain", 520, 520), (15.15, "s4_explain", *center("s4_explain", "run1")),
-    (15.6, "s4_explain", *center("s4_explain", "run1")),
-    (17.9, "s5_campaign_n1", 560, 420), (18.85, "s5_campaign_n1", *center("s5_campaign_n1", "n3")),
-    (19.6, "s5_campaign_n1", *center("s5_campaign_n1", "n3")), (21.0, "s5_campaign_n1", 640, 380),
-    (22.5, "s6_spread", 1500, 300), (23.6, "s6_spread", *center("s6_spread", "coolflame")),
-    (24.9, "s6_spread", *center("s6_spread", "aerosol")), (26.0, "s6_spread", *center("s6_spread", "aerosol")),
+    (3.5, "s1_top_rover", 1150, 620), (4.95, "s1_top_rover", *c("s1_top_rover", "iss")),
+    (5.3, "s1_top_rover", *c("s1_top_rover", "iss")), (6.2, "s1_top_rover", 1500, 420),
+    (13.5, "s4_explain", 520, 520), (15.05, "s4_explain", *c("s4_explain", "run1")),
+    (15.5, "s4_explain", *c("s4_explain", "run1")),
+    (17.7, "s5_campaign_n1", 560, 420), (18.55, "s5_campaign_n1", *c("s5_campaign_n1", "n3")),
+    (19.3, "s5_campaign_n1", *c("s5_campaign_n1", "n3")), (20.6, "s5_campaign_n1", 640, 380),
+    (22.0, "s6_spread", 1500, 300), (23.0, "s6_spread", *c("s6_spread", "coolflame")),
+    (24.2, "s6_spread", *c("s6_spread", "aerosol")), (25.3, "s6_spread", *c("s6_spread", "aerosol")),
 ]
-CURSOR_ON = [(2.6, 5.5), (13.4, 15.9), (17.9, 21.0), (22.5, 26.0)]
-CLICKS = [4.0, 15.2, 18.9, 23.65, 24.95]
-HIGHLIGHTS = [  # (start, end, shot, rect key, color)
-    (6.0, 8.3, "s2_meter_iss", "meter", FLAME),
-    (9.6, 13.1, "s3_closest", "closest", (10, 111, 176)),
-    (16.0, 17.7, "s4_drawer", "drawer", (10, 111, 176)),
-]
+CURSOR_ON = [(3.5, 6.2), (13.5, 15.8), (17.7, 20.6), (22.0, 25.3)]
+CLICKS = [5.0, 15.1, 18.6, 23.05, 24.25]
+HIGHLIGHTS = [(6.7, 8.8, "s2_meter_iss", "meter", FLAME), (10.1, 13.2, "s3_closest", "closest", CYAN),
+              (15.9, 17.5, "s4_drawer", "drawer", CYAN)]
 
-# ---------------------------------------------------------------- drawing helpers
+# ---------------------------------------------------------------- static layers
+def rounded_mask(size, r):
+    m = Image.new("L", size, 0)
+    ImageDraw.Draw(m).rounded_rectangle((0, 0, size[0] - 1, size[1] - 1), r, fill=255)
+    return m
+
+def build_stage():
+    bg = Image.new("RGB", (W, H), (6, 9, 26))
+    g = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    d = ImageDraw.Draw(g)
+    d.ellipse((-500, 500, 900, 1500), fill=(255, 110, 30, 70))
+    d.ellipse((1200, -500, 2500, 600), fill=(60, 140, 255, 60))
+    d.ellipse((600, 200, 1400, 900), fill=(40, 60, 140, 40))
+    g = g.filter(ImageFilter.GaussianBlur(160))
+    bg.paste(g, (0, 0), g)
+    stars = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    sd = ImageDraw.Draw(stars)
+    import random
+    rnd = random.Random(7)
+    for _ in range(260):
+        x, y, r = rnd.uniform(0, W), rnd.uniform(0, H), rnd.choice([0.6, 0.8, 1.0, 1.3])
+        a = rnd.randint(40, 150)
+        sd.ellipse((x - r, y - r, x + r, y + r), fill=(220, 230, 255, a))
+    bg.paste(stars, (0, 0), stars)
+    return bg
+
+def build_window():
+    """Shadow + chrome bar + border as an RGBA layer (content pasted per frame)."""
+    lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    sh = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    ImageDraw.Draw(sh).rounded_rectangle((WX + 10, WY + 30, WX + CW - 10, CY + CH + 30), 22, fill=(0, 0, 0, 190))
+    sh = sh.filter(ImageFilter.GaussianBlur(34))
+    lay.alpha_composite(sh)
+    glow = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    ImageDraw.Draw(glow).rounded_rectangle((WX - 2, WY - 2, WX + CW + 2, CY + CH + 2), 20, outline=FLAME + (90,), width=3)
+    lay.alpha_composite(glow.filter(ImageFilter.GaussianBlur(10)))
+    d = ImageDraw.Draw(lay)
+    d.rounded_rectangle((WX, WY, WX + CW, CY + CH), 16, fill=(16, 22, 52, 255))
+    d.rectangle((WX, WY + 16, WX + CW, CY), fill=(16, 22, 52, 255))
+    for i, col in enumerate([(255, 95, 87), (254, 188, 46), (40, 200, 64)]):
+        x = WX + 22 + i * 22
+        d.ellipse((x - 6, WY + BAR / 2 - 6, x + 6, WY + BAR / 2 + 6), fill=col + (255,))
+    pill_w = 420
+    px = WX + (CW - pill_w) / 2
+    d.rounded_rectangle((px, WY + 7, px + pill_w, WY + BAR - 7), 12, fill=(30, 38, 80, 255))
+    f = font(F_SB, 17)
+    txt = "flamelens-steel.vercel.app"
+    d.text((px + (pill_w - d.textlength(txt, font=f)) / 2 + 8, WY + 9), txt, font=f, fill=(190, 202, 235, 255))
+    d.ellipse((px + 16, WY + 15, px + 24, WY + 23), outline=(120, 220, 160, 255), width=2)
+    d.rounded_rectangle((WX, WY, WX + CW, CY + CH), 16, outline=(255, 255, 255, 40), width=1)
+    return lay
+
+STAGE = build_stage()
+WINDOW = build_window()
+CONTENT_MASK = Image.new("L", (CW, CH), 255)
+ImageDraw.Draw(CONTENT_MASK).rectangle((0, 0, CW, CH), fill=255)
+_m = rounded_mask((CW, CH + 16), 16).crop((0, 16, CW, CH + 16))
+CONTENT_MASK = _m
+
+ILL = Image.open(ILLU).convert("RGB") if ILLU.exists() else None
+LOGO_IM = Image.open(LOGO).convert("RGBA")
+
+def cover(im, scale=1.0, focus=(0.5, 0.5)):
+    """Scale an image to cover the frame (with extra zoom), cropping around focus."""
+    r = max(W / im.width, H / im.height) * scale
+    w, h = im.width * r, im.height * r
+    x0 = (w - W) * focus[0]; y0 = (h - H) * focus[1]
+    return im.resize((W, H), Image.LANCZOS, box=(x0 / r, y0 / r, (x0 + W) / r, (y0 + H) / r))
+
+def fallback_card():
+    card = STAGE.copy()
+    lg = LOGO_IM.resize((560, 560), Image.LANCZOS)
+    card.paste(lg, ((W - 560) // 2, 120), lg)
+    d = ImageDraw.Draw(card)
+    f = font(F_B, 120)
+    d.text(((W - d.textlength("FlameLens", font=f)) / 2, 660), "FlameLens", font=f, fill=WHITE)
+    return card
+
+# ---------------------------------------------------------------- per-frame helpers
 def cam_at(seg, t):
     s0, s1, _, a, b = seg
-    u = ease(min(1, max(0, (t - s0) / (s1 - s0))))
+    u = ease(clamp((t - s0) / (s1 - s0)))
     return tuple(lerp(a[i], b[i], u) for i in range(3))
 
 def box(cam):
     cx, cy, z = cam
     w, h = W / z, H / z
-    x0 = min(max(cx - w / 2, 0), W - w); y0 = min(max(cy - h / 2, 0), H - h)
-    return x0, y0, w, h
+    return min(max(cx - w / 2, 0), W - w), min(max(cy - h / 2, 0), H - h), w, h
 
-def frame_of(seg, t):
-    shot = seg[2]
-    if shot == "TITLE":
-        return title_card(t - seg[0])
+def content(seg, t):
     x0, y0, w, h = box(cam_at(seg, t))
-    im = img(shot).resize((W, H), Image.BICUBIC, box=(x0 * 2, y0 * 2, (x0 + w) * 2, (y0 + h) * 2), reducing_gap=2.0)
-    return im
+    return img(seg[2]).resize((CW, CH), Image.BICUBIC, box=(x0 * 2, y0 * 2, (x0 + w) * 2, (y0 + h) * 2), reducing_gap=2.0)
 
 def to_screen(seg, t, x, y):
     x0, y0, w, h = box(cam_at(seg, t))
-    return ((x - x0) / w * W, (y - y0) / h * H)
+    return (CX + (x - x0) / w * CW, CY + (y - y0) / h * CH)
 
 _cur = None
 def cursor_sprite():
     global _cur
     if _cur is None:
         s = 3
-        c = Image.new("RGBA", (40 * s, 56 * s), (0, 0, 0, 0))
-        d = ImageDraw.Draw(c)
+        cimg = Image.new("RGBA", (40 * s, 56 * s), (0, 0, 0, 0))
         pts = [(2, 2), (2, 40), (12, 31), (19, 48), (26, 45), (19, 29), (32, 29)]
-        shadow = Image.new("RGBA", c.size, (0, 0, 0, 0))
-        ImageDraw.Draw(shadow).polygon([(x * s + 4, y * s + 5) for x, y in pts], fill=(0, 0, 0, 110))
-        shadow = shadow.filter(ImageFilter.GaussianBlur(5))
-        c.alpha_composite(shadow)
-        d.polygon([(x * s, y * s) for x, y in pts], fill=(255, 255, 255, 255), outline=(15, 20, 35, 255), width=2 * s)
-        _cur = c.resize((40, 56), Image.LANCZOS)
+        sh = Image.new("RGBA", cimg.size, (0, 0, 0, 0))
+        ImageDraw.Draw(sh).polygon([(x * s + 4, y * s + 5) for x, y in pts], fill=(0, 0, 0, 120))
+        cimg.alpha_composite(sh.filter(ImageFilter.GaussianBlur(5)))
+        ImageDraw.Draw(cimg).polygon([(x * s, y * s) for x, y in pts], fill=(255, 255, 255, 255), outline=(15, 20, 35, 255), width=2 * s)
+        _cur = cimg.resize((34, 48), Image.LANCZOS)
     return _cur
 
 def cursor_pos(t):
-    pts = [p for p in CURSOR]
-    for (ta, sa, xa, ya), (tb, sb, xb, yb) in zip(pts, pts[1:]):
+    for (ta, sa, xa, ya), (tb, sb, xb, yb) in zip(CURSOR, CURSOR[1:]):
         if ta <= t <= tb:
             u = ease((t - ta) / (tb - ta)) if tb > ta else 1
-            return sa, lerp(xa, xb, u), lerp(ya, yb, u)
+            return lerp(xa, xb, u), lerp(ya, yb, u)
     return None
 
-def rrect(d, xy, r, **kw):
-    d.rounded_rectangle(xy, r, **kw)
-
-def fit(font_path, size):
-    return ImageFont.truetype(font_path, size)
-
-CAP_F = fit(FONT_B, 50)
-
-def draw_caption(im, t):
-    for cap in CAPTIONS:
-        a, b, l1, l2 = cap[:4]
-        top = len(cap) > 4 and cap[4] == "top"
-        if a <= t <= b:
-            fade = min(1, (t - a) / 0.25, (b - t) / 0.25)
-            ov = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-            d = ImageDraw.Draw(ov)
-            lines = [l for l in (l1, l2) if l]
-            widths = [d.textlength(l, font=CAP_F) for l in lines]
-            bw = max(widths) + 110; lh = 66
-            bh = lh * len(lines) + 44
-            x0 = (W - bw) / 2; y0 = (46 - (1 - ease(fade)) * 14) if top else H - bh - 46 + (1 - ease(fade)) * 14
-            rrect(d, (x0, y0, x0 + bw, y0 + bh), 26, fill=(14, 22, 44, int(232 * fade)))
-            rrect(d, (x0, y0, x0 + 12, y0 + bh), 6, fill=FLAME + (int(255 * fade),))
-            for i, l in enumerate(lines):
-                d.text(((W - widths[i]) / 2 + 6, y0 + 20 + i * lh), l, font=CAP_F, fill=(255, 255, 255, int(255 * fade)))
-            im.paste(ov, (0, 0), ov)
-            return
-
-def draw_highlight(im, seg, t):
+def overlay_ui(frame, seg, t):
+    ov = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    d = ImageDraw.Draw(ov)
     for a, b, shot, key, col in HIGHLIGHTS:
         if shot == seg[2] and a <= t <= b and META[shot].get(key):
             fade = min(1, (t - a) / 0.35, (b - t) / 0.3)
             x, y, w, h = META[shot][key]
             (sx0, sy0), (sx1, sy1) = to_screen(seg, t, x - 6, y - 6), to_screen(seg, t, x + w + 6, y + h + 6)
-            ov = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-            d = ImageDraw.Draw(ov)
-            rrect(d, (sx0, sy0, sx1, sy1), 22, outline=col + (int(230 * fade),), width=6)
-            ov = Image.alpha_composite(ov.filter(ImageFilter.GaussianBlur(8)), ov)
-            im.paste(ov, (0, 0), ov)
+            sx0, sy0, sx1, sy1 = max(sx0, CX + 4), max(sy0, CY + 4), min(sx1, CX + CW - 4), min(sy1, CY + CH - 4)
+            d.rounded_rectangle((sx0, sy0, sx1, sy1), 20, outline=col + (int(235 * fade),), width=5)
+    if any(a <= t <= b for a, b in CURSOR_ON):
+        p = cursor_pos(t)
+        if p:
+            sx, sy = to_screen(seg, t, *p)
+            for ck in CLICKS:
+                if ck <= t <= ck + 0.45:
+                    u = (t - ck) / 0.45
+                    r = 12 + 40 * ease(u)
+                    d.ellipse((sx - r, sy - r, sx + r, sy + r), outline=FLAME + (int(255 * (1 - u)),), width=5)
+                    d.ellipse((sx - 11, sy - 11, sx + 11, sy + 11), fill=FLAME + (int(150 * (1 - u)),))
+    glow = ov.filter(ImageFilter.GaussianBlur(7))
+    frame.paste(glow, (0, 0), glow)
+    frame.paste(ov, (0, 0), ov)
+    if any(a <= t <= b for a, b in CURSOR_ON):
+        p = cursor_pos(t)
+        if p:
+            sx, sy = to_screen(seg, t, *p)
+            cur = cursor_sprite()
+            if any(ck <= t <= ck + 0.12 for ck in CLICKS):
+                cur = cur.resize((29, 41))
+            frame.paste(cur, (int(sx - 2), int(sy - 2)), cur)
 
-def draw_cursor(im, seg, t):
-    if not any(a <= t <= b for a, b in CURSOR_ON):
-        return
-    p = cursor_pos(t)
-    if not p:
-        return
-    shot, x, y = p
-    s = next((sg for sg in SEG if sg[2] == shot), seg)
-    # cursor coordinates are in the CSS space of `shot`; use the current segment's camera when shots share layout
-    sx, sy = to_screen(seg if seg[2] != "TITLE" else s, t, x, y)
-    for c in CLICKS:
-        if c <= t <= c + 0.45:
-            u = (t - c) / 0.45
-            ov = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-            d = ImageDraw.Draw(ov)
-            r = 14 + 44 * ease(u)
-            d.ellipse((sx - r, sy - r, sx + r, sy + r), outline=FLAME + (int(255 * (1 - u)),), width=6)
-            d.ellipse((sx - 12, sy - 12, sx + 12, sy + 12), fill=FLAME + (int(150 * (1 - u)),))
-            im.paste(ov, (0, 0), ov)
-    press = any(c <= t <= c + 0.12 for c in CLICKS)
-    cur = cursor_sprite() if not press else cursor_sprite().resize((34, 48))
-    im.paste(cur, (int(sx - 2), int(sy - 2)), cur)
+F_H, F_S, F_N, F_U = font(F_B, 44), font(F_R, 30), font(F_D, 46), font(F_SB, 21)
+MINI = LOGO_IM.resize((44, 44), Image.LANCZOS)
 
-_title_bg = None
-def title_card(u):
-    global _title_bg
-    if _title_bg is None:
-        bg = Image.new("RGB", (W, H), (238, 242, 248))
-        glow = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-        g = ImageDraw.Draw(glow)
-        g.ellipse((-300, -380, 1000, 520), fill=(255, 166, 112, 90))
-        g.ellipse((1100, -300, 2300, 700), fill=(120, 170, 240, 90))
-        glow = glow.filter(ImageFilter.GaussianBlur(120))
-        bg.paste(glow, (0, 0), glow)
-        d = ImageDraw.Draw(bg)
-        # flame sphere
-        sph = Image.new("RGBA", (220, 220), (0, 0, 0, 0))
-        for i in range(110, 0, -1):
-            f = i / 110
-            col = (int(lerp(255, 122, f ** 1.6)), int(lerp(241, 36, f ** 1.1)), int(lerp(196, 0, f ** 0.8)), 255)
-            off = int((1 - f) * 26)
-            ImageDraw.Draw(sph).ellipse((110 - i - off, 110 - i - off, 110 + i - off, 110 + i - off), fill=col)
-        mask = Image.new("L", (220, 220), 0); ImageDraw.Draw(mask).ellipse((0, 0, 219, 219), fill=255)
-        bg.paste(sph, (W // 2 - 110, 190), mask)
-        f1, f2, f3, f4 = fit(FONT_B, 132), fit(FONT_SB, 54), fit(FONT_M, 46), fit(FONT_SB, 32)
-        def ctext(y, s, f, fill):
-            d.text(((W - d.textlength(s, font=f)) / 2, y), s, font=f, fill=fill)
-        ctext(430, "FlameLens", f1, NAVY)
-        ctext(600, "Space-fire data, made clear", f2, (93, 105, 135))
-        rrect(d, (W / 2 - 400, 712, W / 2 + 400, 792), 40, fill=(253, 238, 228))
-        ctext(726, "flamelens-steel.vercel.app", f3, FLAME)
-        ctext(880, "Team AstroSpark  ·  NASA Space Apps Cairo 2026  ·  NASA PSI data (CC0)", f4, (93, 105, 135))
-        _title_bg = bg
-    return _title_bg.copy()
+def draw_caption_row(frame, t, alpha=1.0):
+    ov = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    d = ImageDraw.Draw(ov)
+    # brand mark on the right of the caption row
+    a_brand = int(200 * alpha)
+    url = "flamelens-steel.vercel.app"
+    uw = d.textlength(url, font=F_U)
+    ux = WX + CW - uw
+    m = MINI.copy(); m.putalpha(m.getchannel("A").point(lambda v: int(v * alpha)))
+    ov.paste(m, (int(ux - 56), CAP_Y + 30), m)
+    d.text((ux, CAP_Y + 40), url, font=F_U, fill=(170, 182, 220, a_brand))
+    for i, (a, b, l1, l2) in enumerate(CAPTIONS):
+        if a <= t <= b:
+            fin = ease(clamp((t - a) / 0.35)); fout = ease(clamp((b - t) / 0.25))
+            k = min(fin, fout) * alpha
+            dy = (1 - fin) * 16
+            num = f"{i + 1:02d}"
+            d.text((WX, CAP_Y + 18 + dy), num, font=F_N, fill=FLAME + (int(255 * k),))
+            d.rectangle((WX + 68, CAP_Y + 22 + dy, WX + 71, CAP_Y + 104 + dy), fill=(255, 255, 255, int(70 * k)))
+            d.text((WX + 92, CAP_Y + 8 + dy), l1, font=F_H, fill=(255, 255, 255, int(255 * k)))
+            d.text((WX + 92, CAP_Y + 62 + dy), l2, font=F_S, fill=(178, 192, 232, int(255 * k)))
+    frame.paste(ov, (0, 0), ov)
 
-# ---------------------------------------------------------------- render
-def render_frame(t):
-    i = next(k for k, s in enumerate(SEG) if s[0] <= t < s[1] or k == len(SEG) - 1)
+def window_frame(t):
+    i = next((k for k, s in enumerate(SEG) if s[0] <= t < s[1]), len(SEG) - 1)
     seg = SEG[i]
-    im = frame_of(seg, t)
-    if i > 0 and t < seg[0] + XFADE:  # crossfade from the previous segment's last look
+    cont = content(seg, t)
+    if i > 0 and t < seg[0] + XFADE:
         prev = SEG[i - 1]
-        a = ease((t - seg[0]) / XFADE)
-        im = Image.blend(frame_of(prev, prev[1] - 1e-3), im, a)
-    if seg[2] != "TITLE":
-        draw_highlight(im, seg, t)
-        draw_cursor(im, seg, t)
-    draw_caption(im, t)
-    if t < 0.35:
-        im = Image.blend(Image.new("RGB", (W, H), (238, 242, 248)), im, ease(t / 0.35))
-    return im
+        cont = Image.blend(content(prev, prev[1] - 1e-3), cont, ease((t - seg[0]) / XFADE))
+    frame = STAGE.copy()
+    frame.paste(WINDOW, (0, 0), WINDOW)
+    frame.paste(cont, (CX, CY), CONTENT_MASK)
+    return frame, seg
+
+def intro_card(t):
+    base = cover(ILL, 1.0 + 0.05 * (t / 2.2), (0.5, 0.45)) if ILL else fallback_card()
+    shade = Image.new("RGB", (W, H), (0, 0, 0))
+    return Image.blend(shade, base, ease(clamp(t / 0.45)))
+
+END_F1, END_F2, END_F3 = font(F_SB, 44), font(F_M, 34), font(F_SB, 25)
+_end_art = None
+def end_art():
+    """Illustration contained in the upper part of the stage, edges feathered into the dark background."""
+    global _end_art
+    if _end_art is None:
+        if ILL is None:
+            _end_art = fallback_card(); return _end_art
+        import numpy as np
+        h = 790; w = int(ILL.width * h / ILL.height)
+        art = ILL.resize((w, h), Image.LANCZOS).convert("RGBA")
+        yy, xx = np.mgrid[0:h, 0:w].astype(float)
+        e = 150.0
+        a = np.minimum.reduce([xx / e, (w - 1 - xx) / e, yy / 60.0, (h - 1 - yy) / e])
+        a = np.clip(a, 0, 1); a = a * a * (3 - 2 * a)
+        art.putalpha(Image.fromarray((a * 255).astype("uint8")))
+        base = STAGE.copy().convert("RGBA")
+        base.alpha_composite(art, ((W - w) // 2, 0))
+        _end_art = base.convert("RGB")
+    return _end_art
+
+def end_card(t):
+    z = 1.0 + 0.035 * (t / 2.4)
+    art = end_art()
+    if z > 1.0:  # slow push-in
+        cw, ch = W / z, H / z
+        art = art.resize((W, H), Image.LANCZOS, box=((W - cw) / 2, (H - ch) / 2 * 0.6, (W + cw) / 2, (H - ch) / 2 * 0.6 + ch))
+    ov = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    d = ImageDraw.Draw(ov)
+    k = ease(clamp((t - 0.3) / 0.5))
+    def ctext(y, s, f, col):
+        d.text(((W - d.textlength(s, font=f)) / 2, y + (1 - k) * 14), s, font=f, fill=col + (int(255 * k),))
+    ctext(812, "Space-fire data, made clear", END_F1, WHITE)
+    pw = 600
+    d.rounded_rectangle(((W - pw) / 2, 884 + (1 - k) * 14, (W + pw) / 2, 942 + (1 - k) * 14), 29,
+                        fill=(255, 138, 36, int(38 * k)), outline=FLAME + (int(220 * k),), width=2)
+    ctext(893, "flamelens-steel.vercel.app", END_F2, (255, 196, 140))
+    ctext(982, "Team AstroSpark  ·  NASA Space Apps Cairo 2026  ·  NASA PSI data (CC0)", END_F3, (178, 192, 232))
+    base = art.convert("RGBA"); base.alpha_composite(ov)
+    return base.convert("RGB")
+
+def render_frame(t):
+    if t < INTRO_END:
+        im = intro_card(t)
+        if t > INTRO_END - 0.45:  # dissolve into the stage with the window rising in
+            w, _ = window_frame(INTRO_END)
+            u = ease((t - (INTRO_END - 0.45)) / 0.45)
+            im = Image.blend(im, w, u)
+        return im
+    if t >= END_CARD:
+        e = end_card(t - END_CARD)
+        if t < END_CARD + 0.5:
+            w, seg = window_frame(END_CARD - 1e-3)
+            draw_caption_row(w, END_CARD - 1e-3)
+            e = Image.blend(w, e, ease((t - END_CARD) / 0.5))
+        if t > DUR - 0.5:
+            e = Image.blend(e, Image.new("RGB", (W, H), (0, 0, 0)), ease((t - (DUR - 0.5)) / 0.5))
+        return e
+    frame, seg = window_frame(t)
+    overlay_ui(frame, seg, t)
+    draw_caption_row(frame, t, alpha=ease(clamp((t - INTRO_END) / 0.4)))
+    return frame
 
 if PREVIEW:
-    for t in [1.0, 3.9, 4.1, 6.5, 10.5, 15.2, 16.8, 18.9, 20.5, 23.65, 25.5, 27.5, 29.4]:
-        render_frame(t).save(OUT.parent / f"preview_{t:05.2f}.jpg", quality=88)
+    for t in [0.8, 1.45, 2.4, 4.97, 7.5, 11.0, 15.08, 16.8, 18.62, 20.5, 23.06, 26.5, 27.9, 29.2]:
+        render_frame(t).save(OUT.parent / f"pv_{t:05.2f}.jpg", quality=88)
     print("previews written"); sys.exit()
 
 ff = imageio_ffmpeg.get_ffmpeg_exe()
 cmd = [ff, "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
-       "-i", str(WAV), "-c:v", "libx264", "-preset", "medium", "-crf", "18", "-pix_fmt", "yuv420p", "-profile:v", "high",
-       "-c:a", "aac", "-b:a", "192k", "-shortest", "-movflags", "+faststart", str(OUT)]
+       "-i", str(WAV), "-c:v", "libx264", "-preset", "slow", "-crf", "17", "-pix_fmt", "yuv420p", "-profile:v", "high",
+       "-c:a", "aac", "-b:a", "256k", "-shortest", "-movflags", "+faststart", str(OUT)]
 proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
-N = int(DUR * FPS)
-for f in range(N):
+for f in range(int(DUR * FPS)):
     proc.stdin.write(render_frame(f / FPS).tobytes())
     if f % 300 == 0:
         print("frame", f, flush=True)

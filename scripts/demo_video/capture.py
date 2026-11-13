@@ -3,8 +3,8 @@ import json, sys
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
-URL = "https://flamelens-steel.vercel.app"
 OUT = Path(sys.argv[1]); OUT.mkdir(parents=True, exist_ok=True)
+URL = sys.argv[2] if len(sys.argv) > 2 else "https://flamelens-steel.vercel.app"
 meta = {}
 RECT_JS = """(sels) => { const o = {}; for (const [k, s] of Object.entries(sels)) {
   const e = document.querySelector(s); if (!e) { o[k] = null; continue; }
