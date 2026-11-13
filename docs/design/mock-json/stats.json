@@ -1,0 +1,63 @@
+{
+ "runs": 1922,
+ "by_pillar": {
+  "Suppression": 694,
+  "Other": 327,
+  "Prevention": 784,
+  "Detection": 117
+ },
+ "by_fuel_state": {
+  "liquid": 361,
+  "gas": 1172,
+  "solid": 389
+ },
+ "by_investigation": {
+  "FLEX": 274,
+  "ACME CFI-G": 333,
+  "ACME Flame Design": 327,
+  "CFI": 87,
+  "BASS-II": 129,
+  "BASS": 122,
+  "Saffire-I": 4,
+  "Saffire-II": 15,
+  "Saffire-III": 2,
+  "SPICE": 469,
+  "SAME": 8,
+  "SAME-R": 109,
+  "ACME BRE": 43
+ },
+ "o2_basis": {
+  "measured": 1191,
+  "unknown": 145,
+  "assumed": 586
+ },
+ "pressure_basis": {
+  "measured": 1020,
+  "unknown": 44,
+  "assumed": 858
+ },
+ "airflow_basis": {
+  "unknown": 1134,
+  "text": 239,
+  "measured": 549
+ },
+ "confidence": {
+  "high": 1009,
+  "medium": 911,
+  "low": 2
+ },
+ "ranges": {
+  "o2_pct": [
+   12.0,
+   85.0
+  ],
+  "pressure_psi": [
+   6.26,
+   73.48
+  ],
+  "airflow_cm_s": [
+   0.0,
+   85.28
+  ]
+ }
+}

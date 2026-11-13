@@ -1,0 +1,47 @@
+{
+ "conditions": {
+  "o2": {
+   "score": 81.9,
+   "proximity": 0.5,
+   "reliability": 0.98,
+   "run_count": 1.0,
+   "source_quality": 1.0
+  },
+  "psi": {
+   "score": 82.5,
+   "proximity": 0.5,
+   "reliability": 1.0,
+   "run_count": 1.0,
+   "source_quality": 1.0
+  },
+  "flow": {
+   "score": 84.2,
+   "proximity": 0.825,
+   "reliability": 0.7,
+   "run_count": 1.0,
+   "source_quality": 0.954
+  },
+  "fuel": {
+   "score": 83.8,
+   "proximity": 0.825,
+   "reliability": 0.7,
+   "run_count": 1.0,
+   "source_quality": 0.926
+  },
+  "grav": {
+   "score": 0.0,
+   "proximity": 0.0,
+   "reliability": 0.0,
+   "run_count": 0.0,
+   "source_quality": 0.0
+  }
+ },
+ "whole": {
+  "score": 0.0,
+  "proximity": 0.0,
+  "reliability": 0.0,
+  "run_count": 0.0,
+  "source_quality": 0.0
+ },
+ "note": "Evidence strength is a transparency aid, not a safety rating."
+}

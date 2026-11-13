@@ -1,0 +1,135 @@
+{
+  "conditions": [
+    {
+      "key": "o2",
+      "label": "Oxygen level",
+      "status": "Supported",
+      "n": 1231,
+      "run_ids": [
+        "PSI-25-0008",
+        "PSI-25-0013",
+        "PSI-25-0015",
+        "PSI-25-0041",
+        "PSI-102-0004",
+        "PSI-107-0141",
+        "PSI-107-0142",
+        "PSI-107-0143",
+        "PSI-107-0144",
+        "PSI-107-0145"
+      ],
+      "strength": 90.6
+    },
+    {
+      "key": "psi",
+      "label": "Pressure",
+      "status": "Supported",
+      "n": 1433,
+      "run_ids": [
+        "PSI-25-0008",
+        "PSI-25-0013",
+        "PSI-25-0015",
+        "PSI-25-0041",
+        "PSI-102-0004",
+        "PSI-107-0141",
+        "PSI-107-0142",
+        "PSI-107-0143",
+        "PSI-107-0144",
+        "PSI-107-0145"
+      ],
+      "strength": 89.3
+    },
+    {
+      "key": "flow",
+      "label": "Airflow",
+      "status": "Supported",
+      "n": 434,
+      "run_ids": [
+        "PSI-25-0008",
+        "PSI-25-0013",
+        "PSI-25-0015",
+        "PSI-25-0041",
+        "PSI-102-0004",
+        "PSI-107-0141",
+        "PSI-107-0142",
+        "PSI-107-0143",
+        "PSI-107-0144",
+        "PSI-107-0145"
+      ],
+      "strength": 90.3
+    },
+    {
+      "key": "fuel",
+      "label": "Fuel type",
+      "status": "Supported",
+      "n": 1922,
+      "run_ids": [
+        "PSI-25-0008",
+        "PSI-25-0013",
+        "PSI-25-0015",
+        "PSI-25-0041",
+        "PSI-102-0004",
+        "PSI-107-0141",
+        "PSI-107-0142",
+        "PSI-107-0143",
+        "PSI-107-0144",
+        "PSI-107-0145"
+      ],
+      "strength": 95.5
+    },
+    {
+      "key": "grav",
+      "label": "Gravity",
+      "status": "Supported",
+      "n": 1922,
+      "run_ids": [
+        "PSI-25-0008",
+        "PSI-25-0013",
+        "PSI-25-0015",
+        "PSI-25-0041",
+        "PSI-102-0004",
+        "PSI-107-0141",
+        "PSI-107-0142",
+        "PSI-107-0143",
+        "PSI-107-0144",
+        "PSI-107-0145"
+      ],
+      "strength": 95.5
+    }
+  ],
+  "whole": {
+    "status": "Supported",
+    "n": 332,
+    "run_ids": [
+      "PSI-25-0008",
+      "PSI-25-0013",
+      "PSI-25-0015",
+      "PSI-25-0041",
+      "PSI-102-0004",
+      "PSI-107-0141",
+      "PSI-107-0142",
+      "PSI-107-0143",
+      "PSI-107-0144",
+      "PSI-107-0145"
+    ],
+    "strength": 82.6
+  },
+  "atmosphere": {
+    "status": "Supported",
+    "n": 332,
+    "run_ids": [
+      "PSI-25-0008",
+      "PSI-25-0013",
+      "PSI-25-0015",
+      "PSI-25-0041",
+      "PSI-102-0004",
+      "PSI-107-0141",
+      "PSI-107-0142",
+      "PSI-107-0143",
+      "PSI-107-0144",
+      "PSI-107-0145"
+    ],
+    "note": "runs matching oxygen, pressure, airflow and fuel together, ignoring gravity"
+  },
+  "supported_count": 5,
+  "verdict": "5 of 5 conditions supported, 332 runs match the whole habitat"
+}

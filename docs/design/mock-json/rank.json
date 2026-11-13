@@ -1,0 +1,112 @@
+[
+ {
+  "psi_id": "PSI-26",
+  "investigation": "BASS",
+  "pillar": "Prevention",
+  "doi": "10.60555/58h4-dy80",
+  "score": 90.2,
+  "breakdown": {
+   "o2": null,
+   "psi": 0.933,
+   "flow": 1.0,
+   "fuel": 1.0,
+   "grav": 0.5
+  },
+  "factors_used": 4,
+  "n_runs": 122,
+  "top_runs": [
+   "PSI-26-0001",
+   "PSI-26-0002",
+   "PSI-26-0003"
+  ],
+  "confidence": "medium"
+ },
+ {
+  "psi_id": "PSI-25",
+  "investigation": "BASS-II",
+  "pillar": "Prevention",
+  "doi": "10.60555/4qc4-de67",
+  "score": 88.0,
+  "breakdown": {
+   "o2": 0.838,
+   "psi": 0.933,
+   "flow": 1.0,
+   "fuel": 1.0,
+   "grav": 0.5
+  },
+  "factors_used": 5,
+  "n_runs": 129,
+  "top_runs": [
+   "PSI-25-0027",
+   "PSI-25-0040",
+   "PSI-25-0023"
+  ],
+  "confidence": "medium"
+ },
+ {
+  "psi_id": "PSI-101",
+  "investigation": "SAME-R",
+  "pillar": "Detection",
+  "doi": "10.60555/2np7-jv14",
+  "score": 87.0,
+  "breakdown": {
+   "o2": 0.822,
+   "psi": 0.933,
+   "flow": 0.978,
+   "fuel": 1.0,
+   "grav": 0.5
+  },
+  "factors_used": 5,
+  "n_runs": 109,
+  "top_runs": [
+   "PSI-101-0001",
+   "PSI-101-0002",
+   "PSI-101-0003"
+  ],
+  "confidence": "medium"
+ },
+ {
+  "psi_id": "PSI-102",
+  "investigation": "SAME",
+  "pillar": "Detection",
+  "doi": "10.60555/gd4k-8h62",
+  "score": 86.6,
+  "breakdown": {
+   "o2": 0.822,
+   "psi": 0.933,
+   "flow": 1.0,
+   "fuel": 1.0,
+   "grav": 0.5
+  },
+  "factors_used": 5,
+  "n_runs": 8,
+  "top_runs": [
+   "PSI-102-0004",
+   "PSI-102-0001",
+   "PSI-102-0002"
+  ],
+  "confidence": "medium"
+ },
+ {
+  "psi_id": "PSI-99",
+  "investigation": "Saffire-II",
+  "pillar": "Prevention",
+  "doi": "10.60555/2chp-m469",
+  "score": 85.9,
+  "breakdown": {
+   "o2": null,
+   "psi": 0.933,
+   "flow": null,
+   "fuel": 1.0,
+   "grav": 0.5
+  },
+  "factors_used": 3,
+  "n_runs": 15,
+  "top_runs": [
+   "PSI-99-0010",
+   "PSI-99-0011",
+   "PSI-99-0012"
+  ],
+  "confidence": "medium"
+ }
+]

@@ -1,0 +1,46 @@
+[
+ {
+  "id": "iss-cabin",
+  "name": "ISS cabin",
+  "o2_pct": 21,
+  "pressure_psi": 14.7,
+  "airflow_cm_s": 10,
+  "gravity_g": 0,
+  "fuel_state": "any",
+  "sourced": false,
+  "note": "Example values, not yet sourced. Confirm against an official source before presenting them as real mission atmospheres."
+ },
+ {
+  "id": "lunar-rover",
+  "name": "Lunar rover",
+  "o2_pct": 34,
+  "pressure_psi": 10.2,
+  "airflow_cm_s": 10,
+  "gravity_g": 0.16,
+  "fuel_state": "solid",
+  "sourced": false,
+  "note": "Example values, not yet sourced. Confirm against an official source before presenting them as real mission atmospheres."
+ },
+ {
+  "id": "lunar-base",
+  "name": "Lunar base",
+  "o2_pct": 30,
+  "pressure_psi": 10.2,
+  "airflow_cm_s": 15,
+  "gravity_g": 0.16,
+  "fuel_state": "any",
+  "sourced": false,
+  "note": "Example values, not yet sourced. Confirm against an official source before presenting them as real mission atmospheres."
+ },
+ {
+  "id": "mars-habitat",
+  "name": "Mars habitat",
+  "o2_pct": 30,
+  "pressure_psi": 8.2,
+  "airflow_cm_s": 10,
+  "gravity_g": 0.38,
+  "fuel_state": "any",
+  "sourced": false,
+  "note": "Example values, not yet sourced. Confirm against an official source before presenting them as real mission atmospheres."
+ }
+]

@@ -1,0 +1,95 @@
+[
+ {
+  "run_id": "PSI-25-0008",
+  "investigation": "BASS-II",
+  "o2_pct": 21.0,
+  "pressure_psi": 14.7,
+  "o2_partial_pressure": 3.09,
+  "target_partial_pressure": 3.47,
+  "reduction_pct": 11.0,
+  "changes": [
+   {
+    "field": "o2_pct",
+    "from": 34.0,
+    "to": 21.0,
+    "delta": -13.0
+   },
+   {
+    "field": "pressure_psi",
+    "from": 10.2,
+    "to": 14.7,
+    "delta": 4.5
+   },
+   {
+    "field": "airflow_cm_s",
+    "from": 10.0,
+    "to": 10.0,
+    "delta": 0.0
+   }
+  ],
+  "confidence": "medium",
+  "doi": "10.60555/4qc4-de67"
+ },
+ {
+  "run_id": "PSI-25-0013",
+  "investigation": "BASS-II",
+  "o2_pct": 21.0,
+  "pressure_psi": 14.7,
+  "o2_partial_pressure": 3.09,
+  "target_partial_pressure": 3.47,
+  "reduction_pct": 11.0,
+  "changes": [
+   {
+    "field": "o2_pct",
+    "from": 34.0,
+    "to": 21.0,
+    "delta": -13.0
+   },
+   {
+    "field": "pressure_psi",
+    "from": 10.2,
+    "to": 14.7,
+    "delta": 4.5
+   },
+   {
+    "field": "airflow_cm_s",
+    "from": 10.0,
+    "to": 10.0,
+    "delta": 0.0
+   }
+  ],
+  "confidence": "medium",
+  "doi": "10.60555/4qc4-de67"
+ },
+ {
+  "run_id": "PSI-25-0015",
+  "investigation": "BASS-II",
+  "o2_pct": 21.0,
+  "pressure_psi": 14.7,
+  "o2_partial_pressure": 3.09,
+  "target_partial_pressure": 3.47,
+  "reduction_pct": 11.0,
+  "changes": [
+   {
+    "field": "o2_pct",
+    "from": 34.0,
+    "to": 21.0,
+    "delta": -13.0
+   },
+   {
+    "field": "pressure_psi",
+    "from": 10.2,
+    "to": 14.7,
+    "delta": 4.5
+   },
+   {
+    "field": "airflow_cm_s",
+    "from": 10.0,
+    "to": 10.0,
+    "delta": 0.0
+   }
+  ],
+  "confidence": "medium",
+  "doi": "10.60555/4qc4-de67"
+ }
+]

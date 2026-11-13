@@ -1,0 +1,33 @@
+{
+ "run": {
+  "run_id": "PSI-39-0001",
+  "psi_id": "PSI-39",
+  "investigation": "CFI",
+  "pillar": "Suppression",
+  "fuel_or_material": "C12H26",
+  "fuel_state": "liquid",
+  "o2_pct": 21.0,
+  "o2_basis": "measured",
+  "pressure_psi": 14.7,
+  "pressure_basis": "measured",
+  "airflow_cm_s": null,
+  "airflow_basis": "unknown",
+  "gravity_g": 0.0,
+  "outcome": "cool flame",
+  "metric_name": "",
+  "metric_value": "",
+  "value_source": "table",
+  "source_table": "PSI-39__PSI-39_Experimental_table_CFI.csv",
+  "doi": "10.60555/m6pj-a914",
+  "confidence": "high",
+  "notes": "fiber No; He 0; outcome from CFI data summary sheet"
+ },
+ "investigation": {
+  "psi_id": "PSI-39",
+  "title": "Cool Flames Investigation",
+  "acronym": "CFI",
+  "doi": "10.60555/m6pj-a914",
+  "license": "CC0-1.0",
+  "project_type": "Microgravity Investigation"
+ }
+}

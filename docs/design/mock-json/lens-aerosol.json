@@ -1,0 +1,202 @@
+{
+ "smoke": [
+  {
+   "material": "Kapton",
+   "fresh": {
+    "source_id": "SMK-01",
+    "psi_id": "PSI-101",
+    "investigation": "SAME-R",
+    "material": "Kapton",
+    "aging_s": 0.0,
+    "geometric_mean_um": 0.042,
+    "count_mean_um": 0.056,
+    "avg_mass_diameter_um": 0.101,
+    "gsd": 2.154,
+    "value_source": "table",
+    "source_ref": "SAME-R Final Report (PSI-101_Reports_SAME-R_Final Report.pdf), Table 1, PDF page 78",
+    "doi": "10.60555/2np7-jv14",
+    "confidence": "high",
+    "notes": "baseline runs; diameters in micrometers"
+   },
+   "aged_720s": {
+    "source_id": "SMK-02",
+    "psi_id": "PSI-101",
+    "investigation": "SAME-R",
+    "material": "Kapton",
+    "aging_s": 720.0,
+    "geometric_mean_um": 0.089,
+    "count_mean_um": 0.109,
+    "avg_mass_diameter_um": 0.161,
+    "gsd": 1.872,
+    "value_source": "table",
+    "source_ref": "SAME-R Final Report, Table 1, PDF page 78",
+    "doi": "10.60555/2np7-jv14",
+    "confidence": "high",
+    "notes": "aged 720 s"
+   }
+  },
+  {
+   "material": "Lampwick",
+   "fresh": {
+    "source_id": "SMK-03",
+    "psi_id": "PSI-101",
+    "investigation": "SAME-R",
+    "material": "Lampwick",
+    "aging_s": 0.0,
+    "geometric_mean_um": 0.09,
+    "count_mean_um": 0.128,
+    "avg_mass_diameter_um": 0.258,
+    "gsd": 2.312,
+    "value_source": "table",
+    "source_ref": "SAME-R Final Report, Table 1, PDF page 78",
+    "doi": "10.60555/2np7-jv14",
+    "confidence": "high",
+    "notes": ""
+   },
+   "aged_720s": {
+    "source_id": "SMK-04",
+    "psi_id": "PSI-101",
+    "investigation": "SAME-R",
+    "material": "Lampwick",
+    "aging_s": 720.0,
+    "geometric_mean_um": 0.229,
+    "count_mean_um": 0.276,
+    "avg_mass_diameter_um": 0.398,
+    "gsd": 1.834,
+    "value_source": "table",
+    "source_ref": "SAME-R Final Report, Table 1, PDF page 78",
+    "doi": "10.60555/2np7-jv14",
+    "confidence": "high",
+    "notes": "aged 720 s"
+   }
+  },
+  {
+   "material": "Silicone",
+   "fresh": {
+    "source_id": "SMK-05",
+    "psi_id": "PSI-101",
+    "investigation": "SAME-R",
+    "material": "Silicone",
+    "aging_s": 0.0,
+    "geometric_mean_um": 0.128,
+    "count_mean_um": 0.196,
+    "avg_mass_diameter_um": 0.465,
+    "gsd": 2.53,
+    "value_source": "table",
+    "source_ref": "SAME-R Final Report, Table 1, PDF page 78",
+    "doi": "10.60555/2np7-jv14",
+    "confidence": "high",
+    "notes": ""
+   },
+   "aged_720s": {
+    "source_id": "SMK-06",
+    "psi_id": "PSI-101",
+    "investigation": "SAME-R",
+    "material": "Silicone",
+    "aging_s": 720.0,
+    "geometric_mean_um": 0.269,
+    "count_mean_um": 0.355,
+    "avg_mass_diameter_um": 0.619,
+    "gsd": 2.108,
+    "value_source": "table",
+    "source_ref": "SAME-R Final Report, Table 1, PDF page 78",
+    "doi": "10.60555/2np7-jv14",
+    "confidence": "high",
+    "notes": "aged 720 s"
+   }
+  },
+  {
+   "material": "Teflon",
+   "fresh": {
+    "source_id": "SMK-07",
+    "psi_id": "PSI-101",
+    "investigation": "SAME-R",
+    "material": "Teflon",
+    "aging_s": 0.0,
+    "geometric_mean_um": 0.081,
+    "count_mean_um": 0.101,
+    "avg_mass_diameter_um": 0.17,
+    "gsd": 2.198,
+    "value_source": "table",
+    "source_ref": "SAME-R Final Report, Table 1, PDF page 78",
+    "doi": "10.60555/2np7-jv14",
+    "confidence": "high",
+    "notes": ""
+   },
+   "aged_720s": {
+    "source_id": "SMK-08",
+    "psi_id": "PSI-101",
+    "investigation": "SAME-R",
+    "material": "Teflon",
+    "aging_s": 720.0,
+    "geometric_mean_um": 0.07,
+    "count_mean_um": 0.105,
+    "avg_mass_diameter_um": 0.232,
+    "gsd": 2.442,
+    "value_source": "table",
+    "source_ref": "SAME-R Final Report, Table 1, PDF page 78",
+    "doi": "10.60555/2np7-jv14",
+    "confidence": "high",
+    "notes": "aged 720 s"
+   }
+  },
+  {
+   "material": "Pyrell",
+   "fresh": {
+    "source_id": "SMK-09",
+    "psi_id": "PSI-101",
+    "investigation": "SAME-R",
+    "material": "Pyrell",
+    "aging_s": 0.0,
+    "geometric_mean_um": 0.149,
+    "count_mean_um": 0.204,
+    "avg_mass_diameter_um": 0.384,
+    "gsd": 2.211,
+    "value_source": "table",
+    "source_ref": "SAME-R Final Report, Table 1, PDF page 78",
+    "doi": "10.60555/2np7-jv14",
+    "confidence": "high",
+    "notes": ""
+   },
+   "aged_720s": {
+    "source_id": "SMK-10",
+    "psi_id": "PSI-101",
+    "investigation": "SAME-R",
+    "material": "Pyrell",
+    "aging_s": 720.0,
+    "geometric_mean_um": 0.293,
+    "count_mean_um": 0.359,
+    "avg_mass_diameter_um": 0.539,
+    "gsd": 1.892,
+    "value_source": "table",
+    "source_ref": "SAME-R Final Report, Table 1, PDF page 78",
+    "doi": "10.60555/2np7-jv14",
+    "confidence": "high",
+    "notes": "aged 720 s"
+   }
+  }
+ ],
+ "dust": [
+  {
+   "source_id": "DST-01",
+   "psi_id": "PSI-47",
+   "investigation": "DAFT",
+   "material": "Arizona Road Dust (fine)",
+   "aging_s": null,
+   "geometric_mean_um": null,
+   "count_mean_um": 1.65,
+   "avg_mass_diameter_um": null,
+   "gsd": null,
+   "value_source": "text",
+   "source_ref": "DAFT 30-Day Post Flight Report (PSI-47_Reports_DAFT_30Day.PostFlightReport.pdf), sample analysis: average diameter 1.65 micron, range 1.56 to 1.7",
+   "doi": "10.60555/ztgj-d202",
+   "confidence": "medium",
+   "notes": "ground analysis of the dust sample bags, not a flight size distribution; NIST standard test dust"
+  }
+ ],
+ "smoke_geometric_mean_range_um": [
+  0.042,
+  0.293
+ ],
+ "overlap_note": "Dust (Arizona Road Dust, 1.65 um average in the DAFT sample analysis) is much larger than smoke particles (geometric mean 0.04 to 0.36 um in SAME-R), so a detector that measures particle size can tell them apart. The dust value is a ground analysis of the sample bags, not a flight size distribution."
+}

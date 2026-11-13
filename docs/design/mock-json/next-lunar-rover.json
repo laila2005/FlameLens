@@ -1,0 +1,40 @@
+{
+ "needed": true,
+ "gaps": [
+  "grav"
+ ],
+ "recommended": {
+  "o2_pct": 34.0,
+  "pressure_psi": 10.2,
+  "airflow_cm_s": 10.0,
+  "gravity_g": 0.16,
+  "fuel_state": "solid"
+ },
+ "nearest_run": {
+  "run_id": "PSI-25-0027",
+  "investigation": "BASS-II",
+  "o2_pct": 22.2,
+  "pressure_psi": 14.7,
+  "airflow_cm_s": 10.0,
+  "fuel_state": "solid"
+ },
+ "changes": [
+  {
+   "field": "o2_pct",
+   "from": 22.2,
+   "to": 34.0
+  },
+  {
+   "field": "pressure_psi",
+   "from": 14.7,
+   "to": 10.2
+  },
+  {
+   "field": "gravity_g",
+   "from": 0.0,
+   "to": 0.16
+  }
+ ],
+ "closes": 1,
+ "message": "Run an experiment at the target conditions. It would close 1 gap: gravity. The nearest existing run is PSI-25-0027; change o2_pct, pressure_psi, gravity_g."
+}

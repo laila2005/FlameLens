@@ -1,0 +1,11 @@
+.git
+.github
+data/raw
+data/mock
+docs
+scripts
+**/__pycache__
+**/*.pyc
+.pytest_cache
+.env
+frontend/node_modules

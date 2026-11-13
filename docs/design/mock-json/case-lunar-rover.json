@@ -1,0 +1,102 @@
+{
+  "conditions": [
+    {
+      "key": "o2",
+      "label": "Oxygen level",
+      "status": "Supported",
+      "n": 328,
+      "run_ids": [
+        "PSI-69-0037",
+        "PSI-69-0038",
+        "PSI-69-0039",
+        "PSI-69-0019",
+        "PSI-69-0020",
+        "PSI-69-0021",
+        "PSI-69-0022",
+        "PSI-69-0023",
+        "PSI-69-0024",
+        "PSI-159-0128"
+      ],
+      "strength": 81.9
+    },
+    {
+      "key": "psi",
+      "label": "Pressure",
+      "status": "Supported",
+      "n": 107,
+      "run_ids": [
+        "PSI-69-0037",
+        "PSI-69-0038",
+        "PSI-69-0039",
+        "PSI-69-0019",
+        "PSI-69-0020",
+        "PSI-69-0021",
+        "PSI-69-0022",
+        "PSI-69-0023",
+        "PSI-69-0024",
+        "PSI-69-0041"
+      ],
+      "strength": 82.5
+    },
+    {
+      "key": "flow",
+      "label": "Airflow",
+      "status": "Supported",
+      "n": 434,
+      "run_ids": [
+        "PSI-25-0027",
+        "PSI-25-0040",
+        "PSI-25-0023",
+        "PSI-25-0032",
+        "PSI-25-0025",
+        "PSI-25-0001",
+        "PSI-25-0002",
+        "PSI-25-0004",
+        "PSI-25-0005",
+        "PSI-25-0030"
+      ],
+      "strength": 84.2
+    },
+    {
+      "key": "fuel",
+      "label": "Fuel type",
+      "status": "Supported",
+      "n": 389,
+      "run_ids": [
+        "PSI-25-0027",
+        "PSI-25-0040",
+        "PSI-25-0023",
+        "PSI-25-0032",
+        "PSI-25-0025",
+        "PSI-25-0001",
+        "PSI-25-0002",
+        "PSI-25-0004",
+        "PSI-25-0005",
+        "PSI-25-0030"
+      ],
+      "strength": 83.8
+    },
+    {
+      "key": "grav",
+      "label": "Gravity",
+      "status": "No evidence",
+      "n": 0,
+      "run_ids": [],
+      "strength": 0.0
+    }
+  ],
+  "whole": {
+    "status": "No evidence",
+    "n": 0,
+    "run_ids": [],
+    "strength": 0.0
+  },
+  "atmosphere": {
+    "status": "No evidence",
+    "n": 0,
+    "run_ids": [],
+    "note": "runs matching oxygen, pressure, airflow and fuel together, ignoring gravity"
+  },
+  "supported_count": 4,
+  "verdict": "4 of 5 conditions supported, no run matches the whole habitat (no gravity evidence); even ignoring gravity, no run tested this atmosphere"
+}
