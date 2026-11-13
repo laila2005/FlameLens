@@ -1,8 +1,11 @@
-.git
+# Upload only what the live app needs: api/, backend/app, data/curated, frontend/dist, requirements.txt, vercel.json
+.env
+.env.*
 data/raw
 data/mock
-**/__pycache__
-.pytest_cache
-node_modules
-docs/design/mock-json
+docs
+scripts
+backend/tests
 .claude
+*.md
+!frontend/**

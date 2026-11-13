@@ -146,6 +146,8 @@ gh auth status                    # GitHub CLI login for pushing
 
 Newest first. One line per change: date, what, who or what session.
 
+- 2026-11-13 ~7:50 PM Cairo (hour 6.8): Laila: deploy. Redeployed to https://flamelens-steel.vercel.app from this laptop (Vercel CLI logged in as laila2005, project linked in `.vercel/`). Live now: AI panel with verifier, /api/explain, /api/verify, /api/modeling, cleaner-engines source fix. Added `.vercelignore` (uploads only the app; keeps `.env.local` and `data/raw` out). Redeploy: `vercel deploy --prod --yes` from the repo root. Still not linked to GitHub, so pushes do not deploy by themselves.
+
 - 2026-11-13 ~7:30 PM Cairo (hour 6.5): Added the 5 official PSI ground/CFD predictive modeling studies (`PSI-60`, `PSI-62`, `PSI-115`, `PSI-117`, `PSI-142`) in `data/curated/modeling_studies.json`, exposed via `GET /api/modeling` and linked to their parent flight investigations (`BASS`, `BASS-II`, `SPICE`, `SAME`, `FLEX`) in `profiles.py`, Investigation Details, and the "Use the data & predictive modeling" dashboard panel without mixing CFD simulations into `runs.csv`. Checked `PSI-68` (`FLEX-2`): confirmed 0 non-media report files exist in PSI beyond the 1 KB planned matrix CSV and 48 publication citations.
 
 - 2026-11-13 ~4 PM Cairo: Laila: drop Vercel redeploys for now. The live URL still serves the 1:51 PM build (no AI panel). Vercel CLI 65.15.0 is installed on this laptop but not logged in. Run locally with `python -m uvicorn backend.app.main:app --port 8000` (serves dashboard + API at http://localhost:8000). Decide hosting for the final submission before hour 17 (links must be public).
