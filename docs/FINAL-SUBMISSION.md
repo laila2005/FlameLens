@@ -1,184 +1,282 @@
-# NASA Space Apps 2026 — Final Submission Package (`FlameLens`)
+# FlameLens: final submission package
 
-> **Ready to Copy & Paste:** Every section below is written to the exact fields of the NASA Space Apps Challenge project submission page, followed by the exact text for your **7-Slide Deck** and **30-Second Video Script**.
-> - **Live Public URL (No login required):** `https://flamelens-steel.vercel.app`
-> - **Interactive API Documentation:** `https://flamelens-steel.vercel.app/docs`
-> - **GitHub Repository:** `https://github.com/laila2005/FlameLens`
+Copy-paste text for the NASA Space Apps submission form, the 7-slide deck and the 30-second video.
+
+- **Live demo (public, no login):** https://flamelens-steel.vercel.app
+- **Repository:** https://github.com/laila2005/FlameLens
+- **API docs:** https://flamelens-steel.vercel.app/docs
+
+**Every number below was checked against `data/curated/` and the running app on 14 Nov 2026.** If the data changes, re-run `python scripts/validate_live.py .` and update the numbers before submitting. The field names follow earlier Space Apps forms; if the 2026 form names a field differently, use the closest text. Length limits are not confirmed, so check each box on the form.
 
 ---
 
-## Part 1 — Copy-Paste Form Fields for the Space Apps Submission Page
+## Part 1. Form fields
 
-### 1. Project Name
+### 1. Project name
+
 ```text
-FlameLens — Space-Fire Data, Made Clear
+FlameLens
 ```
 
-### 2. High-Level Project Summary (Short Description / Elevator Pitch — under 50 words)
+### 2. Challenge
+
 ```text
-FlameLens is an interactive, citation-verified decision dashboard built on 2,003 real NASA PSI microgravity combustion runs across 18 spaceflight investigations. Engineers enter a spacecraft, lunar base, or rover atmosphere to see exact evidence strength, untested safety gaps, the single highest-value next experiment, and safer tested atmospheres.
+Flame in Freefall: SI-Powered Fire Safety Insights from Microgravity Combustion Data
 ```
 
-### 3. Link to Final Project (Publicly Accessible Demo)
+### 3. High-level summary (short, 49 words)
+
+```text
+FlameLens is a web dashboard built on 2,003 real NASA PSI microgravity combustion runs from 18 flight investigations. Enter a spacecraft, Moon base or rover atmosphere and see which conditions are backed by experiments, how strong that evidence is, where the gaps are, and which experiment to run next.
+```
+
+### 4. Project summary (medium, about 130 words)
+
+```text
+Future Moon bases and pressurized rovers are expected to use 30 % oxygen or more at 10.2 psi or less, which makes materials much more flammable. NASA has decades of microgravity fire experiments in its PSI repository, but they are spread over many tables and reports and are hard to compare.
+
+FlameLens brings 2,003 runs from 18 PSI flight investigations into one table and answers an engineer's question: is my cabin design backed by experiments? It marks each condition as supported, weak or not tested, scores the strength of the evidence, shows the nearest real runs, proposes the next experiment, and explains the result in plain language. Every statement links to a NASA run and its DOI. Where there is no evidence, FlameLens says so instead of guessing.
+```
+
+### 5. Link to the final project
+
 ```text
 https://flamelens-steel.vercel.app
 ```
 
-### 4. Link to Project Repository (Public GitHub)
+### 6. Link to the demo (slides or video)
+
+```text
+(paste the public link to the 7 slides or the 30-second video here)
+```
+
+### 7. Link to the code
+
 ```text
 https://github.com/laila2005/FlameLens
 ```
 
-### 5. Detailed Project Description (Problem, Solution, How It Works & Impact)
+### 8. Detailed project description
+
 ```text
-PROBLEM
-As humanity returns to the Moon and prepares for Mars, fire inside a pressurized habitat remains one of the deadliest mission hazards. To reduce spacesuit pre-breathing time, planned Moon Base and Pressurized Rover cabins are expected to operate at 30%+ oxygen and 10.2 psi or less—over a 40% increase in oxygen concentration compared to Earth air (21% O2 at 14.7 psi), making solid materials far more flammable. Furthermore, in microgravity and reduced gravity, hot gases do not rise: cabin ventilation feeds flames directly, thin fabrics burn up to 200x faster than thick slabs, and extinguished droplets can keep burning invisibly as 705–760 K cool flames producing toxic carbon monoxide.
+THE PROBLEM
+Fire is one of the most serious hazards in a crewed spacecraft. In microgravity hot gas does not rise, so a flame is fed by diffusion and by the cabin airflow. The planned Moon base and pressurized rovers are expected to use 30 % oxygen or more at 10.2 psi or less, more than 40 % more oxygen than Earth air, which makes materials much more flammable.
 
-Decades of NASA spaceflight combustion experiments live in NASA's Physical Sciences Informatics (PSI) database, but the data is spread across heterogeneous CSV tables, technical reports, and CFD archives—making it difficult for habitat engineers and researchers to compare conditions or spot dangerous gaps in test coverage.
+NASA's Physical Sciences Informatics (PSI) repository holds the microgravity combustion experiments that could tell an engineer whether a cabin atmosphere has been tested. But each investigation has its own table, columns and reports. The data is hard to find, harder to compare and harder to interpret.
 
-OUR SOLUTION: FLAMELENS
-FlameLens unifies 2,003 real spaceflight test runs across 18 executed NASA PSI combustion investigations (all 6 ACME investigations, Saffire-I/II/III, BASS, BASS-II, SPICE, SLICE, SAME, SAME-R, DAFT, FLEX, and CFI), plus PSI-68 (FLEX-2 parameter matrix), 5 PSI ground/CFD predictive modeling studies, 43 measured microgravity flame-spread rates, 129 BASS-II cabin gas sensor traces, and 27 NASA NTRS publications into a single interactive mission console:
+WHAT FLAMELENS DOES
+FlameLens summarizes, ranks and interprets the PSI combustion investigations for one practical question: "Is my habitat design backed by NASA fire experiments, how strong is that evidence, and what should be tested next?"
 
-1. Deterministic Evidence Case & Dual Evidence Strength Meter (0–100):
-   Users select a preset (Moon Base, Pressurized Rover, Spacesuit, ISS Cabin, Mars Habitat) or dial in custom O2 %, pressure (psi), airflow (cm/s), fuel state (solid/liquid/gas), and gravity (0g, 0.16g, 0.38g, 1g). FlameLens evaluates each parameter and displays both Whole-Habitat Evidence Strength (0–100) and the 0g Atmosphere-Only Bound—backed by exact NASA test counts, measured-vs-assumed provenance badges, and clickable PSI investigation chips. For example, an ISS cabin (21% O2, 14.7 psi, 0g) is backed by 336 combined NASA runs (score 82.5/100), whereas a Pressurized Lunar Rover (30% O2, 10.2 psi, 8.1 cm/s, 0.16g, solid) reveals 0 partial-gravity runs in PSI and 0 combined 0g runs at that exact atmosphere.
+The user picks a preset (Moon base, pressurized rover, spacesuit, ISS cabin, Mars habitat) or sets oxygen, pressure, airflow, material and gravity. FlameLens then shows:
 
-2. "Run This Next" Campaign Planner & "Safer Tested Options":
-   Instead of guessing where untested atmospheres are safe, FlameLens explicitly flags "No evidence" gaps, identifies the nearest real NASA run (such as PSI-25-0023 in BASS-II), lists the exact parameter deltas required to test the target habitat, and recommends tested atmospheres with at least 10% lower oxygen partial pressure.
+1. Evidence case. Each condition is marked Supported, Weak or No evidence, with the number of matching NASA runs and their IDs.
+2. Evidence strength, 0 to 100, for each condition and for the whole design. It is a transparency score, not a safety rating.
+3. Closest NASA evidence. When no run matches the whole design, the runs that match everything except the fewest conditions, and exactly what differs.
+4. Run this next. The gaps, the nearest existing run, and the changes needed to turn it into the missing test.
+5. Test campaign planner. If NASA can fly N more experiments, which ones give the most habitat designs a full match.
+6. Lower-oxygen tested options. Real runs with at least 10 % less oxygen partial pressure.
+7. Ranked investigations. The 18 flight investigations ordered by how close their runs are to the design.
+8. What the evidence says. A short explanation in plain language where every sentence cites a run.
+9. Six lenses: coverage map, cool flames, smoke vs dust, flame spread, airflow tested, and an early-detection simulator.
+10. An investigations explorer with a profile of each investigation and a side-by-side comparison.
+11. A printable design review brief, and downloads of the curated data for modelling.
 
-3. Citation-Verified SI Explanation ("What the Evidence Says"):
-   FlameLens pairs retrieval over the matched NASA runs with a strict deterministic Citation Verifier (/api/verify). Any AI-generated or template claim that cites a run outside the retrieved evidence, alters a number, or invents a safety threshold is automatically stripped and logged.
+WHAT IT SHOWS
+- ISS cabin (21 % oxygen, 14.7 psi, microgravity): 336 runs match the whole design. Evidence strength 82.5 of 100.
+- Pressurized rover (30 % oxygen, 10.2 psi, solid material, lunar gravity): 0 runs match the whole design. 308 solid-material runs share its airflow and material but were at 14.5 to 22.2 % oxygen and 14.7 psi. 33 FLEX runs share its oxygen and pressure but burned liquid droplets. The nearest run is PSI-25-0023 from BASS-II.
+- Gravity: every run in PSI is microgravity. FlameLens states that PSI has no partial-gravity combustion data yet and that microgravity results are one bound.
+- With three more experiments, the planner covers the Moon base and rover with one lunar-gravity test, and the spacesuit and Mars habitat with the other two.
 
-4. Six Interactive Visual Lenses & Side-by-Side Investigation Comparator:
-   - Coverage Map: O2 % vs. Pressure (psi) across all 2,003 runs.
-   - Cool Flames: 705–760 K cool-flame regimes, 85% O2 inverse flames (ACME CFI-G), and platinum thermocouple catalytic reignition (CFI).
-   - Smoke vs. Dust: SAME-R fresh/aged smoke (0.04–0.29 um) vs. DAFT microgravity dust (1.57–1.72 um), showing how optical detectors avoid false alarms in dusty lunar cabins and terrestrial mines.
-   - Flame Spread: 43 measured microgravity spread rates (mm/s vs. airflow cm/s) from BASS-II and Saffire-II.
-   - Airflow Tested: O2 % vs. ventilation velocity across 681 runs.
-   - Early Detection Simulator: Interactive cabin sensor placement paired with real BASS-II CO/CO2 traces.
+HOW IT WORKS
+- Data. We downloaded the PSI Experimental Table of each combustion investigation and merged them into one table of 2,003 runs. For every run we record the material, oxygen, pressure, airflow, gravity and outcome, and how each value was obtained: measured, read from text, assumed, or unknown. Where a table gives no oxygen or pressure we use ISS cabin air and mark it as assumed.
+- Decisions. Matching, ranking, strength, next experiment and the campaign plan are plain arithmetic over that table. No AI is involved. A run matches a condition when it is within 6 oxygen points, 2 psi or 8 cm/s, or has the same material state and gravity.
+- Explanation. The explanation panel uses text that an open language model wrote from the retrieved runs. A citation verifier re-checks every sentence and removes any that cites a run outside the evidence, states a number not in that run, or gives a safety threshold.
+- Software. A Python FastAPI backend and a plain JavaScript frontend with our own SVG charts, deployed on Vercel. 73 automated tests.
+
+BENEFITS
+- For habitat and life-support engineers: a defensible answer in minutes, with the gaps visible.
+- For researchers and students: one comparable table of 2,003 runs, 43 measured flame-spread rates, investigation profiles and links to 27 NASA publications, all downloadable.
+- For planning: a list of the experiments that would close the most gaps.
+- On Earth: the same research supports smoke detectors that tell smoke from dust, firefighter clothing and breathing equipment, and water-mist extinguishers.
+
+WHAT WE ARE CAREFUL ABOUT
+FlameLens never invents a value and never gives a safety verdict. "No evidence" means untested in PSI, not unsafe. Assumed values are labelled. The early-detection simulator is an illustration with a simplified spread model; only its gas levels and particle sizes come from NASA data.
 ```
 
-### 6. NASA Data, Resources & Tools Used
+### 9. NASA data and resources used
+
 ```text
-NASA PHYSICAL SCIENCES INFORMATICS (PSI) SPACEFLIGHT INVESTIGATIONS (CC0-1.0, 2,003 Real Runs):
-- PSI-10: ACME Flame Design (327 runs, DOI: 10.60555/w4zy-bt45)
-- PSI-20: ACME Burning Rate Emulator / BRE (43 runs, DOI: 10.60555/vb93-3y72)
-- PSI-21: ACME Coflow Laminar Diffusion / CLD Flame (32 runs, DOI: 10.60555/23e1-9950)
-- PSI-22: ACME E-FIELD Flames (20 runs, electric-field mimicked partial gravity, DOI: 10.60555/se5a-8c73)
-- PSI-23: ACME Spherical Diffusion / s-Flame (23 runs, DOI: 10.60555/k57n-p030)
-- PSI-159: ACME Cool Flames Investigation with Gases / CFI-G (333 runs up to 85% O2, DOI: 10.60555/cyt1-kh64)
-- PSI-26: Burning and Suppression of Solids / BASS (122 runs, DOI: 10.60555/58h4-dy80)
-- PSI-25: Burning and Suppression of Solids-II / BASS-II (129 runs, DOI: 10.60555/4qc4-de67) + NASA/TM-20210011385 Table 5.1 spread rates & Table 3.1 MSG fan calibration
-- PSI-98: Spacecraft Fire Safety Experiment-I / Saffire-I (2 runs, DOI: 10.60555/0t15-1z43)
-- PSI-99: Spacecraft Fire Experiment-II / Saffire-II (9 runs, DOI: 10.60555/2chp-m469)
-- PSI-100: Spacecraft Fire Experiment-III / Saffire-III (2 runs, DOI: 10.60555/040q-4h36)
-- PSI-107: Smoke Point In Co-flow Experiment / SPICE (469 runs, DOI: 10.60555/9kbh-e962)
-- PSI-106: Structure & Liftoff In Combustion Experiment / SLICE (12 runs, DOI: 10.60555/pm12-rg61)
-- PSI-102: Smoke and Aerosol Measurement Experiment / SAME (8 runs, DOI: 10.60555/gd4k-8h62)
-- PSI-101: Smoke Aerosol Measurement Experiment-Reflight / SAME-R (109 runs + Final Report Table 1 aerosol sizes, DOI: 10.60555/2np7-jv14)
-- PSI-47: Dust and Aerosol Measurement Feasibility Test / DAFT & DAFT-2 (2 flight sessions + 4 dust bag size distributions, DOI: 10.60555/ztgj-d202)
-- PSI-69: Flame Extinguishment Experiment / FLEX (274 runs, DOI: 10.60555/mbq8-0451)
-- PSI-39: Cool Flames Investigation / CFI (87 runs, DOI: 10.60555/m6pj-a914)
-- PSI-68: Flame Extinguishment Experiment-2 / FLEX-2 (8-fuel parameter matrix, DOI: 10.60555/byp8-h018)
+NASA Physical Sciences Informatics (PSI), combustion science (https://psi.nasa.gov). License CC0-1.0 as stated on the PSI records. Flight investigations used, with run counts and DOIs:
+- PSI-26 BASS, 122 runs, DOI 10.60555/58h4-dy80
+- PSI-25 BASS-II, 129 runs, DOI 10.60555/4qc4-de67 (also its summary report for flame-spread rates and its fan calibration)
+- PSI-98 Saffire-I, 2 runs, DOI 10.60555/0t15-1z43
+- PSI-99 Saffire-II, 9 runs, DOI 10.60555/2chp-m469
+- PSI-100 Saffire-III, 2 runs, DOI 10.60555/040q-4h36
+- PSI-107 SPICE, 469 runs, DOI 10.60555/9kbh-e962
+- PSI-20 ACME BRE, 43 runs, DOI 10.60555/vb93-3y72
+- PSI-102 SAME, 8 runs, DOI 10.60555/gd4k-8h62
+- PSI-101 SAME-R, 109 runs, DOI 10.60555/2np7-jv14 (also its final report, Table 1, for smoke particle sizes)
+- PSI-47 DAFT and DAFT-2, 2 runs, DOI 10.60555/ztgj-d202 (also its reports for dust particle sizes)
+- PSI-69 FLEX, 274 runs, DOI 10.60555/mbq8-0451
+- PSI-39 CFI, 87 runs, DOI 10.60555/m6pj-a914
+- PSI-159 ACME CFI-G, 333 runs, DOI 10.60555/cyt1-kh64
+- PSI-22 ACME E-FIELD Flames, 20 runs, DOI 10.60555/se5a-8c73
+- PSI-10 ACME Flame Design, 327 runs, DOI 10.60555/w4zy-bt45
+- PSI-21 ACME CLD Flame, 32 runs, DOI 10.60555/23e1-9950
+- PSI-23 ACME s-Flame, 23 runs, DOI 10.60555/k57n-p030
+- PSI-106 SLICE, 12 runs, DOI 10.60555/pm12-rg61
+- PSI-68 FLEX-2, planned test matrix only, DOI 10.60555/byp8-h018
 
-NASA PSI GROUND & CFD PREDICTIVE MODELING INVESTIGATIONS (CC0-1.0):
-- PSI-60 (SPICE soot modeling, DOI: 10.60555/mzjm-yv57)
-- PSI-62 (BASS/BASS-II UFGM flame-spread CFD, DOI: 10.60555/e9xp-ex83)
-- PSI-115 (SAME smoke wake DNS modeling, DOI: 10.60555/q0v5-1v28)
-- PSI-117 (FLEX 3D OpenFOAM cool-flame CFD, DOI: 10.60555/gz0q-b577)
-- PSI-142 (FLEX counterflow cool-flame extinction boundaries, DOI: 10.60555/80qf-vj95)
+PSI ground and CFD modelling studies linked from the dashboard:
+- PSI-60, DOI 10.60555/mzjm-yv57
+- PSI-62, DOI 10.60555/e9xp-ex83
+- PSI-115, DOI 10.60555/q0v5-1v28
+- PSI-117, DOI 10.60555/gz0q-b577
+- PSI-142, DOI 10.60555/80qf-vj95
 
-OTHER NASA RESOURCES & TOOLS:
-- NASA Technical Reports Server (NTRS API): 27 peer-reviewed microgravity combustion publications linked in data/curated/papers.csv
-- NASA Spinoff Database: Mine smoke/dust discrimination (spinoff.nasa.gov/node/9407), firefighter PBI gear (node/9918), composite air tanks (node/9582)
-- Tech Stack: Python 3.12, FastAPI, Pydantic, pytest (67 automated tests), Vanilla ES2022 JS, Custom SVG Charts, Vercel Serverless Deployment
+NASA Technical Reports Server (NTRS), https://ntrs.nasa.gov : 27 publications linked from the dashboard, found through the public NTRS API.
+
+NASA Spinoff: fire detector that tells combustion particles from dust (https://spinoff.nasa.gov/node/9407), firefighter breathing system (https://spinoff.nasa.gov/node/9582), firefighter clothing (https://spinoff.nasa.gov/node/9918).
+
+NASA Space Apps challenge page and its resources, for the habitat atmospheres and background: https://www.spaceappschallenge.org/2026/challenges/flame-in-freefall/
+NASA Combustion Science page: https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/
 ```
 
-### 7. AI-Use Disclosure (Copy-Paste for Form / Judges)
+### 10. Space agency partner and other data
+
 ```text
-1. In-Product AI & Guardrails: All engineering rankings, evidence strength scores (0–100), gap detection, "Run This Next" recommendations, and "Safer Tested Options" are computed by 100% deterministic arithmetic over NASA PSI tables—never by AI. In the "What the evidence says" explanation panel, a deterministic Citation Verifier (backend/app/explain.py) checks every claim against the retrieved NASA run IDs and removes any sentence with an unverified run ID, mismatched number, or invented safety threshold.
-2. Development Tools: AI coding assistants (Claude / Gemini in Antigravity) assisted Team AstroSpark during the 24-hour hackathon with ETL script authoring, FastAPI route scaffolding, SVG chart code, and documentation formatting. Every scientific value and test case was validated against the raw NASA PSI CSV tables and Technical Memoranda.
+No space agency partner data was used. Other tools: Python, FastAPI, Pydantic, pytest, plain JavaScript and SVG, Vercel hosting, Google Fonts (Sora, IBM Plex Sans, IBM Plex Mono), and the open language model qwen2.5:7b-instruct for the explanation text.
+```
+
+### 11. Use of artificial intelligence
+
+```text
+In the product:
+- Decisions use no AI. Evidence status, strength scores, rankings, the next experiment, the campaign plan and the lower-oxygen options are deterministic arithmetic over the NASA tables.
+- The "What the evidence says" panel shows AI-written text. For the five presets, an open model (qwen2.5:7b-instruct) wrote 5 claims per preset ahead of time, using only the retrieved NASA runs. Our citation verifier re-checks every claim on every request. It removes any claim that cites a run outside the evidence, states a number that is not in that run, or gives a flammability threshold or safety verdict. All 25 cached claims pass. For a custom design the live site has no model and shows a plain summary filled from the runs, labelled "AI is off".
+- AI-generated text is marked in the interface, and each claim shows the run it cites.
+
+While building:
+- AI coding assistants (Claude in Claude Code, and Claude and Gemini in Antigravity) helped the team write the data scripts, backend, frontend and documentation during the hackathon.
+- The numbers shown in the app come from NASA files, not from an AI. They are checked by 73 automated tests and by a script that compares the live site with the curated data.
+- The product uses no AI-generated images, video or audio.
+```
+
+### 12. References
+
+```text
+- NASA Physical Sciences Informatics (PSI) data repository, combustion science: https://psi.nasa.gov/physci/repo/search?q=combustion
+- NASA Technical Reports Server: https://ntrs.nasa.gov
+- NASA Space Apps Challenge 2026, Flame in Freefall: https://www.spaceappschallenge.org/2026/challenges/flame-in-freefall/
+- NASA Combustion Science: https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/
+- A Researcher's Guide to International Space Station Combustion Science: https://www.nasa.gov/missions/station/a-researchers-guide-to-combustion-science/
+- NASA Spinoff: https://spinoff.nasa.gov/node/9407 , https://spinoff.nasa.gov/node/9582 , https://spinoff.nasa.gov/node/9918
+- DOIs of every PSI investigation used are listed under "NASA data and resources used" and in the repository README.
+```
+
+### 13. Tags
+
+```text
+fire safety, microgravity, combustion, PSI, Moon base, rover, dashboard, open data, evidence, AI with citations
 ```
 
 ---
 
-## Part 2 — Exact 7-Slide Deck (Copy-Paste Slide Text + Screenshot Guide)
+## Part 2. The 7 slides
 
-> **Rule Reminder:** Maximum **7 slides**, publicly accessible link, zero images/names/voices of anyone under 18. Keep text under ~35 words per slide and let the live screenshots shine.
+Exactly 7 slides. No faces, names or voices of anyone under 18. Keep the text as short as written here and let the screenshots carry the slide. Take every screenshot from the live site.
 
-### Slide 1 — Title & The Space-Fire Imperative
-- **Headline:** **FlameLens: Space-Fire Data, Made Clear**
-- **Bullets:**
-  - In microgravity, flames form spheres fed by cabin air, spread **up to 200× faster** on thin fabrics, and burn invisibly as **705–760 K cool flames**.
-  - Planned Moon Bases & Rovers (**30%+ O₂, ≤10.2 psi**) raise oxygen >40% above Earth air.
-- **Visual to include:** Screenshot of the top header + Habitat Design panel + Verdict banner on `https://flamelens-steel.vercel.app`.
-- **Footer:** Team AstroSpark · NASA Space Apps Cairo 2026 · Live: `https://flamelens-steel.vercel.app`
+### Slide 1. Title
 
-### Slide 2 — The Problem: A Trove of Data, Hard to Act On
-- **Headline:** **Decades of NASA Combustion Data—Scattered Across Files**
-- **Bullets:**
-  - NASA's PSI archive holds thousands of ISS & Cygnus burns across gases, droplets, and solids.
-  - Engineers cannot quickly see **which habitat conditions are proven**, which rely on assumed cabin air, and **where dangerous evidence gaps hide**.
-- **Visual to include:** Side-by-side of raw PSI CSV/report tables vs. FlameLens's unified **2,003 runs · 18 NASA PSI investigations · CC0** data chip.
+- **Title:** FlameLens
+- **Subtitle:** Is your habitat design backed by NASA fire experiments?
+- **Line:** 2,003 real NASA PSI runs · 18 flight investigations · every claim cites a run
+- **Footer:** Team AstroSpark · NASA Space Apps 2026, Cairo · flamelens-steel.vercel.app
+- **Visual:** the top of the dashboard with the "Pressurized rover" preset selected.
 
-### Slide 3 — Our Solution: From Raw PSI Tables to Defensible Decisions
-- **Headline:** **Enter a Habitat Design. Get an Evidence-Backed Engineering Case.**
-- **Bullets:**
-  - **2,003 real flight runs** across **18 PSI spaceflight investigations** + **5 PSI CFD modeling studies** + **27 NTRS papers**.
-  - Instant **Evidence Case**, **Dual Evidence Strength Meter (0–100)**, **Run This Next**, and **Safer Tested Options**.
-- **Visual to include:** Full-screen screenshot of the Pressurized Rover preset (`30% O₂, 10.2 psi, 8.1 cm/s, 0.16 g, solid`) showing the Verdict, Evidence Strength Meter, and Closest Investigations.
+### Slide 2. The problem
 
-### Slide 4 — Evidence Strength Meter & Gap Finder ("Run This Next")
-- **Headline:** **Honest About What NASA Has Tested—And What It Hasn't**
-- **Bullets:**
-  - **ISS Cabin (`21% O₂, 14.7 psi, 0g`):** **336 matching NASA runs** (`82.5/100` strength).
-  - **Lunar Rover (`30% O₂, 10.2 psi, 0.16g`):** **0 partial-g runs** and **0 combined 0g runs**—FlameLens pinpoints nearest run **`PSI-25-0023` (`BASS-II`)** to design the next test.
-- **Visual to include:** Crop of the **Evidence Strength Meter** + **Run This Next** + **Safer Tested Options** panels.
+- **Title:** Fire has no "up" in space, and the Moon will add oxygen
+- **Points:**
+  - In microgravity hot gas does not rise. Cabin airflow feeds the flame.
+  - Moon base and rovers: 30 % oxygen or more at 10.2 psi or less. Materials become much more flammable.
+  - NASA has the experiments, but they are spread over many tables and reports.
+- **Visual:** a raw PSI experimental table next to the FlameLens header chip "2,003 real runs · 18 NASA PSI investigations · CC0".
 
-### Slide 5 — Six Physics Lenses: Flame Spread, Cool Flames & Smoke vs. Dust
-- **Headline:** **Six Interactive Lenses Reveal Microgravity Fire Physics**
-- **Bullets:**
-  - **Flame Spread (`43` pts):** Thin fabrics (`2.1–2.6 mm/s`) burn up to 200× faster than thick PMMA slabs (`0.012–0.144 mm/s`).
-  - **Cool Flames (`CFI`, `CFI-G`, `FLEX`):** `705–760 K` invisible burn & thermocouple catalytic reignition.
-  - **Smoke vs. Dust (`SAME-R`, `DAFT`):** Smoke (`0.04–0.29 µm`) vs. dust (`1.57–1.72 µm`).
-- **Visual to include:** 3-panel collage of the **Flame spread**, **Cool flames**, and **Smoke vs dust** charts with the **Evidence Drawer** open on a clicked run.
+### Slide 3. The solution
 
-### Slide 6 — Why Engineers Can Trust It: Deterministic Math + Citation Verifier
-- **Headline:** **Zero Hallucinated Thresholds. Every Number Cites a NASA DOI.**
-- **Bullets:**
-  - Decisions use **100% deterministic math**—never AI guesses.
-  - Every field is tagged **`measured`**, **`text`**, or **`assumed`**.
-  - Our **Citation Verifier (`/api/verify`)** deletes any AI explanation sentence whose `run_id` or number does not match the retrieved NASA run.
-- **Visual to include:** Screenshot of **"What the evidence says"** with green `✓ verified` run badges (`PSI-25-0023`) + Investigation side-by-side comparison (`BASS-II vs Saffire-II`).
+- **Title:** Enter a design. See the evidence.
+- **Points:**
+  - Each condition: Supported, Weak or No evidence, with the matching NASA runs.
+  - Evidence strength from 0 to 100. A transparency score, not a safety rating.
+  - Works for any atmosphere, with presets from the challenge text.
+- **Visual:** the "Evidence strength & case" panel for the ISS cabin preset (336 matching runs, strength 82.5).
 
-### Slide 7 — Impact in Space & Back on Earth, Data Credits & AI Disclosure
-- **Headline:** **Safer Lunar Habitats & Real Benefits Back on Earth**
-- **Bullets:**
-  - **Space & Predictive Modeling:** One-click CSV exports (`runs.csv`, `spread_rates.csv`) + direct links to 5 PSI CFD studies (`PSI-60, 62, 115, 117, 142`).
-  - **Earth Spin-offs:** Dust-immune mine smoke detectors (`NASA Spinoff 9407`), firefighter gear (`9918`), lighter air tanks (`9582`), and cleaner engines.
-  - **Credits & Disclosure:** NASA PSI (CC0-1.0, cited by DOI) & NTRS; deterministic engine + citation-verified AI explanations; AI coding assistants disclosed.
-- **Visual to include:** Screenshot of the **"Use the data & predictive modeling"** and **"Back on Earth"** panels at the bottom of the dashboard.
+### Slide 4. Honest about the gaps
 
----
+- **Title:** The rover atmosphere has never been tested
+- **Points:**
+  - Pressurized rover, 30 % oxygen at 10.2 psi with solid materials: 0 matching runs.
+  - Closest evidence: 308 solid-material runs at 14.5 to 22.2 % oxygen, and 33 droplet runs at the right oxygen and pressure.
+  - PSI has no partial-gravity data yet. FlameLens says so.
+- **Visual:** the verdict and the "Closest NASA evidence" block for the pressurized rover.
 
-## Part 3 — 30-Second Video Storyboard & Script (Alternative to Slides)
+### Slide 5. What to test next
 
-> **Recording tip:** Open `https://flamelens-steel.vercel.app` at 100% zoom (1920×1080), record screen only (no faces/voices of anyone under 18), and paste the on-screen captions below.
+- **Title:** From a gap to a test plan
+- **Points:**
+  - "Run this next": the nearest real run (PSI-25-0023, BASS-II) and what to change.
+  - Campaign planner: with 3 experiments, one lunar-gravity test serves both the Moon base and the rover.
+  - Lower-oxygen options that were really tested.
+- **Visual:** the "Run this next" panel and the "Test campaign planner" panel.
 
-| Time | Screen Action on `https://flamelens-steel.vercel.app` | On-Screen Caption / Voiceover (75 words total) |
-|---|---|---|
-| **0:00–0:05** | Show the **Pressurized rover** preset (`30% O₂, 10.2 psi, 0.16g`) and the amber Verdict banner + **Evidence Strength Meter**. | *"In space, flames don't rise—and planned 30%-oxygen lunar rovers make materials far more flammable."* |
-| **0:05–0:11** | Hover over the **Evidence Strength Meter** (`2,003 real NASA runs · 18 PSI investigations`) and click **ISS cabin** (`336 runs, 82.5/100`), then back to **Pressurized rover** (`0 runs`). | *"FlameLens unifies 2,003 real NASA PSI combustion runs to show where your habitat design is proven—and where zero evidence exists."* |
-| **0:11–0:18** | Highlight **What the evidence says** (`✓ verified`), **Run this next** (`PSI-25-0023`), and **Safer tested options**; click `PSI-25-0023` to pop open the **Evidence Drawer** with its DOI. | *"Every claim is citation-verified. FlameLens pinpoints the exact next experiment to run and safer tested atmospheres—linked directly to NASA DOIs."* |
-| **0:18–0:25** | Click through the **Flame spread**, **Cool flames**, **Smoke vs dust**, and **Early detection** tabs. | *"Six interactive lenses map microgravity flame spread, invisible cool flames, and smoke-versus-dust detection."* |
-| **0:25–0:30** | Scroll to **Investigations comparison** and **Use the data & predictive modeling** CSV downloads. | *"FlameLens: Space-fire evidence you can trust."* |
+### Slide 6. The science, made visible
+
+- **Title:** Six lenses on the same data
+- **Points:**
+  - Flame spread: 43 measured rates. Thin fabric and film 2.1 to 2.6 mm/s, thick acrylic slabs 0.012 to 0.144 mm/s.
+  - Smoke vs dust: smoke 0.04 to 0.29 µm, dust 1.57 to 1.72 µm. Size tells them apart.
+  - Cool flames: 56 runs with a recorded cool flame, which makes little light or heat.
+- **Visual:** the "Flame spread", "Smoke vs dust" and "Cool flames" charts side by side.
+
+### Slide 7. Trust, impact and credits
+
+- **Title:** Evidence you can check
+- **Points:**
+  - Decisions use no AI. The AI only explains, and a verifier removes any claim without a matching NASA run.
+  - Every run links to its NASA DOI. Assumed values are labelled.
+  - On Earth: smoke detectors that ignore dust, firefighter clothing and breathing equipment.
+  - Data: NASA PSI (CC0) and NTRS. AI use disclosed: an open model for explanations, AI coding assistants for development.
+- **Visual:** the "What the evidence says" panel with a run opened in the evidence drawer, and the "Back on Earth" panel.
 
 ---
 
-## Part 4 — Final Pre-Submission Checklist (Do This Before Clicking Submit)
+## Part 3. The 30-second video
 
-- [x] **Live URL Public (No Login):** `https://flamelens-steel.vercel.app` returns HTTP 200 in an incognito/private browser window.
-- [x] **API & Data Exports Live:** `/api/health`, `/api/export/runs.csv`, `/api/export/spread_rates.csv`, and `/docs` open cleanly without authentication.
-- [x] **Automated Tests Passing:** `67/67` backend & scientific-integrity tests passing (`python -m pytest backend/tests -q`).
-- [x] **Open-Source License & README:** `LICENSE` (MIT + CC0-1.0 data notice) and judge-facing `README.md` committed on `main`.
-- [ ] **Demo Link Public:** Upload either the **7-Slide Deck** or **30-Second Video** to Google Drive / YouTube (unlisted or public) and test the link in an incognito window.
-- [ ] **Team Leader Submission:** Team leader submits on both the local Cairo form and the official NASA Space Apps page, and saves confirmation screenshots.
+Screen recording of the live site at 1920 × 1080. No faces. If a voice is used, it must be an adult's. The voiceover is about 60 words, which fits 30 seconds at a calm pace. If there is no voice, use the captions alone.
+
+| Time | Screen | Voiceover | On-screen caption |
+|---|---|---|---|
+| 0:00–0:06 | Top of the dashboard. "Pressurized rover" preset selected, verdict visible. | In space, fire has no up. And Moon habitats will use thirty percent oxygen. | Fire has no "up" in space. Moon habitats: 30 % oxygen. |
+| 0:06–0:13 | Click "ISS cabin": 336 matching runs. Click "Pressurized rover" again: 0 runs. | FlameLens checks any cabin design against two thousand and three real NASA experiment runs. | 2,003 real NASA runs. ISS cabin: 336 match. Rover: 0. |
+| 0:13–0:20 | Scroll to "Closest NASA evidence", then "Run this next" and "Test campaign planner". | It shows what is tested, what is not, and which experiment to run next. | What is tested. What is not. What to test next. |
+| 0:20–0:26 | "What the evidence says": click a run ID to open the evidence drawer with its DOI. Then flick through "Flame spread" and "Smoke vs dust". | Every claim cites a NASA run. Where there is no evidence, it says so. | Every claim cites a NASA run. |
+| 0:26–0:30 | Back to the top. Logo and URL. | FlameLens. Space-fire data, made clear. | FlameLens · flamelens-steel.vercel.app |
+
+Recording tips: hide the bookmarks bar, zoom the browser to 100 %, and do one silent practice run first. Export as MP4 and upload it somewhere public (for example an unlisted YouTube video or a public Drive link). Open the link in a private window to check it plays without a login.
+
+---
+
+## Part 4. Before you press submit
+
+- [ ] The live site opens in a private window without a login: https://flamelens-steel.vercel.app
+- [ ] The repository is public: https://github.com/laila2005/FlameLens
+- [ ] The slides or video link opens in a private window without a login
+- [ ] The slides are exactly 7, or the video is 30 seconds or less
+- [ ] No images, names or voices of anyone under 18 in the demo
+- [ ] `python scripts/validate_live.py .` passes against the live site
+- [ ] The numbers in the form match this file (if the data changed, update them)
+- [ ] Team member names and roles are correct on the form and in the README
+- [ ] The team leader submits on the local Cairo form, then on the official NASA Space Apps site
+- [ ] Screenshots of both confirmations are saved
+- [ ] Submitted by 10:00 AM Cairo time on Saturday 14 Nov (deadline 1:00 PM; late submissions are not accepted)

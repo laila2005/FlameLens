@@ -481,3 +481,9 @@ body.brief-open { overflow: hidden; }
 .cldiff { margin: 0; padding: 0; list-style: none; color: var(--bad); display: grid; gap: 2px; }
 .clgrav { color: var(--amber); }
 .clcta { align-self: flex-start; }
+
+/* phones and touch screens: bigger tap targets for run links and chips */
+@media (pointer: coarse), (max-width: 700px) {
+  .runlink, .modchip { display: inline-flex; align-items: center; min-height: 30px; padding: 4px 6px; }
+  input[type=range] { min-height: 28px; }
+}

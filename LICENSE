@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2026 Team AstroSpark (Laila Mohamed, Yousseif B, Yasmine C, Judy D, Dai E, Mostafa F) — NASA Space Apps Challenge Cairo 2026
+Copyright (c) 2026 Team AstroSpark (NASA Space Apps Challenge 2026, Cairo)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -22,12 +22,20 @@ SOFTWARE.
 
 ---
 
-DATA ATTRIBUTION & PUBLIC DOMAIN NOTICE (CC0-1.0)
+DATA NOTICE
 
-All experimental combustion run tables, investigation metadata, and research
-reports distributed in `data/curated/` originate from the NASA Physical
-Sciences Informatics (PSI) repository (https://psi.nasa.gov) and the NASA
-Technical Reports Server (https://ntrs.nasa.gov), released under Creative
-Commons Zero (CC0-1.0 Universal Public Domain Dedication). Please cite each
-NASA PSI investigation by its official DOI as listed in `README.md` and
-`data/curated/investigations.csv`.
+The MIT License above covers the FlameLens source code only.
+
+The tables in `data/curated/` are derived from the NASA Physical Sciences
+Informatics (PSI) repository (https://psi.nasa.gov). The PSI records for the
+investigations used here state the license as CC0-1.0 (Creative Commons Zero,
+public domain dedication). Our derived tables are offered under the same
+CC0-1.0 terms. Please cite each NASA PSI investigation by its DOI, as listed
+in `README.md` and `data/curated/investigations.csv`.
+
+`data/curated/papers.csv` holds titles, abstracts and links for publications
+found through the NASA Technical Reports Server (https://ntrs.nasa.gov). The
+documents themselves are not redistributed here, and each keeps its own terms
+as stated on its NTRS record.
+
+NASA does not endorse this project.
