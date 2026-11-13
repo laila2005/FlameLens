@@ -1,6 +1,6 @@
 # FlameLens: final submission package
 
-Copy-paste text for the NASA Space Apps submission form, the 7-slide deck and the 30-second video.
+Copy-paste text for the NASA Space Apps submission form, the 7-slide deck, and the script of the 30-second video.
 
 - **Live demo (public, no login):** https://flamelens-steel.vercel.app
 - **Repository:** https://github.com/laila2005/FlameLens
@@ -253,17 +253,41 @@ Exactly 7 slides. No faces, names or voices of anyone under 18. Keep the text as
 
 ## Part 3. The 30-second video
 
-Screen recording of the live site at 1920 × 1080. No faces. If a voice is used, it must be an adult's. The voiceover is about 60 words, which fits 30 seconds at a calm pace. If there is no voice, use the captions alone.
+**The video is made:** [`media/flamelens-demo-30s.mp4`](../media/flamelens-demo-30s.mp4) (1920 × 1080, 60 fps, 30.0 s, H.264 with AAC, about 29 MB). It is a screen recording of the live site with captions and a synthesized background sound. **No faces, no names of people, no voices.** To re-record it after a dashboard change, see [`scripts/demo_video/README.md`](../scripts/demo_video/README.md).
 
-| Time | Screen | Voiceover | On-screen caption |
-|---|---|---|---|
-| 0:00–0:06 | Top of the dashboard. "Pressurized rover" preset selected, verdict visible. | In space, fire has no up. And Moon habitats will use thirty percent oxygen. | Fire has no "up" in space. Moon habitats: 30 % oxygen. |
-| 0:06–0:13 | Click "ISS cabin": 336 matching runs. Click "Pressurized rover" again: 0 runs. | FlameLens checks any cabin design against two thousand and three real NASA experiment runs. | 2,003 real NASA runs. ISS cabin: 336 match. Rover: 0. |
-| 0:13–0:20 | Scroll to "Closest NASA evidence", then "Run this next" and "Test campaign planner". | It shows what is tested, what is not, and which experiment to run next. | What is tested. What is not. What to test next. |
-| 0:20–0:26 | "What the evidence says": click a run ID to open the evidence drawer with its DOI. Then flick through "Flame spread" and "Smoke vs dust". | Every claim cites a NASA run. Where there is no evidence, it says so. | Every claim cites a NASA run. |
-| 0:26–0:30 | Back to the top. Logo and URL. | FlameLens. Space-fire data, made clear. | FlameLens · flamelens-steel.vercel.app |
+### Scenes and on-screen captions (as in the video)
 
-Recording tips: hide the bookmarks bar, zoom the browser to 100 %, and do one silent practice run first. Export as MP4 and upload it somewhere public (for example an unlisted YouTube video or a public Drive link). Open the link in a private window to check it plays without a login.
+| Time | On screen (live site) | Caption |
+|---|---|---|
+| 0:00–0:04 | Pressurized rover preset: 30 % O₂, 10.2 psi, 0.16 g; red verdict | Planned Moon rovers: 30 % oxygen at 10.2 psi. Has NASA ever tested fire in that air? |
+| 0:04–0:08 | Click ISS cabin: green verdict, evidence strength 83/100, 336 of 2,003 runs | FlameLens checks any habitat design against 2,003 real NASA flight runs from 18 PSI investigations |
+| 0:08–0:13 | Back to the rover: "Closest NASA evidence" (308 / 33 / 153 runs, and what differs) | No exact match for the rover? It shows the closest real NASA tests, and exactly what differs |
+| 0:13–0:18 | Verified claims; click PSI-25-0023, evidence drawer with DOI 10.60555/4qc4-de67 | Every sentence is citation-verified and links to its NASA run and DOI |
+| 0:18–0:22 | "Test campaign planner": NASA can fly 1, then 3 experiments; all 5 designs covered or planned | Campaign planner: 3 experiments NASA could fly next to give all 5 habitat designs a matching test |
+| 0:22–0:26 | Lenses: flame spread, cool flames, smoke vs dust | Physics lenses from real runs: flame spread, cool flames, smoke vs dust |
+| 0:26–0:28 | "Design review brief" preview | One click: a printable design-review brief with every NASA source |
+| 0:28–0:30 | Title card | FlameLens · Space-fire data, made clear · flamelens-steel.vercel.app · Team AstroSpark · NASA Space Apps Cairo 2026 · NASA PSI data (CC0) |
+
+The dashboard shows the ISS strength as 83 because it rounds 82.5.
+
+### Optional voiceover (only if you add a voice; it must be an adult's)
+
+The video works without a voice. If you record one, these lines follow the scenes above. About 66 words.
+
+| Time | Voiceover |
+|---|---|
+| 0:00–0:04 | Moon rovers will breathe thirty percent oxygen. |
+| 0:04–0:08 | FlameLens checks any design against over two thousand NASA runs. |
+| 0:08–0:13 | No exact match? It shows the closest real tests, and what differs. |
+| 0:13–0:18 | Every sentence is verified and links to its NASA run. |
+| 0:18–0:22 | It plans the next experiments NASA could fly. |
+| 0:22–0:26 | Lenses show flame spread, cool flames, smoke and dust. |
+| 0:26–0:28 | Print a design review brief. |
+| 0:28–0:30 | FlameLens. Space-fire data, made clear. |
+
+### To submit the video
+
+Upload the MP4 to YouTube (Unlisted or Public) or Google Drive ("Anyone with the link can view"). Open the link in a private window to check it plays without a login. Paste that link into field 6. The file is also in the public GitHub repo as a backup.
 
 ---
 
@@ -271,7 +295,7 @@ Recording tips: hide the bookmarks bar, zoom the browser to 100 %, and do one si
 
 - [ ] The live site opens in a private window without a login: https://flamelens-steel.vercel.app
 - [ ] The repository is public: https://github.com/laila2005/FlameLens
-- [ ] The slides or video link opens in a private window without a login
+- [ ] The video (`media/flamelens-demo-30s.mp4`) or the 7 slides are uploaded, and the link opens in a private window without a login
 - [ ] The slides are exactly 7, or the video is 30 seconds or less
 - [ ] No images, names or voices of anyone under 18 in the demo
 - [ ] `python scripts/validate_live.py .` passes against the live site
