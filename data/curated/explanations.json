@@ -1,0 +1,200 @@
+{
+  "note": "Raw model claims. The API re-verifies them on every request (backend/app/explain.py).",
+  "entries": {
+    "o2=30|psi=10.2|flow=12.9|g=0.16|fuel=any": {
+      "habitat_id": "moon-base",
+      "target": {
+        "o2_pct": 30.0,
+        "pressure_psi": 10.2,
+        "airflow_cm_s": 12.9,
+        "gravity_g": 0.16,
+        "fuel_state": "any"
+      },
+      "model": "qwen2.5:7b-instruct",
+      "created": "2026-11-13T19:18:17+00:00",
+      "claims": [
+        {
+          "claim": "At 30% oxygen and 10.33 psi in microgravity, PSI-69-0041 (FLEX) burned a 3.35 mm Methanol droplet for 14.1 seconds before Disruption, providing one of 134 oxygen matches and 107 pressure matches near the 30% oxygen, 10.2 psi Moon base target.",
+          "run_id_reference": "PSI-69-0041",
+          "engineering_recommendation": "Use FLEX droplet tests to bound 30% oxygen behavior near 10.2 psi, while noting that 0 runs in PSI include 0.16 g lunar gravity."
+        },
+        {
+          "claim": "In PSI-25-0027 (BASS-II), a 1 mm thick, 2 cm wide PMMA solid slab burned at 22.2% oxygen, 14.7 psi, and 10 cm/s airflow, which is the nearest overall run to the 30% oxygen, 10.2 psi, 12.9 cm/s Moon base design.",
+          "run_id_reference": "PSI-25-0027",
+          "engineering_recommendation": "Start the next validation campaign from PSI-25-0027 and step oxygen to 30%, pressure to 10.2 psi, airflow to 12.9 cm/s, and gravity to 0.16 g."
+        },
+        {
+          "claim": "Under 22.2% oxygen, 14.7 psi, and 9.5 cm/s ventilation flow, PSI-25-0023 (BASS-II) tested Nomex natural (Nomex III) fabric and recorded no ignition.",
+          "run_id_reference": "PSI-25-0023",
+          "engineering_recommendation": "Retest Nomex III fabric when moving from 22.2% oxygen at 14.7 psi (3.26 psi oxygen partial pressure) to 30% oxygen at 10.2 psi (3.06 psi oxygen partial pressure)."
+        },
+        {
+          "claim": "For lower oxygen partial pressure, PSI-25-0104 (BASS-II) tested 2 cm SIBAL fabric at 18.7% oxygen, 14.7 psi, and 9 cm/s airflow (2.75 psi oxygen partial pressure vs 3.06 psi in the Moon base), where the flame quenched as airflow dropped to 1 cm/s.",
+          "run_id_reference": "PSI-25-0104",
+          "engineering_recommendation": "Consider lowering cabin oxygen partial pressure toward 2.75 psi or shutting down ventilation fans toward 1 cm/s during a fire response."
+        },
+        {
+          "claim": "For smoke detection in ventilated cabins, PSI-101-0001 (SAME-R) heated Kapton at 21% oxygen, 14.7 psi, and 8.1 cm/s airflow in microgravity with smoke generated.",
+          "run_id_reference": "PSI-101-0001",
+          "engineering_recommendation": "Pair SAME-R Kapton smoke detection data with dust discrimination in lunar habitats where cabin air circulates near 12.9 cm/s."
+        }
+      ]
+    },
+    "o2=30|psi=10.2|flow=8.1|g=0.16|fuel=solid": {
+      "habitat_id": "pressurized-rover",
+      "target": {
+        "o2_pct": 30.0,
+        "pressure_psi": 10.2,
+        "airflow_cm_s": 8.1,
+        "gravity_g": 0.16,
+        "fuel_state": "solid"
+      },
+      "model": "qwen2.5:7b-instruct",
+      "created": "2026-11-13T19:18:17+00:00",
+      "claims": [
+        {
+          "claim": "No PSI run combines 30% oxygen, 10.2 psi, 8.1 cm/s airflow, and 0.16 g lunar gravity on solid fuels; the nearest solid-fuel test is PSI-25-0023 (BASS-II), where Nomex natural (Nomex III) had no ignition at 22.2% oxygen, 14.7 psi, and 9.5 cm/s airflow.",
+          "run_id_reference": "PSI-25-0023",
+          "engineering_recommendation": "Use PSI-25-0023 as the baseline starting point for a pressurized rover test at 30% oxygen, 10.2 psi, 8.1 cm/s airflow, and 0.16 g."
+        },
+        {
+          "claim": "At 22.2% oxygen, 14.7 psi, and 10 cm/s airflow, PSI-25-0027 (BASS-II) tested a 1 mm thick, 2 cm wide PMMA solid sample and recorded a sustained burned outcome as airflow stepped from 10 to 8 cm/s.",
+          "run_id_reference": "PSI-25-0027",
+          "engineering_recommendation": "Account for ventilation flows around 8.1 cm/s feeding solid acrylic and polymer fires when selecting rover interior panels."
+        },
+        {
+          "claim": "Near the rover's 30% oxygen and 10.2 psi atmosphere, PSI-69-0041 (FLEX) tested a 3.35 mm Methanol liquid droplet at 30% oxygen and 10.33 psi in microgravity, burning for 14.1 seconds before Disruption.",
+          "run_id_reference": "PSI-69-0041",
+          "engineering_recommendation": "Because all 30% oxygen, 10.33 psi matches in PSI are liquid droplets in 0 g, prioritize solid-material flammability tests at 30% oxygen and 10.2 psi."
+        },
+        {
+          "claim": "In a lower-oxygen tested alternative, PSI-25-0104 (BASS-II) tested 2 cm SIBAL solid fabric at 18.7% oxygen, 14.7 psi, and 9 cm/s airflow (2.75 psi oxygen partial pressure vs 3.06 psi for the rover) and quenched when flow dropped from 9 to 1 cm/s.",
+          "run_id_reference": "PSI-25-0104",
+          "engineering_recommendation": "Design rover fire-response controls to cut cabin ventilation from 8.1 cm/s toward 1 cm/s and reduce oxygen partial pressure toward 2.75 psi."
+        },
+        {
+          "claim": "At the exact 8.1 cm/s rover airflow, PSI-101-0001 (SAME-R) tested solid Kapton wire insulation at 21% oxygen and 14.7 psi with smoke generated.",
+          "run_id_reference": "PSI-101-0001",
+          "engineering_recommendation": "Place smoke sensors directly in the 8.1 cm/s ventilation return path to detect Kapton insulation pyrolysis early."
+        }
+      ]
+    },
+    "o2=100|psi=4.3|flow=none|g=0.16|fuel=solid": {
+      "habitat_id": "spacesuit",
+      "target": {
+        "o2_pct": 100.0,
+        "pressure_psi": 4.3,
+        "airflow_cm_s": null,
+        "gravity_g": 0.16,
+        "fuel_state": "solid"
+      },
+      "model": "qwen2.5:7b-instruct",
+      "created": "2026-11-13T19:18:17+00:00",
+      "claims": [
+        {
+          "claim": "Zero runs in NASA PSI reach 100% oxygen or 4.3 psi at 0.16 g (0 of 2003 runs match oxygen or gravity); the nearest overall test is PSI-10-0230 (ACME Flame Design), which tested C2H4 gas at 85% oxygen and 6.26 psi in microgravity.",
+          "run_id_reference": "PSI-10-0230",
+          "engineering_recommendation": "Treat 100% oxygen at 4.3 psi (4.3 psi oxygen partial pressure) as an unarchived regime in PSI; start new testing from PSI-10-0230 and extend oxygen from 85% to 100% and pressure from 6.26 to 4.3 psi."
+        },
+        {
+          "claim": "At 85% oxygen and 8 psi in microgravity (6.8 psi oxygen partial pressure), PSI-159-0208 (ACME CFI-G) burned ethane gas as an inverse hot flame for 26 seconds.",
+          "run_id_reference": "PSI-159-0208",
+          "engineering_recommendation": "Use ACME CFI-G 85% oxygen tests as the highest-oxygen microgravity data currently available in PSI."
+        },
+        {
+          "claim": "Among the 383 solid-fuel runs in PSI, PSI-25-0001 (BASS-II) tested a 100 micron PMMA film (2 cm wide) at 22.2% oxygen, 14.7 psi, and 5 cm/s airflow, providing a lower oxygen partial pressure of 3.26 psi compared with 4.3 psi in the spacesuit.",
+          "run_id_reference": "PSI-25-0001",
+          "engineering_recommendation": "Compare thin polymer film behavior at 3.26 psi oxygen partial pressure against spacesuit materials exposed to 4.3 psi pure oxygen."
+        },
+        {
+          "claim": "In PSI-26-0001 (BASS), a 2 cm SIBAL solid sample was tested at 14.7 psi with cabin oxygen at 21% and airflow stepping from 10 to 5 cm/s in microgravity.",
+          "run_id_reference": "PSI-26-0001",
+          "engineering_recommendation": "Perform dedicated partial-gravity (0.16 g) solid fabric ignition tests at 100% oxygen and 4.3 psi before selecting suit materials."
+        },
+        {
+          "claim": "In PSI-100-0001 (Saffire-III), a large SIBAL Fabric solid sample burned concurrent with 30 cm/s airflow at 14.7 psi in microgravity.",
+          "run_id_reference": "PSI-100-0001",
+          "engineering_recommendation": "Include large-scale concurrent flame-spread testing alongside small-sample ignition tests when evaluating spacecraft and spacesuit fabrics."
+        }
+      ]
+    },
+    "o2=21|psi=14.7|flow=12.9|g=0|fuel=any": {
+      "habitat_id": "iss-cabin",
+      "target": {
+        "o2_pct": 21.0,
+        "pressure_psi": 14.7,
+        "airflow_cm_s": 12.9,
+        "gravity_g": 0.0,
+        "fuel_state": "any"
+      },
+      "model": "qwen2.5:7b-instruct",
+      "created": "2026-11-13T19:18:17+00:00",
+      "claims": [
+        {
+          "claim": "All 5 habitat conditions are supported simultaneously by 336 microgravity runs in PSI; the closest match is PSI-107-0093 (SPICE), which tested 75% Propylene gas at 21% oxygen, 14.7 psi, and 12.89 cm/s coflow.",
+          "run_id_reference": "PSI-107-0093",
+          "engineering_recommendation": "Because oxygen and pressure in PSI-107-0093 were assumed ISS cabin air (21% oxygen, 14.7 psi), pair SPICE coflow data with directly measured BASS-II solid burns."
+        },
+        {
+          "claim": "At 21% oxygen, 14.7 psi, and 15 cm/s airflow (3.09 psi oxygen partial pressure), PSI-25-0024 (BASS-II) tested Nomex natural (Nomex III) solid fabric and recorded no ignition.",
+          "run_id_reference": "PSI-25-0024",
+          "engineering_recommendation": "Use flame-resistant Nomex III fabrics for crew cabin partitions exposed to 12.9 to 15 cm/s ventilation airflow."
+        },
+        {
+          "claim": "In a lower-oxygen tested condition at 18.9% oxygen, 14.7 psi, and 10 cm/s initial airflow (2.78 psi oxygen partial pressure vs 3.09 psi in the ISS cabin), PSI-25-0033 (BASS-II) showed a 1 cm wide, 1 mm thick PMMA slab still burned down to 3 cm/s airflow.",
+          "run_id_reference": "PSI-25-0033",
+          "engineering_recommendation": "Note that acrylic PMMA slabs continue burning even at 18.9% oxygen (2.78 psi oxygen partial pressure) when ventilation airflow remains between 3 and 10 cm/s."
+        },
+        {
+          "claim": "In PSI-98-0001 (Saffire-I), a large 0.37 mm thick SIBAL Fabric sample burned concurrent with 20 cm/s airflow at 21.5% oxygen and 14.7 psi for 420 seconds.",
+          "run_id_reference": "PSI-98-0001",
+          "engineering_recommendation": "Shut down cabin ventilation fans immediately upon fire detection to prevent 20 cm/s airflow from driving concurrent flame spread across thin fabrics."
+        },
+        {
+          "claim": "For early smoke detection at 21% oxygen and 14.7 psi, PSI-101-0001 (SAME-R) generated smoke from Kapton at 8.1 cm/s airflow in microgravity.",
+          "run_id_reference": "PSI-101-0001",
+          "engineering_recommendation": "Calibrate spacecraft smoke detectors using SAME-R Kapton aerosol profiles under 8.1 to 12.9 cm/s cabin ventilation."
+        }
+      ]
+    },
+    "o2=30|psi=10.2|flow=12.9|g=0.38|fuel=any": {
+      "habitat_id": "mars-habitat",
+      "target": {
+        "o2_pct": 30.0,
+        "pressure_psi": 10.2,
+        "airflow_cm_s": 12.9,
+        "gravity_g": 0.38,
+        "fuel_state": "any"
+      },
+      "model": "qwen2.5:7b-instruct",
+      "created": "2026-11-13T19:18:17+00:00",
+      "claims": [
+        {
+          "claim": "Zero runs in PSI test 0.38 g Martian gravity, though 4 of 5 individual conditions are supported; at 30% oxygen and 10.33 psi in 0 g, PSI-69-0041 (FLEX) burned a 3.35 mm Methanol droplet for 14.1 seconds before Disruption.",
+          "run_id_reference": "PSI-69-0041",
+          "engineering_recommendation": "Use microgravity (0 g) results to bound 0.38 g Mars habitat combustion until partial-gravity flight data is archived in PSI."
+        },
+        {
+          "claim": "The closest overall run to the 30% oxygen, 10.2 psi, 12.9 cm/s Mars habitat is PSI-25-0027 (BASS-II), where a 1 mm thick, 2 cm wide PMMA solid slab burned at 22.2% oxygen, 14.7 psi, and 10 cm/s airflow.",
+          "run_id_reference": "PSI-25-0027",
+          "engineering_recommendation": "Design the next partial-gravity experiment starting from PSI-25-0027 and adjusting oxygen to 30%, pressure to 10.2 psi, airflow to 12.9 cm/s, and gravity to 0.38 g."
+        },
+        {
+          "claim": "At 30% oxygen and 10.34 psi in microgravity, PSI-69-0043 (FLEX) burned a 2.97 mm Heptane droplet for 11.4 seconds before Disruption, providing a second 30% oxygen liquid-fuel data point near 10.2 psi.",
+          "run_id_reference": "PSI-69-0043",
+          "engineering_recommendation": "Complement FLEX 30% oxygen liquid droplet data with solid-material flammability tests at 30% oxygen and 10.2 psi."
+        },
+        {
+          "claim": "For a tested condition with lower oxygen partial pressure (2.75 psi vs 3.06 psi in the Mars habitat), PSI-25-0104 (BASS-II) tested 2 cm SIBAL fabric at 18.7% oxygen, 14.7 psi, and 9 cm/s airflow, quenching when flow dropped to 1 cm/s.",
+          "run_id_reference": "PSI-25-0104",
+          "engineering_recommendation": "To reduce fire growth in a Mars habitat, lower oxygen partial pressure toward 2.75 psi and cut ventilation airflow toward 1 cm/s during alarms."
+        },
+        {
+          "claim": "In PSI-99-0002 (Saffire-II), a 0.61 mm thick Silicone solid sample at 22.1% oxygen, 14.7 psi, and 20 cm/s concurrent airflow had no sustained burn.",
+          "run_id_reference": "PSI-99-0002",
+          "engineering_recommendation": "Evaluate 0.61 mm Silicone barriers for ventilated Mars habitat ducts operating at 12.9 to 20 cm/s airflow."
+        }
+      ]
+    }
+  }
+}

@@ -70,11 +70,14 @@ def test_template_claims_all_pass_for_every_preset():
     for h in client.get("/api/habitats").json():
         t = {k: h[k] for k in ("o2_pct", "pressure_psi", "airflow_cm_s", "gravity_g", "fuel_state")}
         body = client.post("/api/explain", json={"target": t}).json()
-        assert body["source"] in ("template", "cache")
-        assert body["claims"], h["name"]
-        if body["source"] == "template":
-            assert body["removed_count"] == 0, body["removed"]
+        assert body["source"] == "cache", h["name"]
+        assert len(body["claims"]) >= 4, h["name"]
+        assert body["removed_count"] == 0, body["removed"]
         assert all(c["run_id_reference"] in body["retrieved_run_ids"] for c in body["claims"])
+        assert all(c["verified"] is True for c in body["claims"])
+        # Also verify the deterministic template fallback directly when cache is bypassed
+        tpl = ex.explain(Target(**t), cache_path="does-not-exist.json")
+        assert tpl["source"] == "template" and tpl["claims"] and tpl["removed_count"] == 0
 
 
 def test_cache_is_reverified(tmp_path):
