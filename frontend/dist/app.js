@@ -173,7 +173,13 @@
     const t = lastTarget || target();
     document.querySelectorAll(".tab").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.lens === lens)));
     const chart = $("chart");
+    if (lens !== "detect" && FL.detect) FL.detect.stop();
     try {
+      if (lens === "detect") {
+        // the simulator keeps its own state; only build it when the tab is opened, not on every habitat change
+        if (!chart.querySelector("#detmap")) FL.detect.render(chart, $("legend"), $("caption"));
+        return;
+      }
       if (lens === "coverage") {
         const d = await lensData("coverage");
         chart.innerHTML = FL.scatter({

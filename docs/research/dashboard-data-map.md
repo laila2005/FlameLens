@@ -104,3 +104,24 @@ Not used as run data: DAFT (2 session rows), SLICE, ACME CLD, E-FIELD and s-Flam
 4. **Evidence strength** uses `confidence`, `o2_basis`, `pressure_basis`, `value_source`, and run count, all present now.
 5. **Presets** should come from real conditions: the Lunar rover (34 % oxygen, 10.2 psi) is a good "no evidence" demo, ISS cabin a good "well covered" demo.
 6. The earlier placeholder CSV and the schema in [06](../06-data-guide.md) are replaced by `data/curated/runs.csv`.
+
+## Early detection evidence (13 Nov)
+
+The early-detection tab simulates a sensor network. **The simulation is an illustration, not a validated fire model.** It is anchored to these real NASA numbers:
+
+| File or route | What |
+|---|---|
+| `scripts/build_detect_evidence.py` | Reads the BASS-II Experimental Table (PSI-25) and writes `data/curated/detect_gas.csv` |
+| `data/curated/detect_gas.csv` | 129 BASS-II tests: O2, CO2 (%) and CO (ppm) before and after each burn, the rise, DOI, notes. Run ids match `runs.csv` |
+| `GET /api/detect/evidence` | Summary of the gas rises, smoke and dust sizes, cool-flame run count, sources |
+
+Key numbers (BASS-II, measured in the glovebox before and after each test):
+
+- **CO rise:** median 44 ppm, 90th percentile 412 ppm, maximum 575 ppm (118 tests with both readings). **62 % of tests** raised CO by more than 25 ppm.
+- **CO2 rise:** median 0.24 %, 90th percentile 1.01 %, maximum 2.78 % (121 tests).
+- Biggest CO rises: PSI-25-0066 (3/8" clear PMMA rod, 176 to 751 ppm), PSI-25-0062 (1/2" PMMA rod, 389 to 950 ppm), PSI-25-0030 (5 mm PMMA, 2 to 561 ppm).
+- 4 tests have a final CO marked over range (">500", "OR", "over") and are left empty, so the true maximum rise is higher than 575 ppm. One test (PSI-25-0024) shows a small CO drop (-23 ppm). 12 tests have empty cells, listed in `notes`.
+- **Smoke vs dust:** smoke geometric mean 0.042 to 0.293 µm (SAME-R), dust 1.65 µm average (DAFT).
+- **Cool flames:** 56 runs (CFI, ACME CFI-G) with cool flames, which make CO and formaldehyde with little light or heat, so a heat-only or infrared-only detector can miss them.
+
+What this supports: a gas (CO) channel sees most of these fires, and particle size separates smoke from dust. The simulated sensor positions, heat spread and detection times in the tab are illustrative.

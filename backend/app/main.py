@@ -120,6 +120,12 @@ def lens_tested():
     return lenses.tested()
 
 
+@app.get("/api/detect/evidence", tags=["detect"], summary="Real NASA numbers behind the early-detection simulation")
+def detect_evidence():
+    from . import detect
+    return detect.evidence()
+
+
 @app.get("/api/lens/coverage", tags=["lenses"], summary="Oxygen vs pressure of every tested run (coverage map)")
 def lens_coverage():
     return lenses.coverage_points()

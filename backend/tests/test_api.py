@@ -131,3 +131,11 @@ def test_lens_coverage():
     j = client.get("/api/lens/coverage").json()
     assert j["n_points"] > 1000
     assert all(p["o2_pct"] is not None and p["pressure_psi"] is not None for p in j["points"])
+
+
+def test_detect_evidence():
+    j = client.get("/api/detect/evidence").json()
+    assert j["gas"]["n_tests"] > 50
+    assert j["gas"]["co_rise_ppm"]["median"] >= 0
+    assert j["particles"]["dust_mean_um"] == 1.65
+    assert j["cool_flames"]["n_cool_flame_runs"] >= 50
