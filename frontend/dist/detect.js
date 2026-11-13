@@ -32,8 +32,24 @@
   };
 
   let evidence = null;
-  let coPeak = 400; // ppm near the source at full growth; replaced by the real BASS-II p90 CO rise if available
-  const st = { scenario: "flaming", airflow: 10, show: "co", src: { x: 3.5, y: 1.6 }, running: false, t: 0, timer: null };
+  // CO near the source at full growth (ppm). Flaming replays a real BASS-II test's measured CO rise;
+  // smouldering uses the median BASS-II rise; the cool flame uses the 90th percentile (no CO data for it).
+  let coPeak = 412;
+  let boundary = 0.695; // µm: geometric middle between the largest measured smoke and dust (from /api/detect/evidence)
+  const st = { scenario: "flaming", airflow: 5, show: "co", src: { x: 3.5, y: 1.6 }, running: false, t: 0, timer: null,
+    testId: "PSI-25-0030", material: "Silicone" };
+  const realTest = () => (evidence?.gas?.tests || []).find((x) => x.run_id === st.testId) || (evidence?.gas?.tests || [])[0];
+  const smokeSize = () => {
+    const s = (evidence?.particles?.smoke || []).find((x) => x.material === st.material && !x.aging_s);
+    return s ? s.geometric_mean_um : 0.128;
+  };
+  const dustSize = () => evidence?.particles?.dust_mean_um ?? 1.65;
+  function setCoPeak() {
+    const g = evidence?.gas || {};
+    if (st.scenario === "flaming" && realTest()) coPeak = realTest().co_rise_ppm;
+    else if (st.scenario === "smoulder" && g.co_rise_ppm?.median) coPeak = g.co_rise_ppm.median;
+    else if (g.co_rise_ppm?.p90) coPeak = g.co_rise_ppm.p90;
+  }
 
   function newFields() {
     const z = () => new Float32Array(NX * NY);
@@ -105,6 +121,7 @@
     if (any("ir") && (any("co") || any("rate"))) verdict = "Flaming fire";
     else if (any("co") && any("small")) verdict = "Smouldering / overheating (pre-fire)";
     else if (any("co") && !any("ir") && !readings.some((r) => r.T >= TH.heat)) verdict = "Possible cool flame: invisible combustion";
+    else if (any("small")) verdict = "Smoke confirmed by particle size (not dust)";
     if (verdict && result.fused == null) {
       result.fused = st.t;
       result.verdict = verdict;
@@ -154,7 +171,7 @@
       const f = r.flags || {};
       const n = (f.rate ? 1 : 0) + (f.co ? 1 : 0) + (f.small ? 1 : 0) + (f.ir ? 1 : 0);
       const fill = n >= 2 ? "#ff7a7a" : n === 1 ? "#ffc84a" : "#5aebaa";
-      s += `<circle cx="${X(r.x)}" cy="${Y(r.y)}" r="8" fill="${fill}" stroke="#0a0e22" stroke-width="2"><title>Sensor ${r.id}: +${r.T.toFixed(1)} K, ${r.CO.toFixed(0)} ppm CO, smoke ${r.SM.toFixed(2)}, dust ${r.DU.toFixed(2)}${r.ir ? ", IR flame seen" : ""}</title></circle>`;
+      s += `<circle cx="${X(r.x)}" cy="${Y(r.y)}" r="8" fill="${fill}" stroke="#0a0e22" stroke-width="2"><title>Sensor ${r.id}: +${r.T.toFixed(1)} K, ${r.CO.toFixed(0)} ppm CO, smoke ${r.SM.toFixed(2)}, dust ${r.DU.toFixed(2)}${r.ir ? ", IR flame seen" : ""}${r.SM > 0.05 ? `, smoke particles ${smokeSize()} µm` : ""}${r.DU > 0.05 ? `, dust particles ${dustSize()} µm` : ""}</title></circle>`;
       s += `<text x="${X(r.x)}" y="${Y(r.y) + 4}" text-anchor="middle" style="fill:#0a0e22;font-weight:700">${r.id}</text>`;
     }
     s += `<text x="${L}" y="${H - 8}">t = ${st.t.toFixed(0)} s · showing ${st.show === "co" ? "CO gas" : st.show === "heat" ? "temperature rise" : "smoke particles"} · click the cabin to move the source</text>`;
@@ -192,8 +209,11 @@
   function reset() {
     stop();
     F = newFields(); hist = []; st.t = 0;
+    setCoPeak();
     result = { heat: null, smoke: null, fused: null, verdict: null, loc: null, note: null };
     paint(evaluate(readSensors()));
+    const info = document.getElementById("detinfo");
+    if (info) info.innerHTML = scenarioInfo();
   }
 
   function tick() {
@@ -221,11 +241,37 @@
       const r = await fetch("/api/detect/evidence");
       if (!r.ok) return;
       evidence = await r.json();
-      const p90 = evidence?.gas?.co_rise_ppm?.p90;
-      if (p90 > 0) coPeak = p90;
+      if (evidence?.particles?.smoke_dust_boundary_um) boundary = evidence.particles.smoke_dust_boundary_um;
+      fillSelectors();
+      reset();
       const box = document.getElementById("detevidence");
       if (box) box.innerHTML = evidenceHtml();
     } catch (e) { /* the simulation still runs with its default numbers */ }
+  }
+
+  function fillSelectors() {
+    const ts = document.getElementById("dettest"), ms = document.getElementById("detmat");
+    const tests = evidence?.gas?.tests || [];
+    if (ts && tests.length) ts.innerHTML = tests.map((x) => `<option value="${esc(x.run_id)}"${x.run_id === st.testId ? " selected" : ""}>${esc(x.run_id)} · ${esc(x.material)} · CO +${Math.round(x.co_rise_ppm)} ppm</option>`).join("");
+    const mats = (evidence?.particles?.smoke || []).filter((x) => !x.aging_s);
+    if (ms && mats.length) ms.innerHTML = mats.map((x) => `<option value="${esc(x.material)}"${x.material === st.material ? " selected" : ""}>${esc(x.material)} · ${x.geometric_mean_um} µm</option>`).join("");
+  }
+  function showSelectors() {
+    const a = document.getElementById("dettestwrap"), b = document.getElementById("detmatwrap");
+    if (a) a.hidden = st.scenario !== "flaming";
+    if (b) b.hidden = st.scenario !== "smoulder";
+  }
+  function scenarioInfo() {
+    const g = evidence?.gas || {};
+    if (!evidence) return "Loading the real NASA numbers…";
+    if (st.scenario === "flaming") {
+      const x = realTest();
+      return x ? `Replaying real test <b>${esc(x.run_id)}</b> (${esc(x.material)}, ${x.o2_pct ?? "?"} % O₂, ${x.airflow_cm_s ?? "?"} cm/s): CO ${x.co_initial_ppm} → ${x.co_final_ppm} ppm, CO₂ ${x.co2_initial_pct} → ${x.co2_final_pct} %. The measured CO rise (${Math.round(x.co_rise_ppm)} ppm) is the CO level at the source.` : "";
+    }
+    if (st.scenario === "smoulder") return `CO at the source = median BASS-II rise (${g.co_rise_ppm?.median} ppm). Smoke particles: ${esc(st.material)} ${smokeSize()} µm (SAME-R), below the ${boundary} µm smoke/dust boundary, so fusion counts them as smoke.`;
+    if (st.scenario === "cool") return `No CO was recorded for cool flames in PSI tables; CO at the source uses the BASS-II 90th percentile (${g.co_rise_ppm?.p90} ppm) as a stand-in. ${evidence.cool_flames?.n_cool_flame_runs ?? ""} cool-flame runs exist (CFI, ACME CFI-G).`;
+    if (st.scenario === "dust") return `Dust particles ${dustSize()} µm (DAFT, Arizona Road Dust), above the ${boundary} µm boundary, so fusion does not call it smoke.`;
+    return "A heat source with no gas, smoke or flame. No NASA run is replayed: this is the nuisance case.";
   }
 
   FL.detect = {
@@ -235,15 +281,26 @@
           <label>Scenario <select id="detscen">${Object.entries(SCENARIOS).map(([k, v]) => `<option value="${k}"${k === st.scenario ? " selected" : ""}>${esc(v.label)}</option>`).join("")}</select></label>
           <label>Ventilation <output id="detflowo">${st.airflow} cm/s</output><input id="detflow" type="range" min="0" max="40" step="1" value="${st.airflow}"></label>
           <label>Show <select id="detshow"><option value="co"${st.show === "co" ? " selected" : ""}>CO gas</option><option value="heat"${st.show === "heat" ? " selected" : ""}>Temperature rise</option><option value="smoke"${st.show === "smoke" ? " selected" : ""}>Smoke particles</option></select></label>
+          <label id="dettestwrap">Real NASA test (BASS-II) <select id="dettest"><option>loading…</option></select></label>
+          <label id="detmatwrap" hidden>Smoke material (SAME-R) <select id="detmat"><option>loading…</option></select></label>
           <span class="detbtns"><button class="btn" id="detrun">Start</button><button class="btn" id="detreset">Reset</button></span>
         </div>
+        <p class="hint" id="detinfo"></p>
         <div id="detmap"></div>
         <div id="detresults"></div>
         <div id="detevidence">${evidenceHtml()}</div>`;
       legend.innerHTML = `<span style="--c:#5aebaa">sensor quiet</span><span style="--c:#ffc84a">one sign</span><span style="--c:#ff7a7a">two or more signs</span><span style="--c:#ff8a24">true source</span><span style="--c:#5cd6ff">estimated source (×)</span>`;
       caption.textContent = "Illustration, not a validated fire model. Eight sensors in a 10 × 4 m module. In microgravity hot gas does not rise, so ventilation and slow mixing decide what each sensor sees. Heat alone cannot prove a fire; FlameLens fuses temperature rate of rise, CO, particle size and infrared flame signals. Thresholds are illustrative; real use needs engineering tests and certification.";
       const re = () => reset();
-      document.getElementById("detscen").addEventListener("change", (e) => { st.scenario = e.target.value; re(); });
+      document.getElementById("detscen").addEventListener("change", (e) => { st.scenario = e.target.value; showSelectors(); re(); });
+      document.getElementById("dettest").addEventListener("change", (e) => {
+        st.testId = e.target.value;
+        const tt = realTest();
+        if (tt && tt.airflow_cm_s != null) { st.airflow = Math.round(tt.airflow_cm_s); document.getElementById("detflow").value = st.airflow; document.getElementById("detflowo").textContent = `${st.airflow} cm/s`; }
+        re();
+      });
+      document.getElementById("detmat").addEventListener("change", (e) => { st.material = e.target.value; re(); });
+      fillSelectors(); showSelectors();
       document.getElementById("detflow").addEventListener("input", (e) => { st.airflow = +e.target.value; document.getElementById("detflowo").textContent = `${st.airflow} cm/s`; re(); });
       document.getElementById("detshow").addEventListener("change", (e) => { st.show = e.target.value; paint(readSensors().map((r, i) => Object.assign(r, { flags: lastFlags[i] || {} }))); });
       document.getElementById("detrun").addEventListener("click", () => (st.running ? stop() : start()));
@@ -265,6 +322,7 @@
       const saved = { ...st, src: { ...st.src } };
       stop();
       Object.assign(st, { scenario, airflow, src, t: 0 });
+      setCoPeak();
       F = newFields(); hist = [];
       result = { heat: null, smoke: null, fused: null, verdict: null, loc: null, note: null };
       while (st.t < seconds) { step(0.5); evaluate(readSensors()); }

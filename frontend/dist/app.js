@@ -64,7 +64,7 @@
     $("grav").value = String(p.gravity_g);
     $("fuel").value = p.fuel_state;
     document.querySelectorAll(".pre").forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
-    $("presetnote").textContent = p.sourced ? "" : "Preset values are examples, not yet confirmed from an official source.";
+    $("presetnote").innerHTML = `<span class="badge ${p.sourced ? "src" : "ex"}">${p.sourced ? "from the challenge text" : "example values"}</span> ${esc(p.note || "")}`;
     schedule(0);
   }
 
@@ -80,6 +80,7 @@
     let sub = "";
     if (whole === 0 && atmo === 0) sub = "No NASA experiment in PSI tested this combination. This is where new testing is needed.";
     else if (whole === 0) sub = "The atmosphere was tested, but not under these exact conditions (often gravity: every PSI run is microgravity).";
+    if (c.conditions.some((x) => x.bounded)) sub += " PSI has no partial-gravity data yet (LUCI and FM2 are planned); microgravity results are one bound.";
     else sub = "Every number below links to the NASA run it came from.";
     el.innerHTML = `<div class="big">${esc(c.verdict)}</div><div class="sub">${esc(sub)}</div>`;
   }
@@ -93,6 +94,7 @@
         <span class="n">${x.n.toLocaleString()} runs</span>
         <span class="meter" title="Evidence strength ${s.score ?? 0} of 100"><i style="width:${s.score ?? 0}%"></i></span>
         <span class="hint">strength ${Math.round(s.score ?? 0)}/100</span>
+        ${x.note ? `<span class="gnote">${esc(x.note)}</span>` : ""}
       </button>`;
     }).join("");
     const a = c.atmosphere || { status: "No evidence", n: 0 };
@@ -187,7 +189,7 @@
           points: d.points.map((p) => ({ x: p.pressure_psi, y: p.o2_pct, id: p.run_id, color: PILLAR_COLOR[p.pillar] || "#888",
             opacity: p.pressure_basis === "assumed" || p.o2_basis === "assumed" ? 0.25 : 0.75,
             title: `${p.run_id} ${p.investigation}: ${p.o2_pct} % O2, ${p.pressure_psi} psi (${p.o2_basis}/${p.pressure_basis})` })),
-          xDomain: [0, 75], yDomain: [10, 90], xLabel: "Pressure (psi)", yLabel: "Oxygen (%)",
+          xDomain: [0, 75], yDomain: [10, 100], xLabel: "Pressure (psi)", yLabel: "Oxygen (%)",
           marker: { x: t.pressure_psi, y: t.o2_pct }, box: { x0: t.pressure_psi - 2, x1: t.pressure_psi + 2, y0: t.o2_pct - 6, y1: t.o2_pct + 6 },
         });
         legend(Object.entries(PILLAR_COLOR).map(([k, v]) => [k, v]).concat([["faint dot = assumed cabin air", "#55608a"]]));
@@ -199,7 +201,7 @@
           points: d.points.map((p) => ({ x: p.pressure_psi, y: p.o2_pct, id: p.run_id, color: OUTCOME_COLOR[p.outcome] || "#888",
             opacity: p.outcome === "cool_flame" ? 0.95 : 0.55,
             title: `${p.run_id} ${p.investigation} (${p.fuel}): ${OUTCOME_LABEL[p.outcome] || p.outcome}${p.outcome_raw ? " - " + p.outcome_raw : ""}` })),
-          xDomain: [0, 75], yDomain: [10, 90], xLabel: "Pressure (psi)", yLabel: "Oxygen (%)", r: 3.6,
+          xDomain: [0, 75], yDomain: [10, 100], xLabel: "Pressure (psi)", yLabel: "Oxygen (%)", r: 3.6,
           marker: { x: t.pressure_psi, y: t.o2_pct },
         });
         const c = d.counts_by_outcome;
@@ -321,6 +323,81 @@
     document.addEventListener("keydown", (e) => { if (e.key === "Escape") $("drawer").hidden = true; });
   }
 
+
+  // ---------------------------------------------------------------- investigations explorer
+
+  let invAll = [], invSel = [], invPillar = "All";
+  const rng = (r, unit) => (r ? (r[0] === r[1] ? `${r[0]} ${unit}` : `${r[0]}–${r[1]} ${unit}`) : "not recorded");
+
+  function renderInvGrid() {
+    const pillars = ["All", "Prevention", "Detection", "Suppression", "Other"];
+    $("invfilters").innerHTML = pillars.map((p) => `<button class="tab" data-pillar="${p}" aria-selected="${p === invPillar}">${p}</button>`).join("");
+    const list = invAll.filter((p) => invPillar === "All" || p.pillar === invPillar);
+    $("invgrid").innerHTML = list.map((p) => `<button class="inv" data-inv="${esc(p.psi_id)}" aria-pressed="${invSel.includes(p.psi_id)}">
+        <span class="t"><b>${esc(p.acronym)}</b><span class="tag p-${esc(p.pillar)}">${esc(p.pillar)}</span></span>
+        <span class="rel">${esc(p.relevance || p.title)}</span>
+        <span class="meta">${esc(p.psi_id)} · ${p.n_runs || 0} runs · ${esc(p.hardware_group || "")}${p.challenge_mentions ? " · named in the challenge" : ""}</span>
+      </button>`).join("");
+  }
+
+  async function renderInvDetail() {
+    const el = $("invdetail");
+    if (!invSel.length) { el.innerHTML = `<h2>Details and comparison</h2><p class="hint">Select an investigation to see its objectives, fuels, conditions, what varied, and what was measured. Select a second one to compare.</p>`; return; }
+    try {
+      if (invSel.length === 1) {
+        const p = await get(`/api/investigations/${encodeURIComponent(invSel[0])}`);
+        const r = p.ranges || {};
+        el.innerHTML = `<h2>${esc(p.acronym)}: ${esc(p.title)}</h2>
+          <p class="hint">${esc(p.psi_id)} · ${esc(p.pillar)} · ${esc(p.hardware_group || "")} · ${esc(p.start_date || "")}–${esc(p.end_date || "")} ·
+            <a href="${esc(p.psi_url)}" target="_blank" rel="noopener">PSI page</a>${p.doi ? ` · <a href="https://doi.org/${esc(p.doi)}" target="_blank" rel="noopener">DOI</a>` : ""}</p>
+          <p><b>Why it matters:</b> ${esc(p.relevance || "")}</p>
+          <p><b>Objective:</b> ${esc(p.objectives_summary || "not listed")}</p>
+          <p><b>Approach:</b> ${esc(p.approach_summary || "not listed")}</p>
+          <dl class="kv">
+            <dt>Runs</dt><dd>${p.n_runs || 0}</dd>
+            <dt>Fuels</dt><dd>${(p.fuels || []).map((f) => `${esc(f.name)} (${f.runs})`).join(", ") || "not recorded"}</dd>
+            <dt>Oxygen</dt><dd>${rng(r.o2_pct, "%")}</dd>
+            <dt>Pressure</dt><dd>${rng(r.pressure_psi, "psi")}</dd>
+            <dt>Airflow</dt><dd>${rng(r.airflow_cm_s, "cm/s")}</dd>
+            <dt>Varied</dt><dd>${esc((p.varied || []).join(", ") || "nothing recorded")}</dd>
+            <dt>Held constant</dt><dd>${(p.constant || []).map((c) => `${esc(c.condition)}${c.value != null ? ` = ${esc(c.value)}` : " (not recorded)"}`).join(", ") || "–"}</dd>
+            <dt>Measured</dt><dd>${esc((p.measurements_mentioned || []).join(", ") || "not stated in the PSI text")}</dd>
+            <dt>Outcomes</dt><dd>${Object.entries(p.outcome_counts || {}).map(([k, v]) => `${esc(k)} ${v}`).join(", ") || "–"}</dd>
+          </dl>
+          ${p.research_impacts_summary ? `<p><b>Earth benefits (NASA):</b> ${esc(p.research_impacts_summary)}</p>` : ""}
+          <p class="hint">Ranges count measured and text values only. Select a second investigation to compare.</p>`;
+      } else {
+        const c = await get(`/api/compare?a=${encodeURIComponent(invSel[0])}&b=${encodeURIComponent(invSel[1])}`);
+        const val = (v) => esc(Array.isArray(v) ? v.join(", ") : v ?? "–");
+        el.innerHTML = `<h2>${esc(c.a.acronym)} vs ${esc(c.b.acronym)}</h2>
+          <table class="cmp"><thead><tr><th>Attribute</th><th>${esc(c.a.acronym)}</th><th>${esc(c.b.acronym)}</th></tr></thead><tbody>
+          ${c.different.map((d) => `<tr><td>${esc(d.field)}</td><td class="diff">${val(d.a)}</td><td class="diff">${val(d.b)}</td></tr>`).join("")}
+          ${c.same.map((s) => `<tr><td>${esc(s.field)}</td><td colspan="2">same: ${val(s.value)}</td></tr>`).join("")}
+          </tbody></table>
+          ${c.measurements ? `<p class="hint">Measurements: both ${val(c.measurements.shared)} · only ${esc(c.a.acronym)} ${val(c.measurements.only_a)} · only ${esc(c.b.acronym)} ${val(c.measurements.only_b)}</p>` : ""}
+          <p class="hint">Orange = differs. Click a selected card again to remove it.</p>`;
+      }
+    } catch (e) {
+      el.innerHTML = `<h2>Details and comparison</h2><p class="err">${esc(e.message)}</p>`;
+    }
+  }
+
+  async function initInvestigations() {
+    try {
+      invAll = await get("/api/investigations");
+      renderInvGrid();
+    } catch (e) {
+      $("invgrid").innerHTML = `<p class="err">Could not load investigations (${esc(e.message)}).</p>`;
+    }
+    $("invfilters").addEventListener("click", (e) => { const b = e.target.closest("[data-pillar]"); if (b) { invPillar = b.dataset.pillar; renderInvGrid(); } });
+    $("invgrid").addEventListener("click", (e) => {
+      const b = e.target.closest("[data-inv]"); if (!b) return;
+      const id = b.dataset.inv;
+      invSel = invSel.includes(id) ? invSel.filter((x) => x !== id) : [...invSel, id].slice(-2);
+      renderInvGrid(); renderInvDetail();
+    });
+  }
+
   async function init() {
     wire();
     renderControls(target());
@@ -329,7 +406,7 @@
       $("datachip").textContent = `${stats.runs.toLocaleString()} real runs · ${Object.keys(stats.by_investigation).length} NASA PSI investigations · CC0`;
       $("presets").innerHTML = habitats.map((h) => `<button class="pre" data-id="${esc(h.id)}" aria-pressed="false">${esc(h.name)}</button>`).join("");
       document.querySelectorAll(".pre").forEach((b) => b.addEventListener("click", () => setPreset(habitats.find((h) => h.id === b.dataset.id), b)));
-      const start = document.querySelector('.pre[data-id="lunar-rover"]') || document.querySelector(".pre");
+      const start = document.querySelector('.pre[data-id="pressurized-rover"]') || document.querySelector(".pre");
       if (start) start.click(); else update();
     } catch (e) {
       $("datachip").textContent = "API not reachable";
@@ -339,4 +416,5 @@
   }
 
   init();
+  initInvestigations();
 })();

@@ -18,22 +18,22 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], all
 
 CHALLENGE = "Official challenge text (Flame in Freefall, NASA Space Apps 2026)"
 HABITATS = [
-    {"id": "moon-base", "name": "Moon base", "o2_pct": 30, "pressure_psi": 10.2, "airflow_cm_s": 10, "gravity_g": 0.16,
+    {"id": "moon-base", "name": "Moon base", "o2_pct": 30, "pressure_psi": 10.2, "airflow_cm_s": 12.9, "gravity_g": 0.16,
      "fuel_state": "any", "sourced": True,
-     "note": "Challenge text: Moon Base oxygen likely 30 % or greater at 10.2 psi or less. Airflow is an example value.",
+     "note": "Challenge text: Moon Base oxygen likely 30 % or greater at 10.2 psi or less. Airflow 12.9 cm/s = median of all NASA runs with recorded airflow.",
      "source": CHALLENGE},
-    {"id": "pressurized-rover", "name": "Pressurized rover", "o2_pct": 34, "pressure_psi": 10.2, "airflow_cm_s": 10,
+    {"id": "pressurized-rover", "name": "Pressurized rover", "o2_pct": 30, "pressure_psi": 10.2, "airflow_cm_s": 8.1,
      "gravity_g": 0.16, "fuel_state": "solid", "sourced": True,
-     "note": "Challenge text: rovers like the Moon Base, 30 % oxygen or greater at 10.2 psi or less; 34 % is an example inside that range. Airflow is an example value.",
+     "note": "Challenge text: rovers like the Moon Base, 30 % oxygen or greater at 10.2 psi or less. Airflow 8.1 cm/s = median of the 352 NASA solid-material runs with recorded airflow (BASS, BASS-II, Saffire, SAME).",
      "source": CHALLENGE},
     {"id": "spacesuit", "name": "Spacesuit", "o2_pct": 100, "pressure_psi": 4.3, "airflow_cm_s": None, "gravity_g": 0.16,
      "fuel_state": "solid", "sourced": True,
      "note": "Challenge text: spacesuits are filled with 100 % oxygen at 4.3 psi.", "source": CHALLENGE},
-    {"id": "iss-cabin", "name": "ISS cabin", "o2_pct": 21, "pressure_psi": 14.7, "airflow_cm_s": 10, "gravity_g": 0,
+    {"id": "iss-cabin", "name": "ISS cabin", "o2_pct": 21, "pressure_psi": 14.7, "airflow_cm_s": 12.9, "gravity_g": 0,
      "fuel_state": "any", "sourced": False,
-     "note": "Earth-like air (14.7 psi is Earth sea level, from the challenge text). ISS cabin values not separately sourced. Airflow is an example value.",
+     "note": "Earth-like air (14.7 psi is Earth sea level, from the challenge text). ISS cabin values not separately sourced. Airflow 12.9 cm/s = median of NASA runs with recorded airflow.",
      "source": ""},
-    {"id": "mars-habitat", "name": "Mars habitat", "o2_pct": 30, "pressure_psi": 10.2, "airflow_cm_s": 10, "gravity_g": 0.38,
+    {"id": "mars-habitat", "name": "Mars habitat", "o2_pct": 30, "pressure_psi": 10.2, "airflow_cm_s": 12.9, "gravity_g": 0.38,
      "fuel_state": "any", "sourced": False,
      "note": "Assumed similar to the Moon base; no Mars atmosphere value is given in the challenge text.", "source": ""},
 ]
@@ -143,6 +143,49 @@ def detect_evidence():
 @app.get("/api/lens/coverage", tags=["lenses"], summary="Oxygen vs pressure of every tested run (coverage map)")
 def lens_coverage():
     return lenses.coverage_points()
+
+
+# ---------------------------------------------------------------- investigation profiles and export
+# Summaries and comparisons asked for in the challenge text (docs/challenge-statement.md).
+
+@app.get("/api/investigations", tags=["investigations"], summary="Summary profile of every combustion investigation")
+def investigations():
+    from . import profiles
+    return profiles.all_profiles()
+
+
+@app.get("/api/investigations/{psi_id}", tags=["investigations"], summary="Full profile: objectives, approach, conditions, what varied")
+def investigation_profile(psi_id: str):
+    from . import profiles
+    p = profiles.profile(psi_id)
+    if p is None:
+        raise HTTPException(status_code=404, detail=f"Unknown investigation {psi_id}")
+    return p
+
+
+@app.get("/api/compare", tags=["investigations"], summary="What is the same and what differs between two investigations")
+def compare_investigations(a: str, b: str):
+    from . import profiles
+    out = profiles.compare(a, b)
+    if out is None:
+        raise HTTPException(status_code=404, detail=f"Unknown investigation {a} or {b}")
+    return out
+
+
+@app.get("/api/export/runs.csv", tags=["export"], summary="Download the curated run table (CSV) for predictive modeling")
+def export_runs():
+    from fastapi.responses import Response
+    body = data.RUNS_CSV.read_text(encoding="utf-8")
+    return Response(content=body, media_type="text/csv",
+                    headers={"Content-Disposition": 'attachment; filename="flamelens_runs.csv"'})
+
+
+@app.get("/api/export/investigations.json", tags=["export"], summary="Download all investigation profiles (JSON)")
+def export_investigations():
+    from fastapi.responses import JSONResponse
+    from . import profiles
+    return JSONResponse(content=profiles._profiles(),
+                        headers={"Content-Disposition": 'attachment; filename="flamelens_investigations.json"'})
 
 
 FRONTEND_DIST = Path(__file__).resolve().parents[2] / "frontend" / "dist"

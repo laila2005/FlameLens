@@ -23,12 +23,12 @@
     <!-- Habitat input -->
     <aside class="panel habitat" aria-label="Habitat design">
       <h2>Habitat design</h2>
-      <div class="presets" id="presets" role="group" aria-label="Example habitats"></div>
+      <div class="presets" id="presets" role="group" aria-label="Habitat presets"></div>
       <p class="hint" id="presetnote"></p>
 
       <div class="field">
         <label for="o2">Oxygen <output id="o2o"></output></label>
-        <input id="o2" type="range" min="10" max="60" step="0.5" value="34">
+        <input id="o2" type="range" min="10" max="100" step="0.5" value="34">
       </div>
       <div class="field">
         <label for="psi">Pressure <output id="psio"></output></label>
@@ -100,6 +100,42 @@
       <p class="caption" id="caption"></p>
     </section>
   </main>
+
+  <!-- Investigations explorer -->
+  <section class="layout2" aria-label="Investigations">
+    <div class="panel">
+      <div class="ptitle"><h2>Investigations</h2><span class="hint">Summaries of the NASA PSI combustion investigations. Pick two to compare.</span></div>
+      <div class="invfilters" id="invfilters" role="group" aria-label="Filter by pillar"></div>
+      <div class="invgrid" id="invgrid"><p class="hint">Loading investigations…</p></div>
+    </div>
+    <div class="panel" id="invdetail">
+      <h2>Details and comparison</h2>
+      <p class="hint">Select an investigation to see its objectives, fuels, conditions, what varied, and what was measured. Select a second one to compare.</p>
+    </div>
+  </section>
+
+  <section class="layout3" aria-label="Data and Earth benefits">
+    <div class="panel">
+      <h2>Use the data</h2>
+      <p>Download the curated tables for your own flammability models. Every row keeps its source table, DOI and how each value was obtained (measured, read from text, or assumed).</p>
+      <div class="dl">
+        <a class="btn" href="/api/export/runs.csv">Runs table (CSV, 1,922 runs)</a>
+        <a class="btn" href="/api/export/investigations.json">Investigation profiles (JSON)</a>
+        <a class="btn" href="/docs" target="_blank" rel="noopener">API for developers</a>
+      </div>
+      <p class="hint">License: NASA PSI data is CC0. Please cite each investigation's DOI.</p>
+    </div>
+    <div class="panel">
+      <h2>Back on Earth</h2>
+      <ul class="earth">
+        <li><b>Smoke detectors that ignore dust.</b> A shuttle detector told combustion particles from dust and was used in mines. Our smoke-vs-dust lens shows why: smoke is 0.04–0.3 µm, dust about 1.7 µm. <a href="https://spinoff.nasa.gov/node/9407" target="_blank" rel="noopener">NASA Spinoff</a></li>
+        <li><b>Firefighter clothing</b> improved with spacesuit technology. <a href="https://spinoff.nasa.gov/node/9918" target="_blank" rel="noopener">NASA Spinoff</a></li>
+        <li><b>Firefighter air tanks</b> made lighter with spacesuit technology. <a href="https://spinoff.nasa.gov/node/9582" target="_blank" rel="noopener">NASA Spinoff</a></li>
+        <li><b>Fine-water-mist extinguishers</b> developed for the ISS have uses on Earth (challenge text).</li>
+        <li><b>Cleaner engines and burners:</b> cool-flame and soot results from FLEX, CFI and ACME inform combustion models used on Earth.</li>
+      </ul>
+    </div>
+  </section>
 
   <!-- Evidence drawer -->
   <div class="drawer" id="drawer" hidden role="dialog" aria-modal="false" aria-labelledby="drawertitle">
