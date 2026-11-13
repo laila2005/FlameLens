@@ -2,6 +2,8 @@
 
 Written 13 Nov at about 12:35 PM Cairo time, 25 minutes before the hackathon starts at **1:00 PM**. Reading is allowed now. **Product code starts at 1:00 PM, not before.**
 
+> **Big news (12:55 PM):** PSI already offers structured run tables (Experimental Table CSV) for all 19 flight combustion investigations. Read [psi-real-findings.md](research/psi-real-findings.md) first. It changes the first hour: Judy and F map the table columns instead of typing runs from PDFs.
+
 ## The plan in one picture
 
 | Clock | Hour | What the team does |

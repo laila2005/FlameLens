@@ -1,0 +1,12 @@
+source_id,psi_id,investigation,kind,material,aging_s,geometric_mean_um,count_mean_um,avg_mass_diameter_um,gsd,value_source,source_ref,doi,confidence,notes
+SMK-01,PSI-101,SAME-R,smoke,Kapton,0,0.042,0.056,0.101,2.154,table,"SAME-R Final Report (PSI-101_Reports_SAME-R_Final Report.pdf), Table 1, PDF page 78",10.60555/2np7-jv14,high,baseline runs; diameters in micrometers
+SMK-02,PSI-101,SAME-R,smoke,Kapton,720,0.089,0.109,0.161,1.872,table,"SAME-R Final Report, Table 1, PDF page 78",10.60555/2np7-jv14,high,aged 720 s
+SMK-03,PSI-101,SAME-R,smoke,Lampwick,0,0.090,0.128,0.258,2.312,table,"SAME-R Final Report, Table 1, PDF page 78",10.60555/2np7-jv14,high,
+SMK-04,PSI-101,SAME-R,smoke,Lampwick,720,0.229,0.276,0.398,1.834,table,"SAME-R Final Report, Table 1, PDF page 78",10.60555/2np7-jv14,high,aged 720 s
+SMK-05,PSI-101,SAME-R,smoke,Silicone,0,0.128,0.196,0.465,2.530,table,"SAME-R Final Report, Table 1, PDF page 78",10.60555/2np7-jv14,high,
+SMK-06,PSI-101,SAME-R,smoke,Silicone,720,0.269,0.355,0.619,2.108,table,"SAME-R Final Report, Table 1, PDF page 78",10.60555/2np7-jv14,high,aged 720 s
+SMK-07,PSI-101,SAME-R,smoke,Teflon,0,0.081,0.101,0.170,2.198,table,"SAME-R Final Report, Table 1, PDF page 78",10.60555/2np7-jv14,high,
+SMK-08,PSI-101,SAME-R,smoke,Teflon,720,0.070,0.105,0.232,2.442,table,"SAME-R Final Report, Table 1, PDF page 78",10.60555/2np7-jv14,high,aged 720 s
+SMK-09,PSI-101,SAME-R,smoke,Pyrell,0,0.149,0.204,0.384,2.211,table,"SAME-R Final Report, Table 1, PDF page 78",10.60555/2np7-jv14,high,
+SMK-10,PSI-101,SAME-R,smoke,Pyrell,720,0.293,0.359,0.539,1.892,table,"SAME-R Final Report, Table 1, PDF page 78",10.60555/2np7-jv14,high,aged 720 s
+DST-01,PSI-47,DAFT,dust,Arizona Road Dust (fine),,,1.65,,,text,"DAFT 30-Day Post Flight Report (PSI-47_Reports_DAFT_30Day.PostFlightReport.pdf), sample analysis: average diameter 1.65 micron, range 1.56 to 1.7",10.60555/ztgj-d202,medium,"ground analysis of the dust sample bags, not a flight size distribution; NIST standard test dust"

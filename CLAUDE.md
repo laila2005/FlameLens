@@ -146,6 +146,10 @@ gh auth status                    # GitHub CLI login for pushing
 
 Newest first. One line per change: date, what, who or what session.
 
+- 2026-11-13 hackathon day: user approved downloading. Fetched all 26 PSI Experimental Tables + 13 small documents; built `data/curated/runs.csv` (1,922 runs, 13 investigations, basis columns for each condition), `investigations.csv` (DOIs), `smoke_dust_sizes.csv` (SAME-R Table 1 + DAFT). Findings and gaps in `docs/research/dashboard-data-map.md`. Lens 1 (spread rate vs airflow) has no table data: replace with a tested-conditions scatter. Lunar rover 34% O2 / 10.2 psi / solid has 0 matching runs. Scripts: `scripts/fetch_psi.py`, `fetch_psi_docs.py`, `build_runs.py`.
+
+- 2026-11-13 12:55 Cairo: opened the real PSI site. Every flight combustion investigation has an Experimental Table CSV (19 of them), PSI has an unofficial JSON backend, license CC0, cite DOIs. BASS-II oxygen is about 22% or below, pressure is per investigation, airflow is display codes. CFI, SAME-R, DAFT-2, ACME E-FIELD are all in PSI. Full notes: `docs/research/psi-real-findings.md`. Nothing downloaded yet.
+
 - 2026-11-13 12:35 Cairo: added `docs/13-start-now.md` (resource summary, reading assignments per person, first-hour plan, decisions to make). Hackathon starts 1:00 PM.
 
 - 2026-11-13 (hackathon day, 8:30 AM Cairo when written; hackathon starts 1:00 PM): NASA shared the official resource list; added to `docs/12-resources.md` section 0. PSI combustion search is the data source. Spin-off text must come from the three NASA spin-off pages. Investigation list re-checked against NASA's Combustion Science page: CFI, SAME-R, DAFT-2, ACME E-FIELD still unverified.

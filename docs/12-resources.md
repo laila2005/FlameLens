@@ -25,6 +25,8 @@ Rules for using them:
 - The smoke detector spin-off matches our Lens 2 (smoke vs dust): use it as the real-world link on that lens.
 - Official statement: the resource list says PSI is "the source of the data upon which the NASA Space App is to be based". Our dashboard is built on PSI as planned.
 
+> **Update 13 Nov 12:55:** we opened the real PSI site. See [psi-real-findings.md](research/psi-real-findings.md): every flight combustion investigation has an Experimental Table CSV, and CFI, SAME-R, DAFT-2 and ACME E-FIELD are all in PSI. That page replaces the guesses in sections 2 and 4 below.
+
 ## 1. The official challenge
 
 | Item | Finding |

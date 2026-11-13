@@ -2,6 +2,8 @@
 
 **The dataset is the real project.** The UI and the AI are only as good as the curated table. Owners: D (lead) and F (second extractor). The dataset arrives on 13 Nov, so the schema below is a **hypothesis** to check in the first 2 hours.
 
+> **Update 13 Nov (hackathon day):** the real data is loaded. The schema actually in use is the one in [data-map](research/dashboard-data-map.md#the-unified-schema-runscsv), built by `scripts/build_runs.py` into `data/curated/runs.csv` (1,922 runs). The row format below is the original plan. Use `data/curated/runs.csv` for all code.
+
 ## Row format
 
 One row per run. File: CSV, UTF-8, one header row.

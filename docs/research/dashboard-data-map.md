@@ -1,0 +1,106 @@
+# Data map: what the real PSI data gives each dashboard question
+
+Built on 13 Nov from the real PSI Experimental Tables, a few small PSI documents and three NASA reports. Everything is public (CC0). **Cite the PSI DOI of each investigation** (listed in `data/curated/investigations.csv`).
+
+## Bottom line
+
+| Dashboard feature | Can the real data answer it? | Data used |
+|---|---|---|
+| Evidence case (oxygen, pressure, airflow, fuel, gravity) | **Yes** for oxygen, pressure and fuel. **Partly** for airflow (41 % of runs). **Gravity: all runs are microgravity**, so lunar and Mars gravity will always show "No evidence" | `data/curated/runs.csv`, 1,922 runs |
+| Run this next, Safer options, Coverage map | **Yes** | same table |
+| Evidence strength, evidence trail | **Yes**: every row carries its source table, DOI, `value_source`, and a basis for each condition | same table |
+| Lens 3, cool flames | **Yes**: 56 runs with a recorded cool flame, plus 279 hot-flame and 62 no-ignition outcomes at known oxygen and pressure | CFI (PSI-39), ACME CFI-G (PSI-159) |
+| Lens 2, smoke vs dust particle size | **Yes, small but real**: 10 smoke measurements (5 materials, fresh and aged) and 1 dust value | `data/curated/smoke_dust_sizes.csv` (SAME-R report Table 1, DAFT report) |
+| Lens 1, flame spread vs airflow at several oxygen levels | **Not from the tables.** Spread rates are in plots and PDFs. Only 9 Saffire-II rows have a spread value | see "Gaps" and the Lens 1 proposal below |
+| AI explanation with citations | **Yes**: abstracts and full text via the NTRS API, plus the downloaded final reports | NTRS API, `data/raw/docs/` |
+
+## What was built (reproducible)
+
+| File | What it is |
+|---|---|
+| `scripts/fetch_psi.py` | Searches PSI and downloads every Experimental Table CSV into `data/raw/` (git-ignored). Writes `data/curated/investigations.csv` (id, title, DOI, license) |
+| `scripts/fetch_psi_docs.py` | Downloads 13 small PSI documents (test matrices, fan calibration, readmes, final reports) into `data/raw/docs/` |
+| `scripts/build_runs.py` | Merges the tables into one unified `data/curated/runs.csv` and records where each value came from |
+| `data/curated/runs.csv` | **1,922 runs from 13 investigations**, one schema |
+| `data/curated/smoke_dust_sizes.csv` | Lens 2 data, hand-copied from the reports with page references |
+| `data/curated/investigations.csv` | 26 PSI investigations with DOIs and license |
+
+Run order: `python scripts/fetch_psi.py`, then `python scripts/fetch_psi_docs.py`, then `python scripts/build_runs.py`.
+
+## The unified schema (`runs.csv`)
+
+`run_id, psi_id, investigation, pillar, fuel_or_material, fuel_state, o2_pct, o2_basis, pressure_psi, pressure_basis, airflow_cm_s, airflow_basis, gravity_g, outcome, metric_name, metric_value, value_source, source_table, doi, confidence, notes`
+
+Each condition has a **basis** column, which is the honesty mechanism:
+
+| Basis | Meaning | Count (oxygen / pressure / airflow) |
+|---|---|---|
+| measured | a column in the PSI table | 1,191 / 1,020 / 549 |
+| text | parsed from a free-text cell (display reading, report string) | 0 / 0 / 239 |
+| assumed | not in the table, taken from the platform (ISS cabin air, about 14.7 psi, 21 % O2). **Lower confidence** | 586 / 858 / 0 |
+| unknown | left empty, never guessed | the rest |
+
+Confidence: `high` = oxygen and pressure both measured (1,009 runs), `medium` = one assumed or unknown (911), `low` = both missing (2).
+
+## How many runs per question (examples, current tolerances)
+
+| Habitat | Runs near this oxygen (±6 pts) | Runs near this pressure (±2 psi) | Runs in the same fuel state | Runs matching oxygen, pressure and fuel together |
+|---|---|---|---|---|
+| ISS cabin, 21 %, 14.7 psi | 1,231 | 1,433 | all | 1,020 |
+| Enriched 40 %, 14.7 psi | 297 | 1,433 | all | 158 |
+| Low oxygen 17 %, 14.7 psi, solid | 1,215 | 1,433 | 389 solid | 257 |
+| Mars-like 30 %, 8.2 psi | 126 | 97 | all | **22** |
+| **Lunar rover 34 %, 10.2 psi, solid** | 328 | 107 | 389 solid | **0** |
+
+That last line is the signature result: **no solid-fuel experiment covers a 34 % oxygen, 10.2 psi atmosphere**, and no experiment covers lunar gravity. The dashboard will show that honestly, which is exactly the point of the Evidence case and Run this next.
+
+Ranges in the data (after cleaning): oxygen 12 to 85 %, pressure 6.3 to 73.5 psi, airflow 0 to 85 cm/s. Pressure and oxygen spread widely because the cool-flame and ACME experiments used high pressures and enriched oxygen. Measured oxygen bands: below 18 % (172 runs), 18 to 21 (205), 21 to 25 (277), 25 to 30 (39), 30 to 40 (317), above 40 (181). The 25 to 30 % band is thin.
+
+Runs by pillar: Prevention 784, Suppression 694, Detection 117, Other 327. Fuel state: gas 1,172, solid 389, liquid 361. **Solid materials, the ones that matter most for habitats, are the thinnest group.**
+
+## What each investigation contributes
+
+| Investigation | Runs | What we got | Missing |
+|---|---|---|---|
+| FLEX (PSI-69) | 274 | fuel (methanol, heptane), oxygen, pressure (8 runs above 30 psi), diluents, droplet size, burn time, outcome (extinction, disruption, completion) | airflow |
+| ACME CFI-G (PSI-159) | 333 | fuel, oxygen, pressure, cool flame yes/no, hot ignition, burn time | airflow. 84 runs are above 30 psi (up to 73 psi) |
+| CFI (PSI-39) | 87 | fuel (dodecane), oxygen, helium, pressure, cool-flame outcome from the summary sheet | airflow |
+| ACME Flame Design (PSI-10) | 327 | fuel (ethylene), oxygen, pressure | outcome (soot study) |
+| BASS-II (PSI-25) | 129 | material, calibrated oxygen (13.6 to 22.2 %), flow readings in cm/s | outcome and spread rate (in plots and the summary report); pressure assumed |
+| BASS (PSI-26) | 122 | material, flow readings | oxygen (nitrogen dilution was used but no value in the matrix) |
+| Saffire I, II, III (PSI-98, 99, 100) | 21 | material, airflow (20 to 30 cm/s), oxygen 21.5 to 22.1 %, burn time, direction; Saffire-II has some spread results | few runs; pressure assumed |
+| SPICE (PSI-107) | 469 | fuel, air rate in cm/s | oxygen and pressure assumed cabin air |
+| SAME (PSI-102), SAME-R (PSI-101) | 117 | material (Kapton, Teflon, lampwick, silicone, Pyrell), airflow | particle sizes are in the reports, now in `smoke_dust_sizes.csv` |
+| ACME BRE (PSI-20) | 43 | oxygen levels 21, 25, 26.5, 34, 40 % per test day (ethylene) | pressure (varied but not listed), per-run outcome (day totals only) |
+
+Not used as run data: DAFT (2 session rows), SLICE, ACME CLD, E-FIELD and s-Flame (fuel mix and flame counts only), FLEX-2 (a planned matrix of oxygen 0.17 to 0.25, pressure 0.5 to 2 atm, flow 0.1 to 5 cm/s, not run results), the ground and modeling investigations.
+
+## Real facts learned from the documents
+
+- **BASS-II oxygen:** the calibrated initial oxygen across its 129 tests runs from 13.6 to 22.2 %, at or below cabin air. BASS-II studied flames **below** 21 %, never enriched oxygen.
+- **Airflow conversion:** the BASS-II readme says "Air display" is the flow speed in the duct in cm/s (slow response, about 1 minute). A fan calibration sheet maps fan display to cm/s (for example fan display 122 is about 29 cm/s with no restrictor). Flow restrictors 0 (highest flow) to 2 (lowest flow) narrow the range.
+- **Smoke particle size (SAME-R):** fresh Kapton smoke is very small (geometric mean 0.042 µm) and Teflon about 0.08 µm. Silicone and lampwick are larger (0.09 to 0.13 µm fresh, up to 0.27 µm aged). Aging 720 s roughly doubles the size for most materials. The report says small Kapton and Teflon particles are hard for light-scattering detectors to catch, while dust is large, which is why a smoke detector needs size discrimination. This is the story for Lens 2.
+- **Dust (DAFT):** Arizona Road Dust (fine) averaged 1.65 µm (range 1.56 to 1.7) in the sample analysis. That is far larger than the smoke particles.
+- **Cool flames (CFI):** the summary sheet lists extinction diameters for hot and cool flames per test, which is where the cool-flame outcome comes from.
+
+## Gaps and what to do
+
+| Gap | Impact | Proposed fix | Owner |
+|---|---|---|---|
+| **No spread-rate table** (Lens 1) | The original Lens 1 (spread rate vs airflow per oxygen level) cannot be drawn from tables | **Change Lens 1** to "Where flames were tested": oxygen vs airflow scatter from the 681 runs that have both, coloured by pillar and outcome. If time allows, plot-read a few spread rates from the BASS-II summary report (49 MB PDF) or Saffire-II and label them `plot-read` | Yasmine and Judy |
+| Assumed ISS cabin pressure and air (858 pressure, 586 oxygen) | Lower confidence badges on BASS, BASS-II, Saffire, SPICE, SAME | Verify the cabin pressure for each platform in the readmes and reports and replace `assumed` with a sourced value | F and Judy |
+| Outcomes missing for 1,078 of 1,922 runs ("tested") | Safer options can say "tested here", but not "it burned here" | Use the 684 runs that have a real outcome (FLEX 274, ACME CFI-G 325, CFI 72, Saffire 13); add more from the Saffire spreadsheets and BASS-II summary if time | Judy |
+| BASS-II airflow is the first display reading only; multi-step flow ramps are collapsed | Airflow for those runs is approximate | Keep the confidence note; do not show spread-vs-flow curves | Yasmine |
+| Few runs between 25 and 30 % oxygen | Coverage map will show a thin band | A true finding, show it | Everyone |
+| Saffire IV to VI (reduced pressure, higher oxygen) and SoFIE are not in the PSI search | Solid-material evidence at lunar-like atmospheres is missing | Mention in "what next"; use the Saffire VI NTRS paper only as a citation, not run data | F |
+| Gravity: microgravity only | Lunar and Mars gravity always "No evidence" | This is correct and honest. FM2 (lunar gravity) is a planned experiment | none |
+| Crew-safe oxygen limits | Needed for the "breathable zone" idea | Official source still to be found | F |
+
+## What changes in the product
+
+1. **Gravity condition:** keep it, but expect "No evidence" for anything except microgravity. Offer a "microgravity only" note.
+2. **Lens 1** becomes the "tested conditions" scatter, which also feeds the coverage map.
+3. **Lens 3** (cool flames) is now the best-supported lens: 56 cool-flame runs plus hot and no-ignition outcomes.
+4. **Evidence strength** uses `confidence`, `o2_basis`, `pressure_basis`, `value_source`, and run count, all present now.
+5. **Presets** should come from real conditions: the Lunar rover (34 % oxygen, 10.2 psi) is a good "no evidence" demo, ISS cabin a good "well covered" demo.
+6. The earlier placeholder CSV and the schema in [06](../06-data-guide.md) are replaced by `data/curated/runs.csv`.
