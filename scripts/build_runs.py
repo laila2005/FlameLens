@@ -14,6 +14,7 @@ Needs openpyxl only for the CFI and BASS as-run spreadsheets (pip install openpy
 """
 import csv
 import io
+import os
 import re
 from pathlib import Path
 
@@ -231,15 +232,37 @@ try:
     hi = next(i for i, r in enumerate(allrows) if r and any(str(c or "").strip().lower() == "material" for c in r))
     hdr = [str(c or "").strip().lower() for c in allrows[hi]]
     imat, iair = hdr.index("material"), hdr.index("air display")
+    # Per-test atmosphere and crew observations recorded in the same as-run matrix (columns AA..AD):
+    # "O2 % by volume" is a fraction (0.221 = 22.1 %), "pressure, atm" is total pressure in atmospheres.
+    io2 = next((i for i, h in enumerate(hdr) if h.startswith("o2 % by volume")), None)
+    ipr = next((i for i, h in enumerate(hdr) if h.startswith("pressure, atm")), None)
+    iobs = next((i for i, h in enumerate(hdr) if h.startswith("test observations")), None)
+    ATM_PSI = 14.6959
+    # Off by default: switching it on changes ISS-cabin counts (336 -> 427) and the engine's nearest runs, so the
+    # cached AI explanations must be regenerated in the same change (scripts/build_explanations.py).
+    USE_BASS_ATMOSPHERE = os.environ.get("FLAMELENS_BASS_ATMOSPHERE") == "1"
+    if not USE_BASS_ATMOSPHERE:
+        io2 = ipr = None
     for r in allrows[hi + 1:]:
         mat = r[imat] if r and len(r) > imat else None
         if not mat:
             continue
         air = str(r[iair] or "")
         flow = num(air) if re.match(r"^\s*\d", air) else None
-        add(26, "PSI-26 As Run Test Matrix.xlsx", str(mat), "solid", None, "unknown", CABIN_PSI, "assumed", flow,
-            "text" if flow is not None else "unknown", "tested", vsrc="text",
-            notes=f"air display (cm/s, first reading): {air}; SRD_BASS.pdf p.8 requires initial ISS cabin >= 21% O2, per-test MSG O2 after N2 suppression jet not in matrix; pressure assumed ISS cabin")
+        o2v = r[io2] if io2 is not None and len(r) > io2 else None
+        prv = r[ipr] if ipr is not None and len(r) > ipr else None
+        obs = " ".join(str(r[iobs] or "").split()) if iobs is not None and len(r) > iobs else ""
+        o2_ok = isinstance(o2v, (int, float)) and 0.1 < o2v < 0.6
+        pr_ok = isinstance(prv, (int, float)) and 0.5 < prv < 1.5
+        o2_pct = round(o2v * 100, 3) if o2_ok else None
+        psi = round(prv * ATM_PSI, 3) if pr_ok else CABIN_PSI
+        add(26, "PSI-26 As Run Test Matrix.xlsx", str(mat), "solid", o2_pct, "measured" if o2_ok else "unknown",
+            psi, "measured" if pr_ok else "assumed", flow,
+            "text" if flow is not None else "unknown", "tested", vsrc="table" if (o2_ok or pr_ok) else "text",
+            notes=(f"air display (cm/s, first reading): {air}; "
+                   + (f"O2 {o2v:g} volume fraction and pressure {prv:g} atm (x 14.6959 = psi) from the as-run matrix; "
+                      if (o2_ok and pr_ok) else "SRD_BASS.pdf p.8 requires initial ISS cabin >= 21% O2; per-test O2 and pressure are in the as-run matrix but not applied yet (FLAMELENS_BASS_ATMOSPHERE switch in build_runs.py); pressure assumed ISS cabin; ")
+                   + (f"crew observation: {obs[:220]}" if obs else "")))
 except Exception as exc:
     print("BASS as-run matrix not read:", exc)
 

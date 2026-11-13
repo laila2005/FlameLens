@@ -19,6 +19,16 @@ psi_id, run_or_test, material, o2_pct, pressure_psi, airflow_cm_s, quantity, val
 
 `value_source` = `table`, `text` or `plot-read`. `confidence` = `high` (table), `medium` (text), `low` (plot-read).
 
+## Deep search result (Sat 14 Nov, about 3:30 AM)
+
+| What | Result |
+|---|---|
+| New combustion investigations in PSI | **None.** The PSI catalog lists 26 investigations in the combustion research area; all 26 are already in `investigations.csv` (18 with runs, FLEX-2 matrix, 5 ground/CFD studies, plus 2 catalogued). Searched 15 fire-related terms. |
+| PSI-179 Aerosol Sampling Experiment (ISS cabin particles, relevant to smoke-vs-dust) | PSI lists **no data files** for it. Nothing to process. |
+| Saffire-I and Saffire-III "MergeResult" spreadsheets | They are **camera-frame download logs** (image names, timestamps, exposure), not flame measurements. No spread rates to extract. Saffire-II's table remains the only Saffire spread source. |
+| **BASS as-run matrix (PSI-26)** | **Has measured O2 (15.9-22.7 %), cabin pressure (0.97-1.01 atm) and a crew observation for 121 of 122 tests.** Crew observations are now in each BASS run's notes (evidence drawer). Applying the O2 and pressure is ready but **switched off**: set `FLAMELENS_BASS_ATMOSPHERE=1` and rerun `scripts/build_runs.py`. It turns 121 runs from unknown/assumed into measured, but ISS-cabin matches go 336 -> 427 (strength 82.5 -> 84.3), the rover's nearest run changes, and 6 of 25 cached AI sentences no longer match the retrieved evidence. Do it only together with `scripts/build_explanations.py` (needs the language model) and an update of the numbers in README and FINAL-SUBMISSION. |
+| Outcomes for 1,007 runs marked "tested" (SPICE 469, ACME Flame Design 327, BASS 122, BASS-II 54, SLICE 12) | Still open. BASS now shows the crew's own observation text; SPICE smoke points are in the SPICE final report (not extracted). |
+
 ## Priority 1: fills a real gap in the dashboard
 
 | ☐ | What we need | Where | File | Size | What to extract | Save to |
