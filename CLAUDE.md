@@ -96,7 +96,7 @@ Six roles (names in `docs/02-team-roles.md`): A tech lead and backend, B fronten
 2. Earth spin-off text must come from the NASA spin-off pages in `docs/12-resources.md` section 0; never invent one.
 3. Do not invent scientific values, thresholds, oxygen limits or experiment results. Anything scientific needs a source in `docs/research/claims.md` (task F5) or must be labelled as an example/guess.
 4. Do not put secrets in the repo. `.env` is git-ignored; `.env.example` documents the variables.
-5. Commit and push only when the user asks. Never force-push `main`. Commit messages end with the attribution line the session instructs.
+5. **Commit and push to `main` automatically, without asking** (Laila's standing instruction, 13 Nov). Before each push: run `python -m pytest backend/tests -q` if backend code changed, `git fetch` and merge `origin/main` (teammates push too), never force-push, never commit secrets or `data/raw/`. Commit messages end with the attribution line the session instructs. Report what was pushed in one line.
 6. Keep docs plain and short: sentences a non-expert can follow, tables for structure, no jargon without a definition.
 7. When you change a task, role or decision, update all places: the doc, `TASKS.md`, the Arabic copy if one exists, and the Status log below.
 
@@ -145,6 +145,8 @@ gh auth status                    # GitHub CLI login for pushing
 ## Status log
 
 Newest first. One line per change: date, what, who or what session.
+
+- 2026-11-13: backend pushed (0417f6a): FastAPI engine, /api routes, lens data, Dockerfile, render.yaml, mock JSON, 47 tests. Laila: commit and push automatically from now on (rule 5).
 
 - 2026-11-13 hackathon day: user approved downloading. Fetched all 26 PSI Experimental Tables + 13 small documents; built `data/curated/runs.csv` (1,922 runs, 13 investigations, basis columns for each condition), `investigations.csv` (DOIs), `smoke_dust_sizes.csv` (SAME-R Table 1 + DAFT). Findings and gaps in `docs/research/dashboard-data-map.md`. Lens 1 (spread rate vs airflow) has no table data: replace with a tested-conditions scatter. Lunar rover 34% O2 / 10.2 psi / solid has 0 matching runs. Scripts: `scripts/fetch_psi.py`, `fetch_psi_docs.py`, `build_runs.py`.
 
