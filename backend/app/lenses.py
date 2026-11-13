@@ -87,9 +87,10 @@ def aerosol(sizes=None):
         "dust": dust,
         "smoke_geometric_mean_range_um": [min(smoke_gm), max(smoke_gm)] if smoke_gm else None,
         "overlap_note": ("Dust (Arizona Road Dust, 1.65 um average in the DAFT sample analysis) is much larger than smoke "
-                         "particles (geometric mean 0.04 to 0.36 um in SAME-R), so a detector that measures particle size "
-                         "can tell them apart. The dust value is a ground analysis of the sample bags, not a flight "
-                         "size distribution."),
+                         + (f"particles (geometric mean {min(smoke_gm):.2f} to {max(smoke_gm):.2f} um in SAME-R)" if smoke_gm
+                            else "particles")
+                         + ", so a detector that measures particle size can tell them apart. The dust value is a ground "
+                         "analysis of the sample bags, not a flight size distribution."),
     }
 
 
@@ -114,3 +115,16 @@ def tested(rows=None):
         "note": ("Where flames were tested. Runs that have both oxygen and airflow. "
                  "Airflow with basis 'text' is the first display reading and is approximate."),
     }
+
+
+def coverage_points(rows=None):
+    """Every run with both oxygen and pressure: the tested atmospheres for the coverage map."""
+    rows = rows if rows is not None else data.runs()
+    points = [{"run_id": r["run_id"], "investigation": r["investigation"], "pillar": r["pillar"],
+               "fuel_state": r.get("fuel_state", ""), "o2_pct": r["o2_pct"], "pressure_psi": r["pressure_psi"],
+               "o2_basis": r["o2_basis"], "pressure_basis": r["pressure_basis"], "confidence": r["confidence"]}
+              for r in rows if r["o2_pct"] is not None and r["pressure_psi"] is not None]
+    return {"points": points, "n_points": len(points),
+            "counts_by_investigation": dict(Counter(p["investigation"] for p in points)),
+            "note": "Each dot is one run. Points with an assumed basis use ISS cabin air (about 14.7 psi, 21 % O2) "
+                    "because the source table gave no value."}

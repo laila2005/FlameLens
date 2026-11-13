@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FlameLens</title>
+  <meta name="description" content="Evidence-backed fire-safety insight from NASA microgravity combustion experiments (PSI).">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <span class="mark" aria-hidden="true"></span>
+      <div>
+        <h1>FlameLens</h1>
+        <p class="tagline">Is your habitat design backed by NASA fire experiments?</p>
+      </div>
+    </div>
+    <div class="datachip" id="datachip">Loading data…</div>
+  </header>
+
+  <main class="layout">
+    <!-- Habitat input -->
+    <aside class="panel habitat" aria-label="Habitat design">
+      <h2>Habitat design</h2>
+      <div class="presets" id="presets" role="group" aria-label="Example habitats"></div>
+      <p class="hint" id="presetnote"></p>
+
+      <div class="field">
+        <label for="o2">Oxygen <output id="o2o"></output></label>
+        <input id="o2" type="range" min="10" max="60" step="0.5" value="34">
+      </div>
+      <div class="field">
+        <label for="psi">Pressure <output id="psio"></output></label>
+        <input id="psi" type="range" min="4" max="30" step="0.1" value="10.2">
+      </div>
+      <div class="field">
+        <label for="flow">Airflow <output id="flowo"></output></label>
+        <input id="flow" type="range" min="0" max="60" step="1" value="10">
+        <label class="check"><input type="checkbox" id="flowoff"> Airflow not specified</label>
+      </div>
+      <div class="field">
+        <label for="grav">Gravity</label>
+        <select id="grav">
+          <option value="0">Microgravity (ISS, spacecraft)</option>
+          <option value="0.16" selected>Moon (0.16 g)</option>
+          <option value="0.38">Mars (0.38 g)</option>
+          <option value="1">Earth (1 g)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="fuel">Burning material</label>
+        <select id="fuel">
+          <option value="any">Any</option>
+          <option value="solid" selected>Solid (fabric, plastic)</option>
+          <option value="liquid">Liquid (fuel droplets)</option>
+          <option value="gas">Gas</option>
+        </select>
+      </div>
+
+      <div class="pp" aria-live="polite">
+        <span class="pplabel">Oxygen partial pressure</span>
+        <strong id="ppv"></strong>
+        <span id="ppc" class="hint"></span>
+      </div>
+    </aside>
+
+    <!-- Decision -->
+    <section class="decision" aria-label="Evidence">
+      <div class="verdict panel" id="verdict" aria-live="polite"></div>
+
+      <div class="panel">
+        <div class="ptitle"><h2>Evidence case</h2><span class="hint">How many NASA runs match each condition</span></div>
+        <div class="conditions" id="conditions"></div>
+        <div class="wholes" id="wholes"></div>
+      </div>
+
+      <div class="twocol">
+        <div class="panel next" id="next"></div>
+        <div class="panel" id="safer"></div>
+      </div>
+
+      <div class="panel">
+        <div class="ptitle"><h2>Closest investigations</h2><span class="hint">Ranked by how close their runs are to your design</span></div>
+        <ol class="ranked" id="ranked"></ol>
+      </div>
+    </section>
+
+    <!-- Lenses -->
+    <section class="lenses panel" aria-label="Lenses">
+      <div class="tabs" role="tablist" aria-label="Lenses">
+        <button role="tab" class="tab" data-lens="coverage" aria-selected="true">Coverage map</button>
+        <button role="tab" class="tab" data-lens="coolflame" aria-selected="false">Cool flames</button>
+        <button role="tab" class="tab" data-lens="aerosol" aria-selected="false">Smoke vs dust</button>
+        <button role="tab" class="tab" data-lens="tested" aria-selected="false">Airflow tested</button>
+      </div>
+      <div class="chart" id="chart" role="tabpanel"></div>
+      <div class="legend" id="legend"></div>
+      <p class="caption" id="caption"></p>
+    </section>
+  </main>
+
+  <!-- Evidence drawer -->
+  <div class="drawer" id="drawer" hidden role="dialog" aria-modal="false" aria-labelledby="drawertitle">
+    <div class="drawerhead">
+      <h2 id="drawertitle">Evidence</h2>
+      <button class="btn" id="drawerclose" aria-label="Close evidence">Close</button>
+    </div>
+    <div id="drawerbody"></div>
+  </div>
+
+  <footer class="foot">
+    <p><strong>Data:</strong> NASA Physical Sciences Informatics (PSI), combustion investigations, license CC0-1.0. Each run links to its investigation DOI. Some pressures and oxygen values are <em>assumed</em> ISS cabin air where the source table gave none; they are marked and given lower confidence.</p>
+    <p><strong>How decisions are made:</strong> plain arithmetic on the run table, no AI. Evidence strength is a transparency aid, <em>not a safety rating</em>. <strong>AI use:</strong> AI tools helped the team write documentation and code.</p>
+    <p>Team AstroSpark · NASA Space Apps Cairo 2026 · <a href="/docs">API</a> · <a href="https://psi.nasa.gov/physci/repo/search?q=combustion" target="_blank" rel="noopener">PSI repository</a></p>
+  </footer>
+
+  <script src="charts.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

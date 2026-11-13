@@ -1,10 +1,13 @@
-# Stage 1: build the frontend if frontend/package.json exists, otherwise produce an empty dist folder.
+# Stage 1: build the frontend if frontend/package.json exists; otherwise copy the static frontend/dist
+# (the current dashboard is plain HTML/JS with no build step).
 FROM node:20-slim AS web
 WORKDIR /src
 COPY . /src
 RUN mkdir -p /out && \
     if [ -f frontend/package.json ]; then \
       cd frontend && npm ci && npm run build && cp -r dist/. /out/ ; \
+    elif [ -d frontend/dist ]; then \
+      cp -r frontend/dist/. /out/ ; \
     fi
 
 # Stage 2: the API (serves frontend/dist when it has content).

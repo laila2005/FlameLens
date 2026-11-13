@@ -125,3 +125,9 @@ def test_coverage():
 
 def test_bad_request_is_422():
     assert client.post("/api/case", json={"target": {"o2_pct": 150, "pressure_psi": 10}}).status_code == 422
+
+
+def test_lens_coverage():
+    j = client.get("/api/lens/coverage").json()
+    assert j["n_points"] > 1000
+    assert all(p["o2_pct"] is not None and p["pressure_psi"] is not None for p in j["points"])

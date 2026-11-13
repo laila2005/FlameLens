@@ -120,6 +120,11 @@ def lens_tested():
     return lenses.tested()
 
 
+@app.get("/api/lens/coverage", tags=["lenses"], summary="Oxygen vs pressure of every tested run (coverage map)")
+def lens_coverage():
+    return lenses.coverage_points()
+
+
 FRONTEND_DIST = Path(__file__).resolve().parents[2] / "frontend" / "dist"
 if FRONTEND_DIST.is_dir():
     app.mount("/", StaticFiles(directory=FRONTEND_DIST, html=True), name="frontend")
