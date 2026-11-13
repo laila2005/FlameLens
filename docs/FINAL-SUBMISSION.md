@@ -37,7 +37,7 @@ As humanity returns to the Moon and prepares for Mars, fire inside a pressurized
 Decades of NASA spaceflight combustion experiments live in NASA's Physical Sciences Informatics (PSI) database, but the data is spread across heterogeneous CSV tables, technical reports, and CFD archives—making it difficult for habitat engineers and researchers to compare conditions or spot dangerous gaps in test coverage.
 
 OUR SOLUTION: FLAMELENS
-FlameLens unifies 2,003 real spaceflight test runs across 18 executed NASA PSI combustion investigations (all 6 ACME investigations, Saffire-I/II/III, BASS, BASS-II, SPICE, SLICE, SAME, SAME-R, DAFT, FLEX, and CFI), plus PSI-68 (FLEX-2 parameter matrix), 5 PSI ground/CFD predictive modeling studies, 43 measured microgravity flame-spread rates, 153 BASS-II cabin gas sensor traces, and 27 NASA NTRS publications into a single interactive mission console:
+FlameLens unifies 2,003 real spaceflight test runs across 18 executed NASA PSI combustion investigations (all 6 ACME investigations, Saffire-I/II/III, BASS, BASS-II, SPICE, SLICE, SAME, SAME-R, DAFT, FLEX, and CFI), plus PSI-68 (FLEX-2 parameter matrix), 5 PSI ground/CFD predictive modeling studies, 43 measured microgravity flame-spread rates, 129 BASS-II cabin gas sensor traces, and 27 NASA NTRS publications into a single interactive mission console:
 
 1. Deterministic Evidence Case & Dual Evidence Strength Meter (0–100):
    Users select a preset (Moon Base, Pressurized Rover, Spacesuit, ISS Cabin, Mars Habitat) or dial in custom O2 %, pressure (psi), airflow (cm/s), fuel state (solid/liquid/gas), and gravity (0g, 0.16g, 0.38g, 1g). FlameLens evaluates each parameter and displays both Whole-Habitat Evidence Strength (0–100) and the 0g Atmosphere-Only Bound—backed by exact NASA test counts, measured-vs-assumed provenance badges, and clickable PSI investigation chips. For example, an ISS cabin (21% O2, 14.7 psi, 0g) is backed by 336 combined NASA runs (score 82.5/100), whereas a Pressurized Lunar Rover (30% O2, 10.2 psi, 8.1 cm/s, 0.16g, solid) reveals 0 partial-gravity runs in PSI and 0 combined 0g runs at that exact atmosphere.
@@ -51,9 +51,9 @@ FlameLens unifies 2,003 real spaceflight test runs across 18 executed NASA PSI c
 4. Six Interactive Visual Lenses & Side-by-Side Investigation Comparator:
    - Coverage Map: O2 % vs. Pressure (psi) across all 2,003 runs.
    - Cool Flames: 705–760 K cool-flame regimes, 85% O2 inverse flames (ACME CFI-G), and platinum thermocouple catalytic reignition (CFI).
-   - Smoke vs. Dust: SAME-R fresh/aged smoke (0.04–0.32 um) vs. DAFT microgravity dust (1.57–1.72 um), showing how optical detectors avoid false alarms in dusty lunar cabins and terrestrial mines.
+   - Smoke vs. Dust: SAME-R fresh/aged smoke (0.04–0.29 um) vs. DAFT microgravity dust (1.57–1.72 um), showing how optical detectors avoid false alarms in dusty lunar cabins and terrestrial mines.
    - Flame Spread: 43 measured microgravity spread rates (mm/s vs. airflow cm/s) from BASS-II and Saffire-II.
-   - Airflow Tested: O2 % vs. ventilation velocity across 684 runs.
+   - Airflow Tested: O2 % vs. ventilation velocity across 681 runs.
    - Early Detection Simulator: Interactive cabin sensor placement paired with real BASS-II CO/CO2 traces.
 ```
 
@@ -108,7 +108,7 @@ OTHER NASA RESOURCES & TOOLS:
 ### Slide 1 — Title & The Space-Fire Imperative
 - **Headline:** **FlameLens: Space-Fire Data, Made Clear**
 - **Bullets:**
-  - In microgravity, flames form spheres fed by cabin air, spread **200× faster** on thin fabrics, and burn invisibly as **705–760 K cool flames**.
+  - In microgravity, flames form spheres fed by cabin air, spread **up to 200× faster** on thin fabrics, and burn invisibly as **705–760 K cool flames**.
   - Planned Moon Bases & Rovers (**30%+ O₂, ≤10.2 psi**) raise oxygen >40% above Earth air.
 - **Visual to include:** Screenshot of the top header + Habitat Design panel + Verdict banner on `https://flamelens-steel.vercel.app`.
 - **Footer:** Team AstroSpark · NASA Space Apps Cairo 2026 · Live: `https://flamelens-steel.vercel.app`
@@ -139,7 +139,7 @@ OTHER NASA RESOURCES & TOOLS:
 - **Bullets:**
   - **Flame Spread (`43` pts):** Thin fabrics (`2.1–2.6 mm/s`) burn up to 200× faster than thick PMMA slabs (`0.012–0.144 mm/s`).
   - **Cool Flames (`CFI`, `CFI-G`, `FLEX`):** `705–760 K` invisible burn & thermocouple catalytic reignition.
-  - **Smoke vs. Dust (`SAME-R`, `DAFT`):** Smoke (`0.04–0.32 µm`) vs. dust (`1.57–1.72 µm`).
+  - **Smoke vs. Dust (`SAME-R`, `DAFT`):** Smoke (`0.04–0.29 µm`) vs. dust (`1.57–1.72 µm`).
 - **Visual to include:** 3-panel collage of the **Flame spread**, **Cool flames**, and **Smoke vs dust** charts with the **Evidence Drawer** open on a clicked run.
 
 ### Slide 6 — Why Engineers Can Trust It: Deterministic Math + Citation Verifier

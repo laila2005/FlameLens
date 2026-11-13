@@ -22,10 +22,10 @@ NASA's **Physical Sciences Informatics (PSI)** repository holds decades of Space
 6. **Six Interactive Visual Lenses + Side-by-Side Investigation Comparison:**
    - **Coverage Map (`O₂ %` vs. `Pressure psi`):** Plots tested atmospheres across all pillars (`Prevention`, `Detection`, `Suppression`, `Other`) with a live `±6% O₂, ±2 psi` tolerance box around the user's habitat.
    - **Cool Flames (`CFI`, `ACME CFI-G`, `FLEX`):** Maps visible vs. cool-flame and radiative/stretch extinction outcomes, plus sourced findings (`85% O₂` inverse flames, `705–760 K` cool flames, and Type-B platinum thermocouple catalytic hot-flame reignition).
-   - **Smoke vs. Dust (`SAME-R` Table 1 & `DAFT`):** Log-scale aerosol diameter comparison showing why fresh/aged spacecraft smoke (`0.04–0.32 µm`) separates cleanly from cabin and lunar-simulant dust (`1.57–1.72 µm`).
+   - **Smoke vs. Dust (`SAME-R` Table 1 & `DAFT`):** Log-scale aerosol diameter comparison showing why fresh/aged spacecraft smoke (`0.04–0.29 µm`) separates cleanly from cabin and lunar-simulant dust (`1.57–1.72 µm`).
    - **Flame Spread (`BASS-II` & `Saffire-II`):** Log-scale plot of `43` measured microgravity spread/regression rates (`mm/s`) vs. opposing/concurrent airflow (`0–32 cm/s`).
-   - **Airflow Tested (`O₂ %` vs. `Airflow cm/s`):** Visualizes the `684` runs where both oxygen and ventilation flow were recorded.
-   - **Early Detection Simulator + Real `BASS-II` Gas Evidence:** Interactive cabin sensor placement simulator paired with real `BASS-II` `CO`/`CO₂` burn traces (`153` runs) and `SAME-R`/`DAFT` particle size distributions.
+   - **Airflow Tested (`O₂ %` vs. `Airflow cm/s`):** Visualizes the `681` runs where both oxygen and ventilation flow were recorded.
+   - **Early Detection Simulator + Real `BASS-II` Gas Evidence:** Interactive cabin sensor placement simulator paired with real `BASS-II` `CO`/`CO₂` burn traces (`129` runs) and `SAME-R`/`DAFT` particle size distributions.
 
 ---
 
@@ -49,7 +49,7 @@ All curated datasets are downloadable directly from the dashboard or via `/api/e
 | [`data/curated/spread_rates.csv`](data/curated/spread_rates.csv) | **43 points** | Measured microgravity flame spread / regression rates (`mm/s`) vs. airflow (`cm/s`) from `NASA/TM-20210011385` (`BASS-II` Table 5.1 & text) and `PSI-99` (`Saffire-II`) |
 | [`data/curated/modeling_studies.json`](data/curated/modeling_studies.json) | **5 studies** | Official NASA PSI ground/CFD predictive modeling investigations (`PSI-60`, `PSI-62`, `PSI-115`, `PSI-117`, `PSI-142`) linked to their parent flight experiments |
 | [`data/curated/smoke_dust_sizes.csv`](data/curated/smoke_dust_sizes.csv) | **15 rows** | `SAME-R` Table 1 fresh & 720s-aged smoke geometric mean diameters (`µm`) + `DAFT` (`PSI-47`) ground and in-flight microgravity dust bag diameters (`DST-01..04`) |
-| [`data/curated/detect_gas.csv`](data/curated/detect_gas.csv) | **153 runs** | Real `BASS-II` (`PSI-25`) pre-burn and post-burn `CO` (ppm) and `CO₂` (%) cabin sensor readings |
+| [`data/curated/detect_gas.csv`](data/curated/detect_gas.csv) | **129 runs** | Real `BASS-II` (`PSI-25`) pre-burn and post-burn `CO` (ppm) and `CO₂` (%) cabin sensor readings |
 | [`data/curated/coolflame_notes.csv`](data/curated/coolflame_notes.csv) | **6 findings** | Sourced cool-flame bounds (`705–760 K`), `85% O₂` inverse spherical flames (`ACME CFI-G`), and thermocouple catalytic reignition (`CFI` `PSI-39`) |
 | [`data/curated/bass2_airflow.csv`](data/curated/bass2_airflow.csv) | **20 points** | MSG flow-duct fan calibration curve (`NASA/TM-20210011385` Table 3.1) |
 | [`data/curated/papers.csv`](data/curated/papers.csv) | **27 papers** | Peer-reviewed NASA NTRS publications with direct PDF links per investigation |

@@ -261,7 +261,7 @@
 
   async function renderLens() {
     const t = lastTarget || target();
-    document.querySelectorAll(".tab").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.lens === lens)));
+    document.querySelectorAll(".lenses .tab").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.lens === lens)));
     const chart = $("chart");
     if (lens !== "detect" && FL.detect) FL.detect.stop();
     try {
@@ -415,7 +415,7 @@
       document.querySelectorAll(".pre").forEach((b) => b.setAttribute("aria-pressed", "false"));
       renderControls(target()); schedule();
     }));
-    document.querySelectorAll(".tab").forEach((b) => b.addEventListener("click", () => { lens = b.dataset.lens; renderLens(); }));
+    document.querySelectorAll(".lenses .tab").forEach((b) => b.addEventListener("click", () => { lens = b.dataset.lens; renderLens(); }));
     document.addEventListener("click", (e) => {
       const run = e.target.closest("[data-run]");
       if (run) return openEvidence(run.dataset.run);

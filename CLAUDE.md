@@ -44,6 +44,7 @@ Supporting pieces: a deterministic ranker (weights 0.35 O₂, 0.20 pressure, 0.2
 | **Official event facts, rules, submission format, judging criteria** | `docs/11-event-facts.md` (from the organizers' two PDFs) |
 | Web research: challenge name, PSI access routes, NTRS API, papers, investigations | `docs/12-resources.md` |
 | Hackathon-day start: resource summary, reading assignments, first hour | `docs/13-start-now.md` |
+| **Validation report: what was tested, fixes, what is left before submitting** | `docs/14-validation-report.md` (re-run `python scripts/validate_live.py .`) |
 | Stack, API contract, ranker, decision-route rules | `docs/05-architecture-and-api.md` |
 | Data row format and extraction rules | `docs/06-data-guide.md` |
 | AI model, prompts, verifier rules, bake-off | `docs/07-ai-guide.md` |
@@ -145,6 +146,8 @@ gh auth status                    # GitHub CLI login for pushing
 ## Status log
 
 Newest first. One line per change: date, what, who or what session.
+
+- 2026-11-13 ~11:10 PM Cairo (hour 10.2): Laila: test the requirements and validations. Added `scripts/validate_live.py` (117 checks: data provenance, every preset's decision routes, adversarial citation-verifier claims, evidence trail, public access, challenge features). Result: 117 of 117 pass on the live site. Fixed wrong numbers in README and FINAL-SUBMISSION (smoke 0.04–0.29 µm, not 0.32; airflow lens 681 runs, not 684; BASS-II gas traces 129, not 153; "up to 200×"). Fixed a lens-tab bug that cleared the investigation filter highlight (`app.js`, needs a redeploy). Report and remaining tasks: `docs/14-validation-report.md`; TASKS.md has a new "Before submitting" list.
 
 - 2026-11-13 ~10:50 PM Cairo (hour 9.8): Laila: dashboard redesign from her laptop screenshots. New light, frosted-card look is now the default, and the old dark "mission console" sits behind a sun/moon toggle in the header (saved per browser). Habitat controls moved to a full-width row of cards at the top (presets as pills, custom sliders), evidence on the left, sticky lenses on the right, and a 3-column footer. Fonts are Sora, IBM Plex Sans and IBM Plex Mono from Google Fonts, falling back to system fonts offline. Chart and simulator colours now come from theme variables. No data, numbers or wording changed. 67 tests pass. Laila: redeploy. Live at https://flamelens-steel.vercel.app from ~10:46 PM (deployment dpl_GsVxuUXY4zaDjgwB8R4njorgnBnT); checked: light theme loads, data chip and API work, no console errors. Demo video paused; record it from the live site next.
 
