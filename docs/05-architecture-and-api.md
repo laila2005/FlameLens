@@ -42,7 +42,7 @@ POST /api/next        {target}           -> recommended experiment, gaps closed,
 POST /api/alternatives {target, k}       -> nearest tested runs with lower O2 partial pressure, deltas
 POST /api/strength    {target}           -> evidence strength 0-100 per condition and whole habitat,
                                             with the four parts (proximity, reliability, run_count, source_quality)
-POST /api/campaign    {n, targets}       -> n experiments chosen greedily, designs each covers, coverage before/after
+POST /api/campaign    {n, targets?}      -> n experiments chosen greedily, designs each covers, coverage before/after (built 13 Nov; targets default to the presets)
 POST /api/journey     {stages:[target]}  -> /case and /strength per stage, weakest stage, combined verdict
 POST /api/search      {constraints}      -> tested atmospheres that satisfy fixed limits, with strength
 POST /api/parse       {text}             -> habitat JSON parsed by the LLM, validated against allowed ranges

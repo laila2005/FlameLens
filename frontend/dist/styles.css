@@ -442,3 +442,29 @@ body.brief-open { overflow: hidden; }
   body.brief-open .paper { max-width: none; padding: 0; box-shadow: none; border-radius: 0; font-size: 11.5px; }
   .paper a { color: #0a6fb0; text-decoration: none; }
 }
+
+/* ------------------------------------------------------------------ test campaign planner */
+.campaign { border-top: 4px solid var(--violet); }
+.cmphead { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-weight: 600; font-family: var(--head); font-size: 15px; }
+.cmpn { display: inline-flex; gap: 4px; padding: 4px; background: var(--panel3); border-radius: 12px; }
+.cmpn button { min-width: 38px; border: 0; background: transparent; border-radius: 9px; padding: 6px 10px; cursor: pointer; font: 600 14px var(--mono); color: var(--muted); }
+.cmpn button[aria-pressed="true"] { background: linear-gradient(135deg, var(--flame2), var(--flame)); color: var(--on-flame); box-shadow: 0 6px 14px -8px var(--flame); }
+.cmpsum { font-size: 14px; background: var(--panel2); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 10px 14px; }
+.cmphabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.cmph { display: inline-flex; align-items: baseline; gap: 6px; font-size: 13px; font-weight: 500; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line); }
+.cmph small { font: 500 11px var(--mono); }
+.cmph-ok { background: var(--ok-soft); color: var(--ok); border-color: transparent; }
+.cmph-plan { background: var(--flame-soft); color: var(--flame); border-color: transparent; }
+.cmph-open { color: var(--muted); border-style: dashed; }
+.cmplist { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.cmpx { display: grid; grid-template-columns: 46px minmax(0, 1fr); gap: 12px; background: var(--panel2); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 12px; }
+.cmprank { font: 700 22px/1 var(--head); color: var(--flame); text-align: center; padding-top: 2px; }
+.cmpbody { display: flex; flex-direction: column; gap: 6px; min-width: 0; font-size: 13.5px; }
+.cmpt { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; }
+.cmpt b { font: 600 15px var(--head); }
+.cmpcov { font: 600 11.5px var(--mono); color: var(--ok); background: var(--ok-soft); padding: 2px 8px; border-radius: 999px; }
+.cmpchips { display: flex; flex-wrap: wrap; gap: 5px; }
+.cmpchips span { font: 500 12px var(--sans); background: var(--panel-solid); border: 1px solid var(--line); border-radius: 6px; padding: 1px 7px; }
+.cmpline { color: var(--fg); }
+.cmpnote { font-size: 12.5px; color: var(--muted); }
+.cmpnote.warn { color: var(--amber); }

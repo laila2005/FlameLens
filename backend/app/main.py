@@ -11,7 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from . import data, engine, lenses
-from .schemas import AlternativesRequest, RankRequest, TargetRequest, VerifyRequest
+from .schemas import AlternativesRequest, CampaignRequest, RankRequest, Target, TargetRequest, VerifyRequest
 
 app = FastAPI(title="FlameLens", description="Evidence-backed decisions from NASA PSI combustion data")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
@@ -84,6 +84,16 @@ def next_experiment(req: TargetRequest):
 @app.post("/api/alternatives", tags=["engine"], summary="Nearest tested conditions with lower oxygen partial pressure")
 def alternatives(req: AlternativesRequest):
     return engine.alternatives(req.target, req.k)
+
+
+@app.post("/api/campaign", tags=["engine"], summary="Test campaign planner: n experiments giving the most designs a whole-design test")
+def campaign(req: CampaignRequest):
+    if req.targets:
+        targets = [{"id": t.id, "name": t.name, "target": t.target} for t in req.targets]
+    else:
+        keys = ("o2_pct", "pressure_psi", "airflow_cm_s", "gravity_g", "fuel_state")
+        targets = [{"id": h["id"], "name": h["name"], "target": Target(**{k: h[k] for k in keys})} for h in HABITATS]
+    return engine.campaign(targets, req.n)
 
 
 @app.post("/api/strength", tags=["engine"], summary="Evidence strength 0-100 per condition (not a safety rating)")

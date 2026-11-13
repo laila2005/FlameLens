@@ -185,6 +185,31 @@ check("Requirements", "5 PSI ground/CFD modeling studies linked", len(mod) == 5,
 pap = jget("/api/papers")
 pap = pap.get("papers", pap) if isinstance(pap, dict) else pap
 check("Requirements", "NASA NTRS paper library available", len(pap) > 0, f"{len(pap)} papers")
+# ------------------------------------------------------------------ test campaign planner
+camp = jget("/api/campaign", {"n": 3})
+habs = {h["id"]: h for h in camp["habitats"]}
+pre = {h["id"]: h for h in habitats}
+check("Campaign planner", "ISS cabin is already covered and gets no new test",
+      habs["iss-cabin"]["status"] == "covered" and habs["iss-cabin"]["planned_by"] is None)
+check("Campaign planner", "first experiment covers Moon base and pressurized rover together",
+      set(camp["experiments"][0]["covers"]) == {"moon-base", "pressurized-rover"}, str(camp["experiments"][0]["covers"]))
+check("Campaign planner", "3 experiments leave no preset design open", camp["summary"]["still_open"] == [], str(camp["summary"]))
+ok_cover, ok_runs = True, True
+for e in camp["experiments"]:
+    x = e["conditions"]
+    for hid in e["covers"]:  # recompute the match independently with the published tolerances
+        h = pre[hid]
+        m = (abs(x["o2_pct"] - h["o2_pct"]) <= 6 + 1e-9 and abs(x["pressure_psi"] - h["pressure_psi"]) <= 2 + 1e-9
+             and (h["airflow_cm_s"] is None or (x["airflow_cm_s"] is not None and abs(x["airflow_cm_s"] - h["airflow_cm_s"]) <= 8 + 1e-9))
+             and (h["fuel_state"] == "any" or x["fuel_state"] == h["fuel_state"]) and abs(x["gravity_g"] - h["gravity_g"]) < 1e-9)
+        ok_cover &= m
+    ok_runs &= e["nearest_run"]["run_id"] in by_id
+check("Campaign planner", "every planned test really matches each design it claims to cover (±6 / ±2 / ±8, material, gravity)", ok_cover)
+check("Campaign planner", "every 'start from' run is a real run in runs.csv", ok_runs)
+check("Campaign planner", "partial-gravity tests are flagged as needing a LUCI/FM2-type platform",
+      all(("LUCI" in e["platform_note"]) == (0 < e["conditions"]["gravity_g"] < 1) for e in camp["experiments"]))
+check("Campaign planner", "n=1 returns one experiment", len(jget("/api/campaign", {"n": 1})["experiments"]) == 1)
+
 html = http("/")[2].decode("utf-8")
 check("Requirements", "Back on Earth panel cites NASA Spinoff pages", html.count("spinoff.nasa.gov") >= 3)
 check("Rules", "AI use disclosed on the page", "AI use" in html and "citation verifier" in html)

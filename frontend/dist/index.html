@@ -122,6 +122,21 @@
         <div class="panel" id="safer"></div>
       </div>
 
+      <div class="panel campaign" id="campaign">
+        <div class="ptitle"><h2>Test campaign planner</h2><span class="hint">Which experiments should NASA fly next to cover Moon, Mars and rover designs?</span></div>
+        <div class="cmphead">
+          <span>NASA can fly</span>
+          <div class="cmpn" id="cmpn" role="group" aria-label="Number of experiments">
+            <button type="button" data-n="1" aria-pressed="false">1</button><button type="button" data-n="2" aria-pressed="false">2</button><button type="button" data-n="3" aria-pressed="true">3</button><button type="button" data-n="5" aria-pressed="false">5</button>
+          </div>
+          <span>more experiment(s). Fly these:</span>
+        </div>
+        <p class="cmpsum" id="cmpsum">Planning…</p>
+        <div class="cmphabs" id="cmphabs"></div>
+        <ol class="cmplist" id="cmplist"></ol>
+        <p class="hint" id="cmpnote"></p>
+      </div>
+
       <div class="panel">
         <div class="ptitle"><h2>Closest investigations</h2><span class="hint">Ranked by how close their runs are to your design</span></div>
         <ol class="ranked" id="ranked"></ol>
@@ -219,6 +234,7 @@
   <script src="detect.js"></script>
   <script src="app.js"></script>
   <script src="brief.js"></script>
+  <script src="campaign.js"></script>
   <script>
     (function () {
       var btn = document.getElementById("themebtn"), root = document.documentElement;

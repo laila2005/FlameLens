@@ -435,3 +435,124 @@ def coverage(o2_pct: float, pressure_psi: float, rows=None) -> dict:
     return {"in_range": bool(within), "n_within": len(within),
             "nearest": [{"run_id": r["run_id"], "investigation": _inv(r), "o2_pct": r["o2_pct"],
                          "pressure_psi": r["pressure_psi"], "distance": round(d2(r), 3)} for r in ranked]}
+
+
+# ---------------------------------------------------------------- campaign planner
+
+def _would_match(exp: dict, hab: Target) -> bool:
+    """Would a run flown at `exp` match habitat `hab` on all five conditions? Same rules as _match."""
+    def near(value, goal, tol):
+        return value is not None and abs(value - goal) <= tol + EPS
+    return (near(exp["o2_pct"], hab.o2_pct, TOLERANCE["o2"])
+            and near(exp["pressure_psi"], hab.pressure_psi, TOLERANCE["psi"])
+            and (hab.airflow_cm_s is None or near(exp["airflow_cm_s"], hab.airflow_cm_s, TOLERANCE["flow"]))
+            and (hab.fuel_state == "any" or exp["fuel_state"] == hab.fuel_state)
+            and abs(exp["gravity_g"] - hab.gravity_g) <= EPS)
+
+
+def _experiment(t: Target) -> dict:
+    """Test conditions for one experiment. A real burn needs a real material: a design that allows "any"
+    material is tested with solids (fabrics, plastics), the focus of flammability studies per the challenge text."""
+    return {"o2_pct": t.o2_pct, "pressure_psi": t.pressure_psi, "airflow_cm_s": t.airflow_cm_s,
+            "gravity_g": t.gravity_g, "fuel_state": "solid" if t.fuel_state == "any" else t.fuel_state}
+
+
+def _midpoint(a: Target, b: Target):
+    """One experiment halfway between two designs, or None if they cannot share one (gravity or material differ)."""
+    if abs(a.gravity_g - b.gravity_g) > EPS:
+        return None
+    fa, fb = a.fuel_state, b.fuel_state
+    if fa != "any" and fb != "any" and fa != fb:
+        return None
+    if a.airflow_cm_s is None or b.airflow_cm_s is None:
+        flow = a.airflow_cm_s if a.airflow_cm_s is not None else b.airflow_cm_s
+    else:
+        flow = _r((a.airflow_cm_s + b.airflow_cm_s) / 2, 1)
+    return _experiment(Target(o2_pct=_r((a.o2_pct + b.o2_pct) / 2, 1),
+                              pressure_psi=_r((a.pressure_psi + b.pressure_psi) / 2, 2),
+                              airflow_cm_s=flow, gravity_g=a.gravity_g, fuel_state=fa if fa != "any" else fb))
+
+
+def campaign(targets: list, n: int = 3, rows=None) -> dict:
+    """Choose up to n experiments that give the most designs a whole-design test (greedy set cover).
+
+    targets: [{id, name, target: Target}]. A design already matched by 2+ runs on all five conditions needs
+    no new test. Candidates are each open design's own conditions plus midpoints of pairs that can share one
+    experiment. Each round picks the candidate covering the most still-open designs, then the one closing the
+    most condition gaps, then the one closest to an existing run (cheapest to set up).
+    Nothing is predicted: the plan says which test would cover which design, never what the test would show.
+    """
+    rows = _rows(rows)
+    rng = data.ranges(rows)
+    habs = []
+    for t in targets:
+        c = case(t["target"], rows)
+        gaps = [x["key"] for x in c["conditions"] if x["status"] != "Supported"]
+        n_whole = c["whole"]["n"]
+        habs.append({"id": t["id"], "name": t["name"], "target": t["target"], "whole_n": n_whole,
+                     "status": "covered" if n_whole >= 2 else ("weak" if n_whole == 1 else "gap"),
+                     # "whole" = the five conditions were never tested together, even where each is covered alone
+                     "gaps": gaps + (["whole"] if n_whole < 2 else []), "planned_by": None})
+    open_habs = [h for h in habs if h["status"] != "covered"]
+
+    cands = [_experiment(h["target"]) for h in open_habs]
+    for i, a in enumerate(open_habs):
+        for b in open_habs[i + 1:]:
+            m = _midpoint(a["target"], b["target"])
+            if m:
+                cands.append(m)
+    seen, uniq = set(), []
+    for cnd in cands:
+        key = tuple(cnd.values())
+        if key not in seen:
+            seen.add(key)
+            uniq.append(cnd)
+
+    def nearest_dist(exp):
+        t = Target(**exp)
+        return min(_dist(r, t, rng) for r in rows)
+
+    picks, remaining = [], list(open_habs)
+    while remaining and len(picks) < n:
+        best, best_key = None, None
+        for cnd in uniq:
+            covers = [h for h in remaining if _would_match(cnd, h["target"])]
+            if not covers:
+                continue
+            key = (len(covers), sum(len(h["gaps"]) for h in covers), -nearest_dist(cnd))
+            if best_key is None or key > best_key:
+                best, best_key = (cnd, covers), key
+        if not best:
+            break
+        cnd, covers = best
+        nx = next_experiment(Target(**cnd), rows)
+        order = KEYS + ("whole",)
+        gaps = sorted({g for h in covers for g in h["gaps"]}, key=order.index)
+        g = cnd["gravity_g"]
+        picks.append({
+            "rank": len(picks) + 1, "conditions": cnd,
+            "o2_partial_pressure": _r(_pp(cnd["o2_pct"], cnd["pressure_psi"]), 2),
+            "covers": [h["id"] for h in covers], "covers_names": [h["name"] for h in covers],
+            "gaps_closed": gaps, "partial_gravity": 0 < g < 1,
+            "platform_note": ("Needs a partial-gravity platform: PSI has no partial-gravity combustion data yet "
+                              "(LUCI and FM2 are planned, challenge text)." if 0 < g < 1 else
+                              "Can fly in microgravity, like the existing PSI investigations." if g == 0 else
+                              "Normal gravity: a ground test."),
+            "material_note": ("The design allows any material; solids (fabrics, plastics) are the focus of NASA "
+                              "flammability studies (challenge text)." if any(h["target"].fuel_state == "any" for h in covers) else ""),
+            "nearest_run": nx["nearest_run"], "changes": nx["changes"]})
+        for h in covers:
+            h["planned_by"] = len(picks)
+        remaining = [h for h in remaining if h["planned_by"] is None]
+
+    covered_now = sum(h["status"] == "covered" for h in habs)
+    planned = sum(h["planned_by"] is not None for h in habs)
+    return {
+        "n": n,
+        "habitats": [{k: v for k, v in h.items() if k != "target"} for h in habs],
+        "experiments": picks,
+        "summary": {"designs": len(habs), "covered_now": covered_now, "planned": planned,
+                    "covered_or_planned": covered_now + planned,
+                    "still_open": [h["name"] for h in habs if h["status"] != "covered" and h["planned_by"] is None]},
+        "note": "A plan for coverage, not a prediction: it says which test would cover which design, not what the test would show.",
+    }

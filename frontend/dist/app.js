@@ -403,6 +403,7 @@
       renderVerdict(c); renderConditions(c, st); renderNext(nx); renderSafer(alt, t); renderRanked(rk);
       renderLens();
       updateExplain(t);
+      document.dispatchEvent(new CustomEvent("fl:update", { detail: t })); // campaign.js listens
     } catch (e) {
       $("verdict").innerHTML = `<p class="err">Could not reach the FlameLens API (${esc(e.message)}). Is the backend running?</p>`;
     }

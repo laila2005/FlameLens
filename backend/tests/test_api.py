@@ -142,3 +142,42 @@ def test_detect_evidence():
     assert j["gas"]["co_rise_ppm"]["median"] >= 0
     assert j["particles"]["dust_mean_um"] == 1.65
     assert j["cool_flames"]["n_cool_flame_runs"] >= 50
+
+
+# ------------------------------------------------------------ campaign planner
+
+def test_campaign_presets_plan_covers_every_open_design():
+    r = client.post("/api/campaign", json={"n": 3}).json()
+    habs = {h["id"]: h for h in r["habitats"]}
+    assert habs["iss-cabin"]["status"] == "covered" and habs["iss-cabin"]["planned_by"] is None  # ISS needs no new test
+    first = r["experiments"][0]
+    # Moon base and the pressurized rover share one lunar-gravity experiment (same O2, pressure, gravity)
+    assert set(first["covers"]) == {"moon-base", "pressurized-rover"}
+    assert first["conditions"]["gravity_g"] == 0.16 and first["partial_gravity"] is True
+    assert "grav" in first["gaps_closed"] and "whole" in first["gaps_closed"]
+    assert r["summary"]["still_open"] == [] and r["summary"]["covered_or_planned"] == 5
+
+
+def test_campaign_respects_n_and_reports_open_designs():
+    r = client.post("/api/campaign", json={"n": 1}).json()
+    assert len(r["experiments"]) == 1
+    assert set(r["summary"]["still_open"]) == {"Spacesuit", "Mars habitat"}
+
+
+def test_campaign_starting_runs_are_real_and_conditions_come_from_designs():
+    from backend.app import data
+    ids = {row["run_id"] for row in data.runs()}
+    r = client.post("/api/campaign", json={"n": 5}).json()
+    for e in r["experiments"]:
+        assert e["nearest_run"]["run_id"] in ids
+        assert e["conditions"]["fuel_state"] in {"solid", "liquid", "gas"}  # a real burn needs a real material
+        assert e["o2_partial_pressure"] == round(e["conditions"]["o2_pct"] * e["conditions"]["pressure_psi"] / 100, 2)
+
+
+def test_campaign_custom_targets_and_nothing_needed():
+    iss = {"id": "iss", "name": "ISS", "target": ISS}
+    r = client.post("/api/campaign", json={"n": 3, "targets": [iss]}).json()
+    assert r["experiments"] == [] and r["summary"]["covered_now"] == 1
+    lunar = {"id": "lunar", "name": "Lunar", "target": LUNAR}
+    r = client.post("/api/campaign", json={"n": 3, "targets": [iss, lunar]}).json()
+    assert [e["covers"] for e in r["experiments"]] == [["lunar"]]

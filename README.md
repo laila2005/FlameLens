@@ -28,6 +28,7 @@ NASA's **Physical Sciences Informatics (PSI)** repository holds decades of Space
    - **Early Detection Simulator + Real `BASS-II` Gas Evidence:** Interactive cabin sensor placement simulator paired with real `BASS-II` `CO`/`CO₂` burn traces (`129` runs) and `SAME-R`/`DAFT` particle size distributions.
 
 7. **Design Review Brief (printable / PDF):** One click turns the current habitat design into a 2–3 page evidence brief for a design review: design inputs and oxygen partial pressure, verdict, evidence strength, condition-by-condition case with run IDs, the gap to close next, lower-oxygen tested options, the citation-verified explanation, closest investigations and every cited PSI DOI. Built fresh from the same deterministic API routes, so it never shows a number the dashboard does not. Open directly with `https://flamelens-steel.vercel.app/?brief=1`.
+8. **Test Campaign Planner (`POST /api/campaign`):** "NASA can fly N more experiments. Fly these." A deterministic greedy cover over the Moon base, pressurized rover, spacesuit, ISS cabin and Mars habitat designs (plus the user's own design): it picks the tests that give the most designs a whole-design match under the same ±6 O₂ / ±2 psi / ±8 cm/s rules, shows which designs each covers, the gaps it closes, and the nearest real run and flight hardware to start from. With 3 tests all 5 presets are covered or planned (today only the ISS cabin has a full match). Partial-gravity tests are flagged as needing a LUCI/FM2-type platform. It plans coverage only and never predicts results.
 
 ---
 

@@ -30,9 +30,17 @@ class AlternativesRequest(BaseModel):
     k: int = Field(default=3, ge=1, le=10)
 
 
+class NamedTarget(BaseModel):
+    """A habitat design with a display name, for the campaign planner."""
+    id: str = Field(max_length=40)
+    name: str = Field(max_length=60)
+    target: Target
+
+
 class CampaignRequest(BaseModel):
+    """How many experiments NASA can fly (n) and which designs they should serve (default: the presets)."""
     n: int = Field(default=3, ge=1, le=10)
-    targets: list[Target]
+    targets: Optional[list[NamedTarget]] = Field(default=None, max_length=12)
 
 
 class VerifyRequest(BaseModel):
