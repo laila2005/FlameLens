@@ -114,6 +114,12 @@ Files: [English](docs/roles/E-ai-retrieval.md) · [العربية](docs/roles/ar
 
 Files: [English](docs/roles/F-research-pitch-qa.md) · [العربية](docs/roles/ar/F-research-pitch-qa.md)
 
+## Hackathon data tasks / مهام البيانات أثناء الهاكاثون
+
+| Done | Owner | Task | المهمة |
+|---|---|---|---|
+| [ ] | Yasmine | Work through [data-to-check.md](docs/research/data-to-check.md), Priority 1 first (spread rates for Lens 1) | راجعي [data-to-check.md](docs/research/data-to-check.md) وابدئي بالأولوية 1 (سرعة انتشار اللهب للعدسة 1) |
+
 ## Open decisions / قرارات مفتوحة
 
 | Done | Decision | القرار | Owner |

@@ -85,6 +85,9 @@ Not used as run data: DAFT (2 session rows), SLICE, ACME CLD, E-FIELD and s-Flam
 
 ## Gaps and what to do
 
+The step-by-step list of files to fetch and numbers to extract is in [data-to-check.md](data-to-check.md).
+
+
 | Gap | Impact | Proposed fix | Owner |
 |---|---|---|---|
 | **No spread-rate table** (Lens 1) | The original Lens 1 (spread rate vs airflow per oxygen level) cannot be drawn from tables | **Change Lens 1** to "Where flames were tested": oxygen vs airflow scatter from the 681 runs that have both, coloured by pillar and outcome. If time allows, plot-read a few spread rates from the BASS-II summary report (49 MB PDF) or Saffire-II and label them `plot-read` | Yasmine and Judy |
