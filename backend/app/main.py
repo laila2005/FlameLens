@@ -86,6 +86,20 @@ def alternatives(req: AlternativesRequest):
     return engine.alternatives(req.target, req.k)
 
 
+MISSION = ["iss-cabin", "spacesuit", "pressurized-rover", "moon-base"]  # Artemis-style order: cabin, EVA, rover, base
+
+
+@app.post("/api/journey", tags=["engine"], summary="Mission atmosphere journey: evidence for each stage; the weakest stage is flagged")
+def journey(req: CampaignRequest):
+    if req.targets:
+        stages = [{"id": t.id, "name": t.name, "target": t.target} for t in req.targets]
+    else:
+        keys = ("o2_pct", "pressure_psi", "airflow_cm_s", "gravity_g", "fuel_state")
+        by_id = {h["id"]: h for h in HABITATS}
+        stages = [{"id": i, "name": by_id[i]["name"], "target": Target(**{k: by_id[i][k] for k in keys})} for i in MISSION]
+    return engine.journey(stages)
+
+
 @app.post("/api/closest", tags=["engine"], summary="When nothing matches: the closest runs NASA did fly, and exactly what differs")
 def closest(req: TargetRequest):
     return engine.closest_evidence(req.target)

@@ -209,3 +209,33 @@ def test_closest_explains_the_rover_gap_with_real_runs():
 def test_closest_not_needed_when_design_is_matched():
     r = client.post("/api/closest", json={"target": ISS}).json()
     assert r["needed"] is False
+
+
+# ------------------------------------------------------------ mission atmosphere journey
+
+def test_journey_default_mission_order_and_weakest_stage():
+    r = client.post("/api/journey", json={}).json()
+    assert [s["id"] for s in r["stages"]] == ["iss-cabin", "spacesuit", "pressurized-rover", "moon-base"]
+    iss = r["stages"][0]
+    assert iss["status"] == "Supported" and iss["whole_n"] >= 2 and not iss["weakest"]
+    weak = [s for s in r["stages"] if s["weakest"]]
+    assert len(weak) == 1 and weak[0]["id"] == r["weakest"] == "spacesuit"  # fewest supported conditions among the 0-strength stages
+    assert r["mission_strength"] == min(s["strength"] for s in r["stages"])
+    assert r["summary"]["fully_backed"] == 1
+
+
+def test_journey_stage_numbers_match_single_design_routes():
+    r = client.post("/api/journey", json={}).json()
+    rover = next(s for s in r["stages"] if s["id"] == "pressurized-rover")
+    t = rover["target"]
+    case = client.post("/api/case", json={"target": t}).json()
+    st = client.post("/api/strength", json={"target": t}).json()
+    assert rover["whole_n"] == case["whole"]["n"] and rover["verdict"] == case["verdict"]
+    assert rover["strength"] == round(st["whole"]["score"], 1)
+    assert rover["o2_partial_pressure"] == round(t["o2_pct"] * t["pressure_psi"] / 100, 2)
+
+
+def test_journey_custom_stages():
+    stages = [{"id": "a", "name": "Cabin", "target": ISS}, {"id": "b", "name": "Lunar", "target": LUNAR}]
+    r = client.post("/api/journey", json={"targets": stages}).json()
+    assert [s["name"] for s in r["stages"]] == ["Cabin", "Lunar"] and r["weakest"] == "b"

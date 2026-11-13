@@ -30,6 +30,7 @@ You enter a design: oxygen %, pressure, airflow, material state and gravity. Pre
 | **Lower-oxygen tested options** | Real runs with at least 10 % less oxygen partial pressure than the design, and what would change. |
 | **Closest NASA evidence** | When no run matches the whole design, the runs that match everything except the fewest conditions, with exactly what differs. Nothing is interpolated. |
 | **Test campaign planner** | "NASA can fly N more experiments": a greedy plan of tests that give the most designs a full match. It plans coverage only and never predicts results. |
+| **Mission atmosphere journey** | One Artemis-style crew mission as a timeline (ISS cabin → spacesuit → pressurized rover → Moon base). Each stage shows its evidence strength from the same engine; the mission is only as well backed as its weakest stage, which is flagged with the test to run next (today: the spacesuit, 100 % O₂ at 4.3 psi). |
 | **Ranked investigations** | The 18 flight investigations ranked by closeness to the design (weights: oxygen 0.35, pressure 0.20, airflow 0.20, material 0.15, gravity 0.10; a missing value scores a neutral 0.5). |
 | **What the evidence says (AI)** | A short explanation where every sentence cites a run. A citation verifier removes any claim that cites a run outside the evidence, states a number not in that run, or gives a safety threshold. |
 | **Six lenses** | Coverage map, cool flames, smoke vs dust, flame spread, airflow tested, and an early-detection simulator. |
@@ -65,7 +66,7 @@ You enter a design: oxygen %, pressure, airflow, material state and gravity. Pre
 2. **Assumptions are visible.** Where a source table gives no oxygen or pressure, FlameLens uses ISS cabin air (21 %, 14.7 psi), marks it `assumed` and lowers the confidence. Oxygen is measured in 1,191 runs and assumed in 600; pressure is measured in 1,020 and assumed in 864.
 3. **"No evidence" is a valid answer.** FlameLens shows gaps and never fills them.
 4. **Evidence strength is not a safety rating.** Many matching runs means "well tested", not "safe". Zero matching runs means "untested in PSI", not "unsafe".
-5. **Decisions use no AI.** Ranking, the evidence case, strength, next experiment, alternatives, closest evidence and the campaign planner are plain arithmetic in `backend/app/engine.py`.
+5. **Decisions use no AI.** Ranking, the evidence case, strength, next experiment, alternatives, closest evidence, the campaign planner and the mission journey are plain arithmetic in `backend/app/engine.py`.
 6. **The early-detection simulator is an illustration.** Its spread model and alarm thresholds are simplified and labelled so on screen. Only the CO levels and particle sizes come from NASA data.
 
 ## 4. The data (`data/curated/`)
@@ -130,13 +131,13 @@ backend/app/
   data.py       loads the curated tables
 backend/tests/  73 automated tests
 frontend/dist/  index.html, styles.css, app.js, charts.js, detect.js, brief.js,
-                campaign.js, closest.js, logo.png, favicon.png, og-image.png, apple-touch-icon.png
+                campaign.js, closest.js, journey.js, logo.png, favicon.png, og-image.png, apple-touch-icon.png
 data/curated/   cleaned NASA tables with provenance
 scripts/        fetch and build scripts, and validate_live.py (checks the live site)
 api/index.py    Vercel entry point for the FastAPI app
 ```
 
-Main API routes: `/api/habitats`, `/api/case`, `/api/strength`, `/api/next`, `/api/alternatives`, `/api/closest`, `/api/campaign`, `/api/rank`, `/api/explain`, `/api/verify`, `/api/evidence/{run_id}`, `/api/investigations`, `/api/compare`, `/api/modeling`, `/api/papers`, `/api/lens/*`, `/api/detect/evidence`, `/api/export/*`. The full list with request shapes is at `/docs`.
+Main API routes: `/api/habitats`, `/api/case`, `/api/strength`, `/api/next`, `/api/alternatives`, `/api/closest`, `/api/campaign`, `/api/journey`, `/api/rank`, `/api/explain`, `/api/verify`, `/api/evidence/{run_id}`, `/api/investigations`, `/api/compare`, `/api/modeling`, `/api/papers`, `/api/lens/*`, `/api/detect/evidence`, `/api/export/*`. The full list with request shapes is at `/docs`.
 
 ## 6. Run it locally
 

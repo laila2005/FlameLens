@@ -524,6 +524,50 @@ def closest_evidence(target: Target, rows=None, k: int = 3) -> dict:
             "groups": groups, "same_partial_pressure": pp_info}
 
 
+# ---------------------------------------------------------------- mission atmosphere journey
+
+def journey(stages: list, rows=None) -> dict:
+    """One crew mission as a sequence of atmospheres (e.g. ISS cabin -> spacesuit -> rover -> Moon base).
+
+    stages: [{id, name, target: Target}] in mission order. For each stage: the evidence case, strength and the
+    next test (same rules as the single-design routes). A mission is only as well backed as its weakest stage:
+    the weakest is the lowest whole-design strength, then the lowest 0 g atmosphere-only strength, then the fewest
+    supported conditions, then the fewest whole-design runs. No new science: only existing engine outputs.
+    """
+    rows = _rows(rows)
+    out = []
+    for i, s in enumerate(stages):
+        t = s["target"]
+        c = case(t, rows)
+        st = strength(t, rows)
+        nx = next_experiment(t, rows)
+        whole = st.get("whole") or {}
+        atmo = st.get("atmosphere") or {}
+        out.append({
+            "order": i + 1, "id": s["id"], "name": s["name"],
+            "target": {"o2_pct": t.o2_pct, "pressure_psi": t.pressure_psi, "airflow_cm_s": t.airflow_cm_s,
+                       "gravity_g": t.gravity_g, "fuel_state": t.fuel_state},
+            "o2_partial_pressure": _r(_pp(t.o2_pct, t.pressure_psi), 2),
+            "verdict": c["verdict"], "status": c["whole"]["status"], "whole_n": c["whole"]["n"],
+            "atmosphere_n": c["atmosphere"]["n"], "supported_count": c["supported_count"],
+            "strength": round(whole.get("score") or 0.0, 1), "atmosphere_strength": round(atmo.get("score") or 0.0, 1),
+            "gaps": [x["key"] for x in c["conditions"] if x["status"] != "Supported"],
+            "next": {"needed": nx["needed"], "gaps": nx["gaps"], "nearest_run": nx["nearest_run"], "changes": nx["changes"]},
+        })
+    weakest = min(out, key=lambda x: (x["strength"], x["atmosphere_strength"], x["supported_count"], x["whole_n"], x["order"])) if out else None
+    for x in out:
+        x["weakest"] = weakest is not None and x["id"] == weakest["id"]
+    backed = sum(x["whole_n"] >= 2 for x in out)
+    return {
+        "stages": out,
+        "weakest": weakest["id"] if weakest else None,
+        "mission_strength": weakest["strength"] if weakest else None,
+        "summary": {"stages": len(out), "fully_backed": backed,
+                    "weakest_name": weakest["name"] if weakest else None},
+        "note": "A mission is only as well backed as its weakest stage. Evidence strength is a transparency aid, not a safety rating.",
+    }
+
+
 # ---------------------------------------------------------------- campaign planner
 
 def _would_match(exp: dict, hab: Target) -> bool:

@@ -60,7 +60,7 @@ check("Data", "no placeholder/mock rows in the live table (so no 'sample data' b
 # ------------------------------------------------------------------ public access (submission rule: links open with no login)
 for path, kind in [("/", "text/html"), ("/api/health", "json"), ("/docs", "text/html"), ("/api/export/runs.csv", "csv"),
                    ("/api/export/spread_rates.csv", "csv"), ("/api/export/papers.csv", "csv"),
-                   ("/api/export/investigations.json", "json"), ("/favicon.svg", "svg")]:
+                   ("/api/export/investigations.json", "json"), ("/favicon.png", "png")]:
     try:
         st, ct, raw = http(path)
         check("Public access", f"GET {path} -> 200 without login", st == 200 and kind in ct, f"{st} {ct}")
@@ -229,11 +229,26 @@ check("Closest evidence", "same-partial-pressure runs are labelled related, not 
 check("Closest evidence", "ISS cabin (already matched) gets no closest-evidence block",
       jget("/api/closest", {"target": {"o2_pct": 21, "pressure_psi": 14.7, "airflow_cm_s": 12.9, "gravity_g": 0, "fuel_state": "any"}})["needed"] is False)
 
+# ------------------------------------------------------------------ mission atmosphere journey
+jr = jget("/api/journey", {})
+check("Mission journey", "stages run ISS cabin -> spacesuit -> pressurized rover -> Moon base",
+      [s["id"] for s in jr["stages"]] == ["iss-cabin", "spacesuit", "pressurized-rover", "moon-base"])
+check("Mission journey", "exactly one weakest stage, and mission strength equals the lowest stage strength",
+      sum(s["weakest"] for s in jr["stages"]) == 1 and jr["mission_strength"] == min(s["strength"] for s in jr["stages"]))
+ok = True
+for s in jr["stages"]:
+    cs = jget("/api/case", {"target": s["target"]})
+    ok &= cs["whole"]["n"] == s["whole_n"] and cs["verdict"] == s["verdict"]
+    nr = s["next"]["nearest_run"]
+    ok &= nr is None or nr["run_id"] in by_id
+check("Mission journey", "every stage matches the single-design evidence case and cites real runs", ok)
+
 html = http("/")[2].decode("utf-8")
 check("Requirements", "Back on Earth panel cites NASA Spinoff pages", html.count("spinoff.nasa.gov") >= 3)
 check("Rules", "AI use disclosed on the page", "AI use" in html and "citation verifier" in html)
 check("Rules", "page says evidence strength is not a safety rating", "not a safety rating" in html)
-check("Rules", "no faces/people images on the page (no <img> tags)", "<img" not in html.lower())
+imgs = re.findall(r'<img[^>]*src="([^"]+)"', html)
+check("Rules", "the only images are the FlameLens logo (no photos of people)", all(i in {"logo.png"} for i in imgs), str(imgs))
 
 # ------------------------------------------------------------------ report
 fails = [r for r in results if not r[2]]
