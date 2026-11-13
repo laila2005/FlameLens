@@ -146,6 +146,8 @@ gh auth status                    # GitHub CLI login for pushing
 
 Newest first. One line per change: date, what, who or what session.
 
+- 2026-11-13 afternoon: LIVE at https://flamelens-steel.vercel.app (Vercel project flamelens, team laila-mohameds-projects; not linked to GitHub, redeploy with `vercel deploy --prod --yes`). Dashboard is static HTML/JS in frontend/dist (no build step, works offline). Added: ranker missing values = neutral 0.5; early-detection simulator tab (illustration) + /api/detect/evidence (real BASS-II CO/CO2, SAME-R/DAFT sizes, cool flames). 49 tests.
+
 - 2026-11-13: backend pushed (0417f6a): FastAPI engine, /api routes, lens data, Dockerfile, render.yaml, mock JSON, 47 tests. Laila: commit and push automatically from now on (rule 5).
 
 - 2026-11-13 hackathon day: user approved downloading. Fetched all 26 PSI Experimental Tables + 13 small documents; built `data/curated/runs.csv` (1,922 runs, 13 investigations, basis columns for each condition), `investigations.csv` (DOIs), `smoke_dust_sizes.csv` (SAME-R Table 1 + DAFT). Findings and gaps in `docs/research/dashboard-data-map.md`. Lens 1 (spread rate vs airflow) has no table data: replace with a tested-conditions scatter. Lunar rover 34% O2 / 10.2 psi / solid has 0 matching runs. Scripts: `scripts/fetch_psi.py`, `fetch_psi_docs.py`, `build_runs.py`.
