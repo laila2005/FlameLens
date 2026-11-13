@@ -118,6 +118,11 @@ Files: [English](docs/roles/F-research-pitch-qa.md) · [العربية](docs/rol
 
 | Done | Owner | Task | المهمة |
 |---|---|---|---|
+| [ ] | Dai | **Now (30 min):** download the big Priority 1 and 2 files from [data-to-check.md](docs/research/data-to-check.md) (BASS-II Summary Report 49 MB, Saffire-I/III result spreadsheets, BASS SRD and final report, DAFT final report and data summary, ACME CFI-G final report) and upload them to the shared drive (link in [docs/links.md](docs/links.md)), then tell Yasmine | نزّلي الملفات الكبيرة من القائمة وارفعيها على الـ Drive المشترك وأخبري Yasmine |
+| [ ] | Dai | **Now (10 min):** open the [official challenge page](https://www.spaceappschallenge.org/2026/challenges/flame-in-freefall/), paste the exact text into [12 Resources section 1](docs/12-resources.md#1-the-official-challenge), tell Laila if an AI part is expected | انسخي نص التحدي الرسمي في docs/12 وأخبري Laila هل الذكاء الاصطناعي مطلوب |
+| [ ] | Dai | **Next (1 h):** paper library from the NTRS API, one query per investigation, saved as `data/curated/papers.csv` (ntrs_id, title, year, investigation, abstract, pdf_url) | مكتبة الأوراق من NTRS في papers.csv |
+| [ ] | Dai | **Then (3 h):** AI explanation as **cached, verified text** for the 4 presets: `data/curated/explanations.json`, every sentence cites a run_id from `/api/case`; the verifier rejects any claim whose run_id or number is not in the evidence (rules in [07](docs/07-ai-guide.md)). Vercel cannot run a local model, so the live site serves the cached text | شرح الذكاء الاصطناعي كنص مخزّن ومُتحقَّق منه للـ presets الأربعة |
+| [ ] | Dai | **Throughout:** test the live site https://flamelens-steel.vercel.app on your network and phone; report bugs in the chat | اختبري الموقع المنشور وأبلغي عن الأخطاء |
 | [ ] | Yasmine | Work through [data-to-check.md](docs/research/data-to-check.md), Priority 1 first (spread rates for Lens 1) | راجعي [data-to-check.md](docs/research/data-to-check.md) وابدئي بالأولوية 1 (سرعة انتشار اللهب للعدسة 1) |
 
 ## Open decisions / قرارات مفتوحة
