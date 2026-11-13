@@ -146,6 +146,8 @@ gh auth status                    # GitHub CLI login for pushing
 
 Newest first. One line per change: date, what, who or what session.
 
+- 2026-11-13 ~3:30 PM Cairo (hour 2.5): AI part built (challenge asks for "SI-powered"): `backend/app/explain.py` (retrieval from the engine, citation verifier, template fallback, optional OpenAI-compatible model), `POST /api/explain`, `POST /api/verify`, `scripts/build_explanations.py`, dashboard panel "What the evidence says", 9 new tests (64 pass). No model downloaded (Laila: not now), so the panel shows the verified template until Dai pushes `data/curated/explanations.json`. Fixed verdict subtitle bug (0 g, no match showed the wrong line). Laila confirmed: auto commit and push (rule 5). Vercel CLI is not installed on this laptop, so this push is NOT yet on the live site.
+
 - 2026-11-13 afternoon: LIVE at https://flamelens-steel.vercel.app (Vercel project flamelens, team laila-mohameds-projects; not linked to GitHub, redeploy with `vercel deploy --prod --yes`). Dashboard is static HTML/JS in frontend/dist (no build step, works offline). Added: ranker missing values = neutral 0.5; early-detection simulator tab (illustration) + /api/detect/evidence (real BASS-II CO/CO2, SAME-R/DAFT sizes, cool flames). 49 tests.
 
 - 2026-11-13: backend pushed (0417f6a): FastAPI engine, /api routes, lens data, Dockerfile, render.yaml, mock JSON, 47 tests. Laila: commit and push automatically from now on (rule 5).

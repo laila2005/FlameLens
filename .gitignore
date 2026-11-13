@@ -32,3 +32,6 @@ Thumbs.db
 *.log
 
 .vercel
+
+# Local Claude preview config
+.claude/

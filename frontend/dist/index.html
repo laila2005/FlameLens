@@ -69,6 +69,13 @@
     <section class="decision" aria-label="Evidence">
       <div class="verdict panel" id="verdict" aria-live="polite"></div>
 
+      <div class="panel explain" id="explainbox">
+        <div class="ptitle"><h2>What the evidence says</h2><span class="hint" id="explainsrc"></span></div>
+        <ol class="claims" id="claims"></ol>
+        <div id="removed"></div>
+        <p class="hint" id="explainnote"></p>
+      </div>
+
       <div class="panel">
         <div class="ptitle"><h2>Evidence case</h2><span class="hint">How many NASA runs match each condition</span></div>
         <div class="conditions" id="conditions"></div>
@@ -148,7 +155,7 @@
 
   <footer class="foot">
     <p><strong>Data:</strong> NASA Physical Sciences Informatics (PSI), combustion investigations, license CC0-1.0. Each run links to its investigation DOI. Some pressures and oxygen values are <em>assumed</em> ISS cabin air where the source table gave none; they are marked and given lower confidence.</p>
-    <p><strong>How decisions are made:</strong> plain arithmetic on the run table, no AI. Evidence strength is a transparency aid, <em>not a safety rating</em>. <strong>AI use:</strong> AI tools helped the team write documentation and code.</p>
+    <p><strong>How decisions are made:</strong> plain arithmetic on the run table, no AI. Evidence strength is a transparency aid, <em>not a safety rating</em>. <strong>AI use:</strong> the “What the evidence says” panel can show text written by an open AI model; a citation verifier removes any sentence that cites a run outside the evidence, uses a number not in that run, or states a limit or safety verdict. With AI off it shows a fixed template. AI tools also helped the team write documentation and code.</p>
     <p>Team AstroSpark · NASA Space Apps Cairo 2026 · <a href="/docs">API</a> · <a href="https://psi.nasa.gov/physci/repo/search?q=combustion" target="_blank" rel="noopener">PSI repository</a></p>
   </footer>
 

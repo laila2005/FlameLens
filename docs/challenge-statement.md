@@ -37,14 +37,14 @@ Suggested attributes to display: experimental objectives; fuels, sample or burne
 
 | Challenge point | FlameLens answer | Status |
 |---|---|---|
-| "SI-powered" | The AI explanation is now **Must ship** (cached, verified text; Dai) | to build |
+| "SI-powered" | The AI explanation is now **Must ship**. Verifier, `/api/explain`, `/api/verify` and the "What the evidence says" panel are built (template text while no model cache exists). Dai fills `explanations.json` with `scripts/build_explanations.py` | pipeline done, model text to do |
 | Rank investigations for crew environments | Ranker + Evidence case per habitat | done |
 | Moon Base / pressurized rover: ≥30 % O₂, ≤10.2 psi | Presets now **sourced** from this text: Moon base 30 % at 10.2 psi, spacesuit 100 % at 4.3 psi | done in this update |
 | No partial-gravity data; 0 g and 1 g bound it | Gravity condition now says "bounded by microgravity data, no partial-gravity data in PSI" instead of a bare "No evidence" | done in this update |
 | Summarize and compare investigations (objectives, fuels, hardware, conditions, variables, sensors) | New **Investigations** explorer with profiles and side-by-side compare | to build |
 | Extract data for predictive modeling | **Download** the curated run table (CSV) with sources | to build |
 | Next-generation controls and equipment | Early-detection simulator (sensor fusion), safer options, run-this-next | done |
-| Earth applications | Spin-off panel: smoke detector (smoke vs dust), firefighter clothing and air tanks, water mist | to build |
+| Earth applications | "Back on Earth" panel: smoke detector (smoke vs dust), firefighter clothing and air tanks, water mist | done |
 
 ## Full text
 

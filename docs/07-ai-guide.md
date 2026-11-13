@@ -42,6 +42,19 @@ LLM_CACHE=true
 
 `verified` is set by our code, never by the model.
 
+## What is built (13 Nov)
+
+| Piece | Where |
+|---|---|
+| Retrieval: only runs named by the deterministic engine (case, next, safer options, top ranked), at most 24 | `backend/app/explain.py` `retrieve()` |
+| Verifier (rules below) | `explain.py` `verify()`, tests in `backend/tests/test_explain.py` |
+| `POST /api/explain`: cache, else live model if `LLM_LIVE=true`, else a fixed template (AI off). Always verified | `backend/app/main.py` |
+| `POST /api/verify`: run the verifier on any claims (use it to test a model) | `backend/app/main.py` |
+| Cache builder: one call per pillar per preset, writes `data/curated/explanations.json` | `scripts/build_explanations.py` |
+| Panel "What the evidence says" with the source label, run links and "N claims removed" | `frontend/dist/app.js` |
+
+Numbers the verifier accepts in a claim: any number in the cited run's row (all fields, notes included), that run's oxygen partial pressure (2 decimals), the habitat inputs and their partial pressure, and the engine's own run counts. Compared exactly, so rounding is rejected. Chemical names (O2, CO2) and IDs (PSI-69-0001) are not read as numbers. The model's `psi_dataset_id`, DOI and confidence are ignored and copied from the run row.
+
 ## Verifier rules
 
 A claim is removed and counted if any of these is true:

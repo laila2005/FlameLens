@@ -81,7 +81,7 @@
     if (whole === 0 && atmo === 0) sub = "No NASA experiment in PSI tested this combination. This is where new testing is needed.";
     else if (whole === 0) sub = "The atmosphere was tested, but not under these exact conditions (often gravity: every PSI run is microgravity).";
     if (c.conditions.some((x) => x.bounded)) sub += " PSI has no partial-gravity data yet (LUCI and FM2 are planned); microgravity results are one bound.";
-    else sub = "Every number below links to the NASA run it came from.";
+    if (!sub) sub = "Every number below links to the NASA run it came from.";
     el.innerHTML = `<div class="big">${esc(c.verdict)}</div><div class="sub">${esc(sub)}</div>`;
   }
 
@@ -103,6 +103,31 @@
       `<div class="whole ${statusCls(a.status)}"><b>Atmosphere only:</b> ${a.n.toLocaleString()} runs match oxygen, pressure, airflow and fuel together, ignoring gravity.</div>`;
     $("conditions").dataset.lists = JSON.stringify(Object.fromEntries(c.conditions.map((x) => [x.key, { label: x.label, ids: x.run_ids }])));
     $("wholes").dataset.whole = JSON.stringify(c.whole.run_ids || []);
+  }
+
+  function renderExplain(x) {
+    $("explainsrc").textContent = x.label + (x.model ? ` · ${x.model}` : "");
+    $("claims").innerHTML = x.claims.length
+      ? x.claims.map((c) => `<li>
+          <span>${esc(c.claim)}</span>
+          <span class="cite">${runBtn(c.run_id_reference)} <span class="hint">${esc(c.investigation)} · confidence ${esc(c.confidence_level)} · <span class="ok">✓ verified</span></span></span>
+          ${c.engineering_recommendation ? `<span class="rec">${esc(c.engineering_recommendation)}</span>` : ""}
+        </li>`).join("")
+      : "<li>Not enough data to explain this design. See the evidence case below.</li>";
+    $("removed").innerHTML = x.removed_count
+      ? `<details class="removed"><summary>${x.removed_count} claim${x.removed_count === 1 ? "" : "s"} removed by the citation verifier</summary>
+          <ul>${x.removed.map((r) => `<li><s>${esc(r.claim)}</s> <span class="hint">${esc(r.reason)}</span></li>`).join("")}</ul></details>`
+      : `<p class="hint">0 claims removed by the citation verifier. ${x.error ? esc(x.error) : ""}</p>`;
+    $("explainnote").textContent = x.note;
+  }
+
+  async function updateExplain(t) {
+    try {
+      const x = await post("/api/explain", { target: t });
+      if (lastTarget === t) renderExplain(x);
+    } catch (e) {
+      $("claims").innerHTML = `<li class="hint">Explanation unavailable (${esc(e.message)}). The panels below do not need it.</li>`;
+    }
   }
 
   function fmt(v) { return v == null ? "not specified" : typeof v === "number" ? +v.toFixed(2) : v; }
@@ -294,6 +319,7 @@
       if (lastTarget !== t) return; // a newer request is on its way
       renderVerdict(c); renderConditions(c, st); renderNext(nx); renderSafer(alt, t); renderRanked(rk);
       renderLens();
+      updateExplain(t);
     } catch (e) {
       $("verdict").innerHTML = `<p class="err">Could not reach the FlameLens API (${esc(e.message)}). Is the backend running?</p>`;
     }

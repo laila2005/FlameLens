@@ -33,3 +33,9 @@ class AlternativesRequest(BaseModel):
 class CampaignRequest(BaseModel):
     n: int = Field(default=3, ge=1, le=10)
     targets: list[Target]
+
+
+class VerifyRequest(BaseModel):
+    """Claims to check against the evidence retrieved for a habitat (same rules as /api/explain)."""
+    target: Target
+    claims: list[dict]

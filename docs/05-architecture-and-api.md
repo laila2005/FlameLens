@@ -48,7 +48,8 @@ POST /api/search      {constraints}      -> tested atmospheres that satisfy fixe
 POST /api/parse       {text}             -> habitat JSON parsed by the LLM, validated against allowed ranges
 POST /api/brief       {target, psi_ids}  -> safety brief (markdown) built from /case, with citations and gaps
 POST /api/diff        {psi_ids:[a,b]}    -> constants, variables, outcomes, cited explanation
-POST /api/explain     {pillar, psi_ids, target}
+POST /api/explain     {target}  -> {source: cache|live|template, label, model, summary, claims[], removed[], removed_count, retrieved_run_ids}
+POST /api/verify      {target, claims[]}  -> same verifier, for testing any model output
                                          -> [{claim, psi_dataset_id, run_id_reference,
                                               confidence_level, engineering_recommendation, verified}]
 ```

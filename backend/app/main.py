@@ -11,7 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from . import data, engine, lenses
-from .schemas import AlternativesRequest, RankRequest, TargetRequest
+from .schemas import AlternativesRequest, RankRequest, TargetRequest, VerifyRequest
 
 app = FastAPI(title="FlameLens", description="Evidence-backed decisions from NASA PSI combustion data")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
@@ -89,6 +89,20 @@ def alternatives(req: AlternativesRequest):
 @app.post("/api/strength", tags=["engine"], summary="Evidence strength 0-100 per condition (not a safety rating)")
 def strength(req: TargetRequest):
     return engine.strength(req.target)
+
+
+@app.post("/api/explain", tags=["ai"], summary="Cited explanation: cached or live open model, else a template; always verified")
+def explain(req: TargetRequest):
+    from . import explain as ex
+    return ex.explain(req.target)
+
+
+@app.post("/api/verify", tags=["ai"], summary="Run the citation verifier on any claims for a habitat")
+def verify_claims(req: VerifyRequest):
+    from . import explain as ex
+    pack = ex.retrieve(req.target)
+    kept, removed = ex.verify(req.claims, pack)
+    return {"claims": kept, "removed": removed, "removed_count": len(removed), "retrieved_run_ids": pack["run_ids"]}
 
 
 @app.get("/api/coverage", tags=["engine"], summary="Is this atmosphere inside the tested range? Nearest runs")
