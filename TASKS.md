@@ -23,13 +23,13 @@ Dates are for 2026. The hackathon is **24 hours: Fri 13 Nov 1:00 PM to Sat 14 No
 | Done | Due | ID | Task | المهمة |
 |---|---|---|---|---|
 | [ ] | Mon 9 | A1 | Repo access and branch protection | صلاحيات المستودع وحماية الفرع |
-| [ ] | Mon 9 | A2 | Create labels | إنشاء التسميات |
-| [ ] | Mon 9 | A3 | Toolchain check | فحص الأدوات |
-| [ ] | Tue 10 | A4 | Choose hosting | اختيار الاستضافة |
+| [x] | Mon 9 | A2 | Create labels | إنشاء التسميات |
+| [x] | Mon 9 | A3 | Toolchain check | فحص الأدوات |
+| [x] | Tue 10 | A4 | Choose hosting | اختيار الاستضافة |
 | [ ] | Wed 11 | A5 | Throwaway deploy test (separate repo) | اختبار نشر تجريبي (مستودع منفصل) |
-| [ ] | Wed 11 | A6 | Ranker test cases on paper | حالات اختبار الـ ranker على الورق |
-| [ ] | Wed 11 | A7 | Decision-route test cases on paper | حالات اختبار مسارات القرار على الورق |
-| [ ] | Thu 12 | A8 | Kickoff pack and sleep shifts | حزمة الانطلاق ونوبات النوم |
+| [x] | Wed 11 | A6 | Ranker test cases on paper | حالات اختبار الـ ranker على الورق |
+| [x] | Wed 11 | A7 | Decision-route test cases on paper | حالات اختبار مسارات القرار على الورق |
+| [x] | Thu 12 | A8 | Kickoff pack and sleep shifts | حزمة الانطلاق ونوبات النوم |
 | [ ] | Thu 12 | A9 | Team readiness check | التأكد من جاهزية الفريق |
 | [ ] | Wed 11 | A10 | Decide if the AI explanation becomes Must ship (after F10) | قرار جعل شرح الذكاء الاصطناعي Must ship (بعد F10) |
 

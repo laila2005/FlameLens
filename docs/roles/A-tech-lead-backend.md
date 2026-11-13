@@ -107,4 +107,7 @@ _commands and settings here_
 
 | Decision | Choice | Reason | Date |
 |---|---|---|---|
-| Hosting | | | |
+| Hosting | **Render** (single web service, Python or Docker, deploys from GitHub). Fallback: Fly. **Verify** the current free-tier limits and cold-start time on their pages before relying on them; plan a warm-up request before the demo | One URL for judges, least setup. Not yet tested by us | 13 Nov |
+| Branch protection | **Not enabled** for the 24 hours. Rule: pull before you push, small commits, never force-push `main` | Pull-request reviews would slow a 24-hour build | 13 Nov |
+| Fuel category | Added `fuel_state` (solid, liquid, gas) to the schema | Ranker and Evidence case match on it | 13 Nov |
+| Gravity fit rule | 1 if same g, 0.5 if both below 1 g, else 0 | Simple, explainable, tune on real data | 13 Nov |

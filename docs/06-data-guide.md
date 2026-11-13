@@ -7,7 +7,7 @@
 One row per run. File: CSV, UTF-8, one header row.
 
 ```
-run_id, psi_id, material, geometry, o2_pct, pressure_psi, airflow_cm_s, diluent,
+run_id, psi_id, material, geometry, fuel_state, o2_pct, pressure_psi, airflow_cm_s, diluent,
 gravity_g, outcome, spread_rate_mm_s, value_source, source_ref, confidence, notes
 ```
 
@@ -16,6 +16,7 @@ gravity_g, outcome, spread_rate_mm_s, value_source, source_ref, confidence, note
 | `run_id` | Unique, e.g. `BASS-R03` | Never reuse an ID |
 | `psi_id` | Investigation, e.g. `BASS` | Same spelling every time |
 | `material`, `geometry` | What burned and how it was arranged | Free text, short |
+| `fuel_state` | `solid`, `liquid` or `gas` | **Added 13 Nov:** the ranker and Evidence case match on fuel type, so it must be a clean category, not free text |
 | `o2_pct` | Oxygen percent by volume | Number only |
 | `pressure_psi` | Total pressure in psi | Convert kPa: psi = kPa × 0.145 |
 | `airflow_cm_s` | Flow speed in cm/s | Convert m/s × 100 |
