@@ -218,23 +218,36 @@ def _status(n):
 
 def _strength_part(matching, target, rng, bases):
     """Evidence strength for a set of matching runs. `bases` = basis columns that count as assumptions."""
-    zero = {"score": 0.0, "proximity": 0.0, "reliability": 0.0, "run_count": 0.0, "source_quality": 0.0}
+    zero = {"score": 0.0, "proximity": 0.0, "reliability": 0.0, "run_count": 0.0, "source_quality": 0.0,
+            "n_runs": 0, "n_measured": 0, "n_investigations": 0, "investigations": []}
     if not matching:
         return zero
     proximity = _clamp(1 - min(_dist(r, target, rng) for r in matching))
     rel, src = [], []
+    n_measured = 0
+    by_inv = {}
     for r in matching:
         w = CONF_WEIGHT.get(r.get("confidence", ""), 0.0)
-        if any(r.get(b) == "assumed" for b in bases):
+        is_assumed = any(r.get(b) == "assumed" for b in bases)
+        if is_assumed:
             w *= 0.6
+        else:
+            n_measured += 1
         rel.append(w)
         src.append(SOURCE_QUALITY.get(r.get("value_source", ""), 0.5))
+        pid = r.get("psi_id", "")
+        iname = _inv(r)
+        entry = by_inv.setdefault(pid, {"psi_id": pid, "name": iname, "runs": 0})
+        entry["runs"] += 1
     reliability = sum(rel) / len(rel)
     run_count = min(1.0, len(matching) / 3)
     source_quality = sum(src) / len(src)
     score = 100 * (0.35 * proximity + 0.30 * reliability + 0.20 * run_count + 0.15 * source_quality)
+    inv_list = sorted(by_inv.values(), key=lambda x: (-x["runs"], x["name"]))
     return {"score": round(score, 1), "proximity": _r(proximity), "reliability": _r(reliability),
-            "run_count": _r(run_count), "source_quality": _r(source_quality)}
+            "run_count": _r(run_count), "source_quality": _r(source_quality),
+            "n_runs": len(matching), "n_measured": n_measured,
+            "n_investigations": len(inv_list), "investigations": inv_list[:8]}
 
 
 def _matches(target, rows):
@@ -252,9 +265,28 @@ def strength(target: Target, rows=None) -> dict:
         bases = [BASIS[key]] if key in BASIS else []
         conditions[key] = _strength_part(matching, target, rng, bases)
     whole = [r for r, m in ms if all(m.values())]
-    return {"conditions": conditions,
-            "whole": _strength_part(whole, target, rng, list(BASIS.values())),
-            "note": "Evidence strength is a transparency aid, not a safety rating."}
+    atmo = [r for r, m in ms if all(m[k] for k in ("o2", "psi", "flow", "fuel"))]
+    # Distinct investigations contributing evidence across the primary atmosphere conditions (O2, pressure, airflow)
+    atmo_any = [r for r, m in ms if (m["o2"] or m["psi"] or (target.airflow_cm_s is not None and m["flow"]))]
+    by_inv = {}
+    for r in atmo_any:
+        pid = r.get("psi_id", "")
+        entry = by_inv.setdefault(pid, {"psi_id": pid, "name": _inv(r), "runs": 0})
+        entry["runs"] += 1
+    backing_invs = sorted(by_inv.values(), key=lambda x: (-x["runs"], x["name"]))
+    return {
+        "conditions": conditions,
+        "whole": _strength_part(whole, target, rng, list(BASIS.values())),
+        "atmosphere": _strength_part(atmo, target, rng, list(BASIS.values())),
+        "dataset": {
+            "total_runs": len(rows),
+            "total_investigations": len({r.get("psi_id", "") for r in rows if r.get("psi_id")}),
+            "near_any_condition_runs": len(atmo_any),
+            "backing_investigations": backing_invs[:10],
+            "not_yet_in_psi": ["SoFIE", "FLARE", "LUCI", "FM2"],
+        },
+        "note": "Evidence strength is a transparency aid (0.35 proximity + 0.30 reliability + 0.20 test count + 0.15 source quality), not a safety rating.",
+    }
 
 
 # ---------------------------------------------------------------- case

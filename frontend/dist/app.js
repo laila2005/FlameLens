@@ -85,24 +85,83 @@
     el.innerHTML = `<div class="big">${esc(c.verdict)}</div><div class="sub">${esc(sub)}</div>`;
   }
 
+  function meterColor(score) {
+    return score >= 65 ? "var(--ok)" : score >= 25 ? "var(--amber)" : "var(--bad)";
+  }
+
   function renderConditions(c, st) {
+    const w = st.whole || { score: 0, n_runs: 0, n_measured: 0, n_investigations: 0, proximity: 0, reliability: 0, run_count: 0, source_quality: 0, investigations: [] };
+    const at = st.atmosphere || { score: 0, n_runs: 0, n_measured: 0, n_investigations: 0, investigations: [] };
+    const ds = st.dataset || { total_runs: 2003, total_investigations: 18, near_any_condition_runs: 0, backing_investigations: [], not_yet_in_psi: ["SoFIE", "FLARE", "LUCI", "FM2"] };
+    const wScore = Math.round(w.score ?? 0);
+    const atScore = Math.round(at.score ?? 0);
+    const activePart = w.n_runs > 0 ? w : (at.n_runs > 0 ? at : null);
+    const activeLabel = w.n_runs > 0 ? "Whole-habitat factors" : (at.n_runs > 0 ? "0g atmosphere-bound factors" : "Whole-habitat factors");
+    const subFactors = [
+      ["Proximity (35%)", Math.round(100 * (activePart?.proximity ?? 0))],
+      ["Reliability (30%)", Math.round(100 * (activePart?.reliability ?? 0))],
+      ["Test count (20%)", Math.round(100 * (activePart?.run_count ?? 0))],
+      ["Source quality (15%)", Math.round(100 * (activePart?.source_quality ?? 0))],
+    ];
+    const invSource = (w.investigations && w.investigations.length) ? w.investigations
+      : ((at.investigations && at.investigations.length) ? at.investigations : (ds.backing_investigations || []));
+    const invChips = invSource.slice(0, 7).map((iv) =>
+      `<button type="button" class="modchip" data-jump-inv="${esc(iv.psi_id)}" title="Jump to ${esc(iv.name)} (${esc(iv.psi_id)}) profile">${esc(iv.name)} (${iv.runs})</button>`
+    ).join(" ");
+
+    $("strengthmeter").innerHTML = `
+      <div class="sm-top">
+        <div class="sm-main">
+          <div class="sm-head">
+            <span class="sm-title">Whole-Habitat Evidence Strength</span>
+            <strong class="sm-score" style="color:${meterColor(wScore)}">${wScore}<small>/100</small></strong>
+          </div>
+          <div class="sm-bar" role="progressbar" aria-valuenow="${wScore}" aria-valuemin="0" aria-valuemax="100">
+            <i style="width:${wScore}%;background:${meterColor(wScore)}"></i>
+          </div>
+          <div class="sm-backing">
+            Backed by <b>${(w.n_runs || 0).toLocaleString()}</b> of <b>${(ds.total_runs || 2003).toLocaleString()}</b> real NASA runs across <b>${ds.total_investigations || 18}</b> PSI flight investigations
+            ${w.n_runs > 0 ? `(${w.n_measured} directly measured across ${w.n_investigations} ${w.n_investigations === 1 ? "investigation" : "investigations"})` : "(0 exact 5-condition matches)"}
+          </div>
+        </div>
+        <div class="sm-atmo">
+          <div class="sm-head">
+            <span class="sm-title">Atmosphere-Only Bound (0g)</span>
+            <strong class="sm-score" style="color:${meterColor(atScore)}">${atScore}<small>/100</small></strong>
+          </div>
+          <div class="sm-bar"><i style="width:${atScore}%;background:${meterColor(atScore)}"></i></div>
+          <div class="sm-backing"><b>${(at.n_runs || 0).toLocaleString()}</b> NASA runs match O₂ + pressure + flow + fuel in 0g</div>
+        </div>
+      </div>
+      <div class="sm-factors" aria-label="${esc(activeLabel)}">
+        ${subFactors.map(([lbl, pct]) => `<div class="sm-f"><span>${esc(lbl)}</span><b>${pct}%</b><div class="meter"><i style="width:${pct}%"></i></div></div>`).join("")}
+      </div>
+      <div class="sm-invs">
+        <span class="hint">${w.n_runs > 0 ? "Matching PSI investigations:" : (at.n_runs > 0 ? "0g atmosphere PSI investigations:" : `Closest PSI investigations (${(ds.near_any_condition_runs || 0).toLocaleString()} runs match ≥1 condition):`)}</span>
+        ${invChips || `<span class="hint">none in tolerance</span>`}
+        <span class="sm-planned">Not yet in PSI archive: ${(ds.not_yet_in_psi || ["SoFIE", "FLARE", "LUCI", "FM2"]).join(", ")}</span>
+      </div>`;
+
     $("conditions").innerHTML = c.conditions.map((x) => {
       const s = st.conditions[x.key] || {};
-      return `<button class="cond" data-list="${esc(x.key)}" title="Show matching runs">
+      const sc = Math.round(s.score ?? 0);
+      return `<button class="cond" data-list="${esc(x.key)}" title="Click to inspect matching NASA runs">
         <span class="name">${esc(x.label)}</span>
         <span class="pill ${statusCls(x.status)}">${esc(x.status)}</span>
-        <span class="n">${x.n.toLocaleString()} runs</span>
-        <span class="meter" title="Evidence strength ${s.score ?? 0} of 100"><i style="width:${s.score ?? 0}%"></i></span>
-        <span class="hint">strength ${Math.round(s.score ?? 0)}/100</span>
+        <span class="n">${x.n.toLocaleString()} runs${s.n_investigations ? ` · ${s.n_investigations} PSIs` : ""}</span>
+        <span class="meter" title="Evidence strength ${s.score ?? 0} of 100"><i style="width:${s.score ?? 0}%;background:${meterColor(sc)}"></i></span>
+        <span class="hint">strength ${sc}/100</span>
         ${x.note ? `<span class="gnote">${esc(x.note)}</span>` : ""}
       </button>`;
     }).join("");
-    const a = c.atmosphere || { status: "No evidence", n: 0 };
+    const a = c.atmosphere || { status: "No evidence", n: 0, run_ids: [] };
     $("wholes").innerHTML =
-      `<div class="whole ${statusCls(c.whole.status)}"><b>Whole design:</b> ${c.whole.n.toLocaleString()} runs match all five conditions. <span class="hint">Strength ${Math.round(c.whole.strength)}/100</span></div>` +
-      `<div class="whole ${statusCls(a.status)}"><b>Atmosphere only:</b> ${a.n.toLocaleString()} runs match oxygen, pressure, airflow and fuel together, ignoring gravity.</div>`;
-    $("conditions").dataset.lists = JSON.stringify(Object.fromEntries(c.conditions.map((x) => [x.key, { label: x.label, ids: x.run_ids }])));
-    $("wholes").dataset.whole = JSON.stringify(c.whole.run_ids || []);
+      `<button type="button" class="whole ${statusCls(c.whole.status)}" data-list="whole" title="Inspect NASA runs matching all 5 conditions"><b>Whole design:</b> ${c.whole.n.toLocaleString()} NASA runs match all five conditions. <span class="hint">Strength ${wScore}/100</span></button>` +
+      `<button type="button" class="whole ${statusCls(a.status)}" data-list="atmo" title="Inspect NASA runs matching atmosphere in 0g"><b>Atmosphere only (0g):</b> ${a.n.toLocaleString()} NASA runs match O₂, pressure, airflow &amp; fuel. <span class="hint">Strength ${atScore}/100</span></button>`;
+    const listMap = Object.fromEntries(c.conditions.map((x) => [x.key, { label: x.label, ids: x.run_ids }]));
+    listMap.whole = { label: "Whole habitat design (all 5 conditions)", ids: c.whole.run_ids || [] };
+    listMap.atmo = { label: "Atmosphere only (O2 + pressure + airflow + fuel in 0g)", ids: a.run_ids || [] };
+    $("conditions").dataset.lists = JSON.stringify(listMap);
   }
 
   function renderExplain(x) {
@@ -358,6 +417,15 @@
       if (run) return openEvidence(run.dataset.run);
       const pt = e.target.closest("circle.pt");
       if (pt && pt.dataset.id) return openEvidence(pt.dataset.id);
+      const jump = e.target.closest("[data-jump-inv]");
+      if (jump) {
+        invPillar = "All";
+        invSel = [jump.dataset.jumpInv];
+        renderInvGrid();
+        renderInvDetail();
+        $("invdetail")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        return;
+      }
       const cond = e.target.closest("[data-list]");
       if (cond) {
         const lists = JSON.parse($("conditions").dataset.lists || "{}");
@@ -455,15 +523,6 @@
           <div class="modmeta">Uses flight data: ${chips} · Method: ${esc(m.method)}${m.doi ? ` · <a href="https://doi.org/${esc(m.doi)}" target="_blank" rel="noopener">doi.org/${esc(m.doi)}</a>` : ""}</div>
         </li>`;
       }).join("");
-      listEl.addEventListener("click", (e) => {
-        const btn = e.target.closest("[data-jump-inv]");
-        if (!btn) return;
-        invPillar = "All";
-        invSel = [btn.dataset.jumpInv];
-        renderInvGrid();
-        renderInvDetail();
-        $("invdetail")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
-      });
     } catch (e) {
       noteEl.textContent = `Could not load modeling studies (${e.message}).`;
     }

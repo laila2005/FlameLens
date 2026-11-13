@@ -248,9 +248,17 @@ def test_real_lunar_rover_has_no_whole_match_and_no_gravity_evidence(real):
 
 def test_real_strength_in_range(real):
     s = engine.strength(T(21, 14.7, 10, "any", 0), rows=real)
-    scores = [p["score"] for p in s["conditions"].values()] + [s["whole"]["score"]]
+    scores = [p["score"] for p in s["conditions"].values()] + [s["whole"]["score"], s["atmosphere"]["score"]]
     assert all(0 <= x <= 100 for x in scores)
     assert s["whole"]["score"] > 0  # the ISS cabin is well covered
+    assert s["whole"]["n_runs"] >= 300 and s["whole"]["n_investigations"] >= 4
+    assert s["conditions"]["o2"]["n_runs"] > 1000 and s["dataset"]["near_any_condition_runs"] > 1500
+    assert s["dataset"]["total_runs"] == 2003 and s["dataset"]["total_investigations"] == 18
+    assert {"SoFIE", "FLARE"} <= set(s["dataset"]["not_yet_in_psi"])
+    # On Moon gravity (0.16g) with ISS air, whole is 0 runs/0 score while atmosphere bound retains 300+ real 0g runs
+    s_moon_air = engine.strength(T(21, 14.7, 10, "any", 0.16), rows=real)
+    assert s_moon_air["whole"]["n_runs"] == 0 and s_moon_air["whole"]["score"] == 0
+    assert s_moon_air["atmosphere"]["n_runs"] == s["whole"]["n_runs"] and s_moon_air["atmosphere"]["score"] > 0
 
 
 def test_everything_is_json_serialisable(real):
