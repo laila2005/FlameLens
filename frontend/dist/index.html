@@ -131,41 +131,44 @@
         <div class="panel" id="safer"></div>
       </div>
 
-      <div class="panel campaign" id="campaign">
-        <div class="ptitle"><h2>Test campaign planner</h2><span class="hint">Which experiments should NASA fly next to cover Moon, Mars and rover designs?</span></div>
-        <div class="cmphead">
-          <span>NASA can fly</span>
-          <div class="cmpn" id="cmpn" role="group" aria-label="Number of experiments">
-            <button type="button" data-n="1" aria-pressed="false">1</button><button type="button" data-n="2" aria-pressed="false">2</button><button type="button" data-n="3" aria-pressed="true">3</button><button type="button" data-n="5" aria-pressed="false">5</button>
-          </div>
-          <span>more experiment(s). Fly these:</span>
+    </section>
+
+    <div class="rightcol">
+      <!-- Lenses -->
+      <section class="lenses panel" aria-label="Lenses">
+        <div class="tabs" role="tablist" aria-label="Lenses">
+          <button role="tab" class="tab" data-lens="coverage" aria-selected="true">Coverage map</button>
+          <button role="tab" class="tab" data-lens="coolflame" aria-selected="false">Cool flames</button>
+          <button role="tab" class="tab" data-lens="aerosol" aria-selected="false">Smoke vs dust</button>
+          <button role="tab" class="tab" data-lens="spread" aria-selected="false">Flame spread</button>
+          <button role="tab" class="tab" data-lens="tested" aria-selected="false">Airflow tested</button>
+          <button role="tab" class="tab" data-lens="detect" aria-selected="false">Early detection</button>
         </div>
-        <p class="cmpsum" id="cmpsum">Planning…</p>
-        <div class="cmphabs" id="cmphabs"></div>
-        <ol class="cmplist" id="cmplist"></ol>
-        <p class="hint" id="cmpnote"></p>
-      </div>
+        <div class="chart" id="chart" role="tabpanel"></div>
+        <div class="legend" id="legend"></div>
+        <p class="caption" id="caption"></p>
+      </section>
 
-      <div class="panel">
-        <div class="ptitle"><h2>Closest investigations</h2><span class="hint">Ranked by how close their runs are to your design</span></div>
-        <ol class="ranked" id="ranked"></ol>
-      </div>
-    </section>
+        <div class="panel campaign" id="campaign">
+          <div class="ptitle"><h2>Test campaign planner</h2><span class="hint">Which experiments should NASA fly next to cover Moon, Mars and rover designs?</span></div>
+          <div class="cmphead">
+            <span>NASA can fly</span>
+            <div class="cmpn" id="cmpn" role="group" aria-label="Number of experiments">
+              <button type="button" data-n="1" aria-pressed="false">1</button><button type="button" data-n="2" aria-pressed="false">2</button><button type="button" data-n="3" aria-pressed="true">3</button><button type="button" data-n="5" aria-pressed="false">5</button>
+            </div>
+            <span>more experiment(s). Fly these:</span>
+          </div>
+          <p class="cmpsum" id="cmpsum">Planning…</p>
+          <div class="cmphabs" id="cmphabs"></div>
+          <ol class="cmplist" id="cmplist"></ol>
+          <p class="hint" id="cmpnote"></p>
+        </div>
 
-    <!-- Lenses -->
-    <section class="lenses panel" aria-label="Lenses">
-      <div class="tabs" role="tablist" aria-label="Lenses">
-        <button role="tab" class="tab" data-lens="coverage" aria-selected="true">Coverage map</button>
-        <button role="tab" class="tab" data-lens="coolflame" aria-selected="false">Cool flames</button>
-        <button role="tab" class="tab" data-lens="aerosol" aria-selected="false">Smoke vs dust</button>
-        <button role="tab" class="tab" data-lens="spread" aria-selected="false">Flame spread</button>
-        <button role="tab" class="tab" data-lens="tested" aria-selected="false">Airflow tested</button>
-        <button role="tab" class="tab" data-lens="detect" aria-selected="false">Early detection</button>
-      </div>
-      <div class="chart" id="chart" role="tabpanel"></div>
-      <div class="legend" id="legend"></div>
-      <p class="caption" id="caption"></p>
-    </section>
+        <div class="panel">
+          <div class="ptitle"><h2>Closest investigations</h2><span class="hint">Ranked by how close their runs are to your design</span></div>
+          <ol class="ranked" id="ranked"></ol>
+        </div>
+    </div>
   </main>
 
   <!-- Mission atmosphere journey -->
@@ -210,7 +213,7 @@
     <div class="panel">
       <h2>Back on Earth</h2>
       <ul class="earth">
-        <li><b>Smoke detectors that ignore dust.</b> A shuttle detector told combustion particles from dust and was used in mines. Our smoke-vs-dust lens shows why: smoke is 0.04–0.3 µm, dust about 1.7 µm. <a href="https://spinoff.nasa.gov/node/9407" target="_blank" rel="noopener">NASA Spinoff</a></li>
+        <li><b>Smoke detectors that ignore dust.</b> A shuttle detector told combustion particles from dust and was used in mines. Our smoke-vs-dust lens shows why: smoke is 0.04–0.29 µm, dust about 1.7 µm. <a href="https://spinoff.nasa.gov/node/9407" target="_blank" rel="noopener">NASA Spinoff</a></li>
         <li><b>Firefighter clothing</b> improved with spacesuit technology. <a href="https://spinoff.nasa.gov/node/9918" target="_blank" rel="noopener">NASA Spinoff</a></li>
         <li><b>Firefighter air tanks</b> made lighter with spacesuit technology. <a href="https://spinoff.nasa.gov/node/9582" target="_blank" rel="noopener">NASA Spinoff</a></li>
         <li><b>Fine-water-mist extinguishers</b> developed for the ISS have uses on Earth (challenge text).</li>

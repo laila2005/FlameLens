@@ -231,8 +231,8 @@ select:hover { border-color: var(--flame); }
 .rmeta { font: 12px var(--mono); color: var(--muted); }
 
 /* ------------------------------------------------------------------ lenses */
+.rightcol { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
 .lenses { position: static; }
-@media (min-width: 1101px) { .lenses { position: sticky; top: 16px; } }
 .tabs { display: flex; gap: 4px; flex-wrap: wrap; padding: 4px; background: var(--panel3); border-radius: 14px; }
 .tab { background: transparent; border: 0; border-radius: 10px; padding: 8px 12px; white-space: nowrap; cursor: pointer; font-size: 13.5px; font-weight: 500; color: var(--muted);
   transition: background .15s, color .15s, box-shadow .15s; }
@@ -512,3 +512,6 @@ body.brief-open { overflow: hidden; }
 .jflag { font: 700 11px var(--mono); text-transform: uppercase; letter-spacing: .08em; color: var(--bad); }
 .jopen { align-self: flex-start; margin-top: auto; font-size: 12.5px; padding: 5px 10px; }
 @media (prefers-reduced-motion: reduce) { .jweak { animation: none; } }
+
+/* investigation details follow the long grid on wide screens */
+@media (min-width: 1001px) { #invdetail { position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow: auto; } }
