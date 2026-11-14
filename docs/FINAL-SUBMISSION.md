@@ -172,7 +172,7 @@ While building:
 - AI coding assistants (Claude in Claude Code, and Claude and Gemini in Antigravity) helped the team write the data scripts, backend, frontend and documentation during the hackathon.
 - The numbers shown in the app come from NASA files, not from an AI. They are checked by 95 automated tests and by a script that compares the live site with the curated data. An AI research agent helped find NASA papers outside PSI; we checked the values against the papers before adding them.
 - The FlameLens logo illustration (a burning planet with a magnifying glass) was generated with Google Gemini and chosen by the team; the site icon is a crop of it.
-- The demo video was composed by our own scripts from screen captures of the live site. The narration is a synthetic adult female voice made with Kokoro-82M, an open-source text-to-speech model (Apache-2.0), from our own script. The music is synthesized by code, with no samples and no AI-generated music. No real voices or faces are used.
+- The demo video was composed by our own scripts from screen captures of the live site. The narration is a synthetic adult female voice made with Kokoro-82M, an open-source text-to-speech model (Apache-2.0), from our own script; the engineer in the story, Nour, is fictional. The music is synthesized by code, with no samples and no AI-generated music. No real voices or faces are used.
 ```
 
 ### 12. References
@@ -271,18 +271,20 @@ Exactly 7 slides. No faces, names or voices of anyone under 18. Keep the text as
 
 ### Scenes, captions and narration (as in the video)
 
-| Time | On screen | Caption | Narration |
-|---|---|---|---|
-| 0:00-0:03 | Hook: "In space, fire plays by different rules." over rising embers | – | In space, fire plays by different rules. |
-| 0:03-0:08 | Pressurized rover preset: 30 % O₂, 10.2 psi, Moon gravity | Moon rover: 30 % O₂ at 10.2 psi | Moon rovers may breathe thirty percent oxygen. Would a cabin fabric burn in that air? |
-| 0:08-0:12 | Data chip, ISS cabin strength meter (83/100, 336 runs) | 2,003 real NASA flight runs · 18 PSI investigations | FlameLens checks any habitat against two thousand real NASA flight runs. |
-| 0:12-0:14 | Rover evidence case: oxygen and pressure "Other fuels only" | Rover: 2 of 5 conditions backed | For the rover: no exact match yet. |
-| 0:14-0:18 | Outside-PSI limits: lunar-gravity drop tests (Olson and Ferkul 2012) | Closest evidence, down to lunar gravity | So it shows the closest evidence, down to lunar-gravity tests. |
-| 0:18-0:21 | Verified AI claims; click a run, evidence drawer with DOI | Every AI sentence cites a real NASA run | Every AI sentence must cite a real run, or it's deleted. |
-| 0:21-0:26 | Campaign planner (3 tests cover 5 designs), then Ask the NASA reports with a verified quote | What NASA should fly next · Ask the NASA reports | It plans what NASA should fly next, and quotes the exact report page. |
-| 0:26-0:30 | End card: logo, tagline, URL, Team AstroSpark and the six member names | Space-fire data, made clear · flamelens-steel.vercel.app | FlameLens. Space-fire data, made clear. |
+The video tells a short story: **Nour, a fictional habitat engineer**, checks her Moon rover cabin with FlameLens. Animated callout cards point at what she sees (a count-up to 2,003 runs, red stamps on the gaps, green ticks on verified claims).
 
-The dashboard shows the ISS strength as 83 because it rounds 82.5. The earlier silent cut is in git history.
+| Time | On screen | Caption (Nour's step) | Narration |
+|---|---|---|---|
+| 0:00-0:03 | Hook over rising embers | – | In space, fire plays by different rules. |
+| 0:03-0:08 | Rover preset; badge "Nour · habitat engineer"; callout 30 % O₂ · 10.2 psi | Nour sets her rover cabin's air | Nour is designing a Moon rover cabin: thirty percent oxygen, ten point two psi. |
+| 0:08-0:10 | Data chip; counter 0 → 2,003 | FlameLens checks 2,003 real NASA flight runs | She checks it against two thousand real NASA flight runs. |
+| 0:10-0:16 | Verdict (0 full matches); oxygen and pressure "Other fuels only" (134 gas and droplet runs, 107 droplet runs, not counted) | Rover: 2 of 5 conditions backed | The honest answer: no PSI run burned a fabric in that air. Only gas flames and droplets. |
+| 0:16-0:20 | Outside-PSI limits: Ultem film at lunar gravity and 10.2 psi went out at 19.9 % O₂ (23.0 % in 1 g) | The closest proof, down to lunar gravity | So FlameLens shows the closest proof, down to lunar-gravity tests. |
+| 0:20-0:23 | Verified AI claims; run drawer with DOI 10.60555/4qc4-de67 | Every AI sentence cites a real NASA run | Every AI sentence she reads cites a real run. |
+| 0:23-0:27 | Campaign planner (3 tests → 5 designs); Ask the NASA reports, quote verified on page 49 | She plans NASA's next tests · Then she asks the NASA reports | Then she plans NASA's next tests, and asks the reports herself. |
+| 0:27-0:30 | End card: logo, tagline, URL, Team AstroSpark and the six members | – | FlameLens. Space-fire data, made clear. |
+
+"No PSI run burned a fabric in that air" is limited to PSI on purpose: outside PSI, NASA's Saffire V burned cotton at 26.2 % O₂ and 10.25 psi, and the dashboard shows it as cited, not counted. The dashboard shows the ISS strength as 83 because it rounds 82.5.
 
 ### To submit the video
 

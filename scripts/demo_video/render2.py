@@ -22,31 +22,32 @@ W, H, FPS, DUR = 1920, 1080, 60, 30.0
 SR = 48000
 
 # ---------------------------------------------------------------- timeline (seconds)
-HOOK_END, END_CARD = 3.2, 26.0
-VO_AT = [0.40, 3.05, 7.85, 12.20, 18.05, 21.45, 26.35]          # start of each narration line
+HOOK_END, END_CARD = 2.85, 26.9
+# Story: Nour (a fictional habitat engineer) checks her Moon rover cabin with FlameLens. Narration starts:
+VO_AT = [0.30, 2.70, 7.60, 10.55, 16.00, 19.85, 22.55, 27.10]
 SEG = [  # start, end, shot, camera start (cx, cy, zoom), camera end   (CSS px of the 1920x1080 capture)
-    (3.2, 7.7, "a_top_rover", (960, 380, 1.08), (1000, 330, 1.42)),
-    (7.7, 9.6, "b_meter_iss", (1300, 300, 1.05), (480, 300, 1.45)),
-    (9.6, 12.0, "b_meter_iss", (480, 300, 1.45), (480, 420, 1.62)),
-    (12.0, 14.4, "c_case_rover", (480, 420, 1.55), (330, 560, 1.85)),
-    (14.4, 17.9, "e_limits_rover", (480, 300, 1.75), (480, 560, 1.55)),
-    (17.9, 19.6, "f_explain", (480, 330, 1.6), (480, 300, 1.7)),
-    (19.6, 21.4, "g_drawer", (1150, 620, 1.15), (1560, 780, 1.42)),
-    (21.4, 23.5, "h_campaign_n3", (1400, 420, 1.35), (1400, 560, 1.5)),
-    (23.5, 24.3, "i_ask_q", (1300, 200, 1.6), (1330, 200, 1.66)),
-    (24.3, 26.0, "j_ask_answer", (960, 420, 1.0), (960, 470, 1.04)),
+    (2.85, 7.55, "a_top_rover", (960, 400, 1.06), (1000, 330, 1.38)),
+    (7.55, 10.5, "a_top_rover", (1200, 260, 1.45), (1480, 200, 1.7)),
+    (10.5, 12.6, "d_verdict_rover", (480, 160, 1.55), (480, 150, 1.7)),
+    (12.6, 16.0, "c_case_rover", (480, 520, 1.5), (440, 600, 1.72)),
+    (16.0, 19.8, "e_limits_rover", (480, 300, 1.75), (480, 520, 1.55)),
+    (19.8, 21.0, "f_explain", (480, 330, 1.6), (480, 300, 1.7)),
+    (21.0, 22.6, "g_drawer", (1150, 620, 1.15), (1560, 780, 1.42)),
+    (22.6, 24.0, "h_campaign_n3", (1400, 420, 1.35), (1400, 520, 1.48)),
+    (24.0, 24.5, "i_ask_q", (1300, 200, 1.6), (1330, 200, 1.66)),
+    (24.5, 26.9, "j_ask_answer", (960, 420, 1.0), (960, 470, 1.04)),
 ]
-SCENE_STARTS = [3.2, 7.7, 12.0, 14.4, 17.9, 21.4, 23.5]
-CLICKS = [19.45, 21.62, 24.12]
+SCENE_STARTS = [2.85, 7.55, 10.5, 12.6, 16.0, 19.8, 22.6, 24.0]
+CLICKS = [20.85, 22.75, 24.32]
 XFADE = 0.30
-CAPTIONS = [  # every number here is shown on the live dashboard
-    (3.45, 7.6, "Moon rover: 30 % O₂ at 10.2 psi", "the lunar atmosphere named in the NASA challenge"),
-    (7.85, 11.9, "2,003 real NASA flight runs · 18 PSI investigations", "ISS cabin: 336 runs match all five conditions"),
-    (12.15, 14.35, "Rover: 2 of 5 conditions backed", "its 30 % O₂ runs are gas flames and droplets, not fabrics"),
-    (14.5, 17.85, "Closest evidence, down to lunar gravity", "NASA drop-tower limits: cited, never counted"),
-    (18.0, 21.35, "Every AI sentence cites a real NASA run", "unverifiable claims are deleted, not shown"),
-    (21.55, 23.45, "What NASA should fly next", "3 experiments give all 5 habitat designs a test"),
-    (23.6, 25.95, "Ask the NASA reports", "each quote checked on its report page"),
+CAPTIONS = [  # Nour's steps; every number here is shown on the live dashboard
+    (3.05, 7.5, "Nour sets her rover cabin's air", "30 % O₂ · 10.2 psi · Moon gravity · fabrics and plastics"),
+    (7.7, 10.45, "FlameLens checks 2,003 real NASA flight runs", "from 18 PSI investigations, every run cited"),
+    (10.65, 15.95, "Rover: 2 of 5 conditions backed", "its 30 % O₂ runs are gas flames and droplets, not fabrics"),
+    (16.1, 19.75, "The closest proof, down to lunar gravity", "NASA drop-tower and Saffire tests: cited, never counted"),
+    (19.95, 22.55, "Every AI sentence cites a real NASA run", "claims that cannot be traced are deleted"),
+    (22.7, 23.95, "She plans NASA's next tests", "3 experiments give all 5 habitat designs a test"),
+    (24.05, 26.85, "Then she asks the NASA reports", "every quote is checked on its report page"),
 ]
 
 if len(sys.argv) > 2 and sys.argv[1] == "timing":
@@ -88,18 +89,34 @@ def center(shot, key):
 
 c = center
 CURSOR = [  # time, shot, x, y (CSS px of that shot)
-    (17.95, "f_explain", 600, 520), (19.35, "f_explain", *c("f_explain", "run1")), (19.6, "f_explain", *c("f_explain", "run1")),
-    (21.45, "h_campaign_n3", 1300, 330), (21.55, "h_campaign_n3", *c("h_campaign_n3", "n3")), (22.3, "h_campaign_n3", 1250, 420),
-    (23.5, "i_ask_q", 1450, 300), (24.05, "i_ask_q", *c("i_ask_q", "btn")), (24.3, "i_ask_q", *c("i_ask_q", "btn")),
+    (19.85, "f_explain", 600, 520), (20.75, "f_explain", *c("f_explain", "run1")), (21.0, "f_explain", *c("f_explain", "run1")),
+    (22.6, "h_campaign_n3", 1300, 330), (22.7, "h_campaign_n3", *c("h_campaign_n3", "n3")), (23.4, "h_campaign_n3", 1250, 420),
+    (24.0, "i_ask_q", 1450, 300), (24.27, "i_ask_q", *c("i_ask_q", "btn")), (24.5, "i_ask_q", *c("i_ask_q", "btn")),
 ]
-CURSOR_ON = [(17.95, 19.6), (21.45, 22.3), (23.5, 24.3)]
+CURSOR_ON = [(19.85, 21.0), (22.6, 23.4), (24.0, 24.5)]
 HIGHLIGHTS = [  # time window, shot, key, colour
-    (4.6, 7.6, "a_top_rover", "controls", FLAME),
-    (8.2, 9.6, "b_meter_iss", "chip", CYAN), (9.9, 11.9, "b_meter_iss", "meter", FLAME),
-    (12.4, 14.35, "c_case_rover", "o2", FLAME), (12.7, 14.35, "c_case_rover", "psi", FLAME),
-    (15.0, 17.85, "e_limits_rover", "row1", CYAN),
-    (19.9, 21.35, "g_drawer", "drawer", CYAN),
-    (24.6, 25.95, "j_ask_answer", "quote", CYAN),
+    (4.4, 7.5, "a_top_rover", "controls", FLAME),
+    (7.9, 10.45, "a_top_rover", "chip", CYAN),
+    (10.8, 12.55, "d_verdict_rover", "verdict", (255, 96, 96)),
+    (12.9, 15.95, "c_case_rover", "o2", (255, 96, 96)), (13.6, 15.95, "c_case_rover", "psi", (255, 96, 96)),
+    (16.5, 19.75, "e_limits_rover", "row1", CYAN),
+    (21.3, 22.55, "g_drawer", "drawer", CYAN),
+    (25.0, 26.85, "j_ask_answer", "quote", CYAN),
+]
+GREEN, RED = (80, 220, 150), (255, 96, 96)
+# Callout cards: (t0, t1, shot, anchor key (or None), card top-left on screen, icon, title, subtitle, colour, counter)
+CALLOUTS = [
+    (3.3, 7.45, "a_top_rover", None, (232, 96), "user", "NOUR  ·  HABITAT ENGINEER", "designing a Moon rover cabin", FLAME, None),
+    (4.7, 7.45, "a_top_rover", "controls", (1180, 560), "flame", "30 % O₂  ·  10.2 psi", "Moon gravity, fabrics and plastics", FLAME, None),
+    (7.9, 10.45, "a_top_rover", "chip", (430, 470), "check", "{n}", "real NASA flight runs · 18 investigations", CYAN, (0, 2003, 7.9, 9.0)),
+    (10.9, 12.55, "d_verdict_rover", "verdict", (1040, 520), "cross", "0 full matches", "no NASA run matches the whole rover design", RED, None),
+    (13.0, 15.95, "c_case_rover", "o2", (1090, 250), "cross", "0 solid runs at 30 % O₂", "134 gas and droplet runs: not counted", RED, None),
+    (13.7, 15.95, "c_case_rover", "psi", (1090, 520), "cross", "0 solid runs at 10.2 psi", "107 droplet runs: not counted", RED, None),
+    (16.6, 19.75, "e_limits_rover", "row1", (1080, 600), "check", "Lunar gravity, 10.2 psi", "Ultem film went out at 19.9 % O₂ (23.0 % in 1 g)", CYAN, None),
+    (20.0, 20.95, "f_explain", "claim1", (1180, 640), "check", "Verified", "every sentence cites a NASA run", GREEN, None),
+    (21.35, 22.55, "g_drawer", "drawer", (330, 300), "check", "Run → table → DOI", "PSI-25-0023 · BASS-II · doi 10.60555/4qc4-de67", GREEN, None),
+    (22.85, 23.95, "h_campaign_n3", "sum", (300, 560), "flame", "3 tests → 5 designs", "the plan NASA could fly next", FLAME, None),
+    (25.1, 26.85, "j_ask_answer", "quote", (980, 690), "check", "Quote verified · page 49", "Gemini answer, checked word for word", GREEN, None),
 ]
 
 # ---------------------------------------------------------------- static layers
@@ -284,6 +301,65 @@ def window_frame(t):
     frame.paste(cont, (CX, CY), CONTENT_MASK)
     return frame, seg
 
+# ---------------------------------------------------------------- callout cards (the illustrative layer)
+F_CT, F_CS, F_CB, F_SYM = font(F_B, 34), font(F_R, 22), font(F_BL, 64), font("C:/Windows/Fonts/seguisym.ttf", 30)
+
+def icon(d, kind, x, y, col, a):
+    r = 22
+    d.ellipse((x - r, y - r, x + r, y + r), fill=col + (int(235 * a),))
+    ink = (12, 16, 36, int(255 * a))
+    if kind == "check":
+        d.line((x - 10, y + 1, x - 3, y + 9, x + 11, y - 8), fill=ink, width=5, joint="curve")
+    elif kind == "cross":
+        d.line((x - 8, y - 8, x + 8, y + 8), fill=ink, width=5); d.line((x - 8, y + 8, x + 8, y - 8), fill=ink, width=5)
+    elif kind == "user":
+        d.ellipse((x - 7, y - 13, x + 7, y + 1), fill=ink); d.pieslice((x - 13, y + 1, x + 13, y + 25), 180, 360, fill=ink)
+    elif kind == "flame":
+        d.polygon([(x, y - 14), (x + 9, y + 2), (x + 6, y + 12), (x - 6, y + 12), (x - 9, y + 2)], fill=ink)
+
+def draw_callouts(frame, seg, t):
+    ov = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    d = ImageDraw.Draw(ov)
+    for t0, t1, shot, key, (bx, by), ic, title, sub, col, counter in CALLOUTS:
+        if not (t0 <= t <= t1) or shot != seg[2]:
+            continue
+        u = clamp((t - t0) / 0.45)
+        a = min(eout(u), clamp((t1 - t) / 0.3))
+        pop = 1 + 0.08 * math.sin(math.pi * u) * (1 - u)
+        if counter:
+            n0, n1, c0, c1 = counter
+            v = int(round(lerp(n0, n1, eout(clamp((t - c0) / (c1 - c0))))))
+            title = title.replace("{n}", f"{v:,}")
+            tf = F_CB
+        else:
+            tf = F_CT
+        tw = max(d.textlength(title, font=tf), d.textlength(sub, font=F_CS))
+        cw = int(tw + 112); ch = int(tf.size * 1.25 + 46)
+        x0, y0 = bx, by + (1 - eout(u)) * 18
+        # connector from the card to the element it explains
+        if key and META[shot].get(key):
+            ax, ay = to_screen(seg, t, *center(shot, key))
+            ax = min(max(ax, CX + 8), CX + CW - 8); ay = min(max(ay, CY + 8), CY + CH - 8)
+            sx = x0 if ax < x0 else (x0 + cw if ax > x0 + cw else ax)
+            sy = y0 + ch / 2
+            k = eout(clamp((t - t0 - 0.15) / 0.4)) * a
+            mx, my = lerp(sx, ax, k), lerp(sy, ay, k)
+            d.line((sx, sy, mx, my), fill=col + (int(220 * a),), width=3)
+            if k > 0.95:
+                d.ellipse((ax - 9, ay - 9, ax + 9, ay + 9), outline=col + (int(255 * a),), width=3)
+                d.ellipse((ax - 4, ay - 4, ax + 4, ay + 4), fill=col + (int(255 * a),))
+        sh = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        ImageDraw.Draw(sh).rounded_rectangle((x0 + 6, y0 + 12, x0 + cw + 6, y0 + ch + 12), 20, fill=(0, 0, 0, int(150 * a)))
+        ov.alpha_composite(sh.filter(ImageFilter.GaussianBlur(14)))
+        d = ImageDraw.Draw(ov)
+        d.rounded_rectangle((x0, y0, x0 + cw * pop, y0 + ch * pop), 20, fill=(14, 19, 44, int(238 * a)),
+                            outline=col + (int(230 * a),), width=3)
+        d.rectangle((x0 + 3, y0 + 18, x0 + 8, y0 + ch - 18), fill=col + (int(255 * a),))
+        icon(d, ic, x0 + 50, y0 + ch / 2, col, a)
+        d.text((x0 + 86, y0 + 14), title, font=tf, fill=(255, 255, 255, int(255 * a)))
+        d.text((x0 + 86, y0 + 14 + tf.size * 1.2), sub, font=F_CS, fill=(190, 202, 235, int(255 * a)))
+    frame.paste(ov, (0, 0), ov)
+
 # ---------------------------------------------------------------- hook: kinetic type over embers
 HOOK_BG = ImageEnhance.Brightness(cover(ILL, 1.55, (0.5, 0.12)).filter(ImageFilter.GaussianBlur(9))).enhance(0.36)
 _vig = Image.new("L", (W, H), 0)
@@ -341,7 +417,7 @@ def hook_frame(t):
     kick = "NASA SPACE APPS 2026  ·  FLAME IN FREEFALL"
     spaced = " ".join(kick)
     d.text(((W - d.textlength(spaced, font=F_KICK)) / 2, 190), spaced, font=F_KICK, fill=(255, 196, 140, int(200 * ka)))
-    out_k = 1 - ease(clamp((t - 2.55) / 0.35))
+    out_k = 1 - ease(clamp((t - 2.25) / 0.35))
     for t0, word, f, col, y in HOOK_WORDS:
         u = clamp((t - t0) / 0.38)
         if u <= 0:
@@ -436,6 +512,7 @@ def render_frame(t):
         return e
     frame, seg = window_frame(t)
     overlay_ui(frame, seg, t)
+    draw_callouts(frame, seg, t)
     light_leak(frame, t)
     draw_caption_row(frame, t, alpha=ease(clamp((t - HOOK_END) / 0.4)))
     return frame
@@ -498,7 +575,7 @@ def build_audio(path_out):
     print("audio mixed:", path_out)
 
 if PREVIEW:
-    for t in [0.7, 1.4, 2.2, 2.95, 3.6, 5.5, 8.6, 10.9, 13.3, 14.35, 16.0, 18.6, 19.5, 20.5, 22.4, 24.0, 25.2, 26.6, 27.2, 29.0]:
+    for t in [1.6, 2.6, 4.0, 6.5, 8.4, 9.6, 11.8, 14.5, 15.6, 18.0, 20.5, 22.0, 23.4, 25.8, 28.5]:
         render_frame(t).save(OUT.parent / f"pv2_{t:05.2f}.jpg", quality=88)
     print("previews written"); sys.exit()
 

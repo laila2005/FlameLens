@@ -17,19 +17,20 @@ import soundfile as sf
 from kokoro_onnx import Kokoro
 
 # Every number said here is shown on the live dashboard (2,003 runs; 30 % oxygen at 10.2 psi is the challenge text).
-LINES = [
+LINES = [  # story: Nour, a fictional habitat engineer, uses FlameLens on a Moon rover cabin
     "In space, fire plays by different rules.",
-    "Moon rovers may breathe thirty percent oxygen. Would a cabin fabric burn in that air?",
-    "FlameLens checks any habitat against two thousand real NASA flight runs.",
-    "For the rover: no exact match yet. So it shows the closest evidence, down to lunar-gravity tests.",
-    "Every AI sentence must cite a real run, or it's deleted.",
-    "It plans what NASA should fly next, and quotes the exact report page.",
+    "Nour is designing a Moon rover cabin: thirty percent oxygen, ten point two psi.",
+    "She checks it against two thousand real NASA flight runs.",
+    "The honest answer: no PSI run burned a fabric in that air. Only gas flames and droplets.",
+    "So FlameLens shows the closest proof, down to lunar-gravity tests.",
+    "Every AI sentence she reads cites a real run.",
+    "Then she plans NASA's next tests, and asks the reports herself.",
     "FlameLens. Space-fire data, made clear.",
 ]
 
 model_dir, out = Path(sys.argv[1]), Path(sys.argv[2])
 voice = sys.argv[3] if len(sys.argv) > 3 else "af_heart"
-speed = float(sys.argv[4]) if len(sys.argv) > 4 else 1.15
+speed = float(sys.argv[4]) if len(sys.argv) > 4 else 1.2
 out.mkdir(parents=True, exist_ok=True)
 k = Kokoro(str(model_dir / "kokoro-v1.0.onnx"), str(model_dir / "voices-v1.0.bin"))
 meta = {"voice": voice, "speed": speed, "model": "Kokoro-82M v1.0 (Apache-2.0)", "lines": []}
