@@ -143,6 +143,9 @@ Validated on Fri 13 Nov at about 11 PM: 117 of 117 automatic checks passed. Deta
 | [ ] | Any | Proofread the project summary in `docs/FINAL-SUBMISSION.md` | مراجعة ملخص المشروع في `docs/FINAL-SUBMISSION.md` |
 | [ ] | Laila | Tag the release the demo shows (`v1.0`) | وسم الإصدار الذي يظهر في العرض (`v1.0`) |
 | [ ] | Leader | Open every link in a private window | فتح كل الروابط في نافذة خاصة |
+| [ ] | Claude / Laila | Fix plan phases 1–4 (logic, display, data, final checks): [15 Dashboard review](docs/15-dashboard-review.md) section 3. Code freeze 12:00 | خطة الإصلاح المراحل 1–4 (المنطق، العرض، البيانات، الفحص النهائي): [مراجعة لوحة التحكم](docs/15-dashboard-review.md) القسم 3. تجميد الكود 12:00 |
+| [ ] | Leader | Agree to move the submit from 10:00 to 12:30 (deadline 1:00 PM) | الموافقة على نقل التسليم من 10:00 إلى 12:30 (الموعد النهائي 1:00 ظهرًا) |
+| [ ] | Leader / F | Slides (7) incl. a "missing data" slide; done by 12:15 | الشرائح (7) مع شريحة "البيانات الناقصة"؛ قبل 12:15 |
 | [ ] | Leader | Submit on the local form and on the official NASA site by 10:00 AM; save both confirmations | التسليم على النموذج المحلي وموقع ناسا الرسمي قبل 10:00 صباحًا وحفظ التأكيدين |
 | [ ] | Leader | Backup internet ready | تجهيز إنترنت احتياطي |
 

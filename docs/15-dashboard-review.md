@@ -15,7 +15,7 @@ What works: no console errors, no sideways scroll on a phone, 137 of 137 live ch
 | 5 | **The page is very long**: about 21,000 px on a phone (about 26 screens): habitat, verdict, closest evidence, AI text, strength, case, run this next, options, 6 lenses, campaign planner, journey, Ask, investigations, data, footer. | Judges see the top 2–3 screens only | Best features (journey, campaign, Ask) are far down. | Add a sticky section menu or "jump to" links; collapse secondary panels. Small–medium. |
 | 6 | **ACME outcomes are day counts, not run results.** BRE, CLD, s-Flame and E-FIELD (118 runs) show outcomes like "flames ignited that day: 8". | Odd labels in run drawers and outcome lists | Looks like a parsing bug. | Relabel as "day: N flames ignited (per-flame result not in the table)". Small. |
 | 7 | **Coverage map leaves out 231 runs** (1,772 of 2,003 plotted) that have no oxygen or pressure value. | A gap between the "2,003 runs" chip and the map | Minor, but a judge may notice. | Say "231 runs without O₂ or pressure are not plotted". Small. |
-| 8 | **Submission items not finished**: the 30 s video was postponed; slides and the official submission are with the leader. | – | Judges score the video or slides first. | Team task, not code. |
+| 8 | **Submission items not finished**: the 30 s video exists (`media/flamelens-demo-30s.mp4`) but is not uploaded; the premium version was postponed; slides and the official submission are with the leader. | – | Judges score the video or slides first. | Team task, not code. |
 
 ## 2. Missing data (what NASA PSI does not give us)
 
@@ -31,9 +31,60 @@ What works: no console errors, no sideways scroll on a phone, 137 of 137 live ch
 | **Smoke and detection data** | Particle sizes: 14 summary rows; CO/CO₂ traces: BASS-II only | Detection lens and simulator rely on few sources | SAME-R per-run size files exist in PSI but were not downloaded. |
 | **Investigations not in PSI** | SoFIE, FLARE, LUCI, FM2 | Newer solid-fuel work missing | No public data yet; shown as "not yet in PSI archive". |
 
-## 3. Suggested order before the 10 AM submit (hour 21)
+## 3. Fix plan
 
-1. Fix weakness 1 (material-aware oxygen and pressure), or at least label it: it is the one a NASA judge would catch.
-2. Weaknesses 2, 3, 6 and 7: small wording and display fixes.
-3. Weakness 5: "jump to" links so the journey, campaign planner and Ask are one click from the top.
-4. Leave data gaps as they are and say them out loud in the pitch: "PSI has no solid-material runs at Moon or Mars atmospheres and no partial-gravity runs; FlameLens shows that gap and the cheapest test to close it."
+Written about 9:05 AM Cairo (hour 20). Deadline 1:00 PM (hour 24). The plan moves the code freeze to 12:00 and the submit to 12:30, so the leader must agree (it replaces "submit at hour 21" in `docs/04-hackathon-timeline.md`). Claude does phases 1–4; the team does phase 5 in parallel. W = weakness (section 1), G = data gap (section 2).
+
+### Phase 1, 9:10–9:50: decision logic (W1, W2, W3)
+
+| Item | What changes | Done when |
+|---|---|---|
+| W1 material-aware support | In `engine.case()`, oxygen and pressure count as Supported only if 2+ runs match that condition **with the same material type**. If only other fuels match, the status is "Other fuels only" (a gap, not supported). "Run this next", journey, campaign and brief use the same rule. | Rover reads "2 of 5 conditions supported" and "Run this next" closes oxygen, pressure and gravity. ISS still 5 of 5. Tests updated. |
+| W2 meter | Under the two 0/100 numbers, show the "tested one at a time" score and one line: "0 because no run matches all conditions together; see Closest NASA evidence". | No preset shows only zeros without an explanation. |
+| W3 options | Rename to "Tested options with less oxygen". Prefer runs within 2 psi of the design's pressure; if none, say "none at your pressure; these are at 14.7 psi". | Rover shows the honest "none at your pressure" line. |
+
+### Phase 2, 9:50–10:20: display and wording (W4, W5, W6, W7)
+
+| Item | What changes | Done when |
+|---|---|---|
+| W6 ACME outcomes | Show "day result: N flames ignited (per-flame result not in the PSI table)" instead of "flames ignited that day: N". | No run drawer shows the old label. |
+| W7 coverage map | Caption: "231 runs without oxygen or pressure values are not plotted." | Caption matches the API count. |
+| W4 AI labels | One line in each AI panel: "Evidence panel: open model (qwen2.5), written ahead and re-checked live. Ask: Gemini, live, quote-checked." Hide "engineering recommendation" lines behind "Show suggestions". | Both panels say which model and how it is checked. |
+| W5 long page | Sticky "Jump to" bar under the header: Verdict, Evidence, Lenses, Campaign, Journey, Ask, Investigations. | On a phone every main section is one tap away. |
+
+**Checkpoint 10:20:** run tests and `validate_live.py`, deploy, check in the browser. If anything fails, roll back to the last good deploy.
+
+### Phase 3, 10:30–11:30: data gaps we can close
+
+| Item | What changes | Done when |
+|---|---|---|
+| G5 BASS measured atmosphere | Turn on `FLAMELENS_BASS_ATMOSPHERE` (123 tests get measured O₂ and pressure from NASA's as-run matrix). Re-check the cached ISS AI text with the verifier; drop any claim that fails. | ISS counts update (about 336 → 427), 0 unverified claims shown, validation updated. |
+| G7 oxygen limits (observed only) | New table from FLEX: per fuel and pressure, the lowest oxygen at which a droplet still burned in the PSI table. Labelled "observed in these runs, not a flammability limit". | A small "Lowest oxygen that burned" lens, every cell links to its run. |
+| G3 outcome "tested" | Run drawers say where the result is: "result in report figures (not in the PSI table)" with the report link, for Flame Design, BASS and BASS-II. No values read from plots. | No run says just "tested" without a pointer. |
+| G4/G6 | Profiles already show sourced notes; add the same note in run drawers ("airflow: quiescent, per PSI text"). | Run drawers match the profiles. |
+
+### Phase 4, 11:30–12:00: AI text, final checks, docs
+
+| Item | What changes | Done when |
+|---|---|---|
+| Mars AI text | Optional, needs Laila's Google key on her laptop: run `scripts/build_explanations.py mars-habitat` against Gemini's OpenAI-compatible endpoint. Otherwise keep the verified template and say so. | Mars shows verified AI text or the labelled template. |
+| Final | Tests, `validate_live.py`, deploy, README and `FINAL-SUBMISSION.md` numbers updated (rover verdict, ISS counts), CLAUDE.md status log. | All checks pass on the live site; docs match it. |
+
+**Code freeze 12:00.** After that only wording fixes.
+
+### Phase 5, team, in parallel from now
+
+| Owner | Task | Done when |
+|---|---|---|
+| Leader | Upload `media/flamelens-demo-30s.mp4` (YouTube unlisted or Drive) and test the link in a private window | Link opens logged out |
+| Leader / F | Slides (7) from `docs/FINAL-SUBMISSION.md`; add the "missing data" slide below | Deck done by 12:15 |
+| Leader | Submit on the official site with the live URL, repo, video and AI disclosure | Submitted by 12:30 |
+
+### Gaps that no code can close (say them in the pitch)
+
+| Gap | Pitch line |
+|---|---|
+| G1 solid materials at Moon/Mars atmospheres, G2 partial gravity, G9 SoFIE/FLARE/LUCI/FM2 | "NASA's PSI archive has no fabric or plastic burned at Moon or Mars atmospheres and no partial-gravity runs. FlameLens shows that gap, the nearest real evidence (including Saffire V outside PSI), and the cheapest test to close it." |
+| G3 plot-only results, G8 per-run smoke sizes | "Where a result exists only in a report figure, we link the figure instead of guessing a number." |
+
+If time runs short, cut from the bottom: G7 first, then W5, then G5. Never cut W1: it is the one a NASA judge would catch.
