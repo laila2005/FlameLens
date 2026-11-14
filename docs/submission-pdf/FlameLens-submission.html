@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>FlameLens · Team AstroSpark · NASA Space Apps 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 16mm 16mm 18mm 16mm; }
+  :root { --ink:#16202e; --muted:#566273; --flame:#e46d0f; --cyan:#0b7f9a; --line:#d9dee5; --soft:#f4f6f9; }
+  * { box-sizing: border-box; }
+  body { font-family: "IBM Plex Sans", "Segoe UI", Arial, sans-serif; color: var(--ink); background:#fff; font-size: 10pt; line-height: 1.45; margin: 0; }
+  h1, h2, h3 { font-family: "Sora", "Segoe UI", Arial, sans-serif; line-height: 1.2; }
+  h1 { font-size: 26pt; margin: 0; }
+  h2 { font-size: 14pt; margin: 18pt 0 6pt; padding-bottom: 3pt; border-bottom: 2px solid var(--flame); break-after: avoid; }
+  h3 { font-size: 11pt; margin: 11pt 0 4pt; color: var(--cyan); break-after: avoid; }
+  p { margin: 0 0 6pt; }
+  ul, ol { margin: 0 0 6pt; padding-left: 16pt; }
+  li { margin: 0 0 2pt; }
+  a { color: var(--cyan); text-decoration: none; word-break: break-word; }
+  .mono, code { font-family: "IBM Plex Mono", Consolas, monospace; font-size: 9pt; }
+  table { width: 100%; border-collapse: collapse; margin: 4pt 0 8pt; font-size: 9pt; }
+  th, td { text-align: left; vertical-align: top; padding: 3pt 5pt; border-bottom: 1px solid var(--line); }
+  th { background: var(--soft); font-weight: 600; }
+  tr { break-inside: avoid; }
+  .hero { display: flex; gap: 14pt; align-items: center; padding-bottom: 10pt; border-bottom: 1px solid var(--line); }
+  .hero img { width: 92pt; height: 92pt; border-radius: 50%; object-fit: cover; }
+  .hero .tag { color: var(--flame); font-weight: 600; font-size: 11pt; margin: 2pt 0 4pt; }
+  .hero .q { color: var(--muted); font-style: italic; }
+  .caption { font-size: 7.5pt; color: var(--muted); text-align: center; margin-top: 2pt; }
+  .links { margin: 10pt 0 4pt; }
+  .links td:first-child { width: 120pt; font-weight: 600; }
+  .box { background: var(--soft); border-left: 3px solid var(--flame); padding: 6pt 9pt; margin: 6pt 0 8pt; break-inside: avoid; }
+  .label { display: inline-block; font-size: 7.5pt; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; padding: 1pt 5pt; border-radius: 3pt; color: #fff; margin-right: 4pt; vertical-align: 1pt; }
+  .ok { background: #1f8a4c; } .lim { background: #b5542a; } .fut { background: #5a5f9e; }
+  .small { font-size: 8.5pt; color: var(--muted); }
+  .pb { break-before: page; }
+  footer { margin-top: 14pt; font-size: 8pt; color: var(--muted); border-top: 1px solid var(--line); padding-top: 4pt; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div>
+    <img src="../../media/flamelens-illustration.jpg" alt="FlameLens logo">
+    <div class="caption">AI-generated illustration<br>(Google Gemini)</div>
+  </div>
+  <div>
+    <h1>FlameLens</h1>
+    <div class="tag">Team AstroSpark · NASA Space Apps Challenge 2026 · Cairo</div>
+    <div><b>Challenge:</b> Flame in Freefall: SI-Powered Fire Safety Insights from Microgravity Combustion Data</div>
+    <div class="q">"Is my habitat design backed by NASA fire experiments, how strong is that evidence, and what should be tested next?"</div>
+  </div>
+</div>
+
+<table class="links">
+  <tr><td>Live project (no login)</td><td><a href="https://flamelens-steel.vercel.app">https://flamelens-steel.vercel.app</a></td></tr>
+  <tr><td>Demo video (31 s)</td><td><a href="https://youtu.be/FxSWxqPT-EI">https://youtu.be/FxSWxqPT-EI</a></td></tr>
+  <tr><td>Source code</td><td><a href="https://github.com/laila2005/FlameLens">https://github.com/laila2005/FlameLens</a></td></tr>
+  <tr><td>NASA Space Apps team page</td><td><a href="https://www.spaceappschallenge.org/2026/find-a-team/astrospark2/">https://www.spaceappschallenge.org/2026/find-a-team/astrospark2/</a></td></tr>
+</table>
+
+<table>
+  <tr><th>Team member</th><th>Role</th><th>Team member</th><th>Role</th></tr>
+  <tr><td>Laila Mohamed</td><td>Tech lead, backend</td><td>Judy Adham</td><td>Data</td></tr>
+  <tr><td>Youssif Hassan</td><td>Frontend</td><td>Dai Alaa</td><td>AI and retrieval</td></tr>
+  <tr><td>Yasmin Reda</td><td>Charts and lenses</td><td>Mostafa Fathy</td><td>Research, docs, pitch and QA</td></tr>
+</table>
+
+<h2>1. High-level summary</h2>
+<p><b>What we built.</b> FlameLens is a free web dashboard that tells a spacecraft or habitat engineer whether a cabin atmosphere has been tested in NASA's microgravity fire experiments.</p>
+<p><b>Why it matters.</b> Future Moon bases and pressurized rovers are expected to use 30 % oxygen or more at 10.2 psi or less, which makes materials burn more easily. In 1967 the Apollo 1 crew died in a ground test that no one had identified as hazardous, in a 100 % oxygen cabin full of combustible material. NASA has studied fire on the International Space Station for years, and the results are public in its Physical Sciences Informatics (PSI) repository, but they are spread over many tables and reports that are hard to compare.</p>
+<p><b>How it addresses the challenge.</b> We merged 2,003 runs from 18 PSI flight investigations into one table. The user enters oxygen, pressure, airflow, material and gravity. FlameLens marks each condition as supported, weak or not tested, scores how strong the evidence is, shows the closest real NASA runs and exactly how they differ, and proposes the next experiment that would close the gap. A plain-language explanation and an "Ask the NASA reports" panel use AI, but every AI claim must cite a NASA run or quote a NASA page, or it is removed. This summarizes, ranks and interprets NASA combustion data for fire-safety decisions. Where there is no evidence, FlameLens says so instead of guessing. It never gives a safety verdict.</p>
+
+<h2>2. Project details</h2>
+
+<h3>Main use</h3>
+<p>An engineer checks a planned cabin atmosphere before anyone breathes it: which conditions NASA has already tested, how strong that evidence is, and what is still untested.</p>
+
+<h3><span class="label ok">Working now</span>What FlameLens does</h3>
+<p>Everything in this list is live at <a href="https://flamelens-steel.vercel.app">flamelens-steel.vercel.app</a> for the 5 presets (ISS cabin, spacesuit, pressurized rover, Moon base, Mars habitat) and for any custom design.</p>
+<ul>
+  <li><b>Evidence case:</b> each condition marked Supported (2 or more matching runs), Weak (1) or No evidence (0), with run IDs. Only runs with the same kind of material count.</li>
+  <li><b>Evidence strength, 0 to 100,</b> from four visible parts: how close the runs are, how reliable their values are, how many there are, and source quality. It measures evidence, not safety.</li>
+  <li><b>Closest NASA evidence:</b> the runs that match everything except the fewest conditions, and exactly what differs.</li>
+  <li><b>Run this next:</b> the gaps, the nearest existing run, and what to change to make the missing test.</li>
+  <li><b>Test campaign planner:</b> if NASA can fly N more experiments, which ones cover the most habitat designs.</li>
+  <li><b>Tested options with less oxygen:</b> real runs with at least 10 % lower oxygen partial pressure, never extrapolated.</li>
+  <li><b>Mission atmosphere journey:</b> ISS cabin, spacesuit, rover and Moon base as one mission, only as well backed as its weakest stage.</li>
+  <li><b>Seven views of the data:</b> coverage map, flame spread (43 measured rates), smoke vs dust particle sizes, cool flames, smoke points (55 ISS flames), airflow tested, and an early-detection simulator.</li>
+  <li><b>"What the evidence says":</b> a short AI explanation where every sentence cites a run.</li>
+  <li><b>"Ask the NASA reports":</b> questions answered from 1,899 passages of 20 NASA PSI documents; each claim must quote its page word for word.</li>
+  <li>A printable design review brief, and downloads of the curated data.</li>
+</ul>
+
+<div class="box">
+<b>A task to try (2 minutes).</b>
+<ol>
+  <li>Open the site and click <b>Pressurized rover</b> (30 % oxygen, 10.2 psi, solid material, lunar gravity).</li>
+  <li>Result: 2 of 5 conditions supported, 0 NASA runs match the whole design. Its oxygen and pressure were tested only with gas flames and fuel droplets, never a solid material ("Other fuels only").</li>
+  <li><b>Closest NASA evidence:</b> 308 solid-material runs share its airflow but were at 14.5 to 22.2 % oxygen and 14.7 psi. Outside PSI, NASA's Saffire V fire burned cotton at 26.2 % oxygen and 10.25 psi; FlameLens cites it but does not count it.</li>
+  <li>Click run <span class="mono">PSI-25-0023</span> to see each value, how it was obtained, and its NASA DOI.</li>
+  <li>Open <b>Test campaign planner</b> and choose 3 tests: one lunar-gravity test covers both the Moon base and the rover.</li>
+  <li>Switch to <b>ISS cabin</b> for contrast: 336 runs match the whole design, evidence strength 82.5 of 100.</li>
+</ol>
+</div>
+
+<h3>How it works</h3>
+<ul>
+  <li><b>Data:</b> we downloaded the PSI Experimental Table of each combustion investigation and merged them. For every run we keep the material, oxygen, pressure, airflow, gravity and outcome, how each value was obtained (measured, read from text, assumed or unknown), and its DOI.</li>
+  <li><b>Decisions:</b> matching, scoring, ranking, the next experiment and the campaign plan are plain arithmetic over that table. No AI is involved, and the app works with AI turned off. A run matches a condition when it is within 6 oxygen points, 2 psi or 8 cm/s, or has the same material type and gravity.</li>
+  <li><b>AI text:</b> a citation verifier checks every AI claim on every request and removes any claim whose run, number or quote is not in the NASA source, or that gives a safety verdict.</li>
+</ul>
+
+<h3>Benefits and aims</h3>
+<ul>
+  <li>Engineers get a defensible, checkable answer in minutes, with the gaps visible.</li>
+  <li>Researchers and students get one comparable table of NASA fire experiments, with every source linked.</li>
+  <li>Mission planners get a list of the experiments that would close the most gaps.</li>
+  <li>On Earth, the same research supports smoke detectors that tell smoke from dust and better firefighter equipment (NASA Spinoff).</li>
+  <li><b>Our aim:</b> make NASA's fire data usable for design decisions, be honest about what has not been tested, and point to the next experiment instead of guessing.</li>
+</ul>
+
+<h3>Tools, languages, hardware and software</h3>
+<ul>
+  <li>Python (FastAPI, Pydantic, pytest) for the backend and data scripts; plain JavaScript, HTML, CSS and our own SVG charts for the frontend; hosted on Vercel; code on GitHub.</li>
+  <li>95 automated tests and a 137-check script that tests the live site against the curated data.</li>
+  <li>AI: Qwen2.5 7B Instruct (open model) for the cached explanation text and Google Gemini 2.5 Flash for "Ask the NASA reports", both behind our citation verifier (details in section 5).</li>
+  <li>Hardware: none beyond our laptops.</li>
+</ul>
+
+<h3><span class="label lim">Limitations</span>What is not finished</h3>
+<ul>
+  <li>PSI has no partial-gravity fire runs: all 2,003 runs are in microgravity, so no Moon or Mars design has a full match. We show lunar and Martian gravity drop-tower limits from NASA papers, cited but not counted.</li>
+  <li>No solid material was burned in PSI above 22.2 % oxygen or below 14.7 psi.</li>
+  <li>962 runs record only that the run was done, not its result; 1,215 have no airflow value; 960 have no measured or stated pressure (we assume ISS cabin air and label it).</li>
+  <li>Measured oxygen and pressure for the BASS tests are extracted but switched off until the AI text is regenerated for the new counts.</li>
+  <li>The AI explanation panel has prepared text for four presets; the Mars habitat and custom designs show a plain summary filled from the data.</li>
+  <li>The early-detection simulator is an illustration; only its gas levels and particle sizes come from NASA data.</li>
+  <li>FlameLens never gives a safety verdict. "No evidence" means untested in PSI, not unsafe.</li>
+</ul>
+
+<h3><span class="label fut">Future plans</span>Not built yet</h3>
+<ul>
+  <li>Partial-gravity runs from future NASA experiments (FM2, LUCI), and SoFIE and FLARE data when they appear in PSI.</li>
+  <li>Results that exist only in NASA reports and plots (BASS, ACME Flame Design), marked as lower confidence.</li>
+  <li>A table of the lowest oxygen that burned for each FLEX fuel.</li>
+  <li>A live AI explanation for any custom design, checked by the same verifier.</li>
+</ul>
+
+<h2 class="pb">3. NASA data and resources</h2>
+
+<h3>3.1 NASA Physical Sciences Informatics (PSI), combustion science (main dataset)</h3>
+<p><b>Link:</b> <a href="https://psi.nasa.gov/physci/repo/search?q=combustion">https://psi.nasa.gov/physci/repo/search?q=combustion</a> (license CC0-1.0, as stated on the PSI records)</p>
+<p><b>Mission and area:</b> microgravity fire experiments run on the International Space Station, plus the Saffire experiments on uncrewed Cygnus cargo spacecraft.</p>
+<p><b>Processing:</b> we downloaded the 26 PSI combustion Experimental Tables and the small documents of each investigation; mapped each table's own columns to one format (material, material type, oxygen %, pressure, airflow, gravity, outcome, measured value, DOI); and recorded how each value was obtained. Where a table gives no oxygen or pressure we use ISS cabin air and label it "assumed". We never invent or round a value; missing stays empty.</p>
+<p><b>Role:</b> this table is the evidence behind every decision in FlameLens: evidence case, strength score, closest evidence, run this next, campaign planner, lower-oxygen options and mission journey. Every result links back to the run and its DOI.</p>
+<table>
+  <tr><th>Investigation</th><th>Runs</th><th>DOI</th><th>Also used</th></tr>
+  <tr><td>PSI-26 BASS</td><td>122</td><td><a href="https://doi.org/10.60555/58h4-dy80">10.60555/58h4-dy80</a></td><td>Crew observations from the as-run matrix</td></tr>
+  <tr><td>PSI-25 BASS-II</td><td>129</td><td><a href="https://doi.org/10.60555/4qc4-de67">10.60555/4qc4-de67</a></td><td>Summary report: flame-spread rates, fan calibration</td></tr>
+  <tr><td>PSI-98 Saffire-I</td><td>2</td><td><a href="https://doi.org/10.60555/0t15-1z43">10.60555/0t15-1z43</a></td><td></td></tr>
+  <tr><td>PSI-99 Saffire-II</td><td>9</td><td><a href="https://doi.org/10.60555/2chp-m469">10.60555/2chp-m469</a></td><td>Flame-spread data</td></tr>
+  <tr><td>PSI-100 Saffire-III</td><td>2</td><td><a href="https://doi.org/10.60555/040q-4h36">10.60555/040q-4h36</a></td><td></td></tr>
+  <tr><td>PSI-107 SPICE</td><td>469</td><td><a href="https://doi.org/10.60555/9kbh-e962">10.60555/9kbh-e962</a></td><td>Thesis appendix: 55 measured smoke points</td></tr>
+  <tr><td>PSI-20 ACME BRE</td><td>43</td><td><a href="https://doi.org/10.60555/vb93-3y72">10.60555/vb93-3y72</a></td><td></td></tr>
+  <tr><td>PSI-102 SAME</td><td>8</td><td><a href="https://doi.org/10.60555/gd4k-8h62">10.60555/gd4k-8h62</a></td><td></td></tr>
+  <tr><td>PSI-101 SAME-R</td><td>109</td><td><a href="https://doi.org/10.60555/2np7-jv14">10.60555/2np7-jv14</a></td><td>Final report Table 1: smoke particle sizes</td></tr>
+  <tr><td>PSI-47 DAFT and DAFT-2</td><td>2</td><td><a href="https://doi.org/10.60555/ztgj-d202">10.60555/ztgj-d202</a></td><td>Reports: dust particle sizes</td></tr>
+  <tr><td>PSI-69 FLEX</td><td>274</td><td><a href="https://doi.org/10.60555/mbq8-0451">10.60555/mbq8-0451</a></td><td></td></tr>
+  <tr><td>PSI-39 CFI</td><td>87</td><td><a href="https://doi.org/10.60555/m6pj-a914">10.60555/m6pj-a914</a></td><td></td></tr>
+  <tr><td>PSI-159 ACME CFI-G</td><td>333</td><td><a href="https://doi.org/10.60555/cyt1-kh64">10.60555/cyt1-kh64</a></td><td></td></tr>
+  <tr><td>PSI-22 ACME E-FIELD Flames</td><td>20</td><td><a href="https://doi.org/10.60555/se5a-8c73">10.60555/se5a-8c73</a></td><td></td></tr>
+  <tr><td>PSI-10 ACME Flame Design</td><td>327</td><td><a href="https://doi.org/10.60555/w4zy-bt45">10.60555/w4zy-bt45</a></td><td></td></tr>
+  <tr><td>PSI-21 ACME CLD Flame</td><td>32</td><td><a href="https://doi.org/10.60555/23e1-9950">10.60555/23e1-9950</a></td><td></td></tr>
+  <tr><td>PSI-23 ACME s-Flame</td><td>23</td><td><a href="https://doi.org/10.60555/k57n-p030">10.60555/k57n-p030</a></td><td></td></tr>
+  <tr><td>PSI-106 SLICE</td><td>12</td><td><a href="https://doi.org/10.60555/pm12-rg61">10.60555/pm12-rg61</a></td><td></td></tr>
+  <tr><td>PSI-68 FLEX-2</td><td>matrix only</td><td><a href="https://doi.org/10.60555/byp8-h018">10.60555/byp8-h018</a></td><td>Planned test matrix, no runs counted</td></tr>
+</table>
+
+<h3>3.2 PSI documents for "Ask the NASA reports"</h3>
+<p>20 PSI documents from 9 investigations, split into 1,899 page-tagged passages and searched with BM25. The AI may answer only from these passages, and a claim is kept only if its quote appears word for word on the cited page.</p>
+
+<h3>3.3 PSI ground and computer-modelling studies</h3>
+<p>PSI-60 (<a href="https://doi.org/10.60555/mzjm-yv57">10.60555/mzjm-yv57</a>), PSI-62 (<a href="https://doi.org/10.60555/e9xp-ex83">10.60555/e9xp-ex83</a>), PSI-115 (<a href="https://doi.org/10.60555/q0v5-1v28">10.60555/q0v5-1v28</a>), PSI-117 (<a href="https://doi.org/10.60555/gz0q-b577">10.60555/gz0q-b577</a>), PSI-142 (<a href="https://doi.org/10.60555/80qf-vj95">10.60555/80qf-vj95</a>). Linked from the dashboard next to their flight investigations (BASS, BASS-II, SPICE, SAME, FLEX). Kept separate from the flight runs and never counted as evidence.</p>
+
+<h3>3.4 NASA Technical Reports Server (NTRS): evidence outside PSI</h3>
+<p><a href="https://ntrs.nasa.gov">https://ntrs.nasa.gov</a>: 27 NASA papers found with the public NTRS API and linked from the investigation profiles. These are shown in "Closest NASA evidence", cited but never counted in the evidence case:</p>
+<ul>
+  <li>Saffire IV-VI large fires on Cygnus at reduced pressure and raised oxygen: ICES-2021-266 (<a href="https://ntrs.nasa.gov/citations/20210011521">NTRS 20210011521</a>), ICES-2024-365 (<a href="https://ntrs.nasa.gov/citations/20240002981">NTRS 20240002981</a>). Saffire V burned cotton at 26.2 % oxygen and 10.25 psi, the nearest real test to the rover atmosphere.</li>
+  <li>Flammability limits at lunar and Martian gravity from drop-tower tests: Olson and Ferkul, ICES 2012 (<a href="https://ntrs.nasa.gov/citations/20130010991">NTRS 20130010991</a>).</li>
+  <li>NASA-STD-6001 material tests at 10.2 psia: Hirsch et al. 2007 (<a href="https://ntrs.nasa.gov/citations/20070018178">NTRS 20070018178</a>) and 2010 (<a href="https://ntrs.nasa.gov/citations/20100015582">NTRS 20100015582</a>); at 8.2 psia: ICES-2026-301 (<a href="https://ntrs.nasa.gov/citations/20260003042">NTRS 20260003042</a>).</li>
+</ul>
+
+<h3>3.5 NASA atmosphere and exposure standards (preset designs)</h3>
+<ul>
+  <li>ISS cabin air, 14.7 psia and 21 % oxygen: NASA OCHMO-TB-003 Rev A. Sets the ISS cabin preset.</li>
+  <li>Exploration atmosphere, 8.2 psia and 34 % oxygen: <a href="https://ntrs.nasa.gov/citations/20220005716">NTRS 20220005716</a>. Sets the Mars habitat preset.</li>
+  <li>Carbon monoxide limits (SMAC, 15 ppm for long missions): JSC 20584 Rev C. Sets the alarm level in the early-detection simulator.</li>
+</ul>
+
+<h3>3.6 Other NASA resources</h3>
+<ul>
+  <li>NASA Spinoff, source of the Earth-benefit text: <a href="https://spinoff.nasa.gov/node/9407">smoke detector that tells smoke from dust</a>, <a href="https://spinoff.nasa.gov/node/9582">firefighter breathing system</a>, <a href="https://spinoff.nasa.gov/node/9918">firefighter clothing</a>.</li>
+  <li>Apollo 1 facts in our story and video, quoted from NASA's <a href="https://www.nasa.gov/mission/apollo-1/">Apollo 1 page</a> and the <a href="https://www.nasa.gov/wp-content/uploads/static/history/Apollo204/find.html">Apollo 204 Review Board findings</a>.</li>
+  <li><a href="https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/">NASA Combustion Science</a> and the <a href="https://www.spaceappschallenge.org/2026/challenges/flame-in-freefall/">challenge page</a>: used to check the list of investigations and the challenge goals.</li>
+</ul>
+
+<h2>4. Partner data, other data and references</h2>
+<p><b>Space agency partner data:</b> none. We used only NASA data.</p>
+<table>
+  <tr><th>Tool or source</th><th>Link</th><th>Used for</th></tr>
+  <tr><td>Python</td><td><a href="https://www.python.org">python.org</a></td><td>Data scripts and backend</td></tr>
+  <tr><td>FastAPI, Pydantic</td><td><a href="https://fastapi.tiangolo.com">fastapi.tiangolo.com</a>, <a href="https://docs.pydantic.dev">docs.pydantic.dev</a></td><td>The web API</td></tr>
+  <tr><td>pytest</td><td><a href="https://pytest.org">pytest.org</a></td><td>95 automated tests</td></tr>
+  <tr><td>openpyxl, xlrd, pypdf, pypdfium2</td><td>PyPI (open source)</td><td>Reading NASA spreadsheets and PDF reports</td></tr>
+  <tr><td>Vercel</td><td><a href="https://vercel.com">vercel.com</a></td><td>Hosting the live site (free plan, commercial service)</td></tr>
+  <tr><td>Google Fonts</td><td><a href="https://fonts.google.com">fonts.google.com</a></td><td>Sora, IBM Plex Sans, IBM Plex Mono (SIL Open Font License)</td></tr>
+  <tr><td>Qwen2.5 7B Instruct</td><td><a href="https://huggingface.co/Qwen/Qwen2.5-7B-Instruct">huggingface.co/Qwen/Qwen2.5-7B-Instruct</a></td><td>Cached explanation text (open model)</td></tr>
+  <tr><td>Google Gemini 2.5 Flash</td><td><a href="https://ai.google.dev">ai.google.dev</a></td><td>"Ask the NASA reports"; Gemini also generated the logo illustration</td></tr>
+  <tr><td>faster-whisper</td><td><a href="https://github.com/SYSTRAN/faster-whisper">github.com/SYSTRAN/faster-whisper</a></td><td>Timing the video subtitles</td></tr>
+  <tr><td>Playwright, Microsoft Edge</td><td><a href="https://playwright.dev">playwright.dev</a></td><td>Screen captures of our live site for the video</td></tr>
+  <tr><td>Pillow, NumPy, FFmpeg</td><td><a href="https://python-pillow.org">python-pillow.org</a>, <a href="https://ffmpeg.org">ffmpeg.org</a></td><td>Video editing with our own scripts</td></tr>
+</table>
+<ul>
+  <li><b>Team code credit:</b> the first scripts of the Ask feature were written by our team member Dai Alaa; we integrated and extended them. Its search is BM25, a standard ranking method we coded ourselves.</li>
+  <li><b>Video:</b> Laila Mohamed's own voice and on-camera recording; music synthesized by our code (no samples).</li>
+  <li><b>Images:</b> screenshots of our own dashboard; the logo is an AI-generated illustration (Google Gemini), chosen and cropped by the team.</li>
+  <li>No copyrighted images, music or text from other people were used. The full source list is in the repository README.</li>
+</ul>
+
+<h2>5. Use of AI (SI)</h2>
+<p><b>Yes, we used AI tools. The decisions in FlameLens do not use AI.</b></p>
+<h3>In the product</h3>
+<ul>
+  <li><b>No AI in the decisions.</b> Evidence status, strength scores, ranking, the next experiment, the campaign plan and the lower-oxygen options are plain arithmetic over the NASA tables. The app works fully with AI turned off.</li>
+  <li><b>"What the evidence says":</b> the open model Qwen2.5 7B Instruct wrote 5 claims each for four presets (Moon base, pressurized rover, spacesuit, ISS cabin) ahead of time, using only the retrieved NASA runs. Our citation verifier re-checks every claim on every request and removes any claim that cites a run outside the evidence, states a number not in that run, or gives a safety verdict. All 20 claims pass. The Mars habitat and custom designs show a plain summary filled from the data, labelled "AI is off".</li>
+  <li><b>"Ask the NASA reports":</b> Google Gemini 2.5 Flash answers questions using only passages retrieved from 20 NASA PSI documents. The server keeps a claim only if its quote appears word for word on the cited page, its numbers are on that page, and it has no safety verdict. Without an AI key the panel shows the matching passages.</li>
+  <li><b>Labels:</b> AI text is labelled in the interface, and each claim shows the run or page it cites. Suggested questions from the model are labelled "AI suggestion, not verified as a fact".</li>
+</ul>
+<h3>While building</h3>
+<ul>
+  <li>AI coding assistants (Claude in Claude Code, and Claude and Gemini in Antigravity) helped write the data scripts, backend, frontend, documentation, the video script and the video editing scripts during the hackathon. The team reviewed and tested the work.</li>
+  <li>An AI research agent helped find NASA papers outside PSI; we checked every value against the paper before adding it.</li>
+  <li>Every number in the app comes from NASA files, not from an AI, and is checked by 95 automated tests and a live-site check script.</li>
+</ul>
+<h3>Media</h3>
+<ul>
+  <li>The logo illustration was generated with Google Gemini and chosen by the team. It is labelled "AI-generated illustration" in this document.</li>
+  <li>The video voice and face are Laila's own, not AI. Subtitles were timed with the open-source Whisper model (faster-whisper) and checked against what she says. The music is synthesized by code, not AI-generated.</li>
+</ul>
+
+<footer>FlameLens · Team AstroSpark · NASA Space Apps Challenge 2026 · Live: flamelens-steel.vercel.app · Demo: youtu.be/FxSWxqPT-EI · Code: github.com/laila2005/FlameLens</footer>
+</body>
+</html>
