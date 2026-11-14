@@ -45,6 +45,7 @@ Supporting pieces: a deterministic ranker (weights 0.35 O₂, 0.20 pressure, 0.2
 | Web research: challenge name, PSI access routes, NTRS API, papers, investigations | `docs/12-resources.md` |
 | Hackathon-day start: resource summary, reading assignments, first hour | `docs/13-start-now.md` |
 | **Validation report: what was tested, fixes, what is left before submitting** | `docs/14-validation-report.md` (re-run `python scripts/validate_live.py .`) |
+| **Dashboard review: weaknesses and missing data (hour 19.9)** | `docs/15-dashboard-review.md` |
 | Stack, API contract, ranker, decision-route rules | `docs/05-architecture-and-api.md` |
 | Data row format and extraction rules | `docs/06-data-guide.md` |
 | AI model, prompts, verifier rules, bake-off | `docs/07-ai-guide.md` |
@@ -146,6 +147,8 @@ gh auth status                    # GitHub CLI login for pushing
 ## Status log
 
 Newest first. One line per change: date, what, who or what session.
+
+- 2026-11-14 ~8:55 AM Cairo (hour 19.9): Laila: dashboard review. Wrote `docs/15-dashboard-review.md`: 8 weaknesses (top: oxygen/pressure 'Supported' for solid designs comes only from gas and droplet runs; double 0/100 meter; 'safer options' at a different pressure; two AI systems; 26-screen page on phone) and the missing data (0 solid runs above 22.7 % O2 or below 14 psi, 0 partial-gravity runs, 962 runs outcome 'tested' only, 1,215 without airflow, 960 with assumed pressure). Nothing changed in the app.
 
 - 2026-11-14 ~8:40 AM Cairo (hour 19.7): Ask the NASA reports is LIVE with AI: Laila set GOOGLE_API_KEY (new key, 'AQ.' format) in Vercel. Google keys now try the Gemini API first and Vertex AI second (new AI Studio keys also start with 'AQ.'); Gemini 2.5 thinking turned off (it truncated the JSON). Checked live: BASS-II airflow question -> 3 verified claims, 0 removed (BASS-II Summary Report pp. 44, 49); SPICE question -> 1 kept, 2 removed by the verifier (quote not word for word; number 52 not on page). xAI key has no credits and is not used while the Google key is set. Regenerate both keys after the demo. 93 tests.
 
