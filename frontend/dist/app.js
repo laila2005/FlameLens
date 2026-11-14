@@ -97,6 +97,7 @@
     const w = st.whole || { score: 0, n_runs: 0, n_measured: 0, n_investigations: 0, proximity: 0, reliability: 0, run_count: 0, source_quality: 0, investigations: [] };
     const at = st.atmosphere || { score: 0, n_runs: 0, n_measured: 0, n_investigations: 0, investigations: [] };
     const ds = st.dataset || { total_runs: 2003, total_investigations: 18, near_any_condition_runs: 0, backing_investigations: [], not_yet_in_psi: ["SoFIE", "FLARE", "LUCI", "FM2"] };
+    if (ds.total_runs) FL.totalRuns = ds.total_runs;
     const wScore = Math.round(w.score ?? 0);
     const atScore = Math.round(at.score ?? 0);
     const activePart = w.n_runs > 0 ? w : (at.n_runs > 0 ? at : null);
@@ -188,7 +189,7 @@
       ? x.claims.map((c) => `<li>
           <span>${esc(c.claim)}</span>
           <span class="cite">${runBtn(c.run_id_reference)} <span class="hint">${esc(c.investigation)} · confidence ${esc(c.confidence_level)} · <span class="ok">✓ verified</span></span></span>
-          ${c.engineering_recommendation ? `<span class="rec">${esc(c.engineering_recommendation)}</span>` : ""}
+          ${c.engineering_recommendation ? `<span class="rec"><span class="reclab">AI suggestion, not verified as a fact:</span> ${esc(c.engineering_recommendation)}</span>` : ""}
         </li>`).join("")
       : "<li>Not enough data to explain this design. See the evidence case below.</li>";
     $("removed").innerHTML = x.removed_count
@@ -300,7 +301,8 @@
           marker: { x: t.pressure_psi, y: t.o2_pct }, box: { x0: t.pressure_psi - 2, x1: t.pressure_psi + 2, y0: t.o2_pct - 6, y1: t.o2_pct + 6 },
         });
         legend(Object.entries(PILLAR_COLOR).map(([k, v]) => [k, v]).concat([["faint dot = assumed cabin air", "var(--c-faint)"]]));
-        $("caption").textContent = `Each dot is one of ${d.n_points.toLocaleString()} NASA runs. The dashed box is "close to your design" (±6 oxygen points, ±2 psi). An empty box means no evidence. Click a dot to see its source.`;
+        const unplotted = (FL.totalRuns || 2003) - d.n_points;
+        $("caption").textContent = `Each dot is one of ${d.n_points.toLocaleString()} NASA runs${unplotted > 0 ? ` (${unplotted.toLocaleString()} runs without an oxygen or pressure value are not plotted)` : ""}. The dashed box is "close to your design" (±6 oxygen points, ±2 psi). An empty box means no evidence. Click a dot to see its source.`;
       } else if (lens === "coolflame") {
         const d = await lensData("coolflame");
         if (lens !== want) return;
@@ -406,7 +408,7 @@
           <dt>Pressure</dt><dd>${r.pressure_psi ?? "–"} psi ${basisTag(r.pressure_basis)}</dd>
           <dt>Airflow</dt><dd>${r.airflow_cm_s ?? "–"} cm/s ${basisTag(r.airflow_basis)}</dd>
           <dt>Gravity</dt><dd>${r.gravity_g} g</dd>
-          <dt>Outcome</dt><dd>${esc(r.outcome)}</dd>
+          <dt>Outcome</dt><dd>${esc(fmtOutcome(r.outcome))}</dd>
           ${r.metric_name ? `<dt>${esc(r.metric_name)}</dt><dd>${esc(r.metric_value)}</dd>` : ""}
           <dt>Confidence</dt><dd>${esc(r.confidence)}</dd>
           <dt>Source</dt><dd>${esc(r.source_table)} (${esc(r.value_source)})</dd>
@@ -485,6 +487,13 @@
 
   // ---------------------------------------------------------------- investigations explorer
 
+  // ACME tables record how many flames were ignited on a test day, not a result per flame
+  const DAY_RE = /^flames ignited that day: (\d+)$/i;
+  function fmtOutcome(o) {
+    const m = DAY_RE.exec(o || "");
+    return m ? `day result: ${m[1]} flames ignited that test day (per-flame result not in the PSI table)` : (o === "tested" ? "tested (result not in the PSI table)" : o);
+  }
+
   let invAll = [], invSel = [], invPillar = "All";
   const rng = (r, unit) => (r ? (r[0] === r[1] ? `${r[0]} ${unit}` : `${r[0]}–${r[1]} ${unit}`) : "not recorded");
 
@@ -545,7 +554,10 @@
             <dt>Varied</dt><dd>${esc((p.varied || []).join(", ") || "nothing recorded")}</dd>
             <dt>Held constant</dt><dd>${(p.constant || []).map((c) => `${esc(c.condition)}${c.value != null ? ` = ${esc(c.value)}` : condNoteShort(p, c.condition)}`).join(", ") || "–"}</dd>
             <dt>Measured</dt><dd>${esc((p.measurements_mentioned || []).join(", ") || "not stated in the PSI text")}</dd>
-            <dt>Outcomes</dt><dd>${Object.entries(p.outcome_counts || {}).map(([k, v]) => `${esc(k)} ${v}`).join(", ") || "–"}</dd>
+            <dt>Outcomes</dt><dd>${(() => { const e = Object.entries(p.outcome_counts || {}); const day = e.filter(([k]) => DAY_RE.test(k));
+              return e.filter(([k]) => !DAY_RE.test(k)).map(([k, v]) => `${esc(fmtOutcome(k))} ${v}`)
+                .concat(day.length ? [`${day.reduce((a, [, v]) => a + v, 0)} runs with only a day result (flames ignited that test day; the per-flame result is not in the PSI table)`] : [])
+                .join(", ") || "–"; })()}</dd>
           </dl>
           ${pm ? `<div class="modbox"><h3>Published parameter matrix (${esc(pm.source_table)})</h3><p class="hint">${esc(pm.note)}</p><p><b>Oxygen levels:</b> ${esc(pm.o2_pct_levels.join(", "))}% · <b>Pressure:</b> ${esc(pm.pressure_atm_levels.join(", "))} atm (${esc(pm.pressure_psi_range.join("–"))} psi) · <b>Flow:</b> ${esc(pm.airflow_cm_s_range.join("–"))} cm/s · <b>Droplet:</b> ${esc(pm.droplet_diameter_mm)} mm in ${esc(pm.ambient_gas)}</p></div>` : ""}
           ${p.research_impacts_summary ? `<p><b>Earth benefits (NASA):</b> ${esc(p.research_impacts_summary)}</p>` : ""}

@@ -47,6 +47,17 @@
         </li>`).join("")}</ul>
         <p class="hint">${esc(r.beyond_psi.note)}</p>
       </div>` : ""}
+      ${(r.beyond_psi_limits && r.beyond_psi_limits.rows.length) ? `<div class="clbeyond cllimits">
+        <div class="clbhead"><b>Outside PSI: where NASA saw these materials stop burning</b>
+          <span class="hint">cited, not counted in the score</span></div>
+        <ul class="clbrows">${r.beyond_psi_limits.rows.map((b) => `<li>
+          <div><b>${esc(b.material)}</b> · ${esc(b.gravity_label)} · ${b.pressure_psi} psi · <span class="hint">${esc(b.platform)}</span></div>
+          <div class="clsame">✓ Tested at ${esc(b.matches.join(" + "))}</div>
+          <div class="clbout">${esc(b.result)}</div>
+          <div class="hint">Source: <a href="${esc(b.source_url)}" target="_blank" rel="noopener">${esc(b.source_ref)}</a> · “${esc(b.quote)}”</div>
+        </li>`).join("")}</ul>
+        <p class="hint">${esc(r.beyond_psi_limits.note)}</p>
+      </div>` : ""}
       ${r.gravity_note ? `<p class="hint clgrav">${esc(r.gravity_note)}</p>` : ""}
       <button type="button" class="btn clcta" id="clgo">Close this gap: see the test campaign planner →</button>`;
     el.hidden = false;

@@ -291,3 +291,16 @@ def test_conditions_only_count_runs_with_the_same_material():
     moon = engine.Target(o2_pct=30, pressure_psi=10.2, airflow_cm_s=12.9, gravity_g=0.16, fuel_state="any")
     m = {x["key"]: x for x in engine.case(moon)["conditions"]}
     assert m["o2"]["status"] == "Supported" and m["o2"].get("no_solid")
+
+
+def test_outside_psi_limits_cover_partial_gravity_and_low_pressure():
+    """NASA drop-tower (lunar, Mars g) and Test 1 (10.2, 8.2 psia) limits are shown, sourced, never counted."""
+    rover = engine.Target(o2_pct=30, pressure_psi=10.2, airflow_cm_s=8.1, gravity_g=0.16, fuel_state="solid")
+    rows = engine.beyond_psi_limits(rover)["rows"]
+    assert rows and rows[0]["gravity_label"] == "Lunar g" and "your gravity" in rows[0]["matches"]
+    assert any(r["id"] == "HIRSCH2007-NOMEX-30" for r in rows)
+    assert all(r["source_url"].startswith("https://ntrs.nasa.gov/") and r["quote"] for r in rows)
+    assert engine.closest_evidence(rover)["beyond_psi_limits"]["rows"] == rows
+    assert engine.case(rover)["supported_count"] == 2          # not counted
+    gas = engine.Target(o2_pct=30, pressure_psi=10.2, airflow_cm_s=8.1, gravity_g=0.16, fuel_state="gas")
+    assert engine.beyond_psi_limits(gas)["rows"] == []

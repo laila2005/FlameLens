@@ -561,3 +561,18 @@ body.brief-open { overflow: hidden; }
 .jextra b { color: var(--fg); font-family: var(--mono); }
 .jwhy { color: var(--amber); }
 .jbeyond { color: var(--ok); }
+
+/* Jump bar: every main section one tap away (the page is long on phones) */
+.jumpbar { position: sticky; top: 0; z-index: 8; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none;
+  margin: 0 0 14px; padding: 8px 10px; border-radius: 14px; background: var(--panel-solid); border: 1px solid var(--line);
+  box-shadow: var(--shadow-sm); -webkit-overflow-scrolling: touch; }
+.jumpbar::-webkit-scrollbar { display: none; }
+.jumpbar a { flex: 0 0 auto; padding: 5px 11px; border-radius: 999px; font-size: 13px; color: var(--fg); text-decoration: none;
+  background: var(--panel2); border: 1px solid var(--line); white-space: nowrap; }
+.jumpbar a:hover, .jumpbar a:focus-visible { border-color: var(--flame); color: var(--flame); }
+html { scroll-padding-top: 64px; scroll-behavior: smooth; }
+#closest-anchor { display: block; }
+.aiwho { margin: 2px 0 10px; }
+.rec .reclab { font-weight: 600; color: var(--muted); }
+@media print { .jumpbar { display: none; } }
+

@@ -55,8 +55,12 @@
     </div>
   </header>
 
+  <nav class="jumpbar" aria-label="Jump to section">
+    <a href="#design">Design</a><a href="#verdict">Verdict</a><a href="#closest-anchor">Closest evidence</a><a href="#evidence-case">Evidence case</a><a href="#lenses">Lenses</a><a href="#campaign">Test campaign</a><a href="#journey">Mission journey</a><a href="#asknasa">Ask the reports</a><a href="#investigations">Investigations</a>
+  </nav>
+
   <!-- Habitat input -->
-  <section class="panel habitat" aria-label="Habitat design">
+  <section class="panel habitat" id="design" aria-label="Habitat design">
     <div class="habhead">
       <div>
         <h2>Habitat design</h2>
@@ -110,16 +114,17 @@
     <!-- Decision -->
     <section class="decision" aria-label="Evidence">
       <div class="verdict panel" id="verdict" aria-live="polite"></div>
-      <div class="panel closest" id="closest" hidden aria-live="polite"></div>
+      <span id="closest-anchor"></span><div class="panel closest" id="closest" hidden aria-live="polite"></div>
 
       <div class="panel explain" id="explainbox">
         <div class="ptitle"><h2>What the evidence says</h2><span class="hint" id="explainsrc"></span></div>
+        <p class="hint aiwho">Two AI helpers, both checked: this panel uses an open model (qwen2.5) written ahead of time and re-checked live by the citation verifier; <a href="#asknasa">Ask the NASA reports</a> uses Gemini live and checks every quote on its report page. The decisions above and below use no AI.</p>
         <ol class="claims" id="claims"></ol>
         <div id="removed"></div>
         <p class="hint" id="explainnote"></p>
       </div>
 
-      <div class="panel">
+      <div class="panel" id="evidence-case">
         <div class="ptitle"><h2>Evidence strength &amp; case</h2><span class="hint">Powered by real NASA PSI burn runs — transparency meter, not a safety rating</span></div>
         <div class="smeter" id="strengthmeter" aria-live="polite"></div>
         <div class="conditions" id="conditions"></div>
@@ -135,7 +140,7 @@
 
     <div class="rightcol">
       <!-- Lenses -->
-      <section class="lenses panel" aria-label="Lenses">
+      <section class="lenses panel" id="lenses" aria-label="Lenses">
         <div class="tabs" role="tablist" aria-label="Lenses">
           <button role="tab" class="tab" data-lens="coverage" aria-selected="true">Coverage map</button>
           <button role="tab" class="tab" data-lens="coolflame" aria-selected="false">Cool flames</button>
@@ -181,7 +186,7 @@
   </section>
 
   <!-- Investigations explorer -->
-  <section class="layout2" aria-label="Investigations">
+  <section class="layout2" id="investigations" aria-label="Investigations">
     <div class="panel">
       <div class="ptitle"><h2>Investigations</h2><span class="hint">Summaries of the NASA PSI combustion investigations. Pick two to compare.</span></div>
       <div class="invfilters" id="invfilters" role="group" aria-label="Filter by pillar"></div>

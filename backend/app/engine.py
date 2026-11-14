@@ -356,7 +356,8 @@ def case(target: Target, rows=None) -> dict:
     for c in conditions:
         if c["key"] == "grav" and 0 < target.gravity_g < 1:
             c["note"] = ("No partial-gravity combustion data exists in PSI yet (LUCI and FM2 are planned). "
-                         "Microgravity runs give one bound and normal-gravity results the other.")
+                         "Microgravity runs give one bound and normal-gravity results the other. Outside PSI, NASA drop-tower "
+                         "tests measured where some solids stop burning at lunar and Martian gravity: see Closest NASA evidence.")
             c["bounded"] = True
         if c["key"] == "flow" and target.airflow_cm_s is None:
             # Every run counts when airflow is left open, so it is not evidence: show it, but do not score it.
@@ -577,7 +578,7 @@ def closest_evidence(target: Target, rows=None, k: int = 3) -> dict:
                    "o2": _span([r["o2_pct"] for r in same_pp], "%"), "psi": _span([r["pressure_psi"] for r in same_pp], "psi"),
                    "note": "Same oxygen partial pressure (within 5 %) but a different oxygen concentration and total pressure. "
                            "Related, not equivalent: flammability is highly dependent on oxygen concentration (challenge text)."}
-    return {"needed": whole_n == 0, "whole_n": whole_n, "beyond_psi": beyond_psi(target), "gravity_note": (
+    return {"needed": whole_n == 0, "whole_n": whole_n, "beyond_psi": beyond_psi(target), "beyond_psi_limits": beyond_psi_limits(target), "gravity_note": (
                 "PSI has no partial-gravity combustion data (LUCI and FM2 are planned); these runs are microgravity, one bound."
                 if gravity_relaxed and 0 < g0 < 1 else "PSI holds microgravity runs only; these are from 0 g." if gravity_relaxed else ""),
             "groups": groups, "same_partial_pressure": pp_info}
@@ -795,3 +796,36 @@ def beyond_psi(target: Target, path=None) -> dict:
             "note": ("NASA Saffire IV-VI burned large solid samples in microgravity inside Cygnus spacecraft at reduced "
                      "pressure and raised oxygen. These tests are not in PSI, so they are shown with their source and are "
                      "not counted in the evidence case or strength.") if out else ""}
+
+
+def beyond_psi_limits(target: Target, path=None) -> dict:
+    """NASA material flammability limits that are not in PSI: drop-tower tests at lunar and Martian gravity
+    (Olson & Ferkul 2012) and NASA-STD-6001 Test 1 results at 10.2 and 8.2 psia (1 g, ground).
+    Copied from the cited papers (data/curated/beyond_psi_limits.csv); shown with their source, never counted.
+    A row is shown for solid (or any) designs when it was tested at the design's gravity level (partial g), at the
+    design's pressure (within 2 psi), or in near-pure oxygen for a near-pure-oxygen design."""
+    import csv
+    from pathlib import Path
+    p = Path(path) if path else Path(__file__).resolve().parents[2] / "data" / "curated" / "beyond_psi_limits.csv"
+    if not p.exists() or target.fuel_state not in ("solid", "any"):
+        return {"rows": [], "note": ""}
+    out = []
+    with open(p, encoding="utf-8", newline="") as f:
+        for r in csv.DictReader(f):
+            g, psi = float(r["gravity_g"]), float(r["pressure_psi"])
+            same_g = 0 < target.gravity_g < 1 and abs(g - target.gravity_g) <= 0.05
+            same_p = abs(psi - target.pressure_psi) <= TOLERANCE["psi"] + EPS
+            pure = target.o2_pct >= 90 and r["o2_pct"].replace(".", "", 1).isdigit() and float(r["o2_pct"]) >= 90
+            if same_g or same_p or pure:
+                why = [w for w, ok in (("your gravity", same_g), ("your pressure", same_p), ("near-pure oxygen", pure)) if ok]
+                out.append({**r, "pressure_psi": psi, "gravity_g": g, "matches": why})
+    import re as _re
+    def o2_gap(x):
+        nums = [float(v) for v in _re.findall(r"\d+(?:\.\d+)?", x["o2_pct"])]
+        return min(abs(v - target.o2_pct) for v in nums) if nums else 99
+    out.sort(key=lambda x: (-len(x["matches"]), "your gravity" not in x["matches"], o2_gap(x), abs(x["pressure_psi"] - target.pressure_psi)))
+    return {"rows": out[:6],
+            "note": ("Outside PSI: NASA measured where solid materials stop burning at Moon and Mars gravity (drop tower with a "
+                     "centrifuge, 5 s tests) and at 10.2 and 8.2 psia in 1 g (NASA-STD-6001 Test 1). Shown with their source; "
+                     "not counted in the evidence case or strength. Short drop-tower tests are not the same criteria as 1 g tests.")
+            if out else ""}
