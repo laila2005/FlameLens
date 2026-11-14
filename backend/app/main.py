@@ -11,7 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from . import data, engine, lenses
-from .schemas import AlternativesRequest, CampaignRequest, RankRequest, Target, TargetRequest, VerifyRequest
+from .schemas import AlternativesRequest, AskRequest, CampaignRequest, RankRequest, Target, TargetRequest, VerifyRequest
 
 app = FastAPI(title="FlameLens", description="Evidence-backed decisions from NASA PSI combustion data")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
@@ -99,6 +99,32 @@ def journey(req: CampaignRequest):
         by_id = {h["id"]: h for h in HABITATS}
         stages = [{"id": i, "name": by_id[i]["name"], "target": Target(**{k: by_id[i][k] for k in keys})} for i in MISSION]
     return engine.journey(stages)
+
+
+@app.get("/api/library", tags=["ask"], summary="NASA report library: investigations, files and passages available to Ask")
+def library_stats():
+    from . import ask
+    return ask.stats()
+
+
+@app.get("/api/library/search", tags=["ask"], summary="Best matching NASA report passages (file and page) for a question; no AI")
+def library_search(q: str, psi: str = "", k: int = 6):
+    from . import ask
+    if len(q) > 300 or not 1 <= k <= 20:
+        raise HTTPException(status_code=422, detail="q must be at most 300 characters and k between 1 and 20")
+    return {"psi_id": psi or None, "question": q, "passages": ask.search(psi or None, q, k)}
+
+
+@app.get("/api/ask/suggestions", tags=["ask"], summary="Suggested questions for one investigation")
+def ask_suggestions(psi: str):
+    from . import ask
+    return {"psi_id": psi, "questions": ask.suggestions(psi)}
+
+
+@app.post("/api/ask", tags=["ask"], summary="Ask the NASA reports: verified, quoted answer (cache or model), else passages")
+def ask_reports(req: AskRequest):
+    from . import ask
+    return ask.answer(req.psi_id, req.question)
 
 
 @app.post("/api/closest", tags=["engine"], summary="When nothing matches: the closest runs NASA did fly, and exactly what differs")

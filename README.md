@@ -29,6 +29,7 @@ You enter a design: oxygen %, pressure, airflow, material state and gravity. Pre
 | **Run this next** | The evidence gaps, the nearest existing NASA run, and the changes needed to turn it into the missing test. |
 | **Lower-oxygen tested options** | Real runs with at least 10 % less oxygen partial pressure than the design, and what would change. |
 | **Closest NASA evidence** | When no run matches the whole design, the runs that match everything except the fewest conditions, with exactly what differs. Nothing is interpolated. |
+| **Ask the NASA reports** | Ask a question about one investigation and get an answer from NASA's own documents (1,899 passages from 20 PSI reports, theses and test matrices across 9 investigations). Every AI claim quotes the document word for word with its page; the server checks the quote, the numbers and any run ID, and removes claims that fail or state a safety verdict. Without an AI key it shows the best matching passages with file and page. Built on Dai's `build_library.py` and `explain_ai.py`. |
 | **Test campaign planner** | "NASA can fly N more experiments": a greedy plan of tests that give the most designs a full match. It plans coverage only and never predicts results. |
 | **Mission atmosphere journey** | One Artemis-style crew mission as a timeline (ISS cabin → spacesuit → pressurized rover → Moon base). Each stage shows its evidence strength from the same engine; the mission is only as well backed as its weakest stage, which is flagged with the test to run next (today: the spacesuit, 100 % O₂ at 4.3 psi). |
 | **Ranked investigations** | The 18 flight investigations ranked by closeness to the design (weights: oxygen 0.35, pressure 0.20, airflow 0.20, material 0.15, gravity 0.10; a missing value scores a neutral 0.5). |
@@ -137,7 +138,7 @@ scripts/        fetch and build scripts, and validate_live.py (checks the live s
 api/index.py    Vercel entry point for the FastAPI app
 ```
 
-Main API routes: `/api/habitats`, `/api/case`, `/api/strength`, `/api/next`, `/api/alternatives`, `/api/closest`, `/api/campaign`, `/api/journey`, `/api/rank`, `/api/explain`, `/api/verify`, `/api/evidence/{run_id}`, `/api/investigations`, `/api/compare`, `/api/modeling`, `/api/papers`, `/api/lens/*`, `/api/detect/evidence`, `/api/export/*`. The full list with request shapes is at `/docs`.
+Main API routes: `/api/habitats`, `/api/case`, `/api/strength`, `/api/next`, `/api/alternatives`, `/api/closest`, `/api/campaign`, `/api/journey`, `/api/ask`, `/api/library`, `/api/rank`, `/api/explain`, `/api/verify`, `/api/evidence/{run_id}`, `/api/investigations`, `/api/compare`, `/api/modeling`, `/api/papers`, `/api/lens/*`, `/api/detect/evidence`, `/api/export/*`. The full list with request shapes is at `/docs`.
 
 ## 6. Run it locally
 
@@ -182,6 +183,7 @@ vercel deploy --prod --yes
 **While building**
 
 - AI coding assistants (Claude in Claude Code, and Claude and Gemini in Antigravity) helped the team write the data scripts, backend, frontend and documentation during the hackathon.
+- "Ask the NASA reports" (designed by Dai, team AstroSpark; integrated in `backend/app/ask.py`) can call an open-weight model (default `openai/gpt-oss-120b` on Groq) when an API key is configured. Its answers must quote the NASA document verbatim and pass the verifier; with no key it returns report passages only.
 - The FlameLens logo illustration (a burning planet with a magnifying glass, `media/flamelens-illustration.jpg`) was generated with Google Gemini and chosen by the team; the site icon and social image use a crop of it.
 - The 30-second demo video is composed by our scripts in `scripts/demo_video/` from screen captures of the live site. Its soundtrack is synthesized by code: no samples, no AI-generated music, no voices or faces.
 - Numbers shown in the app come from the NASA files, not from an AI. They are checked by the 73 automated tests and by `scripts/validate_live.py`, which compares the live site with the curated data.

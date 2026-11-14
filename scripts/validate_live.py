@@ -250,6 +250,14 @@ for s in jr["stages"]:
     ok &= nr is None or nr["run_id"] in by_id
 check("Mission journey", "every stage matches the single-design evidence case and cites real runs", ok)
 
+# ------------------------------------------------------------------ Ask the NASA reports
+lib = jget("/api/library")
+check("Ask the NASA reports", "report library loaded (1,000+ passages from PSI documents)", lib["n_chunks"] > 1000, f"{lib['n_chunks']} passages, {lib['n_files']} files")
+ans = jget("/api/ask", {"psi_id": "PSI-25", "question": "How did airflow or oxygen affect flame spread or extinction?"})
+check("Ask the NASA reports", "answers with passages or verified claims, each with file and page",
+      ans["source"] in ("passages", "cache", "model") and ans["passages"] and all(p["source_file"] and p["source_ref"] for p in ans["passages"]), ans["source"])
+check("Ask the NASA reports", "every shown claim is marked verified and quotes the document", all(c.get("verified") and len(c.get("supporting_quote", "")) >= 20 for c in ans.get("claims", [])))
+
 html = http("/")[2].decode("utf-8")
 check("Requirements", "Back on Earth panel cites NASA Spinoff pages", html.count("spinoff.nasa.gov") >= 3)
 check("Rules", "AI use disclosed on the page", "AI use" in html and "citation verifier" in html)

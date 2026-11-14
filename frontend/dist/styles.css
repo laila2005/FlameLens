@@ -516,3 +516,25 @@ body.brief-open { overflow: hidden; }
 
 /* investigation details follow the long grid on wide screens */
 @media (min-width: 1001px) { #invdetail { position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow: auto; } }
+
+/* ------------------------------------------------------------------ Ask the NASA reports */
+.asknasa { margin: 0 var(--gut) 18px; border-top: 4px solid var(--cool); }
+.askrow { display: grid; grid-template-columns: minmax(220px, 340px) minmax(0, 1fr) auto; gap: 10px; align-items: end; }
+@media (max-width: 760px) { .askrow { grid-template-columns: 1fr; } }
+.asklbl { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--muted); }
+#askq { width: 100%; padding: 9px 12px; border: 1px solid var(--line2); border-radius: 10px; background: var(--panel-solid); font-size: 14px; }
+#askq:focus { outline: 2px solid var(--flame); outline-offset: 1px; }
+.asksug { display: flex; flex-wrap: wrap; gap: 6px; }
+.asksug .modchip { font-family: var(--sans); font-size: 12.5px; padding: 4px 10px; }
+.askhead { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.asksum { margin: 8px 0 0; font-size: 14px; }
+.askclaims { margin: 10px 0 0; padding-left: 22px; display: grid; gap: 12px; }
+.askclaim { font-size: 14.5px; }
+.askquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid var(--cool); background: var(--cool-soft); border-radius: 0 8px 8px 0; font-size: 13.5px; font-style: italic; }
+.askcite { font: 500 12px var(--mono); color: var(--muted); }
+.askrec { margin-top: 4px; font-size: 13px; color: var(--amber); }
+.askpassages { margin-top: 10px; }
+.askpassages summary { cursor: pointer; color: var(--muted); font-size: 13px; }
+.askpassages ol { margin: 8px 0 0; padding-left: 20px; display: grid; gap: 10px; }
+.askpass { font-size: 13px; line-height: 1.5; }
+.askpass mark { background: var(--amber-soft); color: inherit; padding: 0 2px; border-radius: 3px; }

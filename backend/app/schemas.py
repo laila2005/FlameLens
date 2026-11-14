@@ -58,3 +58,9 @@ class VerifyRequest(BaseModel):
     """Claims to check against the evidence retrieved for a habitat (same rules as /api/explain)."""
     target: Target
     claims: list[dict]
+
+
+class AskRequest(BaseModel):
+    """A question for one investigation's NASA documents ("Ask the NASA reports")."""
+    psi_id: str = Field(pattern=r"^PSI-\d{1,3}$")
+    question: str = Field(min_length=3, max_length=300)

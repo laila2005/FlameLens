@@ -193,6 +193,19 @@
     </div>
   </section>
 
+  <!-- Ask the NASA reports -->
+  <section class="panel asknasa" id="asknasa" aria-label="Ask the NASA reports">
+    <div class="ptitle"><h2>Ask the NASA reports</h2><span class="hint" id="askstat">Loading the report library…</span></div>
+    <p class="hint">Answers come from NASA's own PSI reports, theses and test matrices. Every AI claim quotes the document word for word with its page, and the server checks the quote, the numbers and the run ID before showing it. Not a safety rating.</p>
+    <div class="askrow">
+      <label class="asklbl">Investigation <select id="asksel" aria-label="Investigation"></select></label>
+      <input id="askq" type="text" maxlength="300" placeholder="Ask a question about this investigation…" aria-label="Question">
+      <button type="button" class="btn btn-primary" id="askbtn">Ask</button>
+    </div>
+    <div class="asksug" id="asksug"></div>
+    <div class="askout" id="askout" aria-live="polite"></div>
+  </section>
+
   <section class="layout3" aria-label="Data and Earth benefits">
     <div class="panel">
       <h2>Use the data &amp; predictive modeling</h2>
@@ -258,6 +271,7 @@
   <script src="campaign.js"></script>
   <script src="closest.js"></script>
   <script src="journey.js"></script>
+  <script src="ask.js"></script>
   <script>
     (function () {
       var btn = document.getElementById("themebtn"), root = document.documentElement;
