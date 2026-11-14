@@ -247,10 +247,11 @@ def config():
     """
     google = os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY") or ""
     xai = os.environ.get("XAI_API_KEY") or ""
-    openai_key = os.environ.get("ASK_LLM_API_KEY") or os.environ.get("GROQ_API_KEY") or xai
+    explicit = os.environ.get("ASK_LLM_API_KEY") or os.environ.get("GROQ_API_KEY") or ""
+    openai_key = explicit or xai          # XAI_API_KEY is used only when no Groq/OpenAI-style or Google key is set
     provider = os.environ.get("ASK_LLM_PROVIDER", "").lower()
     if not provider:
-        provider = ("vertex" if google.startswith("AQ.") else "gemini") if google and not openai_key else "openai"
+        provider = ("vertex" if google.startswith("AQ.") else "gemini") if google and not explicit else "openai"
     if provider in GOOGLE_URL:
         key = google or openai_key
         return {"provider": provider, "base_url": GOOGLE_URL[provider], "api_key": key, "live": bool(key),
@@ -286,6 +287,26 @@ def _call_google(cfg, user, timeout=60):
         out = json.loads(resp.read())
     parts = (((out.get("candidates") or [{}])[0].get("content") or {}).get("parts") or [])
     return _parse_json("".join(p.get("text", "") for p in parts))
+
+
+def _provider_message(exc, key):
+    """The provider's short error text (e.g. 'no credits'), with the API key removed, for the status line."""
+    try:
+        text = exc.read().decode("utf-8", "replace") if hasattr(exc, "read") else ""
+        try:
+            j = json.loads(text)
+            err = j.get("error") if isinstance(j, dict) else None
+            text = (err.get("message") if isinstance(err, dict) else err) or j.get("code") or text
+        except (ValueError, AttributeError):
+            pass
+        text = str(text)
+        if key:
+            text = text.replace(key, "[key]")
+        text = re.sub(r"\b(xai-|AIza|gsk_|sk-)[A-Za-z0-9_\-]{8,}", "[key]", text)
+        text = re.sub(r"https?://\S+", "the provider console", text)   # no account links on a public page
+        return " ".join(text.split())[:240]
+    except Exception:
+        return ""
 
 
 def _call(cfg, user, timeout=60):
@@ -370,6 +391,9 @@ def answer(psi_id, question, use_model=True):
                             "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds")})
         except Exception as e:   # network, quota, bad JSON: fall back to passages
             base["error"] = f"model unavailable ({type(e).__name__}{' ' + str(e.code) if hasattr(e, 'code') else ''})"
+            detail = _provider_message(e, cfg.get("api_key", ""))
+            if detail:
+                base["error"] += f": {detail}"
     if raw is None:
         return dict(base, source="passages", claims=[], removed=[], removed_count=0, summary="",
                     note="AI answer not available (no API key or no cached answer). These are the best matching "

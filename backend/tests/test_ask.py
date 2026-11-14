@@ -120,3 +120,19 @@ def test_xai_key_selects_grok(monkeypatch):
     monkeypatch.setenv("XAI_API_KEY", "xai-fake-test-key")
     cfg = ask.config()
     assert cfg["live"] and cfg["base_url"] == "https://api.x.ai/v1" and cfg["model"].startswith("grok")
+
+
+def test_google_key_wins_over_xai(monkeypatch):
+    for k in ("ASK_LLM_API_KEY", "GROQ_API_KEY", "ASK_LLM_PROVIDER", "ASK_LLM_BASE_URL", "ASK_LLM_MODEL", "GEMINI_API_KEY"):
+        monkeypatch.delenv(k, raising=False)
+    monkeypatch.setenv("XAI_API_KEY", "xai-fake-test-key")
+    monkeypatch.setenv("GOOGLE_API_KEY", "AIzaFakeTestKey")
+    assert ask.config()["provider"] == "gemini"
+
+
+def test_provider_error_hides_key_and_links():
+    import io, urllib.error
+    body = b'{"error": "No credits for key xai-ABCDEFGH12345678. Buy at https://console.x.ai/team/123"}'
+    e = urllib.error.HTTPError("u", 403, "Forbidden", {}, io.BytesIO(body))
+    msg = ask._provider_message(e, "xai-ABCDEFGH12345678")
+    assert "xai-" not in msg and "console.x.ai" not in msg and "No credits" in msg
