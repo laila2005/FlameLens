@@ -1,18 +1,51 @@
-# FlameLens: space-fire data, made clear
+<div align="center">
 
-**Live app:** https://flamelens-steel.vercel.app (public, no login)
-**API docs:** https://flamelens-steel.vercel.app/docs
-**Demo video (30 s):** [`media/flamelens-demo-30s.mp4`](media/flamelens-demo-30s.mp4)
-**Challenge:** *Flame in Freefall: SI-Powered Fire Safety Insights from Microgravity Combustion Data*, NASA Space Apps Challenge 2026
-**Team:** AstroSpark, NASA Space Apps Cairo
+<img src="frontend/dist/logo.png" alt="FlameLens logo" width="120">
 
-FlameLens answers one question for a habitat engineer: **"Is my cabin design backed by NASA fire experiments, how strong is that evidence, and what should be tested next?"**
+# FlameLens
 
-It is built on **2,003 real spaceflight runs from 18 NASA PSI combustion investigations**. Every run links back to its NASA source table and DOI.
+### Space-fire data, made clear
+
+**Is my cabin design backed by NASA fire experiments, how strong is that evidence, and what should be tested next?**
+
+[**▶ Watch the demo**](https://youtu.be/FxSWxqPT-EI) · [**Open the live app**](https://flamelens-steel.vercel.app/) · [API docs](https://flamelens-steel.vercel.app/docs) · [Submission texts](docs/FINAL-SUBMISSION.md)
+
+NASA Space Apps Challenge 2026 · *Flame in Freefall: SI-Powered Fire Safety Insights from Microgravity Combustion Data* · Team **AstroSpark**, Cairo
+
+[![FlameLens demo video on YouTube](media/flamelens-video-thumbnail-1280.jpg)](https://youtu.be/FxSWxqPT-EI)
+
+</div>
 
 ---
 
+## At a glance
+
+| | |
+|---|---|
+| **Demo video** | https://youtu.be/FxSWxqPT-EI (31 s; also in the repo as [`media/flamelens-demo-30s.mp4`](media/flamelens-demo-30s.mp4)) |
+| **Live app** | https://flamelens-steel.vercel.app/ (public, no login) |
+| **Data** | **2,003** real spaceflight runs from **18** NASA PSI combustion investigations, every run linked to its source table and DOI |
+| **Reports** | **1,899** page-tagged passages from 20 NASA PSI documents for "Ask the NASA reports" |
+| **Decisions** | Deterministic, no AI. AI only explains, and a verifier deletes any claim it cannot trace to a NASA run or page |
+| **Quality** | 95 automated tests; `scripts/validate_live.py` checks the live site against the data |
+
+### Contents
+
+1. [Why it matters](#1-why-it-matters)
+2. [What FlameLens does](#2-what-flamelens-does)
+3. [Scientific integrity rules](#3-scientific-integrity-rules)
+4. [The data](#4-the-data-datacurated)
+5. [Architecture](#5-architecture)
+6. [Run it locally](#6-run-it-locally)
+7. [Use of AI (disclosure)](#7-use-of-ai-disclosure)
+8. [Credits and data sources](#8-credits-and-data-sources)
+9. [Team and license](#9-team-and-license)
+10. [Repository map](#10-repository-map)
+
 ## 1. Why it matters
+
+On 27 January 1967, a fire in the Apollo 1 cabin killed Virgil Grissom, Edward White and Roger Chaffee during a ground test that was run in 100 % oxygen at 16.7 psi (Apollo 204 Review Board, Finding 2). Fire behaves differently in a spacecraft, and the next cabins on the Moon and Mars will again use oxygen-rich air.
+
 
 - In microgravity hot gas does not rise. A candle flame becomes a sphere fed by diffusion, and cabin airflow feeds a fire directly (challenge text).
 - The planned Moon base and pressurized rovers are expected to use **30 % oxygen or more at 10.2 psi or less**, which is more than 40 % more oxygen than Earth air and makes materials much more flammable (challenge text).
@@ -210,8 +243,41 @@ NASA does not endorse this project. Any error in how the data is read or shown i
 
 ## 9. Team and license
 
-- **Team AstroSpark:** Laila Mohamed (tech lead, backend), Youssif Hassan (frontend), Yasmin Reda (charts and lenses), Judy Adham (data), Dai Alaa (AI), Mostafa Fathy (research, pitch, QA).
+**Team AstroSpark**
+
+| Member | Role |
+|---|---|
+| Laila Mohamed | Tech lead, backend |
+| Youssif Hassan | Frontend |
+| Yasmin Reda | Charts and lenses |
+| Judy Adham | Data |
+| Dai Alaa | AI and retrieval |
+| Mostafa Fathy | Research, pitch, QA |
+
 - **Code:** [MIT License](LICENSE).
 - **Data:** NASA PSI data is CC0-1.0. See [LICENSE](LICENSE) for the data notice.
 
-Planning documents from before the event are in [`docs/`](docs). The submission texts are in [`docs/FINAL-SUBMISSION.md`](docs/FINAL-SUBMISSION.md).
+## 10. Repository map
+
+```text
+FlameLens/
+├── api/index.py              Vercel entry point for the FastAPI app
+├── backend/
+│   ├── app/                  engine (decisions), explain + ask (AI with verifiers), lenses, profiles, data loader
+│   └── tests/                95 automated tests
+├── frontend/dist/            the dashboard: static HTML, CSS and JavaScript (no build step)
+├── data/
+│   ├── curated/              cleaned NASA tables with provenance (what the app uses)
+│   ├── mock/                 labelled placeholder rows from before the event
+│   └── raw/                  NASA downloads (not in git; rebuild with scripts/fetch_*.py)
+├── scripts/                  fetch, build and validation scripts
+│   └── demo_video/           the pipeline that edits the demo video
+├── media/                    demo video, thumbnail, logo illustration
+├── docs/                     submission texts, architecture, research notes and the team's planning (index: docs/README.md)
+├── Dockerfile, render.yaml   alternative container deploy
+├── vercel.json               Vercel config (the live site)
+├── LICENSE                   MIT for code, CC0 notice for NASA PSI data
+└── TASKS.md, CLAUDE.md       team checklist and the AI assistant's handoff notes
+```
+
+The submission texts are in [`docs/FINAL-SUBMISSION.md`](docs/FINAL-SUBMISSION.md) and the video script with its sources in [`docs/16-video-script.md`](docs/16-video-script.md).

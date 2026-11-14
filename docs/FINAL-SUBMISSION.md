@@ -53,7 +53,7 @@ https://flamelens-steel.vercel.app
 ### 6. Link to the demo (slides or video)
 
 ```text
-(paste the public link to the 7 slides or the 30-second video here)
+https://youtu.be/FxSWxqPT-EI
 ```
 
 ### 7. Link to the code
@@ -283,7 +283,7 @@ Apollo 1 facts are from NASA's Apollo 1 page and the Apollo 204 Review Board fin
 
 ### To submit the video
 
-Upload the MP4 to YouTube (Unlisted or Public) or Google Drive ("Anyone with the link can view"). Open the link in a private window to check it plays without a login. Paste that link into field 6. The file is also in the public GitHub repo as a backup.
+Uploaded to YouTube: https://youtu.be/FxSWxqPT-EI (field 6). Open it in a private window to check it plays without a login. The file is also in the public GitHub repo as a backup.
 
 ---
 
