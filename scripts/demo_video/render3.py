@@ -17,21 +17,23 @@ from pathlib import Path
 
 import numpy as np
 
-W, H, FPS, DUR, SR = 1920, 1080, 60, 30.0, 48000
+W, H, FPS, DUR, SR = 1920, 1080, 30, 31.0, 48000
 
 # ---------------------------------------------------------------- timeline (seconds)
-AT = {"intro": 0.0, "story": 5.85, "vo": 13.75}      # where each voice piece starts
-TALK_END = 13.4                                      # Laila on camera until here, then the dashboard
-FLAMELENS_AT = 10.0                                  # "That's why we have built FlameLens": colour and music return
-MEMORIAL, END_CARD = 24.2, 26.85
+AT = {"intro": 0.25, "story": 5.65, "vo": 13.95}     # where each voice piece starts (natural pauses between them)
+OFF = AT["vo"] - 13.75                               # the dashboard times below were laid out for vo at 13.75
+TALK_END = AT["vo"] - 0.35                           # Laila on camera until here, then the dashboard
+FLAMELENS_AT = AT["story"] + 4.15                    # "That's why we have built FlameLens": colour and music return
+MEMORIAL, END_CARD = 24.4, 27.3
 SEG = [  # start, end, shot, camera start (cx, cy, zoom), camera end
-    (13.4, 15.85, "a_top_rover", (960, 400, 1.05), (1000, 330, 1.35)),
+    (TALK_END - OFF, 15.85, "a_top_rover", (960, 400, 1.05), (1000, 330, 1.35)),
     (15.85, 17.55, "a_top_rover", (1200, 260, 1.45), (1480, 200, 1.7)),
     (17.55, 19.0, "c_case_rover", (480, 520, 1.45), (460, 560, 1.6)),
     (19.0, 20.6, "g_drawer", (1150, 620, 1.15), (1560, 780, 1.42)),
     (20.6, 22.0, "c_case_rover", (480, 560, 1.6), (440, 620, 1.75)),
-    (22.0, MEMORIAL, "h_campaign_n3", (1400, 420, 1.3), (1400, 520, 1.45)),
+    (22.0, MEMORIAL - OFF, "h_campaign_n3", (1400, 420, 1.3), (1400, 520, 1.45)),
 ]
+SEG = [(a + OFF, b + OFF, *rest) for a, b, *rest in SEG]
 SCENES = [s[0] for s in SEG] + [MEMORIAL]
 XFADE = 0.3
 
@@ -253,6 +255,13 @@ def grad(s, f):
         _grad[s] = gradient_text(s, f)
     return _grad[s]
 
+def word_at(piece, i):
+    return AT[piece] + PIECES[piece]["words"][i]["t0"]
+
+CHAL_AT = word_at("intro", 6) - 0.1        # "We chose Flame in Freefall"
+OXY_AT = word_at("story", 4)               # "trapped"
+NAMES_AT = word_at("story", 9) - 0.1       # "a test"
+
 def talk_frame(t):
     st = AT["story"]
     mood = ease(clamp((t - (st - 0.3)) / 0.6)) * (1 - ease(clamp((t - FLAMELENS_AT) / 0.9)))  # 1 = memorial mood
@@ -260,7 +269,7 @@ def talk_frame(t):
     embers(frame, t, strength=lerp(0.8, 0.35, mood), speed=lerp(1.0, 0.45, mood))
     # circle moves left and shrinks a little for the story
     m2 = ease(clamp((t - (st - 0.35)) / 0.7))
-    intro_in = eout(clamp(t / 0.7))
+    intro_in = eout(clamp(t / 0.8))
     cx, cy, D = lerp(610, 540, m2), 470, lerp(600, 560, m2) * lerp(0.86, 1.0, intro_in)
     sat = lerp(1.0, 0.25, mood)
     warm = 1 - mood
@@ -271,30 +280,30 @@ def talk_frame(t):
     d = ImageDraw.Draw(ov)
     X = 1040
     # intro: who we are
-    k = win(t, 0.25, 3.05)
+    k = win(t, 0.3, CHAL_AT - 0.05)
     if k > 0:
         text_at(d, X, 300, "N A S A   S P A C E   A P P S   2 0 2 6", F_KICK, (255, 196, 140), k)
-        text_at(d, X, 350, "Laila Mohamed", F_NAME, WHITE, win(t, 0.45, 3.05))
-        text_at(d, X, 470, "TEAM ASTROSPARK", F_TEAM, FLAME, win(t, 1.6, 3.05))
+        text_at(d, X, 350, "Laila Mohamed", F_NAME, WHITE, win(t, 0.5, CHAL_AT - 0.05))
+        text_at(d, X, 470, "TEAM ASTROSPARK", F_TEAM, FLAME, win(t, word_at("intro", 4) - 0.1, CHAL_AT - 0.05))
     # intro: the challenge
-    k = win(t, 3.1, st - 0.2)
+    k = win(t, CHAL_AT, st - 0.2)
     if k > 0:
         text_at(d, X, 330, "T H E   C H A L L E N G E", F_KICK, (255, 196, 140), k)
-        g = fade_rgba(grad("Flame in", F_CH), win(t, 3.25, st - 0.2))
-        ov.alpha_composite(g, (X - 10, int(370 + (1 - eout(win(t, 3.25, st - 0.2))) * 24)))
-        g = fade_rgba(grad("Freefall", F_CH), win(t, 3.55, st - 0.2))
-        ov.alpha_composite(g, (X - 10, int(500 + (1 - eout(win(t, 3.55, st - 0.2))) * 24)))
+        g = fade_rgba(grad("Flame in", F_CH), win(t, CHAL_AT + 0.15, st - 0.2))
+        ov.alpha_composite(g, (X - 10, int(370 + (1 - eout(win(t, CHAL_AT + 0.15, st - 0.2))) * 24)))
+        g = fade_rgba(grad("Freefall", F_CH), win(t, CHAL_AT + 0.45, st - 0.2))
+        ov.alpha_composite(g, (X - 10, int(500 + (1 - eout(win(t, CHAL_AT + 0.45, st - 0.2))) * 24)))
     # story: Apollo 1
     k = win(t, st + 0.05, FLAMELENS_AT - 0.1, 0.5, 0.45)
     if k > 0:
         text_at(d, X, 250, "27 JANUARY 1967  ·  LAUNCH COMPLEX 34", F_KICK, (200, 208, 230), k)
         text_at(d, X, 290, "APOLLO 1", F_AP, WHITE, k)
-        k2 = win(t, st + 1.55, FLAMELENS_AT - 0.1, 0.5, 0.45)
+        k2 = win(t, OXY_AT, FLAMELENS_AT - 0.1, 0.5, 0.45)
         text_at(d, X, 450, "100 % oxygen  ·  16.7 psi", F_AP2, (255, 170, 110), k2)
-        k3 = win(t, st + 2.85, FLAMELENS_AT - 0.1, 0.6, 0.45)
+        k3 = win(t, NAMES_AT, FLAMELENS_AT - 0.1, 0.6, 0.45)
         d.rectangle((X, 540, X + 520 * eout(k3), 542), fill=(255, 255, 255, int(110 * k3)))
         for i, nm in enumerate(["Virgil Grissom", "Edward White", "Roger Chaffee"]):
-            text_at(d, X, 562 + i * 46, nm, F_NAMES, (225, 230, 245), win(t, st + 2.95 + i * 0.25, FLAMELENS_AT - 0.1, 0.6, 0.45), 12)
+            text_at(d, X, 562 + i * 46, nm, F_NAMES, (225, 230, 245), win(t, NAMES_AT + 0.1 + i * 0.25, FLAMELENS_AT - 0.1, 0.6, 0.45), 12)
     # message: FlameLens
     k = win(t, FLAMELENS_AT + 0.05, TALK_END + 0.4, 0.6, 0.2)
     if k > 0:
@@ -353,6 +362,7 @@ HIGHLIGHTS = [
     (19.2, 20.55, "g_drawer", "drawer", GREEN),
     (20.75, 21.95, "c_case_rover", "o2", RED), (20.95, 21.95, "c_case_rover", "psi", RED),
 ]
+HIGHLIGHTS = [(a + OFF, b + OFF, *rest) for a, b, *rest in HIGHLIGHTS]
 # every number here is on the live dashboard (rover preset; second audit 14 Nov)
 CALLOUTS = [
     (14.4, 15.8, "a_top_rover", "controls", (1180, 560), "flame", "1 · Enter your cabin's air", "Moon rover: 30 % O₂ · 10.2 psi · Moon gravity", FLAME, None),
@@ -364,6 +374,8 @@ CALLOUTS = [
     (21.15, 21.95, "c_case_rover", None, (1090, 760), "check", "Tested: airflow", "308 solid runs back it", GREEN, None),
     (22.2, 24.1, "h_campaign_n3", "sum", (300, 560), "flame", "3 tests → 5 habitat designs", "Moon and Mars cabins: what NASA could test next", FLAME, None),
 ]
+CALLOUTS = [(a + OFF, b + OFF, *rest[:-1], tuple(v + OFF if i >= 2 else v for i, v in enumerate(rest[-1])) if rest[-1] else None)
+            for a, b, *rest in CALLOUTS]
 F_CT, F_CS, F_CB = font(F_B, 34), font(F_R, 22), font(F_BL, 64)
 
 def icon(d, kind, x, y, col, a):
@@ -543,10 +555,10 @@ def build_audio(path_out):
     T = np.arange(n) / SR
     st = AT["story"]
     # music: soft under the intro, silent for the Apollo 1 story, back when FlameLens is named
-    g = np.interp(T, [0, st - 0.6, st, FLAMELENS_AT, FLAMELENS_AT + 1.2, DUR], [0.45, 0.45, 0.0, 0.0, 1.0, 1.0])
-    vo = VOICE * 10 ** (1 / 20)
+    g = np.interp(T, [0, st - 0.6, st, FLAMELENS_AT, FLAMELENS_AT + 1.2, DUR], [0.35, 0.35, 0.0, 0.0, 0.6, 0.6])
+    vo = VOICE * 1.0
     act = np.convolve((np.abs(vo) > 0.01).astype(np.float32), np.ones(int(0.05 * SR)) / (0.05 * SR), mode="same") > 0.02
-    dk = np.where(act, 10 ** (-11 / 20), 1.0).astype(np.float32)
+    dk = np.where(act, 10 ** (-16 / 20), 1.0).astype(np.float32)
     sm = np.empty_like(dk); cur = 1.0
     a_att, a_rel = math.exp(-1 / (0.06 * SR)), math.exp(-1 / (0.45 * SR))
     for i in range(0, n, 64):
@@ -562,7 +574,7 @@ def build_audio(path_out):
 
 if PREVIEW:
     ts = [float(a) for a in sys.argv[sys.argv.index("--preview") + 1:]] or \
-         [1.5, 4.5, 6.4, 8.0, 9.4, 11.0, 12.8, 13.6, 15.0, 16.8, 18.3, 19.8, 21.5, 23.0, 25.3, 28.5]
+         [0.2, 1.0, 2.6, 4.0, 6.0, 7.8, 9.0, 10.6, 12.6, 13.7, 16.9, 19.5, 21.7, 25.4, 27.6, 30.0]
     for t in ts:
         render_frame(t).save(OUT.parent / f"pv3_{t:05.2f}.jpg", quality=85)
     print("previews written"); sys.exit()

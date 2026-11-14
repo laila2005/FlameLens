@@ -267,7 +267,7 @@ Exactly 7 slides. No faces, names or voices of anyone under 18. Keep the text as
 
 ## Part 3. The 30-second video
 
-**The video is made:** [`media/flamelens-demo-30s.mp4`](../media/flamelens-demo-30s.mp4) (1920 x 1080, 60 fps, 30.0 s, H.264 with AAC). Laila Mohamed (team member, adult) tells why we built FlameLens, on camera inside a glowing circle frame, then her voice-over runs over screen recordings of the live site. Word-by-word subtitles run throughout. Music is synthesized by code and stays silent during the Apollo 1 story. No one under 18 appears or is heard. Script and sources: [`docs/16-video-script.md`](16-video-script.md). To re-make it, see [`scripts/demo_video/README.md`](../scripts/demo_video/README.md).
+**The video is made:** [`media/flamelens-demo-30s.mp4`](../media/flamelens-demo-30s.mp4) (1920 x 1080, 30 fps, 31.0 s, H.264 with AAC; the team chose 31 s, one second over the 30-second guide). Laila Mohamed (team member, adult) tells why we built FlameLens, on camera inside a glowing circle frame, then her voice-over runs over screen recordings of the live site. Word-by-word subtitles run throughout. Music is synthesized by code and stays silent during the Apollo 1 story. No one under 18 appears or is heard. Script and sources: [`docs/16-video-script.md`](16-video-script.md). To re-make it, see [`scripts/demo_video/README.md`](../scripts/demo_video/README.md).
 
 ### Scenes and what Laila says (as in the video)
 
@@ -279,7 +279,7 @@ Exactly 7 slides. No faces, names or voices of anyone under 18. Keep the text as
 | 0:24-0:27 | FlameLens illustration; "In memory of the Apollo 1 crew: Virgil Grissom · Edward White · Roger Chaffee" | there is a crew and a family waiting for them to come home. |
 | 0:27-0:30 | End card: "Every crew deserves to come home", URL, Team AstroSpark and the six names | – |
 
-Apollo 1 facts are from NASA's Apollo 1 page and the Apollo 204 Review Board findings (see `docs/16-video-script.md`). The recording ended with one more sentence ("And that's exactly where our motivation has come"); it was cut to keep the video at 30 seconds.
+Apollo 1 facts are from NASA's Apollo 1 page and the Apollo 204 Review Board findings (see `docs/16-video-script.md`). The recording ended with one more sentence ("And that's exactly where our motivation has come"); it was cut to keep the video short. A false start ("Hi, I'm...") at the start of the intro clip was also cut. The voice is only lightly cleaned (no speed or pitch change); the music sits about 16 dB under it.
 
 ### To submit the video
 
@@ -292,7 +292,7 @@ Upload the MP4 to YouTube (Unlisted or Public) or Google Drive ("Anyone with the
 - [ ] The live site opens in a private window without a login: https://flamelens-steel.vercel.app
 - [ ] The repository is public: https://github.com/laila2005/FlameLens
 - [ ] The video (`media/flamelens-demo-30s.mp4`) or the 7 slides are uploaded, and the link opens in a private window without a login
-- [ ] The slides are exactly 7, or the video is 30 seconds or less
+- [ ] The slides are exactly 7, or the video is 30 seconds or less (our video is 31 s by team choice)
 - [ ] No images, names or voices of anyone under 18 in the demo
 - [ ] `python scripts/validate_live.py .` passes against the live site
 - [ ] The numbers in the form match this file (if the data changed, update them)

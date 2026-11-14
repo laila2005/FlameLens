@@ -22,7 +22,8 @@ FF = imageio_ffmpeg.get_ffmpeg_exe()
 CROP = "crop=440:440:5:200"          # square around the face in the 478x850 selfie clips
 SQ = 440
 PIECES = {  # name: (source arg index, start s, end s or None, subtitle lines exactly as spoken)
-    "intro": (2, 3.55, 9.25, ["Hi, I'm Laila, from Team AstroSpark.",
+    "intro": (2, 4.60, 9.35, [  # starts after a false start ("Hi, I'm...") at 3.7 s
+                               "Hi, I'm Laila, from Team AstroSpark.",
                                "We chose Flame in Freefall because of a story we could not forget."]),
     "story": (3, 0.30, 7.85, ["Apollo 1:", "three astronauts, trapped by fire,",
                                "in a test no one thought it was dangerous.",
@@ -32,7 +33,9 @@ PIECES = {  # name: (source arg index, start s, end s or None, subtitle lines ex
                            "because behind every cabin on the Moon or Mars,", "there is a crew",
                            "and a family waiting for them to come home."]),
 }
-AF = "highpass=f=90,lowpass=f=12000,afftdn=nr=10:nf=-42,loudnorm=I=-18:TP=-2:LRA=7"
+# gentle: no denoise, no speed change; cut rumble, a little less mud, a little more presence, light compression
+AF = ("highpass=f=80,equalizer=f=250:t=q:w=1.2:g=-2,equalizer=f=3200:t=q:w=1.5:g=3,"
+      "acompressor=threshold=-24dB:ratio=2.5:attack=8:release=120:makeup=2,loudnorm=I=-16:TP=-1.5:LRA=9,afade=t=in:d=0.03")
 
 work = Path(sys.argv[1]); work.mkdir(parents=True, exist_ok=True)
 norm = lambda s: re.sub(r"[^a-z0-9]", "", s.lower())
