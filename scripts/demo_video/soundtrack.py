@@ -4,8 +4,8 @@ Cinematic-tech bed in D major (D - Bm - G - A, resolving to D on the end card): 
 pumping, FM-bell arpeggio, soft pulse, plus designed effects: logo shimmer swell, whooshes on scene changes,
 glass-tap UI clicks, a riser into the end card and an impact with a bell chord.
 
-Usage: python soundtrack.py out.wav
-Timing constants below must match render.py (scene changes, clicks, end card).
+Usage: python soundtrack.py out.wav [timing.json]
+Timing constants below must match render.py (scene changes, clicks, end card); the narrated cut passes them in a file.
 """
 import sys, wave
 import numpy as np
@@ -19,6 +19,13 @@ INTRO_END = 1.6           # logo sting -> dashboard
 END_CARD = 27.6           # impact + logo end card
 SCENES = [1.6, 5.2, 8.9, 13.3, 17.6, 21.9, 25.4]   # whooshes
 CLICKS = [5.0, 15.1, 18.6, 23.05, 24.25]           # button presses
+# Optional timing file (narrated cut): soundtrack.py out.wav timing.json  {"intro_end", "end_card", "scenes", "clicks"}
+if len(sys.argv) > 2:
+    import json
+    _tm = json.loads(open(sys.argv[2], encoding="utf-8").read())
+    INTRO_END, END_CARD = _tm["intro_end"], _tm["end_card"]
+    SCENES, CLICKS = _tm["scenes"], _tm["clicks"]
+RISER_START = END_CARD - 2.0
 BPM = 96.0
 BEAT = 60.0 / BPM
 
@@ -254,9 +261,9 @@ for c in CLICKS:
     g = glass_tap() * 0.22
     place(fx[:, 0], c, g * 0.9)
     place(fx[:, 1], c, g)
-rz = riser(END_CARD - 25.6) * 0.16
-place(fx[:, 0], 25.6, rz)
-place(fx[:, 1], 25.6, rz)
+rz = riser(END_CARD - RISER_START) * 0.16
+place(fx[:, 0], RISER_START, rz)
+place(fx[:, 1], RISER_START, rz)
 imp = impact() * 0.42
 place(fx[:, 0], END_CARD, imp)
 place(fx[:, 1], END_CARD, imp)

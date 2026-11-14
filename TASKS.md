@@ -136,14 +136,14 @@ Validated on Fri 13 Nov at about 11 PM: 117 of 117 automatic checks passed. Deta
 
 | Done | Owner | Task | المهمة |
 |---|---|---|---|
-| [x] | Claude / Laila | 30-second demo video made: `media/flamelens-demo-30s.mp4` (screen only, captions, no voices or faces) | تم إنشاء فيديو العرض 30 ثانية: `media/flamelens-demo-30s.mp4` (الشاشة فقط، نصوص، بلا أصوات أو وجوه) |
+| [x] | Claude / Laila | 30-second narrated demo video made: `media/flamelens-demo-30s.mp4` (hook, screen recording, captions, synthetic adult female voice from open-source Kokoro, no faces) | تم إنشاء فيديو العرض 30 ثانية مع تعليق صوتي: `media/flamelens-demo-30s.mp4` (مقدمة جذابة، تسجيل الشاشة، نصوص، صوت أنثوي اصطناعي لشخص بالغ من Kokoro مفتوح المصدر، بلا وجوه) |
 | [ ] | Leader | Upload the video to YouTube (unlisted) or Google Drive (anyone with the link) and test it in a private window | رفع الفيديو على YouTube (غير مدرج) أو Google Drive (لأي شخص لديه الرابط) واختباره في نافذة خاصة |
 | [ ] | Team | Choose the team leader who submits | اختيار قائد الفريق الذي يسلّم |
 | [ ] | F / Laila | Confirm the final deadline on Discord | تأكيد الموعد النهائي على Discord |
 | [ ] | Any | Proofread the project summary in `docs/FINAL-SUBMISSION.md` | مراجعة ملخص المشروع في `docs/FINAL-SUBMISSION.md` |
 | [ ] | Laila | Tag the release the demo shows (`v1.0`) | وسم الإصدار الذي يظهر في العرض (`v1.0`) |
 | [ ] | Leader | Open every link in a private window | فتح كل الروابط في نافذة خاصة |
-| [ ] | Claude / Laila | Fix plan phases 1–4 (logic, display, data, final checks): [15 Dashboard review](docs/15-dashboard-review.md) section 3. Code freeze 12:00 | خطة الإصلاح المراحل 1–4 (المنطق، العرض، البيانات، الفحص النهائي): [مراجعة لوحة التحكم](docs/15-dashboard-review.md) القسم 3. تجميد الكود 12:00 |
+| [x] | Claude / Laila | Fix plan phases 1–2 done and live (material-aware evidence, meter, options, outside-PSI lunar/Mars-g limits, display fixes); phase 3 (BASS atmosphere, FLEX table) skipped for time: [15 Dashboard review](docs/15-dashboard-review.md) section 3 | تمت المرحلتان 1–2 من خطة الإصلاح وهي على الموقع (أدلة حسب نوع المادة، المقياس، الخيارات، حدود ناسا خارج PSI بجاذبية القمر والمريخ، إصلاحات العرض)؛ أُجّلت المرحلة 3 لضيق الوقت: [مراجعة لوحة التحكم](docs/15-dashboard-review.md) القسم 3 |
 | [ ] | Leader | Agree to move the submit from 10:00 to 12:30 (deadline 1:00 PM) | الموافقة على نقل التسليم من 10:00 إلى 12:30 (الموعد النهائي 1:00 ظهرًا) |
 | [ ] | Leader / F | Slides (7) incl. a "missing data" slide; done by 12:15 | الشرائح (7) مع شريحة "البيانات الناقصة"؛ قبل 12:15 |
 | [ ] | Leader | Submit on the local form and on the official NASA site by 10:00 AM; save both confirmations | التسليم على النموذج المحلي وموقع ناسا الرسمي قبل 10:00 صباحًا وحفظ التأكيدين |

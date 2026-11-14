@@ -24,11 +24,11 @@ You enter a design: oxygen %, pressure, airflow, material state and gravity. Pre
 
 | Feature | What you get |
 |---|---|
-| **Evidence case** | Each condition marked Supported (2+ matching runs), Weak (1) or No evidence (0), with the matching run IDs. Two summary lines: runs matching the whole design, and runs matching the atmosphere alone (ignoring gravity). |
+| **Evidence case** | Each condition marked Supported (2+ matching runs), Weak (1) or No evidence (0), with the matching run IDs. Only runs with the chosen material count; if a condition was tested only with other fuels it says "Other fuels only". Two summary lines: runs matching the whole design, and runs matching the atmosphere alone (ignoring gravity). |
 | **Evidence strength (0–100)** | A transparency score per condition: 0.35 closeness + 0.30 reliability + 0.20 run count + 0.15 source quality. **Not a safety rating.** |
 | **Run this next** | The evidence gaps, the nearest existing NASA run, and the changes needed to turn it into the missing test. |
-| **Lower-oxygen tested options** | Real runs with at least 10 % less oxygen partial pressure than the design, and what would change. |
-| **Closest NASA evidence** | When no run matches the whole design, the runs that match everything except the fewest conditions, with exactly what differs. Nothing is interpolated. |
+| **Tested options with less oxygen** | Real runs with at least 10 % less oxygen partial pressure than the design, runs at the design's own pressure first, and a warning when none are. |
+| **Closest NASA evidence** | When no run matches the whole design, the runs that match everything except the fewest conditions, with exactly what differs. Nothing is interpolated. Below them, cited NASA tests outside PSI that are never counted: Saffire IV-VI spacecraft fires (`beyond_psi_runs.csv`) and material limits at lunar and Martian gravity and at 10.2 and 8.2 psia (`beyond_psi_limits.csv`, sources in `docs/research/beyond-psi-sources.md`). |
 | **Ask the NASA reports** | Ask a question about one investigation and get an answer from NASA's own documents (1,899 passages from 20 PSI reports, theses and test matrices across 9 investigations). Every AI claim quotes the document word for word with its page; the server checks the quote, the numbers and any run ID, and removes claims that fail or state a safety verdict. Without an AI key it shows the best matching passages with file and page. Built on Dai's `build_library.py` and `explain_ai.py`. |
 | **Test campaign planner** | "NASA can fly N more experiments": a greedy plan of tests that give the most designs a full match. It plans coverage only and never predicts results. |
 | **Mission atmosphere journey** | One Artemis-style crew mission as a timeline (ISS cabin → spacesuit → pressurized rover → Moon base). Each stage shows its evidence strength from the same engine; the mission is only as well backed as its weakest stage, which is flagged with the test to run next (today: the spacesuit, 100 % O₂ at 4.3 psi). |
@@ -43,11 +43,11 @@ You enter a design: oxygen %, pressure, airflow, material state and gravity. Pre
 ### What it shows on the real data
 
 - **ISS cabin** (21 % oxygen, 14.7 psi, 12.9 cm/s, microgravity): **336 runs** match the whole design. Evidence strength 82.5 of 100.
-- **Pressurized rover** (30 % oxygen, 10.2 psi, 8.1 cm/s, solid material, lunar gravity): **0 runs** match the whole design, and 0 match the atmosphere even ignoring gravity. The nearest run is `PSI-25-0023` (BASS-II).
+- **Pressurized rover** (30 % oxygen, 10.2 psi, 8.1 cm/s, solid material, lunar gravity): **2 of 5 conditions supported, 0 runs** match the whole design, and 0 match the atmosphere even ignoring gravity. Its oxygen and pressure were tested only with gas flames and fuel droplets. The nearest run is `PSI-25-0023` (BASS-II). Outside PSI: Saffire V (26.2 % O₂, 10.25 psi, cotton) and lunar-gravity drop-tower limits at 10.2 psia (Olson and Ferkul 2012).
   - 308 solid-material runs share its airflow and material, but at 14.5–22.2 % oxygen and 14.7 psi.
   - 33 FLEX runs share its oxygen and pressure, but burned liquid droplets.
   - 153 runs share its oxygen partial pressure (shown as related, not equivalent).
-- **Gravity:** every run in PSI is microgravity. For lunar or Mars gravity FlameLens says so: PSI has no partial-gravity combustion data yet (LUCI and FM2 are planned, challenge text), and microgravity results are one bound.
+- **Gravity:** every run in PSI is microgravity. For lunar or Mars gravity FlameLens says so: PSI has no partial-gravity combustion data yet (LUCI and FM2 are planned, challenge text), and microgravity results are one bound. It then shows NASA's drop-tower limits measured at lunar and Martian gravity, cited and not counted.
 - **Campaign planner, 3 tests:** one lunar-gravity test at 30 % oxygen and 10.2 psi serves both the Moon base and the rover; the other two serve the spacesuit and the Mars habitat. Today only the ISS cabin has a full match.
 
 ### The lenses
@@ -130,7 +130,7 @@ backend/app/
   detect.py     real gas and particle evidence behind the early-detection simulator
   profiles.py   investigation profiles, comparison, modelling links
   data.py       loads the curated tables
-backend/tests/  73 automated tests
+backend/tests/  95 automated tests
 frontend/dist/  index.html, styles.css, app.js, charts.js, detect.js, brief.js,
                 campaign.js, closest.js, journey.js, logo.png, favicon.png, og-image.png, apple-touch-icon.png
 data/curated/   cleaned NASA tables with provenance
@@ -183,10 +183,11 @@ vercel deploy --prod --yes
 **While building**
 
 - AI coding assistants (Claude in Claude Code, and Claude and Gemini in Antigravity) helped the team write the data scripts, backend, frontend and documentation during the hackathon.
-- "Ask the NASA reports" (designed by Dai, team AstroSpark; integrated in `backend/app/ask.py`) can call an open-weight model (default `openai/gpt-oss-120b` on Groq) when an API key is configured. Its answers must quote the NASA document verbatim and pass the verifier; with no key it returns report passages only.
+- "Ask the NASA reports" (designed by Dai, team AstroSpark; integrated in `backend/app/ask.py`) calls Google Gemini 2.5 Flash on the live site (a Groq, xAI or other OpenAI-compatible key also works). Its answers must quote the NASA document verbatim and pass the verifier; with no key it returns report passages only.
+- An AI research agent helped find NASA papers outside PSI (partial gravity, 10.2 and 8.2 psia material limits); every value was checked against the paper before it was added.
 - The FlameLens logo illustration (a burning planet with a magnifying glass, `media/flamelens-illustration.jpg`) was generated with Google Gemini and chosen by the team; the site icon and social image use a crop of it.
-- The 30-second demo video is composed by our scripts in `scripts/demo_video/` from screen captures of the live site. Its soundtrack is synthesized by code: no samples, no AI-generated music, no voices or faces.
-- Numbers shown in the app come from the NASA files, not from an AI. They are checked by the 73 automated tests and by `scripts/validate_live.py`, which compares the live site with the curated data.
+- The 30-second demo video is composed by our scripts in `scripts/demo_video/` from screen captures of the live site. The narration is a synthetic adult female voice made with Kokoro-82M (open-source text-to-speech, Apache-2.0) from our own script. The music is synthesized by code: no samples, no AI-generated music, no real voices or faces.
+- Numbers shown in the app come from the NASA files, not from an AI. They are checked by the 95 automated tests and by `scripts/validate_live.py`, which compares the live site with the curated data.
 
 ## 8. Credits and data sources
 
