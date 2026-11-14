@@ -34,7 +34,7 @@ You enter a design: oxygen %, pressure, airflow, material state and gravity. Pre
 | **Mission atmosphere journey** | One Artemis-style crew mission as a timeline (ISS cabin → spacesuit → pressurized rover → Moon base). Each stage shows its evidence strength from the same engine; the mission is only as well backed as its weakest stage, which is flagged with the test to run next (today: the spacesuit, 100 % O₂ at 4.3 psi). |
 | **Ranked investigations** | The 18 flight investigations ranked by closeness to the design (weights: oxygen 0.35, pressure 0.20, airflow 0.20, material 0.15, gravity 0.10; a missing value scores a neutral 0.5). |
 | **What the evidence says (AI)** | A short explanation where every sentence cites a run. A citation verifier removes any claim that cites a run outside the evidence, states a number not in that run, or gives a safety threshold. |
-| **Seven lenses** | Coverage map, cool flames, smoke vs dust, **smoke points** (55 SPICE flames on the ISS at the moment they began to smoke, from the SPICE thesis Appendix 6.4; 45 linked to their runs), flame spread, airflow tested, and an early-detection simulator. |
+| **Seven lenses** | Coverage map, cool flames, smoke vs dust, **smoke points** (55 SPICE flames on the ISS at the moment they began to smoke, from the SPICE thesis Appendix 6.4; 46 of them linked to 45 SPICE runs), flame spread, airflow tested, and an early-detection simulator. |
 | **Investigations explorer** | A profile of each investigation (objective, fuels, hardware, conditions, what varied, what was measured) and a side-by-side comparison. |
 | **Design review brief** | A printable evidence brief for the current design, built from the same API. Open it directly with `/?brief=1`. |
 | **Data downloads** | The curated run table, spread rates, papers and investigation profiles, for flammability modelling. |
@@ -43,7 +43,7 @@ You enter a design: oxygen %, pressure, airflow, material state and gravity. Pre
 ### What it shows on the real data
 
 - **ISS cabin** (21 % oxygen, 14.7 psi, 12.9 cm/s, microgravity): **336 runs** match the whole design. Evidence strength 82.5 of 100.
-- **Pressurized rover** (30 % oxygen, 10.2 psi, 8.1 cm/s, solid material, lunar gravity): **2 of 5 conditions supported, 0 runs** match the whole design, and 0 match the atmosphere even ignoring gravity. Its oxygen and pressure were tested only with gas flames and fuel droplets. The nearest run is `PSI-25-0023` (BASS-II). Outside PSI: Saffire V (26.2 % O₂, 10.25 psi, cotton) and lunar-gravity drop-tower limits at 10.2 psia (Olson and Ferkul 2012).
+- **Pressurized rover** (30 % oxygen, 10.2 psi, 8.1 cm/s, solid material, lunar gravity): **2 of 5 conditions supported, 0 runs** match the whole design, and 0 match the atmosphere even ignoring gravity. Its oxygen and pressure were tested only with gas flames and fuel droplets. The nearest run is `PSI-25-0023` (BASS-II). Outside PSI: Saffire V (26.2 % O₂, 10.25 psi, cotton) and lunar-gravity drop-tower limits at 10.2 psia (tabulated in Olson and Ferkul 2012, Table I; the paper notes that low-gravity limit criteria differ from the 1 g test).
   - 308 solid-material runs share its airflow and material, but at 14.5–22.2 % oxygen and 14.7 psi.
   - 33 FLEX runs share its oxygen and pressure, but burned liquid droplets.
   - 153 runs share its oxygen partial pressure (shown as related, not equivalent).
@@ -57,6 +57,7 @@ You enter a design: oxygen %, pressure, airflow, material state and gravity. Pre
 | Coverage map | Oxygen against pressure for the 1,772 runs that have both, with a "close to your design" box (±6 oxygen points, ±2 psi). |
 | Cool flames | Cool-flame, hot-flame and no-ignition outcomes by oxygen and pressure (CFI, ACME CFI-G, FLEX). 56 runs record a cool flame. Sourced notes include inverse flames at up to 85 % oxygen (ACME CFI-G). |
 | Smoke vs dust | Smoke particles 0.04–0.29 µm (SAME-R final report, Table 1, five materials, fresh and aged) against Arizona Road Dust test dust 1.57–1.72 µm (DAFT). This is why a detector that measures particle size can tell smoke from dust. |
+| Smoke points | 55 SPICE flames on the ISS at the moment each began to smoke, 13.4–105.5 mm long, for five fuels (SPICE thesis, Appendix 6.4). A longer smoke-point flame means a fuel that makes less soot; the thesis gives the order propane, ethylene, 50 % propylene, 75 % propylene, propylene. |
 | Flame spread | 43 measured microgravity spread or regression rates, 0.012–2.6 mm/s, at 1.5–29 cm/s airflow (41 from BASS-II, 2 from Saffire-II). Thin fuels spread far faster than thick slabs: 2.1–2.6 mm/s for thin fabric and film against 0.012–0.144 mm/s for 1–5 mm acrylic slabs. |
 | Airflow tested | Oxygen against airflow for the 681 runs that recorded both. |
 | Early detection | A cabin sensor simulator (an illustration, see section 3) anchored to real numbers: before-and-after CO and CO₂ readings from 129 BASS-II tests (median CO rise 44 ppm, maximum 575 ppm), and the SAME-R and DAFT particle sizes. |
@@ -84,7 +85,13 @@ You enter a design: oxygen %, pressure, airflow, material state and gravity. Pre
 | `bass2_airflow.csv` | 20 | BASS-II fan calibration points |
 | `modeling_studies.json` | 5 | PSI ground and CFD modelling studies, linked to the flight investigations they use |
 | `papers.csv` | 27 | NASA NTRS publications (2018–2024) with links |
-| `explanations.json` | 5 | Cached AI explanations for the five presets (see section 7) |
+| `spice_smoke_points.csv` | 55 | SPICE smoke points (thesis Appendix 6.4); 46 linked to 45 runs |
+| `condition_notes.csv` | 16 | Sourced NASA statements for conditions a PSI table leaves empty, with quote and page |
+| `beyond_psi_runs.csv` | 8 | Saffire IV, V and VI tests outside PSI (shown, never counted) |
+| `beyond_psi_limits.csv` | 16 | Material limits outside PSI: lunar and Martian gravity, 10.2 and 8.2 psia (shown, never counted) |
+| `doc_chunks.jsonl` | 1,899 | Page-tagged passages from 20 PSI documents (9 investigations) for "Ask the NASA reports" |
+| `doc_manifest.csv` | 22 | The PSI documents considered for the library: 20 indexed, 2 camera logs skipped |
+| `explanations.json` | 5 | Cached AI explanations made for the presets; 4 match a current preset (see section 7) |
 
 The raw PSI downloads are not in the repo. Rebuild them with `scripts/fetch_psi.py`, `scripts/fetch_psi_docs.py` and `scripts/build_runs.py`.
 
@@ -124,15 +131,17 @@ A static frontend with no build step, served by a Python FastAPI backend. Custom
 backend/app/
   main.py       FastAPI routes under /api
   engine.py     ranker, evidence case, strength, next experiment, alternatives,
-                closest evidence, campaign planner (no AI)
+                closest evidence, campaign planner, mission journey (no AI)
   explain.py    retrieval pack, citation verifier, cached AI text, template fallback
+  ask.py        "Ask the NASA reports": passage search, quote verifier, optional live model
   lenses.py     data for the coverage, cool-flame, smoke-vs-dust, spread and airflow lenses
   detect.py     real gas and particle evidence behind the early-detection simulator
   profiles.py   investigation profiles, comparison, modelling links
   data.py       loads the curated tables
 backend/tests/  95 automated tests
 frontend/dist/  index.html, styles.css, app.js, charts.js, detect.js, brief.js,
-                campaign.js, closest.js, journey.js, logo.png, favicon.png, og-image.png, apple-touch-icon.png
+                campaign.js, closest.js, journey.js, ask.js, logo.png, favicon.png,
+                og-image.png, apple-touch-icon.png
 data/curated/   cleaned NASA tables with provenance
 scripts/        fetch and build scripts, and validate_live.py (checks the live site)
 api/index.py    Vercel entry point for the FastAPI app
@@ -177,13 +186,13 @@ vercel deploy --prod --yes
 **Inside the product**
 
 - **No AI in the decisions.** Verdicts, statuses, strength scores, rankings, next experiment, alternatives and the campaign plan are deterministic arithmetic over the NASA tables.
-- **"What the evidence says" panel.** For the five presets, the text was generated ahead of time by an open model (`qwen2.5:7b-instruct`) from the retrieved runs only: 5 claims per preset, 25 in total. The citation verifier in `backend/app/explain.py` re-checks every claim on every request and removed none of the 25. For a custom design the live site has no model, so the panel shows a plain summary filled from the runs and says "AI is off".
+- **"What the evidence says" panel.** For four presets (Moon base, pressurized rover, spacesuit, ISS cabin) the text was generated ahead of time by an open model (`qwen2.5:7b-instruct`) from the retrieved runs only: 5 claims per preset, 20 in total. The citation verifier in `backend/app/explain.py` re-checks every claim on every request and removes none of the 20. The Mars habitat preset was changed to NASA's exploration atmosphere after that text was made, so it has no AI text. For it and for any custom design this panel has no live model: it shows a plain summary filled from the runs and says "AI is off".
 - **The verifier removes** any claim whose run ID is not in the retrieved evidence, whose numbers are not in that run, or that states a flammability threshold or a safety verdict. `/api/verify` exposes the same check.
+- **"Ask the NASA reports"** (designed by Dai, team AstroSpark; integrated in `backend/app/ask.py`) calls Google Gemini 2.5 Flash on the live site (a Groq, xAI or other OpenAI-compatible key also works). Its answers must quote the NASA document word for word and pass the verifier; with no key it returns report passages only.
 
 **While building**
 
 - AI coding assistants (Claude in Claude Code, and Claude and Gemini in Antigravity) helped the team write the data scripts, backend, frontend and documentation during the hackathon.
-- "Ask the NASA reports" (designed by Dai, team AstroSpark; integrated in `backend/app/ask.py`) calls Google Gemini 2.5 Flash on the live site (a Groq, xAI or other OpenAI-compatible key also works). Its answers must quote the NASA document verbatim and pass the verifier; with no key it returns report passages only.
 - An AI research agent helped find NASA papers outside PSI (partial gravity, 10.2 and 8.2 psia material limits); every value was checked against the paper before it was added.
 - The FlameLens logo illustration (a burning planet with a magnifying glass, `media/flamelens-illustration.jpg`) was generated with Google Gemini and chosen by the team; the site icon and social image use a crop of it.
 - The 30-second demo video is composed by our scripts in `scripts/demo_video/` from screen captures of the live site. The narration is a synthetic adult female voice made with Kokoro-82M (open-source text-to-speech, Apache-2.0) from our own script. The music is synthesized by code: no samples, no AI-generated music, no real voices or faces.
