@@ -112,3 +112,11 @@ def test_google_provider_request_and_parsing(monkeypatch):
     assert out == {"summary": "", "claims": []}
     assert "AIzaFakeTestKey" not in seen["url"] and seen["headers"].get("X-goog-api-key") == "AIzaFakeTestKey"
     assert seen["body"]["generationConfig"]["responseMimeType"] == "application/json"
+
+
+def test_xai_key_selects_grok(monkeypatch):
+    for k in ("ASK_LLM_API_KEY", "GROQ_API_KEY", "GOOGLE_API_KEY", "GEMINI_API_KEY", "ASK_LLM_PROVIDER", "ASK_LLM_BASE_URL", "ASK_LLM_MODEL"):
+        monkeypatch.delenv(k, raising=False)
+    monkeypatch.setenv("XAI_API_KEY", "xai-fake-test-key")
+    cfg = ask.config()
+    assert cfg["live"] and cfg["base_url"] == "https://api.x.ai/v1" and cfg["model"].startswith("grok")

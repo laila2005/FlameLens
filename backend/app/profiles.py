@@ -10,6 +10,7 @@ from . import data
 
 PROFILES_JSON = data.CURATED / "investigation_profiles.json"
 MODELING_JSON = data.CURATED / "modeling_studies.json"
+NOTES_CSV = data.CURATED / "condition_notes.csv"   # sourced statements for conditions the run table leaves empty
 LONG_TEXT = ("objectives", "approach", "hypothesis", "research_impacts")
 
 # Multi-flight series share NTRS overview papers where appropriate
@@ -33,6 +34,21 @@ def modeling_studies():
         return []
     with open(MODELING_JSON, encoding="utf-8") as f:
         return json.load(f)
+
+
+@lru_cache(maxsize=1)
+def condition_notes():
+    """Sourced statements (NASA papers, reports, test matrices, PSI page text) for oxygen, pressure or airflow
+    values that the PSI Experimental Table does not record. Shown in profiles only; never used for matching."""
+    import csv
+    if not NOTES_CSV.exists():
+        return []
+    with open(NOTES_CSV, encoding="utf-8") as f:
+        return list(csv.DictReader(f))
+
+
+def notes_for(psi_id):
+    return [n for n in condition_notes() if n["psi_id"] == psi_id]
 
 
 def modeling_for(psi_id):
@@ -66,7 +82,8 @@ def profile(psi_id):
     p = next((p for p in _profiles() if p["psi_id"] == psi_id), None)
     if p is None:
         return None
-    return {**p, "modeling_studies": modeling_for(psi_id), "papers": papers_for(psi_id)}
+    return {**p, "modeling_studies": modeling_for(psi_id), "papers": papers_for(psi_id),
+            "condition_notes": notes_for(psi_id)}
 
 
 def _range_text(r):

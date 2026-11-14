@@ -471,6 +471,23 @@
   let invAll = [], invSel = [], invPillar = "All";
   const rng = (r, unit) => (r ? (r[0] === r[1] ? `${r[0]} ${unit}` : `${r[0]}–${r[1]} ${unit}`) : "not recorded");
 
+  // Oxygen / pressure / airflow in a profile: the PSI table range first; when the table leaves it empty, the
+  // assumed cabin value (labelled) and any sourced NASA statement from data/curated/condition_notes.csv.
+  const NOTE_KEY = { o2: "o2", pressure: "pressure", airflow: "airflow", flow: "airflow", psi: "pressure" };
+  function condNotes(p, cond) { return (p.condition_notes || []).filter((n) => n.condition === (NOTE_KEY[cond] || cond)); }
+  function condNoteShort(p, cond) {
+    return condNotes(p, cond).length ? " (NASA source above)" : " (not in the PSI table)";
+  }
+  function condCell(p, key, cond, unit) {
+    const r = (p.ranges || {})[key], ra = (p.ranges_incl_assumed || {})[key], notes = condNotes(p, cond);
+    let head;
+    if (r) head = rng(r, unit);
+    else if (ra) head = `${rng(ra, unit)} <span class="hint">assumed ISS cabin air (not in the PSI table)</span>`;
+    else head = notes.length ? "" : `<span class="hint">not in the PSI table</span>`;
+    const src = notes.map((n) => `<div class="cnote"><b>${esc(n.value)}</b> <span class="hint">· ${esc(n.basis)}: “${esc(n.quote)}” (${n.source_url ? `<a href="${esc(n.source_url)}" target="_blank" rel="noopener">${esc(n.source_ref)}</a>` : esc(n.source_ref)})</span></div>`).join("");
+    return head + src;
+  }
+
   function renderInvGrid() {
     const pillars = ["All", "Prevention", "Detection", "Suppression", "Other"];
     $("invfilters").innerHTML = pillars.map((p) => `<button class="tab" data-pillar="${p}" aria-selected="${p === invPillar}">${p}</button>`).join("");
@@ -505,11 +522,11 @@
           <dl class="kv">
             <dt>Runs</dt><dd>${p.n_runs || 0}${pm ? " (parameter matrix published; see below)" : ""}</dd>
             <dt>Fuels</dt><dd>${(p.fuels || []).map((f) => `${esc(f.name)} (${f.runs})`).join(", ") || (pm ? esc(pm.fuels.join(", ")) : "not recorded")}</dd>
-            <dt>Oxygen</dt><dd>${rng(r.o2_pct, "%")}</dd>
-            <dt>Pressure</dt><dd>${rng(r.pressure_psi, "psi")}</dd>
-            <dt>Airflow</dt><dd>${rng(r.airflow_cm_s, "cm/s")}</dd>
+            <dt>Oxygen</dt><dd>${condCell(p, "o2_pct", "o2", "%")}</dd>
+            <dt>Pressure</dt><dd>${condCell(p, "pressure_psi", "pressure", "psi")}</dd>
+            <dt>Airflow</dt><dd>${condCell(p, "airflow_cm_s", "airflow", "cm/s")}</dd>
             <dt>Varied</dt><dd>${esc((p.varied || []).join(", ") || "nothing recorded")}</dd>
-            <dt>Held constant</dt><dd>${(p.constant || []).map((c) => `${esc(c.condition)}${c.value != null ? ` = ${esc(c.value)}` : " (not recorded)"}`).join(", ") || "–"}</dd>
+            <dt>Held constant</dt><dd>${(p.constant || []).map((c) => `${esc(c.condition)}${c.value != null ? ` = ${esc(c.value)}` : condNoteShort(p, c.condition)}`).join(", ") || "–"}</dd>
             <dt>Measured</dt><dd>${esc((p.measurements_mentioned || []).join(", ") || "not stated in the PSI text")}</dd>
             <dt>Outcomes</dt><dd>${Object.entries(p.outcome_counts || {}).map(([k, v]) => `${esc(k)} ${v}`).join(", ") || "–"}</dd>
           </dl>

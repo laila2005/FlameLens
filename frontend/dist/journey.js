@@ -26,6 +26,11 @@
       <div class="jscore"><strong class="t-${tone(sc)}">${sc}<small>/100</small></strong>
         <span class="hint">${s.whole_n.toLocaleString()} NASA run${s.whole_n === 1 ? "" : "s"} match all five conditions · ${s.supported_count} of ${s.counted ?? 5} conditions supported</span></div>
       <div class="sm-bar"><i style="width:${sc}%;background:var(--${tone(sc) === "ok" ? "ok" : tone(sc) === "amber" ? "amber" : "bad"})"></i></div>
+      <div class="jextra">
+        <div><b>${Math.round(s.separate_strength)}/100</b> when conditions are tested one at a time · ${s.supported_count} of ${s.counted ?? 5} supported</div>
+        ${s.partial_gravity ? `<div class="jwhy">Why 0: every PSI run is in microgravity, so no lunar or Mars design can match all five conditions until partial-gravity tests (LUCI, FM2) exist.${(() => { const o = (s.gaps || []).filter((g) => g !== "grav").map((g) => GAP[g] || g); return o.length ? ` Also untested in PSI at this design: ${esc(o.join(", "))}.` : ""; })()}</div>` : ""}
+        ${(s.beyond_psi || []).length ? `<div class="jbeyond">Outside PSI (cited, not counted): ${esc([...new Set(s.beyond_psi.map((b) => b.experiment))].join(", "))} burned solids in this ${s.beyond_psi.some((b) => b.atmosphere_match) ? "atmosphere" : "oxygen and pressure"} in microgravity.</div>` : ""}
+      </div>
       ${s.weakest ? `<div class="jnext"><div class="jflag">Weakest stage · test this next</div>
         <div>Closes: <b>${esc(gaps.join(", ") || "repeat for confidence")}</b></div>
         ${nr ? `<div>Start from ${run(nr.run_id)} (${esc(nr.investigation)}) and change ${(nx.changes || []).map((ch) => `${esc(FIELD_LABEL[ch.field] || ch.field)} ${esc(val(ch.from))} → ${esc(val(ch.to))}`).join("; ") || "nothing: it already matches every condition you set, so repeat it to add confidence"}.</div>` : ""}
@@ -42,7 +47,7 @@
     const weak = r.stages.find((s) => s.weakest);
     const ms = Math.round(r.mission_strength ?? 0);
     $("jsum").innerHTML = `Mission evidence: <b class="t-${tone(ms)}">${ms}/100</b>, set by its weakest stage${weak ? `, <b>${esc(weak.name)}</b>` : ""}.
-      <span class="hint">${r.summary.fully_backed} of ${r.summary.stages} stages ${r.summary.fully_backed === 1 ? "is" : "are"} backed by 2 or more NASA runs matching all five conditions.</span>`;
+      <span class="hint">${r.summary.fully_backed} of ${r.summary.stages} stages ${r.summary.fully_backed === 1 ? "is" : "are"} backed by 2 or more NASA runs matching all five conditions. Lunar stages score 0 because PSI has no partial-gravity runs; each card also shows how well its conditions are tested one at a time.</span>`;
     $("jlist").innerHTML = r.stages.map(card).join("");
     $("jnote").textContent = r.note;
   }

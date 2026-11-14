@@ -564,6 +564,10 @@ def journey(stages: list, rows=None) -> dict:
         nx = next_experiment(t, rows)
         whole = st.get("whole") or {}
         atmo = st.get("atmosphere") or {}
+        # conditions tested one at a time: average strength over the conditions the user set (unspecified airflow excluded)
+        counted = [x for x in c["conditions"] if x["status"] != NOT_SPECIFIED]
+        cond_scores = [float((st.get("conditions") or {}).get(x["key"], {}).get("score") or 0) for x in counted]
+        bp = beyond_psi(t)["rows"]
         out.append({
             "order": i + 1, "id": s["id"], "name": s["name"],
             "target": {"o2_pct": t.o2_pct, "pressure_psi": t.pressure_psi, "airflow_cm_s": t.airflow_cm_s,
@@ -573,6 +577,10 @@ def journey(stages: list, rows=None) -> dict:
             "atmosphere_n": c["atmosphere"]["n"], "supported_count": c["supported_count"], "counted": c["counted"],
             "strength": round(whole.get("score") or 0.0, 1), "atmosphere_strength": round(atmo.get("score") or 0.0, 1),
             "gaps": [x["key"] for x in c["conditions"] if _is_gap(x)],
+            "separate_strength": round(sum(cond_scores) / len(cond_scores), 1) if cond_scores else 0.0,
+            "partial_gravity": 0 < t.gravity_g < 1,
+            "beyond_psi": [{"id": b["id"], "experiment": b["experiment"], "material": b["material"],
+                            "atmosphere_match": "airflow" in b["same"] or t.airflow_cm_s is None} for b in bp],
             "next": {"needed": nx["needed"], "gaps": nx["gaps"], "nearest_run": nx["nearest_run"], "changes": nx["changes"]},
         })
     weakest = min(out, key=lambda x: (x["strength"], x["atmosphere_strength"], x["supported_count"], x["whole_n"], x["order"])) if out else None

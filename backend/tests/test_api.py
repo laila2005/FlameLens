@@ -303,3 +303,14 @@ def test_beyond_psi_saffire_matches_rover_moon_mars_but_never_counts():
     # never counted: the rover's evidence case still has 0 whole-design and 0 atmosphere matches
     case = client.post("/api/case", json={"target": ROVER}).json()
     assert case["whole"]["n"] == 0 and case["atmosphere"]["n"] == 0
+
+
+def test_profiles_show_sourced_condition_notes():
+    """Conditions the PSI table leaves empty get sourced NASA statements; every note has a quote and a source."""
+    p = client.get("/api/investigations/PSI-100").json()
+    notes = {n["condition"]: n for n in p["condition_notes"]}
+    assert "21 %" in notes["o2"]["value"] and "ICES-2021-266" in notes["o2"]["source_ref"]
+    from backend.app import profiles
+    for n in profiles.condition_notes():
+        assert n["quote"] and n["source_ref"] and n["source_url"].startswith("https://")
+        assert n["condition"] in ("o2", "pressure", "airflow")

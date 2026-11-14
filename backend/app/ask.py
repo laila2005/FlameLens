@@ -241,11 +241,13 @@ GOOGLE_URL = {
 def config():
     """Which model to call. Keys come only from environment variables set in the hosting dashboard, never the repo.
 
-    ASK_LLM_PROVIDER = openai (any OpenAI-compatible endpoint, default Groq) | gemini | vertex.
+    ASK_LLM_PROVIDER = openai (any OpenAI-compatible endpoint, default Groq; an xAI "xai-" key in XAI_API_KEY or
+    ASK_LLM_API_KEY selects api.x.ai and a Grok model) | gemini | vertex.
     Google keys: GOOGLE_API_KEY or GEMINI_API_KEY; the provider is guessed from the key's prefix if not set.
     """
     google = os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY") or ""
-    openai_key = os.environ.get("ASK_LLM_API_KEY") or os.environ.get("GROQ_API_KEY") or ""
+    xai = os.environ.get("XAI_API_KEY") or ""
+    openai_key = os.environ.get("ASK_LLM_API_KEY") or os.environ.get("GROQ_API_KEY") or xai
     provider = os.environ.get("ASK_LLM_PROVIDER", "").lower()
     if not provider:
         provider = ("vertex" if google.startswith("AQ.") else "gemini") if google and not openai_key else "openai"
@@ -253,8 +255,12 @@ def config():
         key = google or openai_key
         return {"provider": provider, "base_url": GOOGLE_URL[provider], "api_key": key, "live": bool(key),
                 "model": os.environ.get("ASK_LLM_MODEL", "gemini-2.5-flash")}
-    return {"provider": "openai", "base_url": os.environ.get("ASK_LLM_BASE_URL", "https://api.groq.com/openai/v1").rstrip("/"),
-            "model": os.environ.get("ASK_LLM_MODEL", "openai/gpt-oss-120b"), "api_key": openai_key, "live": bool(openai_key)}
+    if openai_key.startswith("xai-"):   # xAI Grok: OpenAI-compatible endpoint
+        base, model = "https://api.x.ai/v1", "grok-4.20-0309-non-reasoning"
+    else:
+        base, model = "https://api.groq.com/openai/v1", "openai/gpt-oss-120b"
+    return {"provider": "openai", "base_url": os.environ.get("ASK_LLM_BASE_URL", base).rstrip("/"),
+            "model": os.environ.get("ASK_LLM_MODEL", model), "api_key": openai_key, "live": bool(openai_key)}
 
 
 def _parse_json(content):
