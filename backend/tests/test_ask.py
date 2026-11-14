@@ -85,3 +85,30 @@ def test_cached_answer_is_reverified(monkeypatch):
 def test_ask_rejects_bad_input():
     assert client.post("/api/ask", json={"psi_id": "PSI-25; drop", "question": Q}).status_code == 422
     assert client.post("/api/ask", json={"psi_id": "PSI-25", "question": "x" * 400}).status_code == 422
+
+
+def test_google_provider_request_and_parsing(monkeypatch):
+    """Vertex/Gemini keys are read from the environment, sent in a header (never the URL), and the reply is parsed."""
+    import io, json as _json
+    monkeypatch.delenv("ASK_LLM_API_KEY", raising=False); monkeypatch.delenv("GROQ_API_KEY", raising=False)
+    monkeypatch.delenv("ASK_LLM_PROVIDER", raising=False)
+    monkeypatch.setenv("GOOGLE_API_KEY", "AQ.fake-test-key")
+    cfg = ask.config()
+    assert cfg["provider"] == "vertex" and cfg["live"] and "aiplatform.googleapis.com" in cfg["base_url"]
+    monkeypatch.setenv("GOOGLE_API_KEY", "AIzaFakeTestKey")
+    assert ask.config()["provider"] == "gemini"
+    seen = {}
+    reply = {"candidates": [{"content": {"parts": [{"text": '```json\n{"summary": "", "claims": []}\n```'}]}}]}
+
+    class Resp(io.BytesIO):
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+
+    def fake_urlopen(req, timeout=0):
+        seen["url"], seen["headers"], seen["body"] = req.full_url, dict(req.header_items()), _json.loads(req.data)
+        return Resp(_json.dumps(reply).encode())
+    monkeypatch.setattr(ask.urllib.request, "urlopen", fake_urlopen)
+    out = ask._call(ask.config(), "question")
+    assert out == {"summary": "", "claims": []}
+    assert "AIzaFakeTestKey" not in seen["url"] and seen["headers"].get("X-goog-api-key") == "AIzaFakeTestKey"
+    assert seen["body"]["generationConfig"]["responseMimeType"] == "application/json"

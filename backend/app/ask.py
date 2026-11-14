@@ -230,13 +230,61 @@ def verify(result, passages, runs):
 
 # ---------------------------------------------------------------- model, cache, answer
 
+GOOGLE_URL = {
+    # Google AI Studio keys ("AIza..."): Gemini API
+    "gemini": "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
+    # Google Cloud Vertex AI keys (express mode, "AQ..."): Vertex AI publisher models
+    "vertex": "https://aiplatform.googleapis.com/v1/publishers/google/models/{model}:generateContent",
+}
+
+
 def config():
-    key = os.environ.get("ASK_LLM_API_KEY") or os.environ.get("GROQ_API_KEY") or ""
-    return {"base_url": os.environ.get("ASK_LLM_BASE_URL", "https://api.groq.com/openai/v1").rstrip("/"),
-            "model": os.environ.get("ASK_LLM_MODEL", "openai/gpt-oss-120b"), "api_key": key, "live": bool(key)}
+    """Which model to call. Keys come only from environment variables set in the hosting dashboard, never the repo.
+
+    ASK_LLM_PROVIDER = openai (any OpenAI-compatible endpoint, default Groq) | gemini | vertex.
+    Google keys: GOOGLE_API_KEY or GEMINI_API_KEY; the provider is guessed from the key's prefix if not set.
+    """
+    google = os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY") or ""
+    openai_key = os.environ.get("ASK_LLM_API_KEY") or os.environ.get("GROQ_API_KEY") or ""
+    provider = os.environ.get("ASK_LLM_PROVIDER", "").lower()
+    if not provider:
+        provider = ("vertex" if google.startswith("AQ.") else "gemini") if google and not openai_key else "openai"
+    if provider in GOOGLE_URL:
+        key = google or openai_key
+        return {"provider": provider, "base_url": GOOGLE_URL[provider], "api_key": key, "live": bool(key),
+                "model": os.environ.get("ASK_LLM_MODEL", "gemini-2.5-flash")}
+    return {"provider": "openai", "base_url": os.environ.get("ASK_LLM_BASE_URL", "https://api.groq.com/openai/v1").rstrip("/"),
+            "model": os.environ.get("ASK_LLM_MODEL", "openai/gpt-oss-120b"), "api_key": openai_key, "live": bool(openai_key)}
+
+
+def _parse_json(content):
+    content = re.sub(r"^```(?:json)?\s*|\s*```$", "", (content or "{}").strip())
+    try:
+        return json.loads(content)
+    except json.JSONDecodeError:
+        s, e = content.find("{"), content.rfind("}")
+        if s >= 0 and e > s:
+            return json.loads(content[s:e + 1])
+        raise ValueError("model did not return JSON")
+
+
+def _call_google(cfg, user, timeout=60):
+    """Gemini generateContent (AI Studio or Vertex AI express mode); the key travels in a header, not the URL."""
+    body = {"systemInstruction": {"parts": [{"text": SYSTEM_PROMPT}]},
+            "contents": [{"role": "user", "parts": [{"text": user}]}],
+            "generationConfig": {"temperature": 0.1, "maxOutputTokens": 2048, "responseMimeType": "application/json"}}
+    req = urllib.request.Request(cfg["base_url"].format(model=cfg["model"]), data=json.dumps(body).encode(),
+                                 headers={"Content-Type": "application/json", "x-goog-api-key": cfg["api_key"],
+                                          "User-Agent": "FlameLens/1.0"})
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+        out = json.loads(resp.read())
+    parts = (((out.get("candidates") or [{}])[0].get("content") or {}).get("parts") or [])
+    return _parse_json("".join(p.get("text", "") for p in parts))
 
 
 def _call(cfg, user, timeout=60):
+    if cfg.get("provider") in GOOGLE_URL:
+        return _call_google(cfg, user, timeout)
     body = {"model": cfg["model"], "temperature": 0.1, "max_tokens": 1500, "response_format": {"type": "json_object"},
             "messages": [{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": user}]}
     headers = {"Content-Type": "application/json", "Authorization": f"Bearer {cfg['api_key']}",
@@ -315,7 +363,7 @@ def answer(psi_id, question, use_model=True):
             _save_cache(k, {"psi_id": psi_id, "question": question, "model": cfg["model"], "raw": raw,
                             "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds")})
         except Exception as e:   # network, quota, bad JSON: fall back to passages
-            base["error"] = f"model unavailable ({type(e).__name__})"
+            base["error"] = f"model unavailable ({type(e).__name__}{' ' + str(e.code) if hasattr(e, 'code') else ''})"
     if raw is None:
         return dict(base, source="passages", claims=[], removed=[], removed_count=0, summary="",
                     note="AI answer not available (no API key or no cached answer). These are the best matching "
