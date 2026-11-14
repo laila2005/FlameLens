@@ -94,7 +94,7 @@ def test_google_provider_request_and_parsing(monkeypatch):
     monkeypatch.delenv("ASK_LLM_PROVIDER", raising=False)
     monkeypatch.setenv("GOOGLE_API_KEY", "AQ.fake-test-key")
     cfg = ask.config()
-    assert cfg["provider"] == "vertex" and cfg["live"] and "aiplatform.googleapis.com" in cfg["base_url"]
+    assert cfg["provider"] == "gemini" and cfg["live"] and "aiplatform.googleapis.com" in cfg["fallback_url"]
     monkeypatch.setenv("GOOGLE_API_KEY", "AIzaFakeTestKey")
     assert ask.config()["provider"] == "gemini"
     seen = {}

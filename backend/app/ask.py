@@ -250,12 +250,16 @@ def config():
     explicit = os.environ.get("ASK_LLM_API_KEY") or os.environ.get("GROQ_API_KEY") or ""
     openai_key = explicit or xai          # XAI_API_KEY is used only when no Groq/OpenAI-style or Google key is set
     provider = os.environ.get("ASK_LLM_PROVIDER", "").lower()
-    if not provider:
-        provider = ("vertex" if google.startswith("AQ.") else "gemini") if google and not explicit else "openai"
+    guessed = not provider
+    if guessed:
+        # Google keys: AI Studio keys may start with "AIza" or the newer "AQ."; Vertex express keys also use "AQ.".
+        # Try the Gemini API first and fall back to Vertex AI if Google refuses the key there.
+        provider = "gemini" if google and not explicit else "openai"
     if provider in GOOGLE_URL:
         key = google or openai_key
-        return {"provider": provider, "base_url": GOOGLE_URL[provider], "api_key": key, "live": bool(key),
-                "model": os.environ.get("ASK_LLM_MODEL", "gemini-2.5-flash")}
+        fallback = GOOGLE_URL["vertex"] if guessed and provider == "gemini" else None
+        return {"provider": provider, "base_url": GOOGLE_URL[provider], "fallback_url": fallback, "api_key": key,
+                "live": bool(key), "model": os.environ.get("ASK_LLM_MODEL", "gemini-2.5-flash")}
     if openai_key.startswith("xai-"):   # xAI Grok: OpenAI-compatible endpoint
         base, model = "https://api.x.ai/v1", "grok-4.20-0309-non-reasoning"
     else:
@@ -279,14 +283,31 @@ def _call_google(cfg, user, timeout=60):
     """Gemini generateContent (AI Studio or Vertex AI express mode); the key travels in a header, not the URL."""
     body = {"systemInstruction": {"parts": [{"text": SYSTEM_PROMPT}]},
             "contents": [{"role": "user", "parts": [{"text": user}]}],
-            "generationConfig": {"temperature": 0.1, "maxOutputTokens": 2048, "responseMimeType": "application/json"}}
-    req = urllib.request.Request(cfg["base_url"].format(model=cfg["model"]), data=json.dumps(body).encode(),
-                                 headers={"Content-Type": "application/json", "x-goog-api-key": cfg["api_key"],
-                                          "User-Agent": "FlameLens/1.0"})
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
-        out = json.loads(resp.read())
-    parts = (((out.get("candidates") or [{}])[0].get("content") or {}).get("parts") or [])
-    return _parse_json("".join(p.get("text", "") for p in parts))
+            "generationConfig": {"temperature": 0.1, "maxOutputTokens": 4096, "responseMimeType": "application/json",
+                                 # Gemini 2.5 "thinking" tokens count against maxOutputTokens and truncated the JSON
+                                 "thinkingConfig": {"thinkingBudget": 0}}}
+    urls = [cfg["base_url"]] + ([cfg["fallback_url"]] if cfg.get("fallback_url") else [])
+    first_error = None
+    for url in urls:
+        req = urllib.request.Request(url.format(model=cfg["model"]), data=json.dumps(body).encode(),
+                                     headers={"Content-Type": "application/json", "x-goog-api-key": cfg["api_key"],
+                                              "User-Agent": "FlameLens/1.0"})
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                out = json.loads(resp.read())
+            break
+        except urllib.error.HTTPError as e:
+            if e.code not in (400, 401, 403, 404):
+                raise
+            first_error = first_error or e
+    else:
+        raise first_error
+    cand = (out.get("candidates") or [{}])[0]
+    parts = ((cand.get("content") or {}).get("parts") or [])
+    try:
+        return _parse_json("".join(p.get("text", "") for p in parts if not p.get("thought")))
+    except ValueError as e:
+        raise ValueError(f"model reply was not JSON (finish reason {cand.get('finishReason', 'unknown')})") from e
 
 
 def _provider_message(exc, key):
@@ -391,6 +412,8 @@ def answer(psi_id, question, use_model=True):
                             "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds")})
         except Exception as e:   # network, quota, bad JSON: fall back to passages
             base["error"] = f"model unavailable ({type(e).__name__}{' ' + str(e.code) if hasattr(e, 'code') else ''})"
+            if isinstance(e, ValueError):
+                base["error"] += f": {str(e)[:160]}"
             detail = _provider_message(e, cfg.get("api_key", ""))
             if detail:
                 base["error"] += f": {detail}"
