@@ -112,6 +112,51 @@ WHAT WE ARE CAREFUL ABOUT
 FlameLens never invents a value and never gives a safety verdict. "No evidence" means untested in PSI, not unsafe. Assumed values are labelled. The early-detection simulator is an illustration with a simplified spread model; only its gas levels and particle sizes come from NASA data.
 ```
 
+### 8b. Project details (form field "Project Details", answers each question)
+
+```text
+WHAT IT DOES AND HOW IT WORKS
+FlameLens is a web dashboard that tells a habitat engineer whether a cabin atmosphere has been backed by NASA's microgravity fire experiments. You enter the cabin's air (oxygen %, pressure, airflow, material, gravity) or pick a preset: ISS cabin, spacesuit, pressurized rover, Moon base, Mars habitat. FlameLens compares it with 2,003 real runs from 18 NASA PSI flight investigations and returns:
+- an evidence case: each condition marked Supported, Weak or No evidence, with the IDs of the matching runs (only runs with the same material count);
+- an evidence strength score from 0 to 100, with its four parts visible (it is not a safety rating);
+- the closest NASA evidence when nothing matches, and exactly what differs;
+- the next experiment to run, and a campaign planner (if NASA can fly 3 more tests, which ones cover the most designs);
+- tested options with less oxygen, seven science lenses, a mission journey, and a printable design review brief.
+Every number links to its PSI run, data table and DOI. "Ask the NASA reports" answers questions from 1,899 passages of 20 NASA PSI documents, and a claim is kept only if its quote is word for word on the cited page.
+
+BENEFITS
+- Engineers get a defensible answer in minutes instead of days of searching scattered tables and reports, with the gaps in plain view.
+- Researchers and students get one comparable table of 2,003 runs, 43 measured flame-spread rates and links to 27 NASA papers, all downloadable.
+- Mission planners get a short list of the experiments that would close the most gaps.
+
+INTENDED IMPACT
+In 1967 the Apollo 1 crew died in a ground test that no one had identified as hazardous, in a pure-oxygen cabin full of flammable materials. Today, Moon bases and pressurized rovers are planned with 30 % oxygen or more at about 10.2 psi, which makes materials burn more easily. FlameLens makes sure that before anyone breathes that air, the team knows what NASA has already tested and what it has not. On Earth, the same research supports smoke detectors that tell smoke from dust, firefighter clothing and breathing equipment.
+
+TOOLS, LANGUAGES, HARDWARE AND SOFTWARE
+- Languages: Python and JavaScript, with HTML and CSS.
+- Backend: FastAPI and Pydantic; data scripts in Python; 95 automated tests (pytest) and a 137-check script against the live site.
+- Frontend: plain JavaScript with our own SVG charts; light and dark themes; works at phone width.
+- Hosting: Vercel. Code on GitHub.
+- AI: an open model (qwen2.5:7b-instruct) for the explanation text, Google Gemini 2.5 Flash for "Ask the NASA reports", both behind our own citation verifier. AI coding assistants (Claude, Gemini) helped write code and docs.
+- Data: NASA PSI experiment tables (CC0), NASA Technical Reports Server, NASA Spinoff.
+- Video: our own Python scripts with ffmpeg, Whisper for subtitle timing; the voice is our team member's.
+- Hardware: none beyond our laptops.
+
+HOW IT IS CREATIVE
+- It gives a decision, not a list of search results: what is backed, how strongly, and what to test next.
+- It is honest about gaps. "No evidence" is a valid answer, and the rover result shows it: its oxygen and pressure were only tested with gas flames and fuel droplets, never with a solid material ("Other fuels only").
+- When there is no match, it shows the closest real runs and cited NASA tests outside PSI (Saffire spacecraft fires, lunar-gravity drop tests) without counting them.
+- It treats a mission as a journey (ISS, spacesuit, rover, Moon base) that is only as strong as its weakest stage.
+- The AI cannot invent facts: a verifier removes any claim whose run, number or quote is not in the NASA source.
+
+FACTORS WE CONSIDERED
+- Trust: no invented values, no safety verdicts; every value shows whether it was measured, read from text or assumed.
+- Decisions use no AI, and the app still works with the AI off.
+- Limits of the data: every PSI run is in microgravity, so we say so and do not stretch it to Moon or Mars gravity.
+- Users: a simple 1-2-3 flow (enter the air, compare, check the source), readable on a phone.
+- Open science: public links, CC0 data cited by DOI, AI use disclosed.
+```
+
 ### 9. NASA data and resources used
 
 ```text
