@@ -195,7 +195,7 @@ vercel deploy --prod --yes
 - AI coding assistants (Claude in Claude Code, and Claude and Gemini in Antigravity) helped the team write the data scripts, backend, frontend and documentation during the hackathon.
 - An AI research agent helped find NASA papers outside PSI (partial gravity, 10.2 and 8.2 psia material limits); every value was checked against the paper before it was added.
 - The FlameLens logo illustration (a burning planet with a magnifying glass, `media/flamelens-illustration.jpg`) was generated with Google Gemini and chosen by the team; the site icon and social image use a crop of it.
-- The 30-second demo video is composed by our scripts in `scripts/demo_video/` from screen captures of the live site. The narration is a synthetic adult female voice made with Kokoro-82M (open-source text-to-speech, Apache-2.0) from our own script. The music is synthesized by code: no samples, no AI-generated music, no real voices or faces.
+- The 30-second demo video is composed by our scripts in `scripts/demo_video/` from screen captures of the live site. The voice and the on-camera intro are Laila Mohamed's own (not AI); subtitles were timed with the open-source Whisper model (faster-whisper). The music is synthesized by code: no samples, no AI-generated music.
 - Numbers shown in the app come from the NASA files, not from an AI. They are checked by the 95 automated tests and by `scripts/validate_live.py`, which compares the live site with the curated data.
 
 ## 8. Credits and data sources

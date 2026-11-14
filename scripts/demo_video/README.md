@@ -1,6 +1,22 @@
 # Demo video pipeline (30 s, 1920×1080, 60 fps)
 
-## v2: narrated cut (the submitted video, `media/flamelens-demo-30s.mp4`)
+## v3: Laila's story cut (the submitted video, `media/flamelens-demo-30s.mp4`)
+
+Laila on camera inside a glowing circle (rings pulse with her voice), the Apollo 1 story in grey with the facts typed in, colour and music returning on "FlameLens", then the live dashboard under her voice-over (steps 1-2-3 with callout cards), an Apollo 1 memorial and the team end card. Word-by-word subtitles throughout. Script and sources: `docs/16-video-script.md`.
+
+```bash
+.venv-video/Scripts/python -m pip install faster-whisper   # plus the v2 packages below
+# intro clip, story clip (phone selfie videos), closing voice-over (any audio file)
+.venv-video/Scripts/python scripts/demo_video/prep3.py out/v3 intro.mp4 story.mp4 voiceover.mpeg
+.venv-video/Scripts/python scripts/demo_video/render3.py timing out/v3/timing.json
+.venv-video/Scripts/python scripts/demo_video/soundtrack.py out/v3/music.wav out/v3/timing.json
+.venv-video/Scripts/python scripts/demo_video/render3.py out/v3 out/shots out/v3/music.wav media/flamelens-illustration.jpg frontend/dist/logo.png out/flamelens-demo-30s.mp4
+```
+
+- `prep3.py`: cleans each voice piece (high-pass, light denoise, -18 LUFS), crops the selfie clips around the face, and aligns the subtitle text (as spoken, in `PIECES`) to Whisper word timings. The voice-over is cut after "come home."
+- `render3.py`: the timeline is `AT` (where each voice piece starts), `SEG` (dashboard shots), `CALLOUTS`, `MEMORIAL` and `END_CARD`. Add `--preview [times]` to write still frames.
+
+## v2: narrated cut (Kokoro voice, fictional engineer Nour; replaced by v3)
 
 Kinetic-type hook ("In space, fire plays by different rules.") over the FlameLens illustration with rising embers, then the live dashboard in a floating browser window (camera moves, cursor, click ripples, highlights, numbered captions, light-leak transitions) and an end card. A synthetic adult female narration (Kokoro-82M, open-source, Apache-2.0, voice `af_heart`) sets the timeline; the synthesized music ducks about 10 dB under the voice.
 

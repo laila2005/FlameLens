@@ -2,7 +2,17 @@
 
 Say it as if you are telling a friend why this project matters to you. It is 85 words, about 30 seconds at a calm, warm pace, so keep the pauses short.
 
-## The script
+## As recorded (used in the video, 14 Nov)
+
+Laila recorded the first four lines on camera (two phone clips) and the last two as a voice-over. Her wording, which the subtitles follow:
+
+> Hi, I'm Laila, from Team AstroSpark. We chose Flame in Freefall because of a story we could not forget.
+> Apollo 1: three astronauts, trapped by fire, in a test no one thought it was dangerous. That's why we have built FlameLens to make their story alive.
+> You can easily enter your cabin air, and FlameLens compares it with NASA PSI experiments. Every result cited, showing what's been tested and what hasn't, because behind every cabin on the Moon or Mars, there is a crew and a family waiting for them to come home.
+
+The voice-over ended with "And that's exactly where our motivation has come". It was cut so the video stays at 30 seconds.
+
+## The script (as written)
 
 > Hi, I'm Laila, Team AstroSpark.
 >

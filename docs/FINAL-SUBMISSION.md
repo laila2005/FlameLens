@@ -156,7 +156,7 @@ NASA Combustion Science page: https://www.nasa.gov/glenn/glenn-expertise-space-e
 ### 10. Space agency partner and other data
 
 ```text
-No space agency partner data was used. Other tools: Python, FastAPI, Pydantic, pytest, plain JavaScript and SVG, Vercel hosting, Google Fonts (Sora, IBM Plex Sans, IBM Plex Mono), the open language model qwen2.5:7b-instruct for the explanation text, Google Gemini 2.5 Flash for "Ask the NASA reports", and Kokoro-82M (open-source, Apache-2.0) for the video narration.
+No space agency partner data was used. Other tools: Python, FastAPI, Pydantic, pytest, plain JavaScript and SVG, Vercel hosting, Google Fonts (Sora, IBM Plex Sans, IBM Plex Mono), the open language model qwen2.5:7b-instruct for the explanation text, Google Gemini 2.5 Flash for "Ask the NASA reports".
 ```
 
 ### 11. Use of artificial intelligence
@@ -172,7 +172,7 @@ While building:
 - AI coding assistants (Claude in Claude Code, and Claude and Gemini in Antigravity) helped the team write the data scripts, backend, frontend and documentation during the hackathon.
 - The numbers shown in the app come from NASA files, not from an AI. They are checked by 95 automated tests and by a script that compares the live site with the curated data. An AI research agent helped find NASA papers outside PSI; we checked the values against the papers before adding them.
 - The FlameLens logo illustration (a burning planet with a magnifying glass) was generated with Google Gemini and chosen by the team; the site icon is a crop of it.
-- The demo video was composed by our own scripts from screen captures of the live site. The narration is a synthetic adult female voice made with Kokoro-82M, an open-source text-to-speech model (Apache-2.0), from our own script; the engineer in the story, Nour, is fictional. The music is synthesized by code, with no samples and no AI-generated music. No real voices or faces are used.
+- The demo video was edited by our own scripts from Laila's recordings and screen captures of the live site. The voice is Laila's own, not AI. Subtitles were timed with the open-source Whisper speech model (faster-whisper), and their text was checked against what she says. The music is synthesized by code, with no samples and no AI-generated music.
 ```
 
 ### 12. References
@@ -260,31 +260,26 @@ Exactly 7 slides. No faces, names or voices of anyone under 18. Keep the text as
   - Decisions use no AI. The AI only explains, and a verifier removes any claim without a matching NASA run.
   - Every run links to its NASA DOI. Assumed values are labelled.
   - On Earth: smoke detectors that ignore dust, firefighter clothing and breathing equipment.
-  - Data: NASA PSI (CC0) and NTRS. AI use disclosed: an open model and Gemini for cited text, AI coding assistants, an AI-made logo, a synthetic narration voice.
+  - Data: NASA PSI (CC0) and NTRS. AI use disclosed: an open model and Gemini for cited text, AI coding assistants, an AI-made logo, AI-timed subtitles.
 - **Visual:** the "What the evidence says" panel with a run opened in the evidence drawer, and the "Back on Earth" panel.
 
 ---
 
 ## Part 3. The 30-second video
 
-**The video is made:** [`media/flamelens-demo-30s.mp4`](../media/flamelens-demo-30s.mp4) (1920 x 1080, 60 fps, 30.0 s, H.264 with AAC). It opens with a kinetic-type hook, then screen recordings of the live site with captions, a narrated voice-over and music that dips under the voice. **No faces, no names of people, no real voices**: the narration is a synthetic adult female voice (Kokoro-82M, open source, Apache-2.0). To re-make it, see [`scripts/demo_video/README.md`](../scripts/demo_video/README.md).
+**The video is made:** [`media/flamelens-demo-30s.mp4`](../media/flamelens-demo-30s.mp4) (1920 x 1080, 60 fps, 30.0 s, H.264 with AAC). Laila Mohamed (team member, adult) tells why we built FlameLens, on camera inside a glowing circle frame, then her voice-over runs over screen recordings of the live site. Word-by-word subtitles run throughout. Music is synthesized by code and stays silent during the Apollo 1 story. No one under 18 appears or is heard. Script and sources: [`docs/16-video-script.md`](16-video-script.md). To re-make it, see [`scripts/demo_video/README.md`](../scripts/demo_video/README.md).
 
-### Scenes, captions and narration (as in the video)
+### Scenes and what Laila says (as in the video)
 
-The video tells a short story: **Nour, a fictional habitat engineer**, checks her Moon rover cabin with FlameLens. Animated callout cards point at what she sees (a count-up to 2,003 runs, red stamps on the gaps, green ticks on verified claims).
+| Time | On screen | Laila says |
+|---|---|---|
+| 0:00-0:06 | Laila in a circle with animated rings; "Laila Mohamed · Team AstroSpark", then "The challenge: Flame in Freefall" | Hi, I'm Laila, from Team AstroSpark. We chose Flame in Freefall because of a story we could not forget. |
+| 0:06-0:13 | The picture turns grey and quiet; "Apollo 1 · 27 January 1967 · Launch Complex 34", "100 % oxygen · 16.7 psi", the crew's names; colour and music return with the FlameLens logo | Apollo 1: three astronauts, trapped by fire, in a test no one thought it was dangerous. That's why we have built FlameLens to make their story alive. |
+| 0:13-0:24 | Live dashboard: (1) Moon rover air 30 % O₂ · 10.2 psi; (2) count-up to 2,003 PSI runs from 18 investigations, compared condition by condition (2 of 5 backed); (3) evidence drawer with run PSI-25-0023 and its DOI; not yet tested: 30 % O₂ and 10.2 psi (0 solid runs), tested: airflow (308 solid runs); campaign planner 3 tests → 5 habitat designs | You can easily enter your cabin air, and FlameLens compares it with NASA PSI experiments. Every result cited, showing what's been tested and what hasn't, because behind every cabin on the Moon or Mars, |
+| 0:24-0:27 | FlameLens illustration; "In memory of the Apollo 1 crew: Virgil Grissom · Edward White · Roger Chaffee" | there is a crew and a family waiting for them to come home. |
+| 0:27-0:30 | End card: "Every crew deserves to come home", URL, Team AstroSpark and the six names | – |
 
-| Time | On screen | Caption (Nour's step) | Narration |
-|---|---|---|---|
-| 0:00-0:03 | Hook over rising embers | – | In space, fire plays by different rules. |
-| 0:03-0:08 | Rover preset; badge "Nour · habitat engineer"; callout 30 % O₂ · 10.2 psi | Nour sets her rover cabin's air | Nour is designing a Moon rover cabin: thirty percent oxygen, ten point two psi. |
-| 0:08-0:10 | Data chip; counter 0 → 2,003 | FlameLens checks 2,003 real NASA flight runs | She checks it against two thousand real NASA flight runs. |
-| 0:10-0:16 | Verdict (0 full matches); oxygen and pressure "Other fuels only" (134 gas and droplet runs, 107 droplet runs, not counted) | Rover: 2 of 5 conditions backed | The honest answer: no PSI run burned a fabric in that air. Only gas flames and droplets. |
-| 0:16-0:20 | Outside-PSI limits: Ultem film at lunar gravity and 10.2 psi went out at 19.9 % O₂ (23.0 % in 1 g) | The closest proof, down to lunar gravity | So FlameLens shows the closest proof, down to lunar-gravity tests. |
-| 0:20-0:23 | Verified AI claims; run drawer with DOI 10.60555/4qc4-de67 | Every AI sentence cites a real NASA run | Every AI sentence she reads cites a real run. |
-| 0:23-0:27 | Campaign planner (3 tests → 5 designs); Ask the NASA reports, quote verified on page 49 | She plans NASA's next tests · Then she asks the NASA reports | Then she plans NASA's next tests, and asks the reports herself. |
-| 0:27-0:30 | End card: logo, tagline, URL, Team AstroSpark and the six members | – | FlameLens. Space-fire data, made clear. |
-
-"No PSI run burned a fabric in that air" is limited to PSI on purpose: outside PSI, NASA's Saffire V burned cotton at 26.2 % O₂ and 10.25 psi, and the dashboard shows it as cited, not counted. The dashboard shows the ISS strength as 83 because it rounds 82.5.
+Apollo 1 facts are from NASA's Apollo 1 page and the Apollo 204 Review Board findings (see `docs/16-video-script.md`). The recording ended with one more sentence ("And that's exactly where our motivation has come"); it was cut to keep the video at 30 seconds.
 
 ### To submit the video
 
