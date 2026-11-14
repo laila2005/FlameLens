@@ -35,7 +35,7 @@ Dates are for 2026. The hackathon is **24 hours: Fri 13 Nov 1:00 PM to Sat 14 No
 
 Files: [English](docs/roles/A-tech-lead-backend.md) · [العربية](docs/roles/ar/A-tech-lead-backend.md)
 
-## B. Frontend lead / قائد الواجهة: Yousseif
+## B. Frontend lead / قائد الواجهة: Youssif
 
 | Done | Due | ID | Task | المهمة |
 |---|---|---|---|---|
@@ -51,7 +51,7 @@ Files: [English](docs/roles/A-tech-lead-backend.md) · [العربية](docs/rol
 
 Files: [English](docs/roles/B-frontend.md) · [العربية](docs/roles/ar/B-frontend.md)
 
-## C. Charts and lenses / الرسوم والعدسات: Yasmine
+## C. Charts and lenses / الرسوم والعدسات: Yasmin
 
 | Done | Due | ID | Task | المهمة |
 |---|---|---|---|---|
@@ -118,15 +118,15 @@ Files: [English](docs/roles/F-research-pitch-qa.md) · [العربية](docs/rol
 
 | Done | Owner | Task | المهمة |
 |---|---|---|---|
-| [ ] | Dai | **Now (30 min):** download the big Priority 1 and 2 files from [data-to-check.md](docs/research/data-to-check.md) (BASS-II Summary Report 49 MB, Saffire-I/III result spreadsheets, BASS SRD and final report, DAFT final report and data summary, ACME CFI-G final report) and upload them to the shared drive (link in [docs/links.md](docs/links.md)), then tell Yasmine | نزّلي الملفات الكبيرة من القائمة وارفعيها على الـ Drive المشترك وأخبري Yasmine |
+| [ ] | Dai | **Now (30 min):** download the big Priority 1 and 2 files from [data-to-check.md](docs/research/data-to-check.md) (BASS-II Summary Report 49 MB, Saffire-I/III result spreadsheets, BASS SRD and final report, DAFT final report and data summary, ACME CFI-G final report) and upload them to the shared drive (link in [docs/links.md](docs/links.md)), then tell Yasmin | نزّلي الملفات الكبيرة من القائمة وارفعيها على الـ Drive المشترك وأخبري Yasmin |
 | [x] | Dai | **Now (10 min):** open the [official challenge page](https://www.spaceappschallenge.org/2026/challenges/flame-in-freefall/), paste the exact text into [12 Resources section 1](docs/12-resources.md#1-the-official-challenge), tell Laila if an AI part is expected | انسخي نص التحدي الرسمي في docs/12 وأخبري Laila هل الذكاء الاصطناعي مطلوب |
 | [x] | Dai | **Next (1 h):** paper library from the NTRS API, one query per investigation, saved as `data/curated/papers.csv` (ntrs_id, title, year, investigation, abstract, pdf_url) | مكتبة الأوراق من NTRS في papers.csv |
 | [x] | Dai | **Then (3 h):** AI explanation as **cached, verified text** for the 4 presets: `data/curated/explanations.json`, every sentence cites a run_id from `/api/case`; the verifier rejects any claim whose run_id or number is not in the evidence (rules in [07](docs/07-ai-guide.md)). Vercel cannot run a local model, so the live site serves the cached text. **The pipeline is built:** set `LLM_BASE_URL` and `LLM_MODEL`, run `python scripts/build_explanations.py`, read what the verifier kept, then push `data/curated/explanations.json` | شرح الذكاء الاصطناعي كنص مخزّن ومُتحقَّق منه للـ presets. الأدوات جاهزة: شغّلي `python scripts/build_explanations.py` ثم ارفعي explanations.json |
 | [ ] | Dai | **Throughout:** test the live site https://flamelens-steel.vercel.app on your network and phone; report bugs in the chat | اختبري الموقع المنشور وأبلغي عن الأخطاء |
-| [ ] | Yousseif | **Now (1 h):** test https://flamelens-steel.vercel.app on phone and laptop (Chrome, Edge, small screen). Use the checklist in [09](docs/09-pitch-and-submission.md#qa-checklist-f-tests-someone-who-did-not-write-the-code). Post bugs in the chat with a screenshot. **Do not edit `frontend/dist/` directly** while Claude is building it; send changes as notes or a pull request | اختبر الموقع على الهاتف والكمبيوتر وأرسل الأخطاء مع لقطة شاشة. لا تعدّل frontend/dist مباشرة الآن |
-| [ ] | Yousseif | **Next (2 h):** the 7-slide deck (outline in [09](docs/09-pitch-and-submission.md#7-slide-outline-backup-or-if-we-choose-slides)) using real screenshots of the live dashboard: Moon base preset, Evidence case, Run this next, coverage map, cool flames, smoke vs dust, early detection. Use the hooks from [the challenge text](docs/challenge-statement.md) (Artemis II smoke alarm, Apollo 1, Apollo 13, Mir) | الشرائح السبع بلقطات حقيقية من الموقع |
-| [ ] | Yousseif | **Then (1–2 h):** record the 30-second screen video (storyboard in [09](docs/09-pitch-and-submission.md#30-second-video-storyboard-default-demo)) on the live site, no faces or voices of under-18s; plus a favicon/logo and a share image | فيديو 30 ثانية من الموقع، وأيقونة وصورة مشاركة |
-| [ ] | Yasmine | Work through [data-to-check.md](docs/research/data-to-check.md), Priority 1 first (spread rates for Lens 1) | راجعي [data-to-check.md](docs/research/data-to-check.md) وابدئي بالأولوية 1 (سرعة انتشار اللهب للعدسة 1) |
+| [ ] | Youssif | **Now (1 h):** test https://flamelens-steel.vercel.app on phone and laptop (Chrome, Edge, small screen). Use the checklist in [09](docs/09-pitch-and-submission.md#qa-checklist-f-tests-someone-who-did-not-write-the-code). Post bugs in the chat with a screenshot. **Do not edit `frontend/dist/` directly** while Claude is building it; send changes as notes or a pull request | اختبر الموقع على الهاتف والكمبيوتر وأرسل الأخطاء مع لقطة شاشة. لا تعدّل frontend/dist مباشرة الآن |
+| [ ] | Youssif | **Next (2 h):** the 7-slide deck (outline in [09](docs/09-pitch-and-submission.md#7-slide-outline-backup-or-if-we-choose-slides)) using real screenshots of the live dashboard: Moon base preset, Evidence case, Run this next, coverage map, cool flames, smoke vs dust, early detection. Use the hooks from [the challenge text](docs/challenge-statement.md) (Artemis II smoke alarm, Apollo 1, Apollo 13, Mir) | الشرائح السبع بلقطات حقيقية من الموقع |
+| [ ] | Youssif | **Then (1–2 h):** record the 30-second screen video (storyboard in [09](docs/09-pitch-and-submission.md#30-second-video-storyboard-default-demo)) on the live site, no faces or voices of under-18s; plus a favicon/logo and a share image | فيديو 30 ثانية من الموقع، وأيقونة وصورة مشاركة |
+| [ ] | Yasmin | Work through [data-to-check.md](docs/research/data-to-check.md), Priority 1 first (spread rates for Lens 1) | راجعي [data-to-check.md](docs/research/data-to-check.md) وابدئي بالأولوية 1 (سرعة انتشار اللهب للعدسة 1) |
 
 ## Before submitting (Sat 14 Nov) / قبل التسليم (السبت 14 نوفمبر)
 

@@ -96,10 +96,10 @@ The step-by-step list of files to fetch and numbers to extract is in [data-to-ch
 
 | Gap | Impact | Proposed fix | Owner |
 |---|---|---|---|
-| **No spread-rate table** (Lens 1) | The original Lens 1 (spread rate vs airflow per oxygen level) cannot be drawn from tables | **Change Lens 1** to "Where flames were tested": oxygen vs airflow scatter from the 681 runs that have both, coloured by pillar and outcome. If time allows, plot-read a few spread rates from the BASS-II summary report (49 MB PDF) or Saffire-II and label them `plot-read` | Yasmine and Judy |
+| **No spread-rate table** (Lens 1) | The original Lens 1 (spread rate vs airflow per oxygen level) cannot be drawn from tables | **Change Lens 1** to "Where flames were tested": oxygen vs airflow scatter from the 681 runs that have both, coloured by pillar and outcome. If time allows, plot-read a few spread rates from the BASS-II summary report (49 MB PDF) or Saffire-II and label them `plot-read` | Yasmin and Judy |
 | Assumed ISS cabin pressure and air (858 pressure, 586 oxygen) | Lower confidence badges on BASS, BASS-II, Saffire, SPICE, SAME | Verify the cabin pressure for each platform in the readmes and reports and replace `assumed` with a sourced value | F and Judy |
 | Outcomes missing for 1,078 of 1,922 runs ("tested") | Safer options can say "tested here", but not "it burned here" | Use the 684 runs that have a real outcome (FLEX 274, ACME CFI-G 325, CFI 72, Saffire 13); add more from the Saffire spreadsheets and BASS-II summary if time | Judy |
-| BASS-II airflow is the first display reading only; multi-step flow ramps are collapsed | Airflow for those runs is approximate | Keep the confidence note; do not show spread-vs-flow curves | Yasmine |
+| BASS-II airflow is the first display reading only; multi-step flow ramps are collapsed | Airflow for those runs is approximate | Keep the confidence note; do not show spread-vs-flow curves | Yasmin |
 | Few runs between 25 and 30 % oxygen | Coverage map will show a thin band | A true finding, show it | Everyone |
 | Saffire IV to VI (reduced pressure, higher oxygen) and SoFIE are not in the PSI search | Solid-material evidence at lunar-like atmospheres is missing | Mention in "what next"; use the Saffire VI NTRS paper only as a citation, not run data | F |
 | Gravity: microgravity only | Lunar and Mars gravity always "No evidence" | This is correct and honest. FM2 (lunar gravity) is a planned experiment | none |

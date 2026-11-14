@@ -34,7 +34,7 @@ SEG = [  # start, end, shot, camera start (cx, cy, zoom), camera end   (CSS px o
     (19.6, 21.4, "g_drawer", (1150, 620, 1.15), (1560, 780, 1.42)),
     (21.4, 23.5, "h_campaign_n3", (1400, 420, 1.35), (1400, 560, 1.5)),
     (23.5, 24.3, "i_ask_q", (1300, 200, 1.6), (1330, 200, 1.66)),
-    (24.3, 26.0, "j_ask_answer", (960, 400, 1.08), (960, 450, 1.16)),
+    (24.3, 26.0, "j_ask_answer", (960, 420, 1.0), (960, 470, 1.04)),
 ]
 SCENE_STARTS = [3.2, 7.7, 12.0, 14.4, 17.9, 21.4, 23.5]
 CLICKS = [19.45, 21.62, 24.12]
@@ -364,12 +364,14 @@ def hook_frame(t):
     return frame.convert("RGB")
 
 # ---------------------------------------------------------------- end card
-END_F1, END_F2, END_F3, END_F4 = font(F_SB, 46), font(F_M, 34), font(F_SB, 25), font(F_R, 20)
+END_F1, END_F2, END_F3, END_F4 = font(F_SB, 46), font(F_M, 31), font(F_SB, 24), font(F_R, 19)
+END_TEAM, END_NAMES = font(F_D, 40), font(F_SB, 31)
+TEAM = ["Laila Mohamed", "Judy Adham", "Mostafa Fathy", "Yasmin Reda", "Youssif Hassan", "Dai Alaa"]
 _end_art = None
 def end_art():
     global _end_art
     if _end_art is None:
-        h = 790; w = int(ILL.width * h / ILL.height)
+        h = 730; w = int(ILL.width * h / ILL.height)
         art = ILL.resize((w, h), Image.LANCZOS).convert("RGBA")
         yy, xx = np.mgrid[0:h, 0:w].astype(float)
         e = 150.0
@@ -394,15 +396,19 @@ def end_card(t):
     k = ease(clamp((t - 0.3) / 0.5))
     def ctext(y, s, f, col, kk=k):
         d.text(((W - d.textlength(s, font=f)) / 2, y + (1 - kk) * 14), s, font=f, fill=col + (int(255 * kk),))
-    ctext(806, "Space-fire data, made clear", END_F1, WHITE)
-    pw = 600
-    d.rounded_rectangle(((W - pw) / 2, 880 + (1 - k) * 14, (W + pw) / 2, 938 + (1 - k) * 14), 29,
+    ctext(738, "Space-fire data, made clear", END_F1, WHITE)
+    pw = 560
+    d.rounded_rectangle(((W - pw) / 2, 806 + (1 - k) * 14, (W + pw) / 2, 858 + (1 - k) * 14), 26,
                         fill=(255, 138, 36, int(38 * k)), outline=FLAME + (int(220 * k),), width=2)
-    ctext(889, "flamelens-steel.vercel.app", END_F2, (255, 196, 140))
-    ctext(972, "Team AstroSpark  ·  NASA Space Apps 2026  ·  NASA PSI data (CC0)", END_F3, (178, 192, 232))
-    k2 = ease(clamp((t - 0.9) / 0.5))
-    ctext(1018, "Narration: Kokoro open-source AI voice  ·  logo art: Google Gemini  ·  every number from the live site",
-          END_F4, (130, 142, 182), k2)
+    ctext(813, "flamelens-steel.vercel.app", END_F2, (255, 196, 140))
+    k2 = ease(clamp((t - 0.7) / 0.5))
+    ctext(884, "TEAM  ASTROSPARK", END_TEAM, FLAME, k2)
+    k3 = ease(clamp((t - 1.0) / 0.5))
+    ctext(944, "  ·  ".join(TEAM), END_NAMES, WHITE, k3)
+    k4 = ease(clamp((t - 1.3) / 0.5))
+    ctext(1000, "NASA Space Apps 2026  ·  NASA PSI data (CC0)", END_F3, (178, 192, 232), k4)
+    ctext(1040, "Narration: Kokoro open-source AI voice  ·  every number from the live site",
+          END_F4, (130, 142, 182), k4)
     base.alpha_composite(ov)
     return base.convert("RGB")
 
@@ -492,7 +498,7 @@ def build_audio(path_out):
     print("audio mixed:", path_out)
 
 if PREVIEW:
-    for t in [0.7, 1.4, 2.2, 2.95, 3.6, 5.5, 8.6, 10.9, 13.3, 14.35, 16.0, 18.6, 19.5, 20.5, 22.4, 24.0, 25.2, 27.2, 29.0]:
+    for t in [0.7, 1.4, 2.2, 2.95, 3.6, 5.5, 8.6, 10.9, 13.3, 14.35, 16.0, 18.6, 19.5, 20.5, 22.4, 24.0, 25.2, 26.6, 27.2, 29.0]:
         render_frame(t).save(OUT.parent / f"pv2_{t:05.2f}.jpg", quality=88)
     print("previews written"); sys.exit()
 

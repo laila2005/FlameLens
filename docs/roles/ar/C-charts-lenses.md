@@ -4,7 +4,7 @@
 
 [English version](../C-charts-lenses.md) · [اختر دورك](../00-choose-your-role.md)
 
-**الاسم:** Yasmine  **البديل:** ______  **يعمل مع:** B وD
+**الاسم:** Yasmin  **البديل:** ______  **يعمل مع:** B وD
 
 ## مهمتك في جملة واحدة
 

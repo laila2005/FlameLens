@@ -114,7 +114,7 @@ Six roles (names in `docs/02-team-roles.md`): A tech lead and backend, B fronten
 - Real PSI data format unknown until 13 Nov. Field names, units and file types are guesses.
 - Team decision (9 Nov): the guidebook line about not changing the registered idea is read as "do not change the challenge"; we keep the same core FlameLens idea and only add features. Follow a mentor if told otherwise.
 - Event facts now confirmed from the official PDFs (`docs/11-event-facts.md`): 24 hours, 7 slides or a 30-second video, only the team leader submits, links must be public, AI use must be disclosed, no under-18 faces or voices. Still to confirm on Discord: the final deadline and the steps for the official NASA site; the arrival time differs between guides (8:00 vs 9:00 AM).
-- Roles named so far: A Laila (repo owner), B Yousseif, C Yasmine, D Judy (backup F). E tentatively Dai (confirming), F open: Mostafa is choosing and has not confirmed. Backups, hosting, LLM choice, repo licence, team leader who submits, which 5 are onsite: undecided (see "Open decisions" in `TASKS.md`).
+- Team (full names, confirmed 14 Nov): A Laila Mohamed (repo owner), B Youssif Hassan, C Yasmin Reda, D Judy Adham (backup F), E Dai Alaa, F Mostafa Fathy. Backups, hosting, LLM choice, repo licence, team leader who submits, which 5 are onsite: undecided (see "Open decisions" in `TASKS.md`).
 - GitHub collaborators not yet added (task A1).
 - Arabic task files were written by Claude and have not been reviewed by a native speaker on the team. Ask a teammate to proofread.
 - The master-plan artifact lacks the brainstorm section; the dashboard mockup lacks campaign planner, journey and strength meter views.

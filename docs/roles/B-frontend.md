@@ -1,6 +1,6 @@
 # Role B: Frontend lead
 
-**Name:** Yousseif  **Backup:** ______  **Pairs with:** C
+**Name:** Youssif  **Backup:** ______  **Pairs with:** C
 
 ## Your job in one sentence
 

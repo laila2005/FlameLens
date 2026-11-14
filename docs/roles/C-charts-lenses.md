@@ -1,6 +1,6 @@
 # Role C: Charts and lenses
 
-**Name:** Yasmine  **Backup:** ______  **Pairs with:** B and D
+**Name:** Yasmin  **Backup:** ______  **Pairs with:** B and D
 
 ## Your job in one sentence
 

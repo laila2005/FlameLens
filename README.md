@@ -201,7 +201,7 @@ NASA does not endorse this project. Any error in how the data is read or shown i
 
 ## 9. Team and license
 
-- **Team AstroSpark:** Laila Mohamed (tech lead, backend), Yousseif (frontend), Yasmine (charts and lenses), Judy (data), Dai (AI), Mostafa (research, pitch, QA).
+- **Team AstroSpark:** Laila Mohamed (tech lead, backend), Youssif Hassan (frontend), Yasmin Reda (charts and lenses), Judy Adham (data), Dai Alaa (AI), Mostafa Fathy (research, pitch, QA).
 - **Code:** [MIT License](LICENSE).
 - **Data:** NASA PSI data is CC0-1.0. See [LICENSE](LICENSE) for the data notice.
 

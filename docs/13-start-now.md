@@ -51,11 +51,11 @@ Everyone posts 3 bullets in the chat: what you learned, what it changes for the 
 | **Judy** | D data | **#1 PSI combustion search**: open 5 investigations (BASS, SAME, DAFT, FLEX, Saffire if present) | Which files each offers, which formats, which fields (oxygen, pressure, airflow, fuel, gravity, outcome). Write it in `docs/research/field-inventory.md` | افتح 5 تجارب في PSI وسجّل الملفات والصيغ والحقول |
 | **Mostafa** (F, to confirm) | F research and QA | **The official challenge page** (`spaceappschallenge.org/2026/challenges/flame-in-freefall/`) and **#2 NASA Combustion Science page** | The exact challenge wording. Is an AI part expected ("SI-Powered")? Paste the text into [12 Resources](12-resources.md#1-the-official-challenge). Also confirm the deadline on Discord | اقرأ نص التحدي الرسمي وصفحة Combustion Science والصق النص في docs/12 |
 | **Dai** (E, to confirm) | E AI | **#4 Researcher's Guide**: skim the chapters on BASS, SAME, DAFT, FLEX, Saffire | The quantities and units each experiment measured, and the terms the AI must use. Write 5 bullets for the prompts | تصفح دليل الباحث وسجّل الكميات والوحدات والمصطلحات للـ prompts |
-| **Yasmine** | C charts | **#8 Fire Detector spin-off** and **#3 ScienceCasts video** | What smoke vs dust looks like and how the detector separates them (for Lens 2). What flames look like in microgravity. Sketch the first idea for Lens 1 and Lens 2 | اقرأ صفحة كاشف الحريق وشاهد الفيديو وارسم فكرة العدستين |
-| **Yousseif** | B frontend | **#5 Apollo 1**, **#7 Mir**, **#9 Fireman's Air Tanks**, **#10 Fire Attire** | The story for the opening screen and video, and the wording for the "Earth spin-off" card. Pick a visual tone: serious, clear, dark theme | اقرأ أبولو 1 وMir وصفحتي التطبيقات الأرضية وجهّز نص بطاقة التطبيق الأرضي |
+| **Yasmin** | C charts | **#8 Fire Detector spin-off** and **#3 ScienceCasts video** | What smoke vs dust looks like and how the detector separates them (for Lens 2). What flames look like in microgravity. Sketch the first idea for Lens 1 and Lens 2 | اقرأ صفحة كاشف الحريق وشاهد الفيديو وارسم فكرة العدستين |
+| **Youssif** | B frontend | **#5 Apollo 1**, **#7 Mir**, **#9 Fireman's Air Tanks**, **#10 Fire Attire** | The story for the opening screen and video, and the wording for the "Earth spin-off" card. Pick a visual tone: serious, clear, dark theme | اقرأ أبولو 1 وMir وصفحتي التطبيقات الأرضية وجهّز نص بطاقة التطبيق الأرضي |
 | **Laila** | A tech lead | **#1 PSI search** with Judy for 10 minutes (data shape), then **#6 Apollo 13** | Can we build one table from what Judy sees? What changes in the schema ([06](06-data-guide.md))? Decide the repo structure and branch plan | اطّلع مع Judy على شكل البيانات ثم اقرأ أبولو 13 وقرر هيكل المستودع |
 
-If someone is not on the team yet (Mostafa, Dai), their reading goes to the backup: F's reading to Laila, E's reading to Yasmine.
+If someone is not on the team yet (Mostafa, Dai), their reading goes to the backup: F's reading to Laila, E's reading to Yasmin.
 
 ## The first hour from 1:00 PM
 
@@ -63,9 +63,9 @@ If someone is not on the team yet (Mostafa, Dai), their reading goes to the back
 2. **F:** write the deadline and the "submit by Sat 10:00 AM" line at the top of the chat. Join Discord and the mentor channel.
 3. **Judy and F:** open the PSI combustion search together. List which investigations have **downloadable runs with oxygen, pressure and airflow**. Pick the first 6 to extract, in the order of easiest first.
 4. **Laila:** compare Judy's field list with [06 Data guide](06-data-guide.md). Change the schema in the doc **before anyone writes code against it**, and tell everyone in the chat.
-5. **Laila:** agree the [API contract](05-architecture-and-api.md) and write one mock JSON file per route. Yousseif and Yasmine need it by 1:45 PM.
-6. **Yousseif:** create the app shell (picker, empty ranked list, "sample data" banner) from scratch. **Do not copy the old mockup.**
-7. **Yasmine:** start Lens 1 on the placeholder CSV.
+5. **Laila:** agree the [API contract](05-architecture-and-api.md) and write one mock JSON file per route. Youssif and Yasmin need it by 1:45 PM.
+6. **Youssif:** create the app shell (picker, empty ranked list, "sample data" banner) from scratch. **Do not copy the old mockup.**
+7. **Yasmin:** start Lens 1 on the placeholder CSV.
 8. **Dai:** run the NTRS paper search (queries in `docs/design/retrieval.md` or the list in [12](12-resources.md)). Save titles and PDF links. The prompts can wait until the data fields are known.
 9. **2:00 PM:** mentors start. Ask one mentor to sanity-check the idea if useful. 10-minute stand-up.
 

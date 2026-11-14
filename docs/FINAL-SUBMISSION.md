@@ -18,6 +18,12 @@ Copy-paste text for the NASA Space Apps submission form, the 7-slide deck, and t
 FlameLens
 ```
 
+### 1b. Team
+
+```text
+Team AstroSpark: Laila Mohamed, Judy Adham, Mostafa Fathy, Yasmin Reda, Youssif Hassan, Dai Alaa
+```
+
 ### 2. Challenge
 
 ```text
@@ -274,7 +280,7 @@ Exactly 7 slides. No faces, names or voices of anyone under 18. Keep the text as
 | 0:14-0:18 | Outside-PSI limits: lunar-gravity drop tests (Olson and Ferkul 2012) | Closest evidence, down to lunar gravity | So it shows the closest evidence, down to lunar-gravity tests. |
 | 0:18-0:21 | Verified AI claims; click a run, evidence drawer with DOI | Every AI sentence cites a real NASA run | Every AI sentence must cite a real run, or it's deleted. |
 | 0:21-0:26 | Campaign planner (3 tests cover 5 designs), then Ask the NASA reports with a verified quote | What NASA should fly next · Ask the NASA reports | It plans what NASA should fly next, and quotes the exact report page. |
-| 0:26-0:30 | End card | Space-fire data, made clear · flamelens-steel.vercel.app | FlameLens. Space-fire data, made clear. |
+| 0:26-0:30 | End card: logo, tagline, URL, Team AstroSpark and the six member names | Space-fire data, made clear · flamelens-steel.vercel.app | FlameLens. Space-fire data, made clear. |
 
 The dashboard shows the ISS strength as 83 because it rounds 82.5. The earlier silent cut is in git history.
 
