@@ -35,6 +35,18 @@
           <div class="runlist">${r.same_partial_pressure.run_ids.slice(0, 3).map(run).join("")}</div>
         </div>` : ""}
       </div>
+      ${(r.beyond_psi && r.beyond_psi.rows.length) ? `<div class="clbeyond">
+        <div class="clbhead"><b>Outside PSI: NASA Saffire spacecraft fires tested this atmosphere</b>
+          <span class="hint">cited, not counted in the score</span></div>
+        <ul class="clbrows">${r.beyond_psi.rows.slice(0, 3).map((b) => `<li>
+          <div><b>${esc(b.id.replace("SAFFIRE-", "Saffire "))}</b> · ${esc(b.material)} · ${b.o2_pct} % O₂ at ${b.pressure_kpa} kPa (${b.pressure_psi} psi) · ${b.flow_cm_s} cm/s ${esc(b.flow_direction)} flow · microgravity</div>
+          <div class="clsame">✓ Same ${esc(b.same.join(" + "))}</div>
+          ${b.differs.length ? `<ul class="cldiff">${b.differs.map((d) => `<li>≠ ${esc(d)}</li>`).join("")}</ul>` : ""}
+          <div class="clbout">${esc(b.outcome)}</div>
+          <div class="hint">Source: <a href="${esc(b.source_url)}" target="_blank" rel="noopener">${esc(b.source_ref)}</a></div>
+        </li>`).join("")}</ul>
+        <p class="hint">${esc(r.beyond_psi.note)}</p>
+      </div>` : ""}
       ${r.gravity_note ? `<p class="hint clgrav">${esc(r.gravity_note)}</p>` : ""}
       <button type="button" class="btn clcta" id="clgo">Close this gap: see the test campaign planner →</button>`;
     el.hidden = false;

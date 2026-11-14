@@ -539,7 +539,7 @@ def closest_evidence(target: Target, rows=None, k: int = 3) -> dict:
                    "o2": _span([r["o2_pct"] for r in same_pp], "%"), "psi": _span([r["pressure_psi"] for r in same_pp], "psi"),
                    "note": "Same oxygen partial pressure (within 5 %) but a different oxygen concentration and total pressure. "
                            "Related, not equivalent: flammability is highly dependent on oxygen concentration (challenge text)."}
-    return {"needed": whole_n == 0, "whole_n": whole_n, "gravity_note": (
+    return {"needed": whole_n == 0, "whole_n": whole_n, "beyond_psi": beyond_psi(target), "gravity_note": (
                 "PSI has no partial-gravity combustion data (LUCI and FM2 are planned); these runs are microgravity, one bound."
                 if gravity_relaxed and 0 < g0 < 1 else "PSI holds microgravity runs only; these are from 0 g." if gravity_relaxed else ""),
             "groups": groups, "same_partial_pressure": pp_info}
@@ -708,3 +708,44 @@ def campaign(targets: list, n: int = 3, rows=None) -> dict:
                     "still_open": [h["name"] for h in habs if h["status"] != "covered" and h["planned_by"] is None]},
         "note": "A plan for coverage, not a prediction: it says which test would cover which design, not what the test would show.",
     }
+
+
+# ---------------------------------------------------------------- evidence outside PSI (cited, never counted)
+
+def beyond_psi(target: Target, path=None) -> dict:
+    """NASA flight fire tests that are not in PSI (Saffire IV-VI, large-scale fires in Cygnus, microgravity).
+
+    Values are copied from the cited NASA papers (data/curated/beyond_psi_runs.csv). They use the same matching
+    tolerances as the evidence case, but they are shown separately and never enter counts, verdicts or strength.
+    A row is returned when it tested the same atmosphere (oxygen and pressure both within tolerance).
+    """
+    import csv
+    from pathlib import Path
+    p = Path(path) if path else Path(__file__).resolve().parents[2] / "data" / "curated" / "beyond_psi_runs.csv"
+    if not p.exists():
+        return {"rows": [], "note": ""}
+    out = []
+    with open(p, encoding="utf-8", newline="") as f:
+        for r in csv.DictReader(f):
+            o2, psi, flow = float(r["o2_pct"]), float(r["pressure_psi"]), float(r["flow_cm_s"])
+            same, differs = [], []
+            def chk(ok, word, txt):
+                (same if ok else differs).append(word if ok else txt)
+            chk(abs(o2 - target.o2_pct) <= TOLERANCE["o2"] + EPS, "oxygen", f"oxygen {o2:g} % (yours {target.o2_pct:g} %)")
+            chk(abs(psi - target.pressure_psi) <= TOLERANCE["psi"] + EPS, "pressure",
+                f"pressure {psi:g} psi (yours {target.pressure_psi:g} psi)")
+            if target.airflow_cm_s is not None:
+                chk(abs(flow - target.airflow_cm_s) <= TOLERANCE["flow"] + EPS, "airflow",
+                    f"airflow {flow:g} cm/s (yours {target.airflow_cm_s:g} cm/s)")
+            chk(target.fuel_state in ("any", r["fuel_state"]), "material", f"{r['fuel_state']} fuel, not {target.fuel_state}")
+            if abs(target.gravity_g) > EPS:
+                differs.append(f"gravity: microgravity (yours {target.gravity_g:g} g)")
+            if "oxygen" in same and "pressure" in same:
+                out.append({**{k: r[k] for k in ("id", "experiment", "material", "flow_direction", "outcome", "source_ref", "source_url")},
+                            "o2_pct": o2, "pressure_psi": psi, "pressure_kpa": float(r["pressure_kpa"]), "flow_cm_s": flow,
+                            "gravity_g": 0.0, "same": same, "differs": differs})
+    out.sort(key=lambda x: (-len(x["same"]), abs(x["o2_pct"] - target.o2_pct)))
+    return {"rows": out,
+            "note": ("NASA Saffire IV-VI burned large solid samples in microgravity inside Cygnus spacecraft at reduced "
+                     "pressure and raised oxygen. These tests are not in PSI, so they are shown with their source and are "
+                     "not counted in the evidence case or strength.") if out else ""}

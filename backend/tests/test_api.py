@@ -288,3 +288,18 @@ def test_smokepoint_lens_and_linked_runs():
     # values are copied as printed: the first ethylene smoke point in Figure 6.3
     first = next(p for p in d["points"] if p["fuel"] == "ethylene" and p["gmt"] == "15:48:47")
     assert (first["fuel_rate_mg_s"], first["air_rate_cm_s"], first["smoke_point_length_mm"]) == (1.627, 18.53, 36.99)
+
+
+# ------------------------------------------------------------ evidence outside PSI (Saffire IV-VI, cited, not counted)
+
+def test_beyond_psi_saffire_matches_rover_moon_mars_but_never_counts():
+    rover = client.post("/api/closest", json={"target": ROVER}).json()["beyond_psi"]["rows"]
+    assert {r["id"] for r in rover} == {"SAFFIRE-V-2", "SAFFIRE-V-3", "SAFFIRE-V-4"}
+    v2 = next(r for r in rover if r["id"] == "SAFFIRE-V-2")
+    assert (v2["o2_pct"], v2["pressure_kpa"], v2["flow_cm_s"]) == (26.2, 70.7, 20.0)   # ICES-2024-365 Table 1
+    assert "airflow" not in v2["same"] and "ntrs.nasa.gov" in v2["source_url"]
+    mars = {"o2_pct": 34, "pressure_psi": 8.2, "airflow_cm_s": 12.9, "gravity_g": 0.38, "fuel_state": "any"}
+    assert {r["id"] for r in client.post("/api/closest", json={"target": mars}).json()["beyond_psi"]["rows"]} == {"SAFFIRE-VI-2", "SAFFIRE-VI-3", "SAFFIRE-VI-4"}
+    # never counted: the rover's evidence case still has 0 whole-design and 0 atmosphere matches
+    case = client.post("/api/case", json={"target": ROVER}).json()
+    assert case["whole"]["n"] == 0 and case["atmosphere"]["n"] == 0

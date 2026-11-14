@@ -233,6 +233,9 @@ for g in cl["groups"]:
 check("Closest evidence", "every listed run really has the conditions its card calls 'same'", ok)
 check("Closest evidence", "same-partial-pressure runs are labelled related, not equivalent",
       cl["same_partial_pressure"] is None or "not equivalent" in cl["same_partial_pressure"]["note"])
+bp = cl.get("beyond_psi", {}).get("rows", [])
+check("Closest evidence", "outside PSI: Saffire V tested the rover atmosphere (cited, not counted)",
+      any(r["id"] == "SAFFIRE-V-2" and r["o2_pct"] == 26.2 and r["pressure_kpa"] == 70.7 for r in bp), str([r["id"] for r in bp]))
 check("Closest evidence", "ISS cabin (already matched) gets no closest-evidence block",
       jget("/api/closest", {"target": {"o2_pct": 21, "pressure_psi": 14.7, "airflow_cm_s": 12.9, "gravity_g": 0, "fuel_state": "any"}})["needed"] is False)
 

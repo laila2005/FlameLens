@@ -538,3 +538,10 @@ body.brief-open { overflow: hidden; }
 .askpassages ol { margin: 8px 0 0; padding-left: 20px; display: grid; gap: 10px; }
 .askpass { font-size: 13px; line-height: 1.5; }
 .askpass mark { background: var(--amber-soft); color: inherit; padding: 0 2px; border-radius: 3px; }
+.clbeyond { border: 1px solid color-mix(in srgb, var(--ok) 40%, var(--line)); background: color-mix(in srgb, var(--ok-soft) 55%, var(--panel2)); border-radius: var(--r-sm); padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+.clbhead { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; }
+.clbhead b { font: 600 15px var(--head); }
+.clbrows { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.clbrows > li { display: flex; flex-direction: column; gap: 3px; font-size: 13.5px; padding-top: 8px; border-top: 1px dashed var(--line2); }
+.clbrows > li:first-child { border-top: 0; padding-top: 0; }
+.clbout { color: var(--fg); }
