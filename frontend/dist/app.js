@@ -74,7 +74,7 @@
 
   // ---------------------------------------------------------------- render: decision
 
-  const statusCls = (s) => (s === "No evidence" ? "s-No" : s === "Not specified" ? "s-Na" : `s-${s}`);
+  const statusCls = (s) => (s === "No evidence" ? "s-No" : s === "Not specified" ? "s-Na" : s === "Other fuels only" ? "s-Other" : `s-${s}`);
   const runBtn = (id) => `<button class="runlink" data-run="${esc(id)}">${esc(id)}</button>`;
 
   function renderVerdict(c) {
@@ -113,6 +113,17 @@
       `<button type="button" class="modchip" data-jump-inv="${esc(iv.psi_id)}" title="Jump to ${esc(iv.name)} (${esc(iv.psi_id)}) profile">${esc(iv.name)} (${iv.runs})</button>`
     ).join(" ");
 
+    // With no run matching all conditions, every score and factor is 0: say why, and give the per-condition view.
+    let whyZero = "";
+    if (!activePart) {
+      const counted = c.conditions.filter((x) => x.status !== "Not specified");
+      const sep = counted.length ? Math.round(counted.reduce((a, x) => a + ((st.conditions[x.key] || {}).score || 0), 0) / counted.length) : 0;
+      const sup = counted.filter((x) => x.status === "Supported").length;
+      whyZero = `<div class="sm-why"><b>Why 0:</b> no NASA run matches all these conditions together, so there is nothing to score as a whole
+        and the four parts below are empty. Tested one condition at a time, this design scores
+        <b style="color:${meterColor(sep)}">${sep}/100</b> (${sup} of ${counted.length} conditions supported).
+        <a href="#closest" class="sm-jump">See the closest NASA evidence ↑</a></div>`;
+    }
     $("strengthmeter").innerHTML = `
       <div class="sm-top">
         <div class="sm-main">
@@ -137,7 +148,8 @@
           <div class="sm-backing"><b>${(at.n_runs || 0).toLocaleString()}</b> NASA runs match O₂ + pressure + flow + fuel in 0g</div>
         </div>
       </div>
-      <div class="sm-factors" aria-label="${esc(activeLabel)}">
+      ${whyZero}
+      <div class="sm-factors" aria-label="${esc(activeLabel)}" ${activePart ? "" : 'hidden'}>
         ${subFactors.map(([lbl, pct]) => `<div class="sm-f"><span>${esc(lbl)}</span><b>${pct}%</b><div class="meter"><i style="width:${pct}%"></i></div></div>`).join("")}
       </div>
       <div class="sm-invs">
@@ -162,7 +174,9 @@
     $("wholes").innerHTML =
       `<button type="button" class="whole ${statusCls(c.whole.status)}" data-list="whole" title="Inspect NASA runs matching all 5 conditions"><b>Whole design:</b> ${c.whole.n.toLocaleString()} NASA runs match all five conditions. <span class="hint">Strength ${wScore}/100</span></button>` +
       `<button type="button" class="whole ${statusCls(a.status)}" data-list="atmo" title="Inspect NASA runs matching atmosphere in 0g"><b>Atmosphere only (0g):</b> ${a.n.toLocaleString()} NASA runs match O₂, pressure, airflow &amp; fuel. <span class="hint">Strength ${atScore}/100</span></button>`;
-    const listMap = Object.fromEntries(c.conditions.map((x) => [x.key, { label: x.label, ids: x.run_ids }]));
+    const listMap = Object.fromEntries(c.conditions.map((x) => [x.key, (x.run_ids || []).length || !(x.other_run_ids || []).length
+      ? { label: x.label, ids: x.run_ids }
+      : { label: `${x.label}: runs with other fuels (not counted for this material)`, ids: x.other_run_ids }]));
     listMap.whole = { label: "Whole habitat design (all 5 conditions)", ids: c.whole.run_ids || [] };
     listMap.atmo = { label: "Atmosphere only (O2 + pressure + airflow + fuel in 0g)", ids: a.run_ids || [] };
     $("conditions").dataset.lists = JSON.stringify(listMap);
@@ -220,13 +234,16 @@
   function renderSafer(list, t) {
     const el = $("safer");
     const pp = ((t.o2_pct * t.pressure_psi) / 100).toFixed(2);
+    const head = `<h2>Tested options with less oxygen</h2>`;
     if (!list.length) {
-      el.innerHTML = `<h2>Safer tested options</h2><p>No tested run has at least 10 % lower oxygen partial pressure than your design (${pp} psi) with this material.</p>`;
+      el.innerHTML = head + `<p>No tested run has at least 10 % lower oxygen partial pressure than your design (${pp} psi) with this material.</p>`;
       return;
     }
-    el.innerHTML = `<h2>Safer tested options</h2><p class="hint">Real runs with at least 10 % less oxygen partial pressure than your ${pp} psi. Less oxygen means less to feed a fire.</p>` +
+    const atP = list.filter((a) => a.same_pressure).length;
+    const pNote = atP ? "" : `<p class="altwarn">None of these is at your pressure (${+t.pressure_psi} psi ± 2): they are a different atmosphere, shown only as the nearest tested lower-oxygen runs.</p>`;
+    el.innerHTML = head + `<p class="hint">Real NASA runs with at least 10 % less oxygen partial pressure than your ${pp} psi, runs at your own pressure first. Less oxygen means less to feed a fire; this is evidence, not a safety rating.</p>` + pNote +
       list.map((a) => `<div class="alt">
-        <span>${runBtn(a.run_id)} · ${esc(a.investigation)}: ${a.o2_pct} % O₂ at ${a.pressure_psi} psi</span>
+        <span>${runBtn(a.run_id)} · ${esc(a.investigation)}: ${a.o2_pct} % O₂ at ${a.pressure_psi} psi${a.same_pressure ? ' <span class="pill s-Supported">at your pressure</span>' : ""}</span>
         <span class="meta">O₂ partial pressure ${a.o2_partial_pressure} psi, ${a.reduction_pct} % below yours · confidence ${esc(a.confidence)}</span>
         <span class="meta">To get there: ${a.changes.filter((c) => c.delta).map((c) => `${esc(FIELD_LABEL[c.field] || c.field)} ${c.delta > 0 ? "+" : ""}${c.delta}`).join(", ") || "no change"}</span>
       </div>`).join("");

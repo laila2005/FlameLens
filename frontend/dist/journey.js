@@ -19,7 +19,7 @@
     const gaps = (nx.gaps && nx.gaps.length ? nx.gaps : s.gaps).map((g) => GAP[g] || g);
     return `<li class="jstage ${s.weakest ? "jweak" : ""} j-${tone(sc)}">
       <div class="jtop"><span class="jnum">${s.order}</span><b>${esc(s.name)}</b>
-        <span class="pill ${s.status === "No evidence" ? "s-No" : "s-" + esc(s.status)}">${esc(s.status)}</span></div>
+        <span class="pill ${s.status === "No evidence" ? "s-No" : s.status === "Other fuels only" ? "s-Other" : "s-" + esc(s.status)}">${esc(s.status)}</span></div>
       <div class="jchips"><span>${num(t.o2_pct)} % O₂</span><span>${num(t.pressure_psi)} psi</span><span>${esc(GRAV[t.gravity_g] || num(t.gravity_g) + " g")}</span>
         <span>${t.airflow_cm_s == null ? "airflow n/a" : num(t.airflow_cm_s) + " cm/s"}</span><span>${esc(t.fuel_state)}</span></div>
       <div class="jpp">O₂ partial pressure <b>${num(s.o2_partial_pressure)} psi</b></div>

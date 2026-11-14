@@ -96,11 +96,13 @@ for h in habitats + [FAR, CUSTOM]:
     unknown = sorted(i for i in ids if i not in by_id)
     check(g, f"every run ID returned exists in runs.csv ({len(ids)} IDs)", not unknown, f"{unknown[:3]}")
     conds = case["conditions"]
-    ok_status = all(c["status"] in {"Supported", "Weak", "No evidence", "Not specified"} for c in conds) and len(conds) == 5
+    ok_status = all(c["status"] in {"Supported", "Weak", "No evidence", "Not specified", "Other fuels only"} for c in conds) and len(conds) == 5
+    # n counts only runs with the chosen material; "Other fuels only" = 0 such runs but runs with other fuels match
     rule = all((c["key"] == "flow" and t["airflow_cm_s"] is None and c["status"] == "Not specified")
                or (c["n"] >= 2 and c["status"] == "Supported") or (c["n"] == 1 and c["status"] == "Weak")
-               or (c["n"] == 0 and c["status"] == "No evidence") for c in conds)
-    check(g, "evidence case: 5 conditions, status follows the 2+/1/0 rule (unspecified airflow = Not specified)", ok_status and rule,
+               or (c["n"] == 0 and c["status"] == "No evidence" and c.get("n_any_material", 0) == 0)
+               or (c["n"] == 0 and c["status"] == "Other fuels only" and c.get("n_any_material", 0) > 0) for c in conds)
+    check(g, "evidence case: 5 conditions, status follows the 2+/1/0 rule with the chosen material (unspecified airflow = Not specified)", ok_status and rule,
           "; ".join(f"{c['key']}={c['status']}({c['n']})" for c in conds))
     if h["gravity_g"] not in (0,):
         gc = next(c for c in conds if c["key"] == "grav")

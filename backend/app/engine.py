@@ -258,6 +258,19 @@ def _strength_part(matching, target, rng, bases):
             "n_investigations": len(inv_list), "investigations": inv_list[:8]}
 
 
+OTHER_FUELS = "Other fuels only"
+
+
+def _cond_runs(ms, key, target):
+    """Runs that back one condition. With a material chosen, a condition (oxygen, pressure, airflow, gravity) counts
+    only runs with that same material: a 30 % O2 gas flame is not evidence for a 30 % O2 fabric fire.
+    Returns (same-material runs, number of runs that match the condition with any material)."""
+    every = [r for r, m in ms if m[key]]
+    if key == "fuel" or target.fuel_state == "any":
+        return every, len(every)
+    return [r for r, m in ms if m[key] and m["fuel"]], len(every)
+
+
 def _matches(target, rows):
     """All runs with their per-condition match flags."""
     return [(run, _match(run, target)) for run in rows]
@@ -269,7 +282,7 @@ def strength(target: Target, rows=None) -> dict:
     ms = _matches(target, rows)
     conditions = {}
     for key in KEYS:
-        matching = [r for r, m in ms if m[key]]
+        matching, _ = _cond_runs(ms, key, target)
         bases = [BASIS[key]] if key in BASIS else []
         conditions[key] = _strength_part(matching, target, rng, bases)
     whole = [r for r, m in ms if all(m.values())]
@@ -306,10 +319,30 @@ def case(target: Target, rows=None) -> dict:
     st = strength(target, rows)
     conditions = []
     for key in KEYS:
-        matching = sorted((r for r, m in ms if m[key]), key=lambda r: _dist(r, target, rng))
-        conditions.append({"key": key, "label": LABELS[key], "status": _status(len(matching)),
-                           "n": len(matching), "run_ids": [r["run_id"] for r in matching[:10]],
-                           "strength": st["conditions"][key]["score"]})
+        same, n_any = _cond_runs(ms, key, target)
+        matching = sorted(same, key=lambda r: _dist(r, target, rng))
+        cond = {"key": key, "label": LABELS[key], "status": _status(len(matching)),
+                "n": len(matching), "n_any_material": n_any, "run_ids": [r["run_id"] for r in matching[:10]],
+                "strength": st["conditions"][key]["score"]}
+        if n_any > len(matching):
+            fuels = sorted({r.get("fuel_state") or "unknown" for r, m in ms if m[key] and not m["fuel"]})
+            others = " and ".join(f for f in fuels if f != target.fuel_state) or "other"
+            if not matching:
+                cond["status"] = OTHER_FUELS
+                other = sorted((r for r, m in ms if m[key]), key=lambda r: _dist(r, target, rng))
+                cond["other_run_ids"] = [r["run_id"] for r in other[:10]]
+                cond["note"] = (f"{n_any} runs match this condition, but all burned {others} fuels, "
+                                f"not {target.fuel_state}. They are not counted as evidence for a {target.fuel_state} material.")
+            else:
+                cond["note"] = (f"Counted: {len(matching)} {target.fuel_state} runs. "
+                                f"Another {n_any - len(matching)} runs with {others} fuels match this condition but are not counted.")
+        elif target.fuel_state == "any" and key in ("o2", "psi", "flow") and matching:
+            solid = sum(1 for r in matching if r.get("fuel_state") == "solid")
+            if not solid:
+                cond["note"] = (f"All {len(matching)} matching runs burned gas or liquid fuels; none are solid materials "
+                                "(fabrics, plastics). Choose 'Solid' to see the evidence for cabin materials.")
+                cond["no_solid"] = True
+        conditions.append(cond)
     whole = sorted((r for r, m in ms if all(m.values())), key=lambda r: _dist(r, target, rng))
     whole_info = {"status": _status(len(whole)), "n": len(whole), "run_ids": [r["run_id"] for r in whole[:10]],
                   "strength": st["whole"]["score"]}
@@ -342,6 +375,8 @@ def case(target: Target, rows=None) -> dict:
                 if c["key"] == "grav" and c["status"] == "No evidence" and 0 < target.gravity_g < 1:
                     return "no partial-gravity data in PSI"
                 word = c["label"].split()[0].lower()
+                if c["status"] == OTHER_FUELS:
+                    return f"{word} tested only with other fuels"
                 return f"no {word} evidence" if c["status"] == "No evidence" else f"weak {word} evidence"
             verdict += " (" + ", ".join(why(c) for c in missing) + ")"
     if not whole and atmo:
@@ -399,7 +434,7 @@ def _pp(o2, psi):
     return o2 * psi / 100
 
 
-def alternatives(target: Target, k: int = 3, rows=None) -> list:
+def alternatives(target: Target, k: int = 3, rows=None, prefer_same_pressure: bool = True) -> list:
     rows = _rows(rows)
     rng = data.ranges(rows)
     target_pp = _pp(target.o2_pct, target.pressure_psi)
@@ -413,7 +448,10 @@ def alternatives(target: Target, k: int = 3, rows=None) -> list:
         pp = _pp(r["o2_pct"], r["pressure_psi"])
         if pp <= 0.9 * target_pp + EPS:
             candidates.append((_dist(r, target, rng), r, pp))
-    candidates.sort(key=lambda x: x[0])
+    # Prefer runs at the design's own total pressure (within the 2 psi tolerance): lowering oxygen at the same
+    # pressure is a realistic design change; a run at a very different pressure is a different atmosphere.
+    same_p = lambda r: abs(r["pressure_psi"] - target.pressure_psi) <= TOLERANCE["psi"] + EPS
+    candidates.sort(key=lambda x: ((not same_p(x[1])) if prefer_same_pressure else False, x[0]))
     out = []
     for _, r, pp in candidates[:k]:
         changes = []
@@ -425,7 +463,7 @@ def alternatives(target: Target, k: int = 3, rows=None) -> list:
                     "pressure_psi": r["pressure_psi"], "o2_partial_pressure": round(pp, 2),
                     "target_partial_pressure": round(target_pp, 2),
                     "reduction_pct": round(100 * (1 - pp / target_pp), 1) if target_pp else 0.0,
-                    "changes": changes, "confidence": r.get("confidence", ""),
+                    "changes": changes, "confidence": r.get("confidence", ""), "same_pressure": same_p(r),
                     "doi": r.get("doi") or info.get(r["psi_id"], {}).get("doi", "")})
     return out
 

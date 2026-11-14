@@ -92,7 +92,8 @@ def test_case_iss_cabin():
 
 def test_case_lunar_rover_has_no_gravity_evidence():
     c = engine.case(ROVER, rows=MOCK)
-    assert counts(c) == {"o2": (9, "Supported"), "psi": (4, "Supported"), "flow": (13, "Supported"),
+    # rover material is solid: oxygen, pressure and airflow count only solid runs (gas and liquid runs are not evidence)
+    assert counts(c) == {"o2": (2, "Supported"), "psi": (2, "Supported"), "flow": (11, "Supported"),
                          "fuel": (13, "Supported"), "grav": (0, "No evidence")}
     assert c["whole"]["n"] == 0 and c["whole"]["status"] == "No evidence"
     assert c["supported_count"] == 4
@@ -274,3 +275,19 @@ def test_real_rank_returns_investigations(real):
     out = engine.rank(T(21, 14.7, 10, "solid", 0), rows=real, k=5)
     assert len(out) == 5 and all(x["doi"] for x in out)
     assert [x["score"] for x in out] == sorted((x["score"] for x in out), reverse=True)
+
+
+def test_conditions_only_count_runs_with_the_same_material():
+    """Real data: no solid run is near 30 % O2 or 10.2 psi, so the rover's oxygen and pressure are not supported,
+    even though gas flames and fuel droplets were tested there."""
+    rover = engine.Target(o2_pct=30, pressure_psi=10.2, airflow_cm_s=8.1, gravity_g=0.16, fuel_state="solid")
+    c = engine.case(rover)
+    by = {x["key"]: x for x in c["conditions"]}
+    for key in ("o2", "psi"):
+        assert by[key]["status"] == engine.OTHER_FUELS and by[key]["n"] == 0 and by[key]["n_any_material"] > 0
+        assert by[key]["other_run_ids"] and "not counted" in by[key]["note"]
+    assert c["supported_count"] == 2 and "tested only with other fuels" in c["verdict"]
+    assert set(engine.next_experiment(rover)["gaps"]) == {"o2", "psi", "grav"}
+    moon = engine.Target(o2_pct=30, pressure_psi=10.2, airflow_cm_s=12.9, gravity_g=0.16, fuel_state="any")
+    m = {x["key"]: x for x in engine.case(moon)["conditions"]}
+    assert m["o2"]["status"] == "Supported" and m["o2"].get("no_solid")

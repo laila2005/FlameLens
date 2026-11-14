@@ -70,6 +70,8 @@ def retrieve(target: Target) -> dict:
     c = engine.case(target)
     nxt = engine.next_experiment(target)
     alts = engine.alternatives(target, 3)
+    # also the nearest lower-oxygen runs at any pressure (what the panel showed before it preferred the design's pressure)
+    alts += [a for a in engine.alternatives(target, 3, prefer_same_pressure=False) if a["run_id"] not in {x["run_id"] for x in alts}]
     ranked = engine.rank(target, k=5)
     ids = []
 
@@ -78,7 +80,8 @@ def retrieve(target: Target) -> dict:
             ids.append(run_id)
 
     for cond in c["conditions"]:
-        for rid in cond["run_ids"][:3]:
+        # "Other fuels only": the runs that match with a different material are context the text may cite
+        for rid in cond["run_ids"][:3] + cond.get("other_run_ids", [])[:3]:
             add(rid)
     for rid in c["whole"]["run_ids"][:3] + c["atmosphere"]["run_ids"][:3]:
         add(rid)
@@ -89,7 +92,7 @@ def retrieve(target: Target) -> dict:
         add(r["top_runs"][0] if r["top_runs"] else None)
     ids = ids[:MAX_RUNS]
     runs = {rid: data.run_by_id(rid) for rid in ids}
-    counts = {cond["n"] for cond in c["conditions"]} | {c["whole"]["n"], c["atmosphere"]["n"], c["supported_count"],
+    counts = {cond["n"] for cond in c["conditions"]} | {cond.get("n_any_material", cond["n"]) for cond in c["conditions"]} | {c["whole"]["n"], c["atmosphere"]["n"], c["supported_count"],
                                                          len(c["conditions"])}
     return {"target": target, "case": c, "next": nxt, "alternatives": alts, "rank": ranked,
             "run_ids": ids, "runs": {k: v for k, v in runs.items() if v}, "counts": counts}

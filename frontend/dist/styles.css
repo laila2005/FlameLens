@@ -167,7 +167,7 @@ select:hover { border-color: var(--flame); }
 .cond .n { font: 12.5px var(--mono); color: var(--muted); }
 .pill { align-self: flex-start; font: 600 10.5px var(--mono); text-transform: uppercase; letter-spacing: .06em; padding: 3px 8px; border-radius: 999px;
   background: color-mix(in srgb, currentColor 12%, transparent); }
-.s-Supported { color: var(--ok); } .s-Weak { color: var(--amber); } .s-No { color: var(--bad); } .s-Na { color: var(--muted); }
+.s-Supported { color: var(--ok); } .s-Weak { color: var(--amber); } .s-No { color: var(--bad); } .s-Na { color: var(--muted); } .s-Other { color: var(--amber); }
 .meter { display: block; height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
 .meter i { display: block; height: 100%; background: var(--cool); border-radius: 3px; }
 .wholes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -193,6 +193,10 @@ select:hover { border-color: var(--flame); }
 .sm-bar i { display: block; height: 100%; border-radius: 5px; transition: width .35s ease; }
 .sm-backing { font-size: 13px; color: var(--muted); }
 .sm-backing b { color: var(--fg); font-family: var(--mono); font-weight: 600; }
+.sm-why { margin: 10px 0 4px; padding: 9px 12px; border-radius: var(--r-sm); background: var(--panel2); font-size: 13.5px; line-height: 1.5; }
+.sm-why b { font-family: var(--mono); }
+.sm-why .sm-jump { display: inline-block; margin-left: 4px; white-space: nowrap; }
+.sm-factors[hidden] { display: none; }
 .sm-factors { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
 @media (max-width: 680px) { .sm-factors { grid-template-columns: 1fr 1fr; } }
 .sm-f { display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; color: var(--muted); }
@@ -216,6 +220,7 @@ select:hover { border-color: var(--flame); }
 .runlink:hover { background: var(--cool); color: var(--panel-solid); }
 .alt { background: var(--panel2); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 12px 14px; font-size: 14px; display: flex; flex-direction: column; gap: 3px; }
 .alt .meta { color: var(--muted); font-size: 13px; }
+.altwarn { font-size: 13.5px; color: var(--amber); border-left: 3px solid var(--amber); padding: 4px 10px; margin: 6px 0 10px; }
 
 /* ------------------------------------------------------------------ ranked investigations */
 .ranked { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
@@ -255,10 +260,15 @@ select:hover { border-color: var(--flame); }
 .caption { margin: 0; font-size: 13px; color: var(--muted); }
 
 /* ------------------------------------------------------------------ drawer & buttons */
-.drawer { position: fixed; right: 18px; bottom: 18px; width: min(460px, calc(100vw - 36px)); max-height: 76vh; overflow: auto;
+.drawer { position: fixed; right: 18px; bottom: 18px; width: min(460px, calc(100vw - 36px)); max-height: 76vh; overflow-y: auto; overflow-x: hidden;
+  overflow-wrap: anywhere; word-break: break-word;
   background: var(--panel-solid); border: 1px solid var(--line); border-top: 4px solid var(--cool); border-radius: var(--r); padding: 18px;
   box-shadow: 0 24px 60px -18px rgba(20, 33, 61, .45); z-index: 10; }
-.drawerhead { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.drawerhead { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+.drawerhead > *:first-child { min-width: 0; }
+.drawer .kv { grid-template-columns: auto minmax(0, 1fr); }
+.drawer .kv dd, .drawer a, .drawer code { overflow-wrap: anywhere; word-break: break-word; min-width: 0; }
+.drawer .btn { flex-shrink: 0; }
 .btn { display: inline-flex; align-items: center; gap: 6px; background: var(--panel-solid); border: 1px solid var(--line2); border-radius: 10px;
   padding: 7px 13px; cursor: pointer; font-size: 13.5px; box-shadow: var(--shadow-sm); transition: border-color .15s, color .15s, transform .15s; }
 .btn:hover { border-color: var(--flame); color: var(--flame); transform: translateY(-1px); }

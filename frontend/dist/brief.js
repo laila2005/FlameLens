@@ -18,7 +18,7 @@
   const val = (v) => (typeof v === "number" ? num(v) : v == null || v === "" ? "–" : String(v)); // numbers or words (material)
   const psiOf = (runId) => String(runId).replace(/-\d{4}$/, "");
   const tone = (s) => (s >= 65 ? "ok" : s >= 25 ? "amber" : "bad");
-  const stTone = (s) => (s === "Supported" ? "ok" : s === "Weak" ? "amber" : s === "Not specified" ? "na" : "bad");
+  const stTone = (s) => (s === "Supported" ? "ok" : s === "Weak" || s === "Other fuels only" ? "amber" : s === "Not specified" ? "na" : "bad");
   const doiLink = (doi) => (doi ? `<a href="https://doi.org/${esc(doi)}" target="_blank" rel="noopener">doi.org/${esc(doi)}</a>` : "–");
   const pill = (text, t) => `<span class="bp bp-${t}">${esc(text)}</span>`;
   const run = (id) => `<span class="brun">${esc(id)}</span>`;
@@ -128,7 +128,7 @@
           <td>${(x.run_ids || []).slice(0, 3).map(run).join(" ") || "none"}${x.note ? `<div class="bnote">${esc(x.note)}</div>` : ""}</td></tr>`; }).join("")}
         <tr class="btot"><td>Whole design</td><td>${pill(c.whole.status, stTone(c.whole.status))}</td><td>${c.whole.n.toLocaleString()}</td><td>${wS}/100</td><td>${(c.whole.run_ids || []).slice(0, 3).map(run).join(" ") || "none"}</td></tr>
         </table>
-        <p class="bnote">A run matches a condition when it is within ±6 oxygen points, ±2 psi or ±8 cm/s airflow, with the same material and gravity. Supported = 2 or more runs, Weak = 1, No evidence = 0. "No evidence" marks a gap, not a hazard.</p>
+        <p class="bnote">A run matches a condition when it is within ±6 oxygen points, ±2 psi or ±8 cm/s airflow, with the same material and gravity. Supported = 2 or more runs with the chosen material, Weak = 1, No evidence = 0; "Other fuels only" = the condition was tested, but only with a different material type, so it is not counted. "No evidence" marks a gap, not a hazard.</p>
       </section>
 
       <section class="bsec"><h3>5 · Gap to close: run this next</h3>${nextHtml}</section>
