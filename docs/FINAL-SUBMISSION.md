@@ -36,7 +36,7 @@ Flame in Freefall: SI-Powered Fire Safety Insights from Microgravity Combustion 
 FlameLens is a web dashboard built on 2,003 real NASA PSI microgravity combustion runs from 18 flight investigations. Enter a spacecraft, Moon base or rover atmosphere and see which conditions are backed by experiments, how strong that evidence is, where the gaps are, and which experiment to run next.
 ```
 
-### 4. Project summary (medium, about 130 words)
+### 4. Project summary (medium, 161 words)
 
 ```text
 Future Moon bases and pressurized rovers are expected to use 30 % oxygen or more at 10.2 psi or less, which makes materials much more flammable. NASA has decades of microgravity fire experiments in its PSI repository, but they are spread over many tables and reports and are hard to compare.
@@ -91,7 +91,7 @@ The user picks a preset (Moon base, pressurized rover, spacesuit, ISS cabin, Mar
 
 WHAT IT SHOWS
 - ISS cabin (21 % oxygen, 14.7 psi, microgravity): 336 runs match the whole design. Evidence strength 82.5 of 100.
-- Pressurized rover (30 % oxygen, 10.2 psi, solid material, lunar gravity): 2 of 5 conditions supported and 0 runs match the whole design. Its oxygen and pressure were tested only with gas flames and fuel droplets, never with a solid material. 308 solid-material runs share its airflow but were at 14.5 to 22.2 % oxygen and 14.7 psi. Outside PSI, NASA's Saffire V fire burned cotton at 26.2 % oxygen and 10.25 psi in a Cygnus spacecraft, and NASA drop-tower tests at lunar gravity and 10.2 psia show Ultem and Mylar films burning at lower oxygen than in 1 g (Olson and Ferkul 2012). The nearest PSI run is PSI-25-0023 from BASS-II.
+- Pressurized rover (30 % oxygen, 10.2 psi, solid material, lunar gravity): 2 of 5 conditions supported and 0 runs match the whole design. Its oxygen and pressure were tested only with gas flames and fuel droplets, never with a solid material. 308 solid-material runs share its airflow but were at 14.5 to 22.2 % oxygen and 14.7 psi. Outside PSI, NASA's Saffire V fire burned cotton at 26.2 % oxygen and 10.25 psi in a Cygnus spacecraft, and NASA drop-tower tests at lunar gravity and 10.2 psia show Ultem and Mylar films burning at lower oxygen than in 1 g (tabulated in Olson and Ferkul 2012, Table I; the paper notes that the low-gravity limit criteria differ from the 1 g test). The nearest PSI run is PSI-25-0023 from BASS-II.
 - Gravity: every run in PSI is microgravity. FlameLens states that PSI has no partial-gravity combustion data yet and that microgravity results are one bound, and shows the cited drop-tower limits at lunar and Martian gravity.
 - With three more experiments, the planner covers the Moon base and rover with one lunar-gravity test, and the spacesuit and Mars habitat with the other two.
 
@@ -164,7 +164,7 @@ No space agency partner data was used. Other tools: Python, FastAPI, Pydantic, p
 ```text
 In the product:
 - Decisions use no AI. Evidence status, strength scores, rankings, the next experiment, the campaign plan and the lower-oxygen options are deterministic arithmetic over the NASA tables.
-- The "What the evidence says" panel shows AI-written text. For the five presets, an open model (qwen2.5:7b-instruct) wrote 5 claims per preset ahead of time, using only the retrieved NASA runs. Our citation verifier re-checks every claim on every request. It removes any claim that cites a run outside the evidence, states a number that is not in that run, or gives a flammability threshold or safety verdict. All 25 cached claims pass. For a custom design the live site has no model and shows a plain summary filled from the runs, labelled "AI is off".
+- The "What the evidence says" panel shows AI-written text. For four presets (Moon base, pressurized rover, spacesuit, ISS cabin), an open model (qwen2.5:7b-instruct) wrote 5 claims per preset ahead of time, using only the retrieved NASA runs. Our citation verifier re-checks every claim on every request. It removes any claim that cites a run outside the evidence, states a number that is not in that run, or gives a flammability threshold or safety verdict. All 20 cached claims pass. For the Mars habitat preset and for any custom design this panel has no live model and shows a plain summary filled from the runs, labelled "AI is off".
 - "Ask the NASA reports" calls Google Gemini 2.5 Flash live. The model sees only retrieved passages from NASA PSI documents; the server keeps a claim only if its quote is word for word on the cited page, its numbers appear on that page, and it has no safety verdict. Without a key the panel shows the matching passages. The idea and first scripts came from a team member (Dai); we integrated and hardened them.
 - AI-generated text is marked in the interface, and each claim shows the run or page it cites. Model suggestions are labelled "AI suggestion, not verified as a fact".
 
@@ -260,7 +260,7 @@ Exactly 7 slides. No faces, names or voices of anyone under 18. Keep the text as
   - Decisions use no AI. The AI only explains, and a verifier removes any claim without a matching NASA run.
   - Every run links to its NASA DOI. Assumed values are labelled.
   - On Earth: smoke detectors that ignore dust, firefighter clothing and breathing equipment.
-  - Data: NASA PSI (CC0) and NTRS. AI use disclosed: an open model for explanations, AI coding assistants for development.
+  - Data: NASA PSI (CC0) and NTRS. AI use disclosed: an open model and Gemini for cited text, AI coding assistants, an AI-made logo, a synthetic narration voice.
 - **Visual:** the "What the evidence says" panel with a run opened in the evidence drawer, and the "Back on Earth" panel.
 
 ---
@@ -304,4 +304,4 @@ Upload the MP4 to YouTube (Unlisted or Public) or Google Drive ("Anyone with the
 - [ ] Team member names and roles are correct on the form and in the README
 - [ ] The team leader submits on the local Cairo form, then on the official NASA Space Apps site
 - [ ] Screenshots of both confirmations are saved
-- [ ] Submitted by 12:30 PM Cairo time on Saturday 14 Nov (deadline 1:00 PM; late submissions are not accepted)
+- [ ] Submitted by 10:00 AM Cairo time on Saturday 14 Nov if possible, and no later than 12:30 PM (deadline 1:00 PM; late submissions are not accepted). Check the time on a phone, not in the project log: the log entries for 14 Nov were written about 6 hours ahead of the real clock.
