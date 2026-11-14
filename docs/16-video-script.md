@@ -1,6 +1,6 @@
 # 30-second video script (Laila records, Claude edits)
 
-Say it as if you are telling a friend why this project matters to you. It is 80 words, about 29 seconds at a calm, warm pace.
+Say it as if you are telling a friend why this project matters to you. It is 81 words, about 29 seconds at a calm, warm pace.
 
 ## The script
 
@@ -10,9 +10,9 @@ Say it as if you are telling a friend why this project matters to you. It is 80 
 >
 > Apollo 1: three astronauts, trapped by a fire, in a test no one thought was dangerous.
 >
-> We built FlameLens so their lesson lives on.
+> So we built FlameLens, to keep their lesson alive.
 >
-> Tell it your cabin's air, and it shows what NASA's experiments really know, and what's still untested.
+> Just enter your cabin's air, and FlameLens shows what NASA's experiments already know, and what's still untested.
 >
 > Because behind every cabin on the Moon or Mars, there's a crew, and a family waiting for them to come home.
 
@@ -23,16 +23,16 @@ Say it as if you are telling a friend why this project matters to you. It is 80 
 | 0:00–0:02 | Who we are | "Hi, I'm Laila, from Team AstroSpark." | Smile while you say it | Laila on camera, or the team logo, with the name tag "Laila Mohamed · Team AstroSpark" |
 | 0:02–0:05 | Challenge and why | "We chose Flame in Freefall because of a story we couldn't forget." | Softer, a little personal | "Flame in Freefall" fades in on a dark background |
 | 0:05–0:10 | The story | "Apollo 1: three astronauts, trapped by a fire, in a test no one thought was dangerous." | Slow and quiet; a short pause after "Apollo 1" | Text only, no photos: "27 January 1967 · Apollo 1", then "Virgil Grissom · Edward White · Roger Chaffee". No music, only your voice |
-| 0:10–0:13 | Project name and message | "We built FlameLens so their lesson lives on." | Steady and sure: the turn from sadness to purpose | The names fade into the FlameLens logo; soft music starts |
-| 0:13–0:21 | How it works and the data | "Tell it your cabin's air, and it shows what NASA's experiments really know, and what's still untested." | A bit brighter, like showing something you're proud of | Live dashboard. **1** Moon rover air: 30 % O₂ · 10.2 psi. **2** Count-up to "2,003 runs · 18 NASA experiments", then 2 of 5 conditions backed. **3** Closest NASA evidence: PSI runs next to cited real tests outside PSI |
+| 0:10–0:13 | Project name and message | "So we built FlameLens, to keep their lesson alive." | Steady and sure: the turn from sadness to purpose | The names fade into the FlameLens logo; soft music starts |
+| 0:13–0:21 | How it works and the data | "Just enter your cabin's air, and FlameLens shows what NASA's experiments already know, and what's still untested." | A bit brighter, like showing something you're proud of | Live dashboard. **1** Moon rover air: 30 % O₂ · 10.2 psi. **2** Count-up to "2,003 runs · 18 NASA experiments", then 2 of 5 conditions backed. **3** Closest NASA evidence: PSI runs next to cited real tests outside PSI |
 | 0:21–0:30 | Who it helps and future value | "Because behind every cabin on the Moon or Mars, there's a crew, and a family waiting for them to come home." | Warm and slow; let the last words land, then stay silent for a second | A Moon cabin on the dashboard, then the end card: "In memory of the Apollo 1 crew", FlameLens, flamelens-steel.vercel.app, Team AstroSpark and the six names |
 
 ## Tips for sounding human
 
 - Read it 2 or 3 times out loud before you record, until you know it almost by heart. Then look up from the paper and *tell* it.
-- Stress a few words: "couldn't **forget**", "**no one** thought was dangerous", "lesson **lives on**", "a **family** waiting".
+- Stress a few words: "couldn't **forget**", "**no one** thought was dangerous", "lesson **alive**", "a **family** waiting".
 - Don't act sad. Speak simply and honestly; that is what moves people.
-- Each take should be about 29 seconds. If it runs long, cut "from" in the first line, then "really".
+- Each take should be about 29 seconds. If it runs long, cut "from" in the first line, then "already".
 
 ## What Laila records and sends
 
